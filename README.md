@@ -66,8 +66,8 @@ OnPolicySD-open/
 ### Installation
 
 ```bash
-git clone https://github.com/<YOUR_ORG>/OnPolicySD-open.git
-cd OnPolicySD-open
+git clone https://github.com/HJSang/OPSD_Reasoning_Compression.git
+cd OPSD_Reasoning_Compression
 
 # Install VERL and dependencies
 cd verl
