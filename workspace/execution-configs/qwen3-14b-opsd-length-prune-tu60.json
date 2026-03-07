@@ -1,0 +1,30 @@
+{
+    "inputs": {
+        "bash_script_path": "./workspace/scripts/sft/train_opsd.sh",
+        "model_path": "<MODEL_PATH>",
+        "sd_prompts_path": "./workspace/data/length_prune_concise/self_distill_prompts.parquet",
+        "sd_val_prompts_path": "./workspace/data/length_prune_concise/self_distill_prompts_val.parquet",
+        "opsd_beta": "0.5",
+        "sd_temperature": "1.0",
+        "sd_top_p": "1.0",
+        "sd_max_tokens": "8192",
+        "sft_max_length": "10240",
+        "total_epochs": "1",
+        "train_batch_size": "32",
+        "micro_batch_size": "2",
+        "learning_rate": "1e-6",
+        "save_freq": "10",
+        "tp_size": "2",
+        "gpu_mem_util": "0.75",
+        "test_freq": "10",
+        "max_prompt_length": "1024",
+        "ulysses_sp_size": "4",
+        "max_response_length": "30000",
+        "val_max_tokens": "30000",
+        "check_structure": "false",
+        "use_liger": "true",
+        "opsd_loss_type": "reverse_kl",
+        "teacher_update_freq": "60",
+        "experiment_name": "qwen3-14b_opsd_length_prune_concise_tu60"
+    }
+}

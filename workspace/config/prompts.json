@@ -1,0 +1,42 @@
+{
+    "self_distill": {
+        "system": "",
+        "prefix": "Below is a math problem and a reference solution. Your task is to rewrite the solution in your own words while preserving the same reasoning steps and final answer.\n\nYour response MUST have ALL THREE of the following sections, in this exact order:\n\n1. <think> ... </think>  —  Your informal scratch work and reasoning. Think through the problem step by step. This section must be detailed and substantive (do NOT skip it or leave it short).\n\n2. A formal, well-structured solution AFTER the </think> tag. This is the polished write-up: restate the approach, show key equations and derivations clearly, and conclude with \\boxed{answer}. Do NOT skip this section — it should be a complete, self-contained solution that a reader could follow without seeing the <think> block.\n\n3. On the very last line: Answer: $Answer\n\nDo NOT copy the reference solution verbatim — rephrase in your own words. But you MUST preserve the same reasoning logic and final answer, and you MUST include all three sections above.\n\n## Problem\n",
+        "middle": "\n\n## Reference Solution\n",
+        "suffix": "\n\nRemember: Your response MUST contain all three parts: (1) a detailed <think>...</think> block, (2) a formal solution after </think> with \\boxed{answer}, and (3) Answer: $Answer on the last line. Do NOT jump straight from </think> to Answer:."
+    },
+    "self_distill_hint": {
+        "system": "",
+        "prefix": "Below is a math problem and some reasoning hints from a teacher's thinking process. Use these hints as guidance, but you must generate your own complete solution.\n\nYour response MUST have ALL THREE of the following sections, in this exact order:\n\n1. <think> ... </think>  —  Your informal scratch work and reasoning. Build upon the hints provided, think through the problem step by step, and develop your own understanding. This section must be detailed and substantive.\n\n2. A formal, well-structured solution AFTER the </think> tag. This is your polished write-up: clearly explain the approach, show key equations and derivations, and conclude with \\boxed{answer}. This should be a complete, self-contained solution written in your own words.\n\n3. On the very last line: Answer: $Answer\n\nUse the teacher's hints to guide your reasoning, but DO NOT simply copy them. Generate your own formal solution that demonstrates your understanding.\n\n## Problem\n",
+        "middle": "\n\n## Teacher's Thinking Hints\n",
+        "suffix": "\n\nRemember: Your response MUST contain all three parts: (1) a detailed <think>...</think> block (building on the hints), (2) a complete formal solution after </think> with \\boxed{answer}, and (3) Answer: $Answer on the last line. Do NOT jump straight from </think> to Answer:."
+    },
+    "self_distill_answer_hint": {
+        "system": "",
+        "prefix": "Below is a math problem and a reference formal solution from a teacher. Use this formal solution as a guide for the structure and approach, but you must work through the problem yourself.\n\nYour response MUST have ALL THREE of the following sections, in this exact order:\n\n1. <think> ... </think>  —  Your informal scratch work and reasoning. Work through the problem step by step, developing your own understanding of why the approach works. This section must be detailed and substantive.\n\n2. A formal, well-structured solution AFTER the </think> tag. Use the reference solution as a template for structure and key steps, but rephrase everything in your own words and ensure you understand each step. Conclude with \\boxed{answer}.\n\n3. On the very last line: Answer: $Answer\n\nDo NOT copy the reference solution verbatim — understand the approach, work through it yourself in the <think> section, then present it clearly in your own words.\n\n## Problem\n",
+        "middle": "\n\n## Reference Formal Solution\n",
+        "suffix": "\n\nRemember: Your response MUST contain all three parts: (1) a detailed <think>...</think> block with YOUR reasoning process, (2) a formal solution after </think> rephrased in your own words with \\boxed{answer}, and (3) Answer: $Answer on the last line."
+    },
+    "opsd_qwen3_student": {
+        "prefix": "Solve the following math problem step by step. The last line of your response should be of the form Answer: $Answer (without quotes) where $Answer is the answer to the problem.\n\n",
+        "suffix": ""
+    },
+    "opsd_qwen3_teacher": {
+        "system": "",
+        "prefix": "## Problem\n",
+        "middle": "\n\n## Reference Solution\n",
+        "suffix": "\n\nAfter understanding the reference solution, solve the problem step by step using your own approach. The last line of your response should be of the form Answer: $Answer (without quotes) where $Answer is the answer to the problem."
+    },
+    "length_prune_teacher": {
+        "prefix": "Solve the following math problem concisely and correctly. Be direct — avoid unnecessary elaboration, redundant steps, or restating the problem. Focus only on the key reasoning steps needed to reach the answer.\n\nThe last line of your response should be of the form Answer: $Answer (without quotes) where $Answer is the answer to the problem.\n\n",
+        "suffix": "\n\nRemember to put your answer on its own line after \"Answer:\"."
+    },
+    "length_prune_teacher_word_limit": {
+        "prefix": "Solve the following math problem correctly in at most {word_limit} words. Be concise — state only the essential reasoning steps and skip any unnecessary elaboration.\n\nThe last line of your response should be of the form Answer: $Answer (without quotes) where $Answer is the answer to the problem.\n\n",
+        "suffix": "\n\nRemember to put your answer on its own line after \"Answer:\"."
+    },
+    "length_prune_teacher_percent_reduce": {
+        "prefix": "Solve the following math problem correctly using {percent_reduce}% fewer tokens than you normally would. Be more concise — cut unnecessary elaboration, redundant steps, and verbose explanations while preserving correctness.\n\nThe last line of your response should be of the form Answer: $Answer (without quotes) where $Answer is the answer to the problem.\n\n",
+        "suffix": "\n\nRemember to put your answer on its own line after \"Answer:\"."
+    }
+}
