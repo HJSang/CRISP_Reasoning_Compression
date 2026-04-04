@@ -1,4 +1,4 @@
-# CRISP: Compressed Reasoning via Iterative Self-Policy Distillation
+# CRISP: Compressed Reasoning via Iterative Self-Policy Distillation (Original OPSDC On-Policy Self-Distillation for Reasoning Compression)
 
 This repository contains the code for **CRISP** (**C**ompressed **R**easoning via **I**terative **S**elf-**P**olicy Distillation), a method that teaches reasoning models to think more concisely by distilling their own concise behavior back into themselves.
 
@@ -216,6 +216,6 @@ Built on top of [VERL](https://github.com/volcengine/verl) (HybridEngine for com
   title={CRISP: Compressed Reasoning via Iterative Self-Policy Distillation},
   author={Sang, Hejian and Xu, Yuanda and Zhou, Zhengze and He, Ran and Wang, Zhipeng and Sun, Jiachen},
   journal={arXiv preprint arXiv:2603.05433},
-  year={2025}
+  year={2026}
 }
 ```
