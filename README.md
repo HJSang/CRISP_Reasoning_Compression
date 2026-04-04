@@ -1,14 +1,14 @@
-# OPSDC: On-Policy Self-Distillation for Reasoning Compression
+# CRISP: Compressed Reasoning via Iterative Self-Policy Distillation
 
-This repository contains the code for **OPSDC** (**O**n-**P**olicy **S**elf-**D**istillation for Reasoning **C**ompression), a method that teaches reasoning models to think more concisely by distilling their own concise behavior back into themselves.
+This repository contains the code for **CRISP** (**C**ompressed **R**easoning via **I**terative **S**elf-**P**olicy Distillation), a method that teaches reasoning models to think more concisely by distilling their own concise behavior back into themselves.
 
-**Paper:** [On-Policy Self-Distillation for Reasoning Compression](https://arxiv.org/abs/2603.05433)
+**Paper:** [CRISP: Compressed Reasoning via Iterative Self-Policy Distillation](crisp_compressed_reasoning_via_iterative_self_policy_distillation.pdf) | [arXiv](https://arxiv.org/abs/2603.05433)
 
 **Authors:** Hejian Sang\*, Yuanda Xu\*, Zhengze Zhou\*, Ran He\*, Zhipeng Wang, Jiachen Sun
 
 ## Key Idea
 
-Reasoning models think out loud, but much of what they say is noise. OPSDC uses a single, almost trivial idea: *ask the model to be concise, then teach it to do so without being asked*.
+Reasoning models think out loud, but much of what they say is noise. CRISP uses a single, almost trivial idea: *ask the model to be concise, then teach it to do so without being asked*.
 
 - **Teacher**: The same model conditioned on a conciseness instruction (e.g., "Solve concisely, avoid unnecessary steps")
 - **Student**: The same model without the conciseness instruction
@@ -212,8 +212,8 @@ Built on top of [VERL](https://github.com/volcengine/verl) (HybridEngine for com
 ## Citation
 
 ```bibtex
-@article{sang2025opsdc,
-  title={On-Policy Self-Distillation for Reasoning Compression},
+@article{sang2025crisp,
+  title={CRISP: Compressed Reasoning via Iterative Self-Policy Distillation},
   author={Sang, Hejian and Xu, Yuanda and Zhou, Zhengze and He, Ran and Wang, Zhipeng and Sun, Jiachen},
   journal={arXiv preprint arXiv:2603.05433},
   year={2025}
