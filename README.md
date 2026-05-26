@@ -6,6 +6,8 @@ This repository contains the code for **CRISP** (**C**ompressed **R**easoning vi
 
 **Authors:** Hejian Sang\*, Yuanda Xu\*, Zhengze Zhou\*, Ran He\*, Zhipeng Wang, Jiachen Sun
 
+**Related write-up:** [Scorer Choice in Math Reasoning Evaluation](https://zhengzezhou.github.io/math-scorer-choice/) — a four-policy decomposition of how verifier choice (answer-extraction vs. symbolic equivalence) can swing reported MATH-500 accuracy by up to ~80 percentage points on identical generations.
+
 ## Key Idea
 
 Reasoning models think out loud, but much of what they say is noise. CRISP uses a single, almost trivial idea: *ask the model to be concise, then teach it to do so without being asked*.

@@ -8,6 +8,7 @@ Two responsibilities:
 
 import json
 import logging
+import re
 from typing import Optional
 
 import torch
@@ -53,6 +54,53 @@ def validate_response_structure(text: str) -> bool:
     return True
 
 
+_MATH_VERIFY_FUNC = None
+
+
+def _get_math_verify_func():
+    """Lazy-init the math_verify metric function (sympy-backed symbolic eq)."""
+    global _MATH_VERIFY_FUNC
+    if _MATH_VERIFY_FUNC is None:
+        from math_verify.metric import math_metric
+        from math_verify.parser import ExprExtractionConfig, LatexExtractionConfig
+
+        _MATH_VERIFY_FUNC = math_metric(
+            gold_extraction_target=(LatexExtractionConfig(),),
+            pred_extraction_target=(ExprExtractionConfig(), LatexExtractionConfig()),
+        )
+    return _MATH_VERIFY_FUNC
+
+
+_ANSWER_RE = re.compile(r"(?i)Answer\s*:\s*([^\n]+)")
+
+
+def _extract_answer_field(response: str) -> Optional[str]:
+    matches = _ANSWER_RE.findall(response)
+    if not matches:
+        return None
+    candidate = matches[-1].strip().rstrip(".,;:?\"' \t")
+    return candidate if candidate else None
+
+
+def _math_verify_score(pred_text: str, gold: str) -> bool:
+    """Return True iff math_verify finds pred_text symbolically equivalent to gold."""
+    if not pred_text or not pred_text.strip():
+        return False
+    try:
+        from math_verify.errors import TimeoutException
+    except ImportError:
+        TimeoutException = Exception  # type: ignore
+    try:
+        gold_boxed = "\\boxed{" + str(gold) + "}"
+        score, _ = _get_math_verify_func()([gold_boxed], [pred_text])
+        return float(score) > 0
+    except TimeoutException:
+        return False
+    except Exception:
+        logger.exception("Unexpected math_verify failure; counting response as incorrect")
+        return False
+
+
 def verify_response(
     response_text: str,
     ground_truth: str,
@@ -60,9 +108,13 @@ def verify_response(
 ) -> tuple[bool, str]:
     """Verify a single student response for correctness and structure.
 
-    Tries ``Answer:`` extraction first (matches prompt instruction); if that
-    yields ``[INVALID]``, falls back to ``\\boxed{}`` extraction (Qwen3 thinking
-    mode ignores the Answer: instruction and outputs \\boxed{} only).
+    Scoring uses HuggingFace's ``math_verify`` (sympy symbolic equivalence) on
+    two extraction paths, matching ``workspace/src/eval/scoring.py``:
+      1. Primary: ``Answer: X`` line (matches the student prompt instruction).
+      2. Fallback: any ``\\boxed{...}`` in the full response (Qwen3 thinking
+         mode often emits boxed without the ``Answer:`` line).
+
+    A response is correct iff EITHER path yields a math_verify positive match.
 
     Args:
         response_text: The student's generated response.
@@ -72,26 +124,24 @@ def verify_response(
     Returns:
         (is_correct, extracted_prediction)
     """
-    from verl.utils.reward_score.math_dapo import (
-        last_boxed_only_string,
-        normalize_final_answer,
-        remove_boxed,
-        verify,
-    )
-
     if not response_text or not response_text.strip():
         return False, ""
 
-    # Primary: "Answer:" extraction (matches prompt instruction)
-    is_correct, pred = verify(response_text, ground_truth)
+    # Primary path: "Answer: X" extraction, wrapped in \boxed{...} so the
+    # LatexExtractionConfig reliably picks it up.
+    answer_payload = _extract_answer_field(response_text)
+    primary_correct = False
+    if answer_payload is not None:
+        primary_correct = _math_verify_score(
+            "\\boxed{" + answer_payload + "}", ground_truth
+        )
 
-    # Fallback: \boxed{} extraction (Qwen3 thinking mode ignores Answer: instruction)
-    if pred == "[INVALID]":
-        boxed = last_boxed_only_string(response_text)
-        if boxed is not None:
-            pred = normalize_final_answer(remove_boxed(boxed))
-            gt_norm = normalize_final_answer(ground_truth)
-            is_correct = pred == gt_norm
+    # Fallback path: math_verify on the full response finds any \boxed{...}
+    # via LatexExtractionConfig.
+    fallback_correct = _math_verify_score(response_text, ground_truth)
+
+    is_correct = primary_correct or fallback_correct
+    pred = answer_payload if answer_payload is not None else "[BOXED]"
 
     if is_correct and check_structure:
         if not validate_response_structure(response_text):

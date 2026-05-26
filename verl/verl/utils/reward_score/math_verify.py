@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Mirrors workspace/src/eval/scoring.py: dual-path scorer.
+#   1) Primary: regex-extract "Answer: X" -> wrap as \boxed{X} -> math_verify
+#   2) Fallback: math_verify on the full response (catches in-prose \boxed{...})
+# Final score = 1.0 if EITHER path matches.
+
+import re
+
 try:
     from math_verify.errors import TimeoutException
     from math_verify.metric import math_metric
@@ -20,20 +27,52 @@ except ImportError:
     print("To use Math-Verify, please install it first by running `pip install math-verify`.")
 
 
-def compute_score(model_output: str, ground_truth: str, timeout_score: float = 0) -> bool:
-    verify_func = math_metric(
-        gold_extraction_target=(LatexExtractionConfig(),),
-        pred_extraction_target=(ExprExtractionConfig(), LatexExtractionConfig()),
-    )
-    ret_score = 0.0
+_VERIFY_FUNC = None
 
-    # Wrap the ground truth in \boxed{} format for verification
-    ground_truth_boxed = "\\boxed{" + ground_truth + "}"
+
+def _verify_func():
+    global _VERIFY_FUNC
+    if _VERIFY_FUNC is None:
+        _VERIFY_FUNC = math_metric(
+            gold_extraction_target=(LatexExtractionConfig(),),
+            pred_extraction_target=(ExprExtractionConfig(), LatexExtractionConfig()),
+        )
+    return _VERIFY_FUNC
+
+
+def _verify(pred_text: str, gold: str, timeout_score: float = 0.0) -> float:
+    if not pred_text or not pred_text.strip():
+        return 0.0
     try:
-        ret_score, _ = verify_func([ground_truth_boxed], [model_output])
-    except Exception:
-        pass
+        gold_boxed = "\\boxed{" + str(gold) + "}"
+        score, _ = _verify_func()([gold_boxed], [pred_text])
+        return float(score)
     except TimeoutException:
-        ret_score = timeout_score
+        return timeout_score
+    except Exception:
+        return 0.0
 
-    return ret_score
+
+_ANSWER_RE = re.compile(r"(?i)Answer\s*:\s*([^\n]+)")
+
+
+def _extract_answer_field(response: str):
+    matches = _ANSWER_RE.findall(response)
+    if not matches:
+        return None
+    candidate = matches[-1].strip()
+    candidate = candidate.rstrip(".,;:?\"' \t")
+    return candidate if candidate else None
+
+
+def compute_score(model_output: str, ground_truth: str, timeout_score: float = 0) -> float:
+    # Primary path: explicit "Answer: X" extraction
+    answer_payload = _extract_answer_field(model_output)
+    score_answer = 0.0
+    if answer_payload is not None:
+        score_answer = _verify("\\boxed{" + answer_payload + "}", ground_truth, timeout_score)
+
+    # Fallback path: math_verify scans the full response for \boxed{...} or bare expression
+    score_boxed = _verify(model_output, ground_truth, timeout_score)
+
+    return 1.0 if (score_answer > 0 or score_boxed > 0) else 0.0
