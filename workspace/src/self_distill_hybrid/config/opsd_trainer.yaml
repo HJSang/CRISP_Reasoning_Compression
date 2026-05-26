@@ -49,6 +49,12 @@ data:
   # SD val split for periodic val loss computation
   sd_val_files: null
 
+  # Pin Qwen3 thinking mode explicitly. The Qwen3 tokenizer's default is
+  # enable_thinking=True, but pinning here guards against upstream default
+  # drift in future tokenizer releases.
+  apply_chat_template_kwargs:
+    enable_thinking: true
+
 # ---------- Actor + Rollout + Ref ----------
 actor_rollout_ref:
   hybrid_engine: true
@@ -65,12 +71,19 @@ actor_rollout_ref:
     n: 1
 
     # Sampling parameters for generation-based validation (_validate).
+    # Qwen3 model-card recommended config for thinking mode. Greedy decoding
+    # in thinking mode causes documented repetition pathology (Qwen3 docs).
+    # n=8 matches the standalone eval protocol (workspace/src/eval/run_eval.py)
+    # so in-training val numbers are directly comparable to Table 2 / Table 6.
     val_kwargs:
-      n: 1
-      do_sample: false
-      temperature: 0.7
+      n: 8
+      do_sample: true
+      temperature: 0.6
       top_p: 0.95
-      top_k: -1
+      top_k: 20
+      # NOTE: do NOT add min_p — verl's SamplingConfig dataclass on the
+      # cluster image rejects it (TypeError on Hydra instantiate). Qwen3's
+      # recommended min_p=0 is implicitly the default anyway.
 
   # Ref model config — OPSD actually uses ref_module_fsdp as frozen teacher
   ref:
@@ -111,7 +124,7 @@ opsd:
   sft_max_length: 32768
 
   # Max response tokens for validation generation (null = use rollout default)
-  val_max_tokens: null
+  val_max_tokens: 32768
 
   # Max new tokens for training generation (caps SGLang output).
   # null = use rollout response_length (no cap beyond buffer size).

@@ -57,9 +57,16 @@ def default_compute_score(
         # from . import math_verify
         # res = math_verify.compute_score(solution_str, ground_truth)
     elif data_source in ["math_dapo", "math", "math_dapo_reasoning"] or data_source.startswith("aime"):
-        from . import math_dapo
+        # Route math + aime sources to math_verify (HuggingFace sympy-backed
+        # symbolic-equivalence scorer) instead of the legacy math_dapo
+        # string-equality scorer. math_dapo undercounts Qwen3 outputs that are
+        # mathematically correct but written in a LaTeX form different from the
+        # gold (\dfrac vs \frac, 1/2 vs 0.5, fraction simplifications, etc.).
+        # math_verify is the standard scorer in lm-eval-harness, Open-R1, and
+        # the Qwen3 tech-report eval pipeline. Returns a float in [0, 1].
+        from . import math_verify
 
-        res = math_dapo.compute_score(solution_str, ground_truth)
+        res = math_verify.compute_score(solution_str, ground_truth)
     elif data_source in [
         "numina_aops_forum",
         "numina_synthetic_math",
