@@ -78,7 +78,7 @@ def _extract_answer_field(response: str) -> Optional[str]:
     matches = _ANSWER_RE.findall(response)
     if not matches:
         return None
-    candidate = matches[-1].strip().rstrip(".,;:!?\"' \t")
+    candidate = matches[-1].strip().rstrip(".,;:?\"' \t")
     return candidate if candidate else None
 
 
@@ -97,6 +97,7 @@ def _math_verify_score(pred_text: str, gold: str) -> bool:
     except TimeoutException:
         return False
     except Exception:
+        logger.exception("Unexpected math_verify failure; counting response as incorrect")
         return False
 
 

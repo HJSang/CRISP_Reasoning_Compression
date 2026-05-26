@@ -61,7 +61,7 @@ def _extract_answer_field(response: str):
     if not matches:
         return None
     candidate = matches[-1].strip()
-    candidate = candidate.rstrip(".,;:!?\"' \t")
+    candidate = candidate.rstrip(".,;:?\"' \t")
     return candidate if candidate else None
 
 
