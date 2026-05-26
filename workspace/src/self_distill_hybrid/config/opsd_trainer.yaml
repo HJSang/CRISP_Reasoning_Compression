@@ -123,8 +123,9 @@ opsd:
   # Maximum sequence length for OPSD training (prompt + response)
   sft_max_length: 32768
 
-  # Max response tokens for validation generation (null = use rollout default)
-  val_max_tokens: 32768
+  # Max response tokens for validation generation (null = use rollout default).
+  # 30,000 matches the paper's reported "no-truncation" budget (Table 2, README launch examples).
+  val_max_tokens: 30000
 
   # Max new tokens for training generation (caps SGLang output).
   # null = use rollout response_length (no cap beyond buffer size).
