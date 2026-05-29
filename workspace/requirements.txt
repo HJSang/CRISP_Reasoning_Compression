@@ -1,0 +1,12 @@
+# Runtime deps for OPSD training.
+#
+# verl is pinned to upstream volcengine/verl at commit deec5d0 (post v0.7.0,
+# pre v0.7.1). torch / sglang / sgl-kernel are pinned to the versions that
+# pair with that verl revision.
+
+verl @ git+https://github.com/volcengine/verl.git@deec5d02
+torch==2.9.1
+sglang==0.5.9
+sgl-kernel==0.3.21
+math-verify
+tensordict
