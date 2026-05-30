@@ -499,7 +499,7 @@ class OPSDWorker(AsyncActorRolloutRefWorker):
         teacher_logits: torch.Tensor,
         student_logits: torch.Tensor,
         beta: float = 0.5,
-        chunk_size: int = 512,
+        chunk_size: int = 128,
     ) -> tuple[torch.Tensor, int]:
         """Compute Jensen-Shannon divergence between teacher and student logits.
 
@@ -567,7 +567,7 @@ class OPSDWorker(AsyncActorRolloutRefWorker):
     def _compute_entropy(
         student_logits: torch.Tensor,
         teacher_logits: torch.Tensor,
-        chunk_size: int = 512,
+        chunk_size: int = 128,
     ) -> tuple[float, float]:
         """Compute average per-token entropy for student and teacher distributions.
 
@@ -614,7 +614,7 @@ class OPSDWorker(AsyncActorRolloutRefWorker):
         teacher_logits: torch.Tensor,
         student_logits: torch.Tensor,
         beta: float = 0.5,
-        chunk_size: int = 256,
+        chunk_size: int = 64,
     ) -> tuple[torch.Tensor, int]:
         """Memory-efficient JSD using logsumexp for the mixture distribution.
 
@@ -689,7 +689,7 @@ class OPSDWorker(AsyncActorRolloutRefWorker):
         teacher_logits: torch.Tensor,
         student_logits: torch.Tensor,
         beta: float = 0.5,
-        chunk_size: int = 512,
+        chunk_size: int = 128,
     ) -> tuple[torch.Tensor, int]:
         """Compute reverse KL divergence: KL(student || teacher).
 
@@ -740,7 +740,7 @@ class OPSDWorker(AsyncActorRolloutRefWorker):
         teacher_logits: torch.Tensor,
         student_logits: torch.Tensor,
         beta: float = 0.5,
-        chunk_size: int = 256,
+        chunk_size: int = 64,
     ) -> tuple[torch.Tensor, int]:
         """Memory-efficient reverse KL: KL(student || teacher).
 
@@ -794,7 +794,7 @@ class OPSDWorker(AsyncActorRolloutRefWorker):
     def _compute_entropy_liger(
         student_logits: torch.Tensor,
         teacher_logits: torch.Tensor,
-        chunk_size: int = 256,
+        chunk_size: int = 64,
     ) -> tuple[float, float]:
         """Memory-efficient per-token entropy using smaller chunks.
 
