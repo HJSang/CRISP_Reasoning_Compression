@@ -33,6 +33,14 @@ set -xeo pipefail
 
 ulimit -n 65535
 
+# Use PyTorch's expandable_segments allocator. With Qwen3-14B + Ulysses-SP=4
+# on H100 80 GB, the reverse-KL / JSD path inside _opsd_training_step peaks
+# near the GPU ceiling (~72-74 GiB) and the default best-fit allocator
+# fragments enough that small ~150 MiB allocations crash even though more
+# is technically free. expandable_segments coalesces holes and almost
+# always gives a few GB back.
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
 # =============================================================================
 # Environment setup
 # =============================================================================
@@ -46,6 +54,13 @@ SD_SRC="${WORKSPACE_ROOT}/src"
 # patch.
 export PYTHONPATH="${SD_SRC}:${PYTHONPATH}"
 echo "PYTHONPATH: $PYTHONPATH"
+
+# Auto-configure MLflow tracking when running on the Flyte/Kingkong cluster.
+# Sets MLFLOW_TRACKING_URI / MLFLOW_EXPERIMENT_NAME / MLFLOW_RUN_CONTEXT from
+# Flyte execution env vars so HuggingFace Trainer (and any other downstream
+# code that respects MLFLOW_*) logs to go/mlflowui automatically. Becomes a
+# no-op if FLYTE_INTERNAL_EXECUTION_PROJECT is unset (local invocations).
+source "${SCRIPT_DIR}/setup_mlflow_hf.sh"
 
 
 # =============================================================================
@@ -97,6 +112,9 @@ TOTAL_EPOCHS=${TOTAL_EPOCHS:-10}
 # Hard step cap (overrides epoch-based length when set). null/empty = unlimited within epochs.
 TOTAL_TRAINING_STEPS=${TOTAL_TRAINING_STEPS:-}
 TRAIN_MAX_SAMPLES=${TRAIN_MAX_SAMPLES:-}
+# Optional: run generation-based val before the first training step. Set to
+# "false" for quick smoke tests so we skip the 30-min val_before_train round.
+VAL_BEFORE_TRAIN=${VAL_BEFORE_TRAIN:-true}
 TRAIN_BATCH_SIZE=${TRAIN_BATCH_SIZE:-64}
 MICRO_BATCH_SIZE=${MICRO_BATCH_SIZE:-8}
 LEARNING_RATE=${LEARNING_RATE:-1e-5}
@@ -264,8 +282,8 @@ python3 -m self_distill_hybrid.main_opsd \
     trainer.nnodes=1 \
     trainer.save_freq="${SAVE_FREQ}" \
     trainer.default_local_dir="${CHECKPOINT_DIR}" \
-    trainer.logger='["console"]' \
-    trainer.val_before_train=true \
+    trainer.logger='["console", "mlflow"]' \
+    trainer.val_before_train="${VAL_BEFORE_TRAIN}" \
     opsd.detailed_log_dir="${DETAILED_LOG_DIR}" \
     ${TRAIN_MAX_SAMPLES:+data.train_max_samples=${TRAIN_MAX_SAMPLES}} \
     ${REWARD_FN_PATH:+reward.custom_reward_function.path="${REWARD_FN_PATH}" \
