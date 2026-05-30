@@ -94,18 +94,23 @@ class OPSDTrainer:
         self.ray_worker_group_cls = ray_worker_group_cls
         self.device_name = device_name if device_name else self.config.trainer.device
 
-        # DP world size: total GPUs / (TP * Ulysses-SP). Used as the divisor
-        # when padding batches before the nd-compute dispatcher slices along
-        # the actor mesh's DP axis. Using total GPUs (as we did previously)
-        # over-pads whenever TP*SP > 1.
+        # Actor-side DP world size = total GPUs / Ulysses-SP. Used as the
+        # divisor when padding batches before the nd-compute dispatcher slices
+        # along the actor mesh's DP axis.
+        #
+        # TP is rollout-only (sglang's tensor_model_parallel_size) — it does
+        # NOT collapse the actor's DP axis. The actor's FSDP+Ulysses mesh has
+        # dimensions (dp, ulysses_sp), so dp_world = total_gpus / ulysses_sp.
+        # Earlier we divided by TP*SP, which under-padded (or skipped padding
+        # entirely) when TP>1: e.g. TP=2 SP=4 8GPUs gave dp_world=1, but the
+        # dispatcher actually requested chunks=2 and the batch crashed with
+        # AssertionError("only support equal chunk").
         total_gpus = self.config.trainer.n_gpus_per_node * self.config.trainer.nnodes
-        tp = self.config.actor_rollout_ref.rollout.get("tensor_model_parallel_size", 1)
         sp = self.config.actor_rollout_ref.actor.get("ulysses_sequence_parallel_size", 1)
-        denom = max(1, int(tp) * int(sp))
-        self.dp_world = max(1, total_gpus // denom)
+        self.dp_world = max(1, total_gpus // int(sp))
         py_logger.info(
-            "DP world = %d (total_gpus=%d, TP=%d, ulysses_sp=%d)",
-            self.dp_world, total_gpus, tp, sp,
+            "DP world = %d (total_gpus=%d, ulysses_sp=%d)",
+            self.dp_world, total_gpus, sp,
         )
 
         # OPSD-specific config
