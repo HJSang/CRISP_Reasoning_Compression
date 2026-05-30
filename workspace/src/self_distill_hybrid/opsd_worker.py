@@ -53,9 +53,19 @@ class OPSDWorker(AsyncActorRolloutRefWorker):
     def update_teacher(self) -> DataProto:
         """Hard-copy student (actor) weights to teacher (ref) model.
 
-        Copies all parameters from actor_module_fsdp to ref_module_fsdp
-        using FSDP.summon_full_params for correctness.  Each rank
-        materialises full params temporarily, copies, then scatters back.
+        Iterates the FSDP parameter lists in lock-step and copies *shard*
+        contents directly. The actor and ref modules are wrapped with the
+        same FSDP policy on the same DP mesh during init, so their local
+        parameter shards correspond element-wise — no unsharded
+        materialisation is needed.
+
+        The previous implementation wrapped the copy in nested
+        ``FSDP.summon_full_params(...)``, which transiently materialises
+        the FULL (un-sharded) actor and ref params on every rank — for
+        Qwen3-14B that's ~30 GiB × 2 modules = ~60 GiB on top of the
+        sharded params already on-GPU, and it OOMs on H100 80 GB when
+        ``teacher_update_freq>0`` fires right after a training step that
+        already loaded the actor for fwd/bwd.
 
         Uses ``Dispatch.ONE_TO_ALL`` because every FSDP rank needs to
         fire this op (each holds its own shards) and the call carries no
@@ -75,16 +85,27 @@ class OPSDWorker(AsyncActorRolloutRefWorker):
             load_fsdp_model_to_gpu(self.actor_module_fsdp)
             load_fsdp_model_to_gpu(self.ref_module_fsdp)
 
-        # Copy student -> teacher using summon_full_params
-        with FSDP.summon_full_params(self.actor_module_fsdp, writeback=False, recurse=True):
-            with FSDP.summon_full_params(self.ref_module_fsdp, writeback=True, recurse=True):
-                for p_student, p_teacher in zip(
-                    self.actor_module_fsdp.parameters(),
-                    self.ref_module_fsdp.parameters(),
-                ):
-                    p_teacher.data.copy_(p_student.data)
+        # Direct shard-level copy. Each rank's actor.parameters() iterator
+        # yields its local shard; same for ref.parameters(). FSDP wraps both
+        # with identical policy and world layout, so the i-th local shard
+        # of actor maps to the i-th local shard of ref.
+        with torch.no_grad():
+            n_params = 0
+            for p_student, p_teacher in zip(
+                self.actor_module_fsdp.parameters(),
+                self.ref_module_fsdp.parameters(),
+            ):
+                if p_student.shape != p_teacher.shape:
+                    raise RuntimeError(
+                        f"update_teacher shard mismatch at param {n_params}: "
+                        f"actor shard {tuple(p_student.shape)} vs ref shard "
+                        f"{tuple(p_teacher.shape)}. Both FSDP modules must "
+                        "be wrapped with the same policy on the same mesh."
+                    )
+                p_teacher.data.copy_(p_student.data)
+                n_params += 1
 
-        logger.info("Teacher weights updated from student (hard copy)")
+        logger.info("Teacher weights updated from student (shard-level, %d params)", n_params)
 
         # Offload back to CPU if needed
         if self._is_offload_param:
