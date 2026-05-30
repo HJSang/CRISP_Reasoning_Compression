@@ -33,13 +33,16 @@ set -xeo pipefail
 
 ulimit -n 65535
 
-# Use PyTorch's expandable_segments allocator. With Qwen3-14B + Ulysses-SP=4
-# on H100 80 GB, the reverse-KL / JSD path inside _opsd_training_step peaks
-# near the GPU ceiling (~72-74 GiB) and the default best-fit allocator
-# fragments enough that small ~150 MiB allocations crash even though more
-# is technically free. expandable_segments coalesces holes and almost
-# always gives a few GB back.
-export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+# NOTE: don't enable PYTORCH_CUDA_ALLOC_CONF=expandable_segments here.
+# sglang's torch_memory_saver explicitly refuses to initialise when the
+# expandable_segments allocator is selected:
+#   RuntimeError: TorchMemorySaver is disabled for the current process
+#   because expandable_segments is not supported yet.
+# which crashes model_runner.load_model during rollout init (observed
+# in tu50/tu100 first retries, Flyte f486fd4845df14f5b930 /
+# f782dcc0ede2e4c1babf). Until torch_memory_saver supports the new
+# allocator, address the reverse-KL / JSD OOMs by lowering JSD/KL
+# chunk_size in opsd_worker.py instead.
 
 # =============================================================================
 # Environment setup
