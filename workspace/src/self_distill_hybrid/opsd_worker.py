@@ -1,19 +1,19 @@
 """
 OPSD (On-Policy Self-Distillation) worker.
 
-Extends SelfDistillWorker with a JSD-based training step (``update_opsd``).
-The teacher model is the frozen ``ref_module_fsdp`` (initial policy weights)
-and the student model is the trainable ``actor_module_fsdp``.
+Extends verl's AsyncActorRolloutRefWorker with two registered methods:
+  - ``update_opsd``    -- JSD / reverse-KL training step using the frozen ref
+    model (``ref_module_fsdp``) as teacher and the trainable
+    ``actor_module_fsdp`` as student.
+  - ``update_teacher`` -- optional hard-copy of current student weights into
+    the ref model (triggered every ``opsd.teacher_update_freq`` steps).
 
-Key difference from ``update_sft``:
-  - Two forward passes per micro-batch (teacher no-grad + student with-grad)
-  - Loss is JSD divergence between teacher and student logit distributions
-  - Trains on ALL rollouts, not just correct ones
+The training step does two forward passes per micro-batch (teacher no-grad +
+student with-grad) and trains on ALL rollouts, not just correct ones.
 """
 
 import logging
 import math
-from typing import Optional
 
 import psutil
 import torch
@@ -22,7 +22,7 @@ import torch.nn.functional as F
 from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
 
 from verl.protocol import DataProto
-from verl.single_controller.base.decorator import make_nd_compute_dataproto_dispatch_fn, register
+from verl.single_controller.base.decorator import Dispatch, make_nd_compute_dataproto_dispatch_fn, register
 from verl.utils.attention_utils import index_first_axis, rearrange, unpad_input
 from verl.utils.debug import log_gpu_memory_usage
 from verl.utils.device import get_device_id
@@ -32,35 +32,35 @@ from verl.utils.fsdp_utils import (
     offload_fsdp_model_to_cpu,
     offload_fsdp_optimizer,
 )
-
-from .sd_worker import SelfDistillWorker
+from verl.workers.fsdp_workers import AsyncActorRolloutRefWorker
 
 logger = logging.getLogger(__name__)
 
 
-class OPSDWorker(SelfDistillWorker):
-    """Worker that adds OPSD JSD training to the HybridEngine actor+rollout+ref worker.
+class OPSDWorker(AsyncActorRolloutRefWorker):
+    """Hybrid-engine actor+rollout+ref worker with OPSD JSD/reverse-KL training.
 
-    Inherits all capabilities from SelfDistillWorker:
-      - init_model, wake_up, sleep, chat_completion, generate
-      - rollout_mode / trainer_mode for weight sync
-      - update_sft, compute_val_loss
-      - FSDP model + optimizer + scheduler management
+    Inherits init_model, wake_up, sleep, generate_sequences, save_checkpoint,
+    and the FSDP model/optimizer/scheduler plumbing from
+    AsyncActorRolloutRefWorker.
 
     Adds:
-      - update_opsd: JSD-based training using frozen ref model as teacher
+      - ``update_opsd``    -- JSD / reverse-KL update against the frozen ref.
+      - ``update_teacher`` -- hard-copy student weights into the ref module.
     """
 
-    @register(dispatch_mode=make_nd_compute_dataproto_dispatch_fn(mesh_name="actor"))
-    def update_teacher(self, data: DataProto) -> DataProto:
+    @register(dispatch_mode=Dispatch.ONE_TO_ALL)
+    def update_teacher(self) -> DataProto:
         """Hard-copy student (actor) weights to teacher (ref) model.
 
         Copies all parameters from actor_module_fsdp to ref_module_fsdp
         using FSDP.summon_full_params for correctness.  Each rank
         materialises full params temporarily, copies, then scatters back.
 
-        The input DataProto is a dummy (one row per DP worker) used only
-        to satisfy the dispatch decorator.
+        Uses ``Dispatch.ONE_TO_ALL`` because every FSDP rank needs to
+        fire this op (each holds its own shards) and the call carries no
+        data — verl's analogous control ops (init_model, save_checkpoint)
+        use the same dispatch.
 
         Returns:
             DataProto with meta_info confirming the update.
@@ -259,14 +259,30 @@ class OPSDWorker(SelfDistillWorker):
                     s_loss_mask,
                 )
 
-            # Align teacher and student logits by length
-            # Both are (N_response_tokens, vocab_size) where N may differ.
-            min_len = min(teacher_logits.shape[0], student_logits.shape[0])
-            if min_len == 0:
+            # Teacher and student tokenize the SAME response_text after their
+            # respective prompts. Teacher prompt is longer (question + teacher
+            # solution) than student prompt (question only), but response_ids
+            # are identical, so the shifted loss_mask selects exactly K = len(
+            # response_ids) logits on each side. The invariant is enforced
+            # upstream in two places:
+            #   (1) sd_dataset.SelfDistillDataset.filter_overlong_prompts drops
+            #       rows whose teacher prompt exceeds data.max_prompt_length.
+            #   (2) sd_verifier.build_opsd_batch drops a pair if either side's
+            #       prompt+response would exceed max_length in _tokenize_sequence
+            #       (returns None), preventing one-sided truncation.
+            # This assert is a defensive cross-check, not the primary guarantee.
+            assert teacher_logits.shape[0] == student_logits.shape[0], (
+                f"teacher/student response-token count mismatch: "
+                f"{teacher_logits.shape[0]} vs {student_logits.shape[0]}. "
+                "Upstream invariant (filter_overlong_prompts + build_opsd_batch) "
+                "was violated; check data.max_prompt_length and opsd.sft_max_length."
+            )
+            n_resp = teacher_logits.shape[0]
+            if n_resp == 0:
                 continue
 
-            t_logits_aligned = teacher_logits[:min_len]
-            s_logits_aligned = student_logits[:min_len]
+            t_logits_aligned = teacher_logits
+            s_logits_aligned = student_logits
             del teacher_logits  # free memory
 
             # Compute divergence loss
@@ -293,9 +309,9 @@ class OPSDWorker(SelfDistillWorker):
                     s_ent, t_ent = self._compute_entropy(
                         s_logits_aligned, t_logits_aligned
                     )
-                total_student_entropy += s_ent * min_len
-                total_teacher_entropy += t_ent * min_len
-                total_entropy_tokens += min_len
+                total_student_entropy += s_ent * n_resp
+                total_teacher_entropy += t_ent * n_resp
+                total_entropy_tokens += n_resp
 
             del t_logits_aligned
 
@@ -469,10 +485,12 @@ class OPSDWorker(SelfDistillWorker):
         JSD_beta(p_T || p_S) = beta * KL(p_T || m) + (1-beta) * KL(p_S || m)
         where m = beta * p_T + (1-beta) * p_S
 
-        Processes tokens in chunks to avoid OOM from materializing full
-        (N, V) float32 probability tensors.  Each chunk holds at most
-        ~6 * (chunk_size, V) float32 intermediates; with chunk_size=512
-        and V=152K this is ~1.8 GB instead of tens of GB for the full N.
+        Processes tokens in chunks to bound the peak size of any single
+        intermediate (N, V) probability tensor. Teacher-side intermediates
+        get freed each chunk (no grad). Student-side intermediates are
+        retained in the autograd graph until backward, so per-step peak is
+        still proportional to N — but in-flight transient peaks are bounded
+        by ~chunk_size * V * 4 bytes per fp32 buffer.
 
         Args:
             teacher_logits: (N, V) — logits from frozen teacher (no grad).
@@ -487,8 +505,9 @@ class OPSDWorker(SelfDistillWorker):
         if n_tokens == 0:
             return torch.tensor(0.0, device=student_logits.device, requires_grad=True), 0
 
-        # Accumulate JSD sum over chunks of tokens to bound peak memory.
-        # Slicing into student_logits preserves autograd (view op).
+        # Accumulate JSD sum over chunks of tokens.
+        # student_logits[start:end] is a view; .float() below allocates a
+        # new fp32 chunk but stays differentiable (grad flows back to bf16).
         jsd_sum = torch.tensor(0.0, device=student_logits.device)
 
         for start in range(0, n_tokens, chunk_size):
@@ -578,10 +597,10 @@ class OPSDWorker(SelfDistillWorker):
     ) -> tuple[torch.Tensor, int]:
         """Memory-efficient JSD using logsumexp for the mixture distribution.
 
-        Improvements over ``_compute_jsd_loss``:
+        Improvements over ``_compute_jsd_loss`` (per-chunk transient peak;
+        student-side intermediates are still pinned in the autograd graph):
           1. **logsumexp mixture**: Computes log(beta*p_T + (1-beta)*p_S) via
              logsumexp in log-space, avoiding explicit probability tensors.
-             This reduces peak float32 intermediates from ~6 (C,V) to ~4 (C,V).
           2. **Progressive teacher freeing**: Clones teacher logits into chunks
              and frees the original, so only one teacher chunk is alive at a time.
           3. **Smaller default chunk_size** (256 vs 512) for lower per-chunk peak.
@@ -758,8 +777,7 @@ class OPSDWorker(SelfDistillWorker):
     ) -> tuple[float, float]:
         """Memory-efficient per-token entropy using smaller chunks.
 
-        H(p) = -sum(p * log(p)) = log(Z) - (1/Z) * sum(x_i * exp(x_i)) / Z
-        Simplified: H(p) = log_softmax-based computation.
+        H(p) = -sum(p * log p), computed in log-space via log_softmax.
 
         Args:
             student_logits: (N, V) — student logits.
