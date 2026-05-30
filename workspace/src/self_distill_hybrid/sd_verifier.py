@@ -332,7 +332,10 @@ def _log_first_opsd_pair(
         t_msgs, s_msgs = t_prompt, s_prompt
 
     response_preview = response_text[:500] + ("…" if len(response_text) > 500 else "")
-    logger.info(
+    # Emitted at WARNING so the preview survives the cluster's default
+    # log level (Hydra raises __main__ to INFO but not the root logger,
+    # so logger.info(...) here would be filtered).
+    logger.warning(
         "OPSD batch[0] sample preview (max_length=%d):\n"
         "  teacher_prompt (sd_prompt) messages: %s\n"
         "  student_prompt (sft_prompt) messages: %s\n"
@@ -380,11 +383,10 @@ def build_opsd_batch(
     teacher_seqs = []
     student_seqs = []
     skipped = 0
-    log_first_pair = logger.isEnabledFor(logging.INFO)
     for idx, (t_prompt, s_prompt, response_text) in enumerate(
         zip(teacher_prompts, student_prompts, responses)
     ):
-        if log_first_pair and idx == 0:
+        if idx == 0:
             _log_first_opsd_pair(t_prompt, s_prompt, response_text, max_length)
 
         t_seq = _tokenize_sequence(t_prompt, response_text, tokenizer, max_length, pad_token_id)
