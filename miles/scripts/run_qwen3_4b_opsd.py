@@ -10,6 +10,12 @@ Args:
   --num-rollout: Pilot updates (1 through 10).
   --tensor-parallel-size: Training TP (1 or 2); PP and CP stay 1.
   --num-gpus-per-node: Devices to use for colocated training and rollout.
+  --seed / --rollout-seed: Training and sampling seeds (1234 / 42).
+
+Writes checkpoints and raw token tapes under --output-dir/--run-id; keep these
+private. The launcher owns the submitted job and stops it when interrupted.
+Use MILES_SCRIPT_EXTERNAL_RAY=1 to join an isolated, externally managed cluster;
+in that mode the launcher never cleans up unrelated node processes.
 
 Example:
   python scripts/run_qwen3_4b_opsd.py --model-dir /root/models --data-dir /root/datasets --num-gpus-per-node 2
@@ -37,6 +43,8 @@ class ScriptArgs(U.ExecuteTrainConfig):
     sequence_length: int = 4096
     target_cache_gib: float = 8.0
     target_microbatch_gib: float = 1.0
+    seed: int = 1234
+    rollout_seed: int = 42
     megatron_path: str = "/root/Megatron-LM"
 
     def __post_init__(self):
@@ -61,6 +69,8 @@ def execute(args: ScriptArgs):
         "--custom-generate-function-path miles.rollout.generate_hub.opsd.generate "
         f"--num-rollout {args.num_rollout} --rollout-batch-size {args.global_batch_size} --n-samples-per-prompt 1 "
         f"--rollout-max-response-len {args.response_length} --rollout-temperature 1.1 --rollout-top-p 0.95 --rollout-top-k 20 "
+        f"--rollout-seed {args.rollout_seed} "
+        f"--save-debug-rollout-data {shlex.quote(f'{args.output_dir}/{args.run_id}/rollouts/{{rollout_id}}.pt')} "
     )
     algorithm = (
         "--loss-type opsd_loss --disable-compute-advantages-and-returns "
@@ -80,7 +90,10 @@ def execute(args: ScriptArgs):
         f"--num-gpus-per-node {args.num_gpus_per_node} --colocate --train-backend megatron "
     )
     inference = "--rollout-num-gpus-per-engine 1 --sglang-mem-fraction-static 0.4 --sglang-lora-backend triton "
-    misc = "--attention-dropout 0 --hidden-dropout 0 --accumulate-allreduce-grads-in-fp32 --attention-softmax-in-fp32 "
+    misc = (
+        f"--seed {args.seed} --attention-dropout 0 --hidden-dropout 0 "
+        "--accumulate-allreduce-grads-in-fp32 --attention-softmax-in-fp32 "
+    )
     args.create_backend().execute_train(
         train_args=checkpoint
         + rollout
@@ -93,6 +106,7 @@ def execute(args: ScriptArgs):
         megatron_model_type="qwen3-4B",
         megatron_path=args.megatron_path,
         num_gpus_per_node=args.num_gpus_per_node,
+        job_lifetime="launcher",
     )
 
 
