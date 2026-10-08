@@ -25,6 +25,7 @@ ROLLOUT_DATA_TENSOR_DTYPES = {
     "rollout_sampling_mask_ids": "int32",
     "rollout_sampling_mask_offsets": "int64",
     "teacher_log_probs": "float32",
+    "teacher_prompt_ids": "int32",
     "opd_reverse_kl": "float32",
     "rollout_routed_experts": "int32",
     "rollout_indexer_topk": "int32",
@@ -104,6 +105,11 @@ def convert_samples_to_train_data(
             sample.loss_mask = [0] * sample.response_length
         loss_masks.append(sample.loss_mask)
     train_data["loss_masks"] = loss_masks
+
+    if any(sample.teacher_prompt_ids is not None for sample in samples):
+        if not all(sample.teacher_prompt_ids for sample in samples):
+            raise ValueError("OPSD teacher prefixes must be present for every training sample")
+        train_data["teacher_prompt_ids"] = [sample.teacher_prompt_ids for sample in samples]
 
     train_data["rollout_mask_sums"] = _compute_rollout_mask_sums(train_data["rollout_ids"], loss_masks)
 
@@ -443,6 +449,7 @@ def _package_shards(args, data: dict[str, Any], partitions) -> list[dict[str, An
             "rollout_indexer_topk",
             "prompt",
             "teacher_log_probs",
+            "teacher_prompt_ids",
             "opd_reverse_kl",
             "seq_witness_ids",
             "weight_versions",

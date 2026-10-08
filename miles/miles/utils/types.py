@@ -97,6 +97,7 @@ class Sample:
     )
     remove_sample: bool = False
     teacher_log_probs: list[float] | None = None  # Log probabilities from teacher model for OPD
+    teacher_prompt_ids: list[int] | None = None  # Separately templated privileged prefix for OPSD
     opd_reverse_kl: list[float] | None = None  # Precomputed per-token OPD reverse-KL estimate
 
     class Status(Enum):

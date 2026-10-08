@@ -58,8 +58,7 @@ def specs_trainer_controller(args) -> list[ServeWorkerSpec]:
                 config=config,
                 with_ref=(config.role != CRITIC_ROLE) and (trainer_args.kl_coef != 0 or trainer_args.use_kl_loss),
                 with_opd_teacher=(config.role != CRITIC_ROLE)
-                and trainer_args.use_opd
-                and trainer_args.opd_type == "megatron",
+                and ((trainer_args.use_opd and trainer_args.opd_type == "megatron") or trainer_args.loss_type == "opsd_loss"),
             )
         )
     return specs

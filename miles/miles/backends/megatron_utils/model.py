@@ -336,6 +336,8 @@ def forward_only(
             "max_seq_lens",
             "witness_ids",
         ]
+        if args.loss_type == "opsd_loss":
+            forward_only_keys.append("sample_indices")
         if use_rollout_sampling_mask:
             forward_only_keys.extend(["rollout_sampling_mask_ids", "rollout_sampling_mask_offsets"])
         batch = get_batch(
@@ -377,6 +379,8 @@ def forward_only(
             with_entropy=args.use_rollout_entropy,
             max_seq_lens=batch.get("max_seq_lens", None),
         )
+        if args.loss_type == "opsd_loss":
+            callback_kwargs["sample_indices"] = batch["sample_indices"]
         if use_rollout_sampling_mask:
             callback_kwargs["rollout_sampling_mask"] = rollout_sampling_mask
 
@@ -482,6 +486,8 @@ def run_forward_backward_pass(
                 "max_seq_lens",
                 "witness_ids",
                 "opd_reverse_kl",
+                "opsd_targets",
+                "opsd_rollout_ids",
                 "rollout_mask_sums",
                 "loss_weights",
                 "target_tokens",
@@ -532,7 +538,7 @@ def run_forward_backward_pass(
                 forward_kwargs.update(x)
 
             output_tensor = model(
-                **forward_kwargs, fp32_output=args.loss_type not in ("policy_loss", "sft_loss", "score_centering")
+                **forward_kwargs, fp32_output=args.loss_type not in ("policy_loss", "sft_loss", "score_centering", "opsd_loss")
             )
 
         for m, old_stage in zip(all_replay_managers, old_stages, strict=True):

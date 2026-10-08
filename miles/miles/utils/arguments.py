@@ -39,6 +39,7 @@ from miles.utils.object_store_config import (
     compute_mooncake_init_kwargs_from_env,
     compute_mooncake_init_kwargs_vanilla,
 )
+from miles.utils.opsd_arguments import add_opsd_arguments, validate_opsd_args
 from miles.utils.rollout_topk_logprobs import validate_rollout_topk_logprobs_args
 from miles.utils.run_uuid import RUN_UUID_LENGTH, generate_run_uuid, validate_run_uuid
 from miles.utils.score_centering import validate_score_centering_args
@@ -1607,10 +1608,10 @@ def get_miles_extra_args_provider(add_custom_arguments=None):
             parser.add_argument(
                 "--loss-type",
                 type=str,
-                choices=["policy_loss", "sft_loss", "custom_loss", "score_centering"],
+                choices=["policy_loss", "sft_loss", "custom_loss", "score_centering", "opsd_loss"],
                 default="policy_loss",
                 help=(
-                    "Choose PPO policy_loss, REINFORCE score_centering, or sft_loss; "
+                    "Choose policy_loss, score_centering, sft_loss, or full-vocabulary opsd_loss; "
                     "if custom_loss is set, we will use the function path from `--custom-loss-function-path`."
                 ),
             )
@@ -1629,6 +1630,7 @@ def get_miles_extra_args_provider(add_custom_arguments=None):
                 default="none",
                 help="Importance weights to center together with the policy score.",
             )
+            add_opsd_arguments(parser)
             parser.add_argument("--score-centering-tis-clip", type=float, default=2.0)
             parser.add_argument("--score-centering-mis-low", type=float, default=0.5)
             parser.add_argument("--score-centering-mis-high", type=float, default=5.0)
@@ -1920,7 +1922,7 @@ def get_miles_extra_args_provider(add_custom_arguments=None):
                 type=str,
                 default=None,
                 help=(
-                    "The checkpoint for OPD teacher model. Required when --opd-type=megatron. "
+                    "The teacher checkpoint. Required for --opd-type=megatron or --loss-type=opsd_loss. "
                     "The teacher model should have the same architecture as policy/ref model."
                 ),
             )
@@ -3431,7 +3433,7 @@ def miles_validate_args(args):
                     "In sglang mode, teacher log-probs are obtained from external server during rollout."
                 )
     else:
-        if args.opd_teacher_load is not None:
+        if args.opd_teacher_load is not None and args.loss_type != "opsd_loss":
             raise ValueError("--opd-teacher-load is set but --use-opd is not enabled. Please add --use-opd flag.")
         if args.opd_teacher_urls:
             raise ValueError("--opd-teacher-urls is set but --use-opd is not enabled. Please add --use-opd flag.")
@@ -3466,6 +3468,7 @@ def miles_validate_args(args):
         assert args.save is not None, "'--save' is required when custom_megatron_post_save_hook_path is set."
 
     validate_lora_args(args)
+    validate_opsd_args(args)
 
     assert not (args.kl_coef != 0 and args.kl_loss_coef != 0), "Only one of kl_coef and kl_loss_coef can be set"
 

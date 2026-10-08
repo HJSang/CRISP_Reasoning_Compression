@@ -192,6 +192,9 @@ def log_rollout_data(rollout_id: int, args: Namespace, rollout_data: RolloutBatc
         for key, val in rollout_data.items():
             if key in [
                 "tokens",
+                "teacher_prompt_ids",
+                "opsd_targets",
+                "opsd_rollout_ids",
                 "multimodal_train_inputs",
                 "loss_masks",
                 "sample_indices",

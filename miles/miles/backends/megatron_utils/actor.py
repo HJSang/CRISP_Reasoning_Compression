@@ -11,6 +11,7 @@ from torch_memory_saver import torch_memory_saver
 
 from miles.backends.megatron_utils.hf_export import save_hf_model
 from miles.backends.megatron_utils.lora.utils import is_lora_enabled, lora_rollout_enabled
+from miles.backends.megatron_utils.opsd import score_teacher, verify_teacher_base, zero_teacher_adapters
 from miles.backends.megatron_utils.rematerialize_utils import build_main_cast_context
 from miles.backends.megatron_utils.update_weight.hf_weight_iterator import get_hf_weight_iterator
 from miles.backends.training_utils.checkpoint.tracker import read_checkpoint_tracker_iteration
@@ -237,7 +238,11 @@ class MegatronTrainRayActor(TrainRayActor):
         )
         self._active_model_tag: str | None = "actor"
 
-        if self.args.vocab_size is None:
+        if self.args.loss_type == "opsd_loss":
+            # The author loss normalizes over the HF output head, which may
+            # include real model columns beyond the tokenizer's base vocabulary.
+            self.args.vocab_size = self.hf_config.vocab_size
+        elif self.args.vocab_size is None:
             self.args.vocab_size = self.tokenizer.vocab_size
 
         load_output = self._load_state_core(
@@ -425,6 +430,8 @@ class MegatronTrainRayActor(TrainRayActor):
         # Load teacher model for Megatron-based on-policy distillation
         if self.with_opd_teacher:
             self.load_other_checkpoint("teacher", self.args.opd_teacher_load)
+            if self.args.loss_type == "opsd_loss":
+                verify_teacher_base(self.weights_backuper)
 
         if self.args.keep_old_actor:
             # Load old_actor checkpoint
@@ -688,6 +695,8 @@ class MegatronTrainRayActor(TrainRayActor):
                 )
 
         with inverse_timer("train_wait"), timer("train"):
+            if self.args.loss_type == "opsd_loss":
+                score_teacher(self, rollout_data, num_microbatches, rollout_id=rollout_id)
             if self.args.compute_advantages_and_returns:
                 if "ref" in self.weights_backuper.backup_tags:
                     self._set_replay_stage("fallthrough")
@@ -761,19 +770,24 @@ class MegatronTrainRayActor(TrainRayActor):
             # Train
             num_rollouts = get_num_rollouts(self.args, rollout_data, num_optimizer_steps)
             self._set_replay_stage("replay_backward")
-            with timer("actor_train"):
-                train_step_outcome = train(
-                    rollout_id,
-                    self.model,
-                    self.optimizer,
-                    self.opt_param_scheduler,
-                    data_iterator,
-                    num_microbatches,
-                    num_rollouts,
-                    witness_info=witness_info,
-                    attempt=attempt,
-                    ft_test_action_executor=self._ft_test_action_executor,
-                )
+            try:
+                with timer("actor_train"):
+                    train_step_outcome = train(
+                        rollout_id,
+                        self.model,
+                        self.optimizer,
+                        self.opt_param_scheduler,
+                        data_iterator,
+                        num_microbatches,
+                        num_rollouts,
+                        witness_info=witness_info,
+                        attempt=attempt,
+                        ft_test_action_executor=self._ft_test_action_executor,
+                    )
+
+            finally:
+                rollout_data.pop("opsd_targets", None)
+                rollout_data.pop("opsd_rollout_ids", None)
 
             self.prof.step(rollout_id=rollout_id)
 
@@ -970,6 +984,8 @@ class MegatronTrainRayActor(TrainRayActor):
         if model_tag == "teacher" and self.args.opd_teacher_ckpt_step is not None:
             self.args.ckpt_step = old_ckpt_step
 
+        if model_tag == "teacher" and self.args.loss_type == "opsd_loss":
+            zero_teacher_adapters(self.model)
         self.weights_backuper.backup(model_tag)
         self._active_model_tag = model_tag
 

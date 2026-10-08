@@ -8,6 +8,7 @@ from miles.backends.training_utils.loss.hub.logit_processors import get_log_prob
 from miles.backends.training_utils.loss.hub.losses import get_loss_function
 from miles.backends.training_utils.loss.hub.math_utils import compute_approx_kl
 from miles.backends.training_utils.loss.hub.opd import apply_opd_kl_to_advantages
+from miles.backends.training_utils.loss.hub.opsd import opsd_loss_function
 from miles.backends.training_utils.parallel import get_parallel_state
 from miles.utils.audit_utils.event_logger.logger import get_event_logger, is_event_logger_initialized
 from miles.utils.audit_utils.event_logger.models import TrainAdvantageComputationEvent
@@ -160,6 +161,11 @@ def loss_function(
           "values" (1D tensor: [count, metric1, metric2, ...]).
           Tinker losses may also return "per_datum" outputs.
     """
+    if args.loss_type == "opsd_loss":
+        # This loss already averages valid tokens in the reference microbatch.
+        # Megatron owns accumulation/DP averaging; sequence-mean scaling is wrong.
+        return opsd_loss_function(args, batch, logits)
+
     parallel_state = get_parallel_state()
     num_tokens = sum([torch.clamp_min(loss_mask.sum(), 1) for loss_mask in batch["loss_masks"]])
     num_samples = len(batch["response_lengths"])

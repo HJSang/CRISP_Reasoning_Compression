@@ -4,10 +4,7 @@ Set OPSD_REFERENCE_DIR to an unmodified ae7d2519 author checkout to run the
 independent oracle cases. No trainer dependencies or network calls are needed.
 """
 
-import ast
-import hashlib
 import os
-from pathlib import Path
 
 import pytest
 import torch
@@ -17,7 +14,7 @@ import torch.nn.functional as F
 
 from miles.backends.training_utils.loss.hub.opsd_math import OPSDLossConfig, opsd_per_token_loss, vocab_log_softmax
 
-_REFERENCE_SHA256 = "aa11fc2a3f3cd814da37db38c6fb2351cab7f98a5a572d808a9b75de16097c9d"
+from tests.opsd_reference import load_author_loss
 
 
 @pytest.fixture(scope="module")
@@ -25,16 +22,7 @@ def author_loss():
     reference_dir = os.environ.get("OPSD_REFERENCE_DIR")
     if reference_dir is None:
         pytest.skip("Set OPSD_REFERENCE_DIR for independent author-code parity")
-    source = (Path(reference_dir) / "opsd_trainer.py").read_bytes()
-    assert hashlib.sha256(source).hexdigest() == _REFERENCE_SHA256, "Reference source changed"
-    tree = ast.parse(source)
-    functions = [n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef) and n.name == "generalized_jsd_loss"]
-    assert len(functions) == 1
-    function = functions[0]
-    function.decorator_list = []  # Extract the unchanged body, without importing the full TRL trainer.
-    namespace = {"torch": torch, "F": F}
-    exec(compile(ast.Module(body=[function], type_ignores=[]), "original_opsd_loss", "exec"), namespace)
-    return namespace[function.name]
+    return load_author_loss(reference_dir)
 
 
 @pytest.mark.parametrize("dtype", [torch.float64, torch.float32])
@@ -44,7 +32,7 @@ def author_loss():
 def test_author_loss_and_gradient(author_loss, dtype, beta, temperature, clip):
     generator = torch.Generator().manual_seed(42)
     # Striding the vocabulary dimension exercises noncontiguous inputs.
-    student = (torch.randn(2, 4, 26, generator=generator, dtype=dtype)[..., ::2] * 3).requires_grad_()
+    student = (torch.randn(2, 4, 26, generator=generator, dtype=dtype) * 3)[..., ::2].requires_grad_()
     teacher = torch.randn(2, 4, 13, generator=generator, dtype=dtype, requires_grad=True)
     labels = torch.tensor([[1, 2, 3, -100], [1, -100, -100, -100]])
     expected = author_loss(student, teacher.detach(), labels, beta, temperature, token_clip=clip)
