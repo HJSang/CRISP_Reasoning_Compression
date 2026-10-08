@@ -1,6 +1,9 @@
 # CRISP experiment development
 
 - Use this repository as the codebase for our OPSD experiments.
+- Commit changes in explicit, focused commits and push directly to `origin/main`.
+  Do not create pull requests unless the user explicitly asks for one. Preserve
+  existing commits; do not squash or force-push to publish changes.
 - Miles is vendored as ordinary tracked source under `miles/`. Make experiment
   changes directly in that tree and commit them in this repository. Do not turn
   it into a submodule or create a nested Git repository.
