@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Miles experiment development in CRISP</title>
+<style>body{max-width:930px;margin:40px auto;padding:0 22px 60px;font:16px/1.7 system-ui,sans-serif;color:#19313c;background:#f6f8f6}h1{font-size:36px;line-height:1.2}h2{margin-top:34px;font-size:24px}a{color:#086d60}code{font:.88em ui-monospace,monospace;overflow-wrap:anywhere}pre{padding:18px;background:#17313d;color:#f0f8f4;border-radius:8px;overflow:auto}table{width:100%;border-collapse:collapse;background:white}th,td{padding:12px;border:1px solid #d8e3dd;text-align:left;vertical-align:top}.lead{padding:18px;background:#e4f1e9;border-left:4px solid #086d60}.small{font-size:14px;color:#506a72}@media(max-width:600px){h1{font-size:29px}table{font-size:13px}th,td{padding:8px}}</style></head><body>
+<p class="small">CRISP development note · October 8, 2026</p>
+<h1>Miles is the experiment codebase</h1>
+<p class="lead"><strong>TL;DR:</strong> Develop new OPSD experiments directly in the tracked <code>miles/</code> folder. The import is pinned to upstream commit <code>b24cfa34b94a53a26edcb5dd0e8d9a16868505fa</code>. It is ordinary source in this repository; every Miles edit appears in the parent repository's diff.</p>
+<h2>Repository layout</h2>
+<pre>CRISP_Reasoning_Compression/
+├── miles/                 Miles source, directly editable
+│   ├── miles/             Python package
+│   ├── examples/          Experiment examples and launchers
+│   ├── tests/             Framework and experiment tests
+│   ├── CRISP_UPSTREAM.json
+│   ├── LICENSE
+│   └── NOTICE
+├── workspace/             Original CRISP paper implementation
+└── docs/                  HTML development notes</pre>
+<p>Upstream: <a href="https://github.com/radixark/miles/tree/b24cfa34b94a53a26edcb5dd0e8d9a16868505fa">radixark/miles at the imported revision</a>. The import preserves upstream source, license, notices, and developer instructions. The provenance file records the baseline revision; future patches are committed directly in CRISP.</p>
+<h2>Where to make changes</h2>
+<table><thead><tr><th>Work</th><th>Location from the CRISP root</th></tr></thead><tbody>
+<tr><td>PI prompt construction and teacher scoring</td><td><code>miles/miles/rollout/on_policy_distillation.py</code> and experiment-local scoring hooks</td></tr>
+<tr><td>Token-level OPD signal</td><td><code>miles/miles/backends/training_utils/loss/hub/opd.py</code></td></tr>
+<tr><td>Loss implementation and reduction</td><td><code>miles/miles/backends/training_utils/loss/hub/losses.py</code> and <code>loss/objective.py</code></td></tr>
+<tr><td>Experiment entry points</td><td><code>miles/examples/on_policy_distillation/</code></td></tr>
+<tr><td>Focused validation</td><td><code>miles/tests/</code></td></tr>
+</tbody></table>
+<p>Read <a href="../AGENTS.md">the CRISP instructions</a>, <a href="../miles/AGENTS.md">Miles instructions</a>, and the applicable style rules before editing. Keep experiment changes in focused commits after the baseline import. Do not copy another training engine into the original paper's <code>workspace/</code> tree.</p>
+<h2>Working directory and environment</h2>
+<pre>git clone https://github.com/HJSang/CRISP_Reasoning_Compression.git
+cd CRISP_Reasoning_Compression/miles</pre>
+<p>Run Miles commands from that directory so package imports and relative paths match upstream. Follow <a href="../miles/README.md">Miles setup documentation</a> for a compatible GPU environment. Environment installation is not performed by this repository import. Commit from the CRISP root as usual; no submodule update or separate Miles push is needed.</p>
+<h2>Research protocol remains under review</h2>
+<p>The planned study separates PI corrections from checkpoint differences and measures actual unhinted student learning. The inspected Miles OPD implementation uses sampled-token or top-k reverse-KL signals; it does not implement the earlier proposed full-vocabulary forward-KL experiment. The loss choice, run matrix, and compute budget must be settled explicitly in the experiment review.</p>
+<p>This change establishes the source baseline and development location. It does not add the PI scorer, change the loss, install dependencies, or launch training. The existing upstream examples are reference implementations, not approval to start a full run. A bounded pilot and a full study have separate review gates.</p>
+<p class="small">Validation for the import checks the upstream Git tree against the tracked copy, including executable bits and symlink targets, and verifies that no nested Git repository or submodule was introduced. Runtime correctness of later experiment patches requires their own tests.</p>
+</body></html>

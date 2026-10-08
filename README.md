@@ -8,6 +8,21 @@ This repository contains the code for **CRISP** (**C**ompressed **R**easoning vi
 
 **Related write-up:** [Scorer Choice in Math Reasoning Evaluation](https://zhengzezhou.github.io/math-scorer-choice/) — a four-policy decomposition of how verifier choice (answer-extraction vs. symbolic equivalence) can swing reported MATH-500 accuracy by up to ~80 percentage points on identical generations.
 
+## New Experiment Development: Miles
+
+New OPSD experiments use the vendored [Miles source](miles/) in this repository.
+Make code changes directly under `miles/`; the files are tracked by CRISP as
+ordinary source. The initial import is pinned to upstream commit
+`b24cfa34b94a53a26edcb5dd0e8d9a16868505fa`, recorded in
+[CRISP_UPSTREAM.json](miles/CRISP_UPSTREAM.json), with its license and notices
+preserved. Read the [HTML development guide](docs/miles-development.html) for
+the code layout and workflow.
+
+Run Miles commands from the `miles/` working directory. The existing `workspace/`
+implementation and paper results below describe the original CRISP pipeline.
+The new experiment protocol is pending review; no training is launched by this
+source import.
+
 ## Key Idea
 
 Reasoning models think out loud, but much of what they say is noise. CRISP uses a single, almost trivial idea: *ask the model to be concise, then teach it to do so without being asked*.
@@ -76,8 +91,9 @@ To reproduce the paper numbers, evaluate each checkpoint against its base model 
 ## Repository Structure
 
 ```
-OnPolicySD-open/
-├── verl/                          # VERL framework (forked, with minor fixes)
+CRISP_Reasoning_Compression/
+├── miles/                         # Vendored Miles for new OPSD experiments
+├── docs/                          # HTML development documentation
 ├── workspace/
 │   ├── config/
 │   │   └── prompts.json           # Prompt templates (student, teacher, length prune)
@@ -103,7 +119,7 @@ OnPolicySD-open/
 │   └── execution-configs/         # Hyperparameter configs for Qwen3-8B and 14B
 ```
 
-## Setup
+## Original Paper Pipeline Setup
 
 ### Prerequisites
 
@@ -113,9 +129,13 @@ OnPolicySD-open/
 
 ### Installation
 
+The original pipeline assumes a compatible VERL checkout at `./verl`; that
+dependency is not vendored in this repository. For new experiments, use the
+[Miles development guide](docs/miles-development.html) instead.
+
 ```bash
-git clone https://github.com/HJSang/OPSD_Reasoning_Compression.git
-cd OPSD_Reasoning_Compression
+git clone https://github.com/HJSang/CRISP_Reasoning_Compression.git
+cd CRISP_Reasoning_Compression
 
 # Install VERL and dependencies
 cd verl
