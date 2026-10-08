@@ -1,0 +1,212 @@
+import asyncio
+import concurrent.futures
+import inspect
+import logging
+import threading
+import traceback
+from collections.abc import Awaitable, Callable, Coroutine, Sequence
+from contextlib import AsyncExitStack
+from types import TracebackType
+from typing import Any, TypeVar
+
+logger = logging.getLogger(__name__)
+
+
+__all__ = [
+    "get_async_loop",
+    "run",
+    "submit",
+    "wait_futures",
+    "wait_cancelling_pending_on_first_completion",
+    "eager_create_task",
+    "gather_and_raise_first",
+    "maybe_await",
+    "with_disposer",
+    "Disposer",
+]
+
+_T = TypeVar("_T")
+
+
+# Create a background event loop thread
+class AsyncLoopThread:
+    def __init__(self):
+        self.loop = asyncio.new_event_loop()
+        self._thread = threading.Thread(target=self._start_loop, daemon=True)
+        self._thread.start()
+
+    def _start_loop(self):
+        asyncio.set_event_loop(self.loop)
+        self.loop.run_forever()
+
+    def submit(self, coro: Coroutine[Any, Any, _T]) -> concurrent.futures.Future[_T]:
+        assert (
+            threading.current_thread() is not self._thread
+        ), "submitting from the loop thread and then blocking on the result would deadlock the loop"
+        return asyncio.run_coroutine_threadsafe(coro, self.loop)
+
+    def run(self, coro: Coroutine[Any, Any, _T]) -> _T:
+        # Schedule a coroutine onto the loop and block until it's done
+        return self.submit(coro).result()
+
+
+# Create one global instance
+async_loop = None
+_async_loop_init_lock = threading.Lock()
+
+
+def get_async_loop():
+    global async_loop
+    if async_loop is None:
+        with _async_loop_init_lock:
+            if async_loop is None:
+                async_loop = AsyncLoopThread()
+    return async_loop
+
+
+# TODO: rename these functions and classes
+def run(coro: Coroutine[Any, Any, _T]) -> _T:
+    """Run a coroutine in the background event loop."""
+    return get_async_loop().run(coro)
+
+
+def submit(coro: Coroutine[Any, Any, _T]) -> concurrent.futures.Future[_T]:
+    """Fire a coroutine on the background event loop and return its future."""
+    return get_async_loop().submit(coro)
+
+
+def wait_futures(futures: Sequence[concurrent.futures.Future]) -> list[Any]:
+    """Collect a fan-out, raising the first error once every future has settled."""
+    results: list[Any] = []
+    errors: list[Exception] = []
+    for index, future in enumerate(futures):
+        try:
+            results.append(future.result())
+        except Exception as e:
+            logger.warning(f"wait_futures index={index} failed", exc_info=e)
+            results.append(None)
+            errors.append(e)
+
+    if errors:
+        raise errors[0]
+    return results
+
+
+async def wait_cancelling_pending_on_first_completion(
+    tasks: Sequence[asyncio.Task], *, on_first_completion: Callable[[], None] | None = None
+) -> None:
+    done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+
+    if on_first_completion is not None:
+        on_first_completion()
+
+    for task in pending:
+        task.cancel()
+    if pending:
+        await asyncio.gather(*pending, return_exceptions=True)
+
+    task_errors = [(task, error) for task in tasks if (error := _compute_task_error(task)) is not None]
+    for _, error in task_errors:
+        logger.error("task failed", exc_info=error)
+    if task_errors:
+        primary_index = next((index for index, (task, _) in enumerate(task_errors) if task in done), 0)
+        primary_error = task_errors[primary_index][1]
+        for index, (_, error) in enumerate(task_errors):
+            if index != primary_index:
+                note = "Additional task failure while cancelling peers:\n" + "".join(traceback.format_exception(error))
+                _exception_add_note_or_log(primary_error, note)
+        raise primary_error
+
+
+def _exception_add_note_or_log(e: BaseException, msg: str) -> None:
+    if hasattr(e, "add_note"):
+        e.add_note(msg)
+    else:
+        logger.error(msg)
+
+
+def _compute_task_error(task: asyncio.Task) -> BaseException | None:
+    if task.cancelled():
+        return None
+    return task.exception()
+
+
+async def eager_create_task(coro: Coroutine[object, object, _T]) -> asyncio.Task[_T]:
+    """Create a task and yield so it starts executing immediately.
+
+    Unlike bare ``asyncio.create_task``, this ensures the task's first code
+    (including any ``.remote()`` calls) runs before the caller continues.
+    """
+    task = asyncio.create_task(coro)
+    await asyncio.sleep(0)
+    return task
+
+
+class AsyncioGatherUtils:
+    @staticmethod
+    def has_error(outputs):
+        return any(isinstance(output, BaseException) for output in outputs)
+
+    @staticmethod
+    def log_error(
+        outputs,
+        debug_name: str = "",
+        *,
+        describe_failure: Callable[[int], str] | None = None,
+        log: Callable[..., None] = logger.warning,
+    ) -> None:
+        for i, output in enumerate(outputs):
+            if isinstance(output, BaseException):
+                message = f"{debug_name} error index={i}" if describe_failure is None else describe_failure(i)
+                log(message, exc_info=output)
+
+
+async def gather_and_raise_first(
+    awaitables: Sequence[Awaitable[_T]], *, describe_failure: Callable[[int], str] | None = None
+) -> list[_T]:
+    results = await asyncio.gather(*awaitables, return_exceptions=True)
+
+    if describe_failure is not None:
+        AsyncioGatherUtils.log_error(results, describe_failure=describe_failure, log=logger.error)
+
+    failures = [result for result in results if isinstance(result, BaseException)]
+    if failures:
+        raise failures[0]
+    return results
+
+
+async def maybe_await(value: Awaitable[_T] | _T) -> _T:
+    return await value if inspect.isawaitable(value) else value
+
+
+async def with_disposer(fn: Callable[..., Awaitable[_T]], *args: Any, **kwargs: Any) -> _T:
+    async with Disposer() as disposer:
+        return await fn(*args, disposer=disposer, **kwargs)
+
+
+class Disposer:
+    def __init__(self) -> None:
+        self._stack = AsyncExitStack()
+
+    async def __aenter__(self) -> "Disposer":
+        await self._stack.__aenter__()
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        exc_traceback: TracebackType | None,
+    ) -> bool:
+        return await self._stack.__aexit__(exc_type, exc, exc_traceback)
+
+    def add(self, *items: Any) -> None:
+        for item in items:
+            if item is None:
+                continue
+            teardown = item.dispose if hasattr(item, "dispose") else item
+            assert callable(teardown), teardown
+            if inspect.iscoroutinefunction(teardown):
+                self._stack.push_async_callback(teardown)
+            else:
+                self._stack.callback(teardown)

@@ -1,0 +1,390 @@
+---
+title: CLI Reference
+description: Every command-line flag Miles accepts, grouped by subsystem.
+---
+Miles is configured through command-line flags passed to `train.py` or
+`train_async.py`. The Megatron flags (such as `--num-layers`, `--rotary-base`,
+`--recompute-granularity`) are inherited via Megatron's argument parser; Miles adds
+its own flags through an `extra_args_provider`. Run `python3 train.py --help` against
+your installed Megatron source for the canonical list.
+
+This page has two passes.
+
+1. **Essentials** lists the flags most runs actually touch.
+2. **Complete reference** lists every Miles flag with type and default.
+
+---
+
+## Essentials
+
+### Cluster topology
+
+| Flag | Default | What |
+|---|---|---|
+| `--actor-num-nodes` | `1` | Total nodes for the actor. |
+| `--actor-num-gpus-per-node` | `8` | GPUs per actor node. |
+| `--rollout-num-gpus` | derived | GPUs for SGLang rollout (ignored when `--colocate`). |
+| `--rollout-num-gpus-per-engine` | `1` | TP size of each SGLang engine. |
+| `--colocate` | off | Share GPUs between actor and rollout. |
+| `--run-uuid` | generated | Machine-readable id for this launch; 16 lowercase hex characters. |
+
+See [Training Backends](/user-guide/training-backend) for what `--colocate` flips on under the hood.
+
+### Batch sizing
+
+The four-knob invariant:
+
+```
+rollout_batch_size × n_samples_per_prompt
+  = global_batch_size × num_steps_per_rollout
+```
+
+| Flag | Typical | What |
+|---|---|---|
+| `--rollout-batch-size` | `16 – 256` | Prompts per rollout. |
+| `--n-samples-per-prompt` | `4 – 16` | Responses per prompt (GRPO group size). |
+| `--global-batch-size` | derived | Samples per optimizer step. |
+| `--num-steps-per-rollout` | `1` | Optimizer steps per rollout. |
+| `--num-rollout` | `1000 – 10000` | Total rollout iterations. |
+
+### Memory and throughput
+
+| Flag | Default | What |
+|---|---|---|
+| `--use-dynamic-batch-size` | off | Pack varlen samples into micro-batches. |
+| `--max-tokens-per-gpu` | `–` | Token budget per micro-batch per GPU. Required when dynamic batching is on. |
+| `--context-parallel-size` | `1` | Spread a single sample across N CP ranks. |
+| `--recompute-granularity` | Megatron default | `full` or `selective`. |
+| `--recompute-method` | Megatron default | `uniform` or `block`. |
+| `--recompute-num-layers` | Megatron default | Layers per recompute chunk. |
+
+Rule of thumb: start with `max_tokens_per_gpu = rollout_max_response_len / cp_size`,
+then push up until you OOM.
+
+### RL algorithm
+
+| Flag | Default | What |
+|---|---|---|
+| `--advantage-estimator` | `grpo` | `grpo`, `gspo`, `ppo`, `reinforce_plus_plus`, `reinforce_plus_plus_baseline`. On-policy distillation is not an estimator — enable it with `--use-opd` on top of any of these. |
+| `--use-kl-loss` | off | Compute KL against the reference model. |
+| `--kl-loss-coef` | `0.0` | Weight of KL in the loss (0 means monitor only). |
+| `--kl-loss-type` | `k1` | `k1`, `k2`, `k3`, `low_var_kl`. |
+| `--entropy-coef` | `0.0` | Entropy bonus weight. |
+| `--observe-training-entropy` | off | Log training entropy even when `--entropy-coef` is `0.0`; detached from backward when the coefficient is zero. |
+| `--eps-clip` | `0.2` | PPO/GRPO low clip. |
+| `--eps-clip-high` | `–` | Asymmetric high clip (DAPO-style). |
+| `--use-tis` | off | Truncated Importance Sampling for train/inference precision mismatch. |
+
+### Sampling
+
+| Flag | Default | What |
+|---|---|---|
+| `--rollout-temperature` | `1.0` | Sampling temperature. |
+| `--rollout-top-p` | `1.0` | Top-p truncation. Values below `1` enable [sampling-support replay](/advanced/sampling-support-replay) and require a positive top-k. |
+| `--rollout-top-k` | `-1` | Top-k truncation. Positive values enable [sampling-support replay](/advanced/sampling-support-replay). |
+| `--rollout-max-response-len` | `–` | Max tokens per response. |
+| `--rollout-stop-token-ids` | model default | Stop token IDs. Override when generations don't stop. |
+| `--apply-chat-template` | off | Apply the tokenizer's chat template. |
+| `--rollout-shuffle` | off | Shuffle prompts each rollout. |
+
+### Optimizer
+
+| Flag | Default | What |
+|---|---|---|
+| `--optimizer` | `adam` | `adam`, `sgd`. |
+| `--lr` | `1e-6` | Learning rate. Post-training is sensitive to large updates; recipes typically stay near `1e-6`. |
+| `--lr-decay-style` | `constant` | `constant`, `linear`, `cosine`. |
+| `--weight-decay` | `0.1` | L2 weight decay. |
+| `--adam-beta1`, `--adam-beta2` | `0.9, 0.98` | Adam moments. |
+
+### Logging
+
+| Flag | Default | What |
+|---|---|---|
+| `--use-wandb` | off | Log to Weights and Biases. |
+| `--wandb-project` | – | wandb project name. |
+| `--log-interval` | `1` | Stdout log cadence (rollouts). |
+| `--save-interval` | – | Checkpoint cadence (rollouts). Recipes typically set 20 to 100. |
+
+### SGLang passthrough
+
+Any flag accepted by `python -m sglang.launch_server` is accepted by Miles with the
+`--sglang-` prefix:
+
+```bash
+--sglang-log-level INFO
+--sglang-mem-fraction-static 0.8
+--sglang-ep-size 8
+--sglang-moe-a2a-backend deepep
+--sglang-enable-dp-attention
+```
+
+See [SGLang docs](https://docs.sglang.io) for the full list.
+
+### Environment variables
+
+Set these in Ray's `env_vars` for multi-node runs:
+
+| Variable | Effect |
+|---|---|
+| `TORCHINDUCTOR_FORCE_DISABLE_CACHES=1` | Workaround for torch-compile JSONDecodeError. |
+| `RAY_DEDUP_LOGS=0` | Don't deduplicate worker logs. |
+| `NCCL_DEBUG=INFO` | NCCL diagnostics. |
+| `PYTHONPATH=/root/Megatron-LM` | Required when using the Megatron backend. |
+
+---
+
+## Complete reference
+
+Sections mirror the launch-script argument groups.
+
+### Cluster
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--cluster-backend` | enum | `ray` | `ray` launches workers from the driver; `kubernetes` expects them to already exist. `kubernetes` is refused during validation until a later milestone provisions those workers. Under `kubernetes`, `--use-prometheus` is ignored. |
+| `--actor-num-nodes` | int | `1` | Total nodes for actor training. |
+| `--actor-num-gpus-per-node` | int | `8` | GPUs per actor node. |
+| `--rollout-num-gpus` | int | derived | Ignored under `--colocate`. |
+| `--rollout-num-gpus-per-engine` | int | `1` | TP size of each SGLang engine. |
+| `--colocate` | flag | off | Share GPUs between actor and rollout. Implicitly enables `--offload-train`, `--offload-rollout`, and defaults `--sglang-cuda-graph-backend-prefill=disabled`. |
+
+### Model and checkpoints
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--train-backend` | enum | `megatron` | `megatron` or `fsdp`. |
+| `--hf-checkpoint` | path | – | HF model dir. Provides tokenizer, config, and the weights FSDP loads. |
+| `--ref-load` | path | – | Reference model in `torch_dist` format (Megatron). |
+| `--load` | path | – | Actor checkpoint to resume from. |
+| `--save` | path | – | Actor checkpoint write directory. |
+| `--save-interval` | int | – | Rollouts between saves. |
+| `--async-save` | flag | off | Write Megatron checkpoint shards asynchronously. With `--save-hf`, the native write overlaps the HF export. |
+| `--save-trigger-sentinel` | path | – | If this file exists at a save point, save a checkpoint now (regardless of `--save-interval`) and remove the file. |
+| `--custom-megatron-post-save-hook-path` | `<module>.<fn>` | – | Rank-0 callback after each checkpoint save. |
+| `--model-name` | str | – | Set in multi-node to avoid `transformers` file-system race. |
+| `--spec` | `<module> <fn>` | – | Plugin spec for custom architectures (e.g. `miles_plugins.models.qwen3_5 get_qwen3_5_spec`). |
+
+### Rollout: data and batching
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--prompt-data` | str | – | Path to a single JSONL file. |
+| `--input-key` | str | `input` | JSONL key to `Sample.prompt`. |
+| `--label-key` | str | `None` | JSONL key to `Sample.label`. |
+| `--metadata-key` | str | `metadata` | JSONL key to `Sample.metadata`. |
+| `--apply-chat-template` | flag | off | Apply tokenizer chat template. |
+| `--rollout-shuffle` | flag | off | Shuffle prompts each rollout. |
+| `--num-rollout` | int | – | Total rollout iterations. If unset, derived from dataset size. |
+| `--rollout-batch-size` | int | – | Prompts per rollout. |
+| `--n-samples-per-prompt` | int | `1` | Responses per prompt. |
+| `--global-batch-size` | int | derived | Samples per optimizer step. |
+| `--num-steps-per-rollout` | int | – | Optimizer steps per rollout. Alternative to `--global-batch-size`; setting one derives the other. |
+| `--over-sampling-batch-size` | int | – | Oversample size for dynamic sampling (DAPO). |
+| `--balance-data` | flag | off | Balance per-rank token count. |
+
+### Rollout: sampling
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--rollout-max-response-len` | int | – | Max tokens per response. |
+| `--rollout-temperature` | float | `1.0` | Sampling temperature. |
+| `--rollout-top-p` | float | `1.0` | Top-p truncation. Values below `1` require bounded [sampling-support replay](/advanced/sampling-support-replay). |
+| `--rollout-top-k` | int | `-1` | Top-k truncation (`-1` disables). Positive values enable [sampling-support replay](/advanced/sampling-support-replay). |
+| `--rollout-stop` | str+ | – | Stop strings. |
+| `--rollout-stop-token-ids` | int+ | – | Stop token IDs. |
+
+### Eval
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--eval-prompt-data` | str+ | – | One or more `name path` pairs. |
+| `--eval-interval` | int | – | Rollouts between eval runs. |
+| `--n-samples-per-eval-prompt` | int | `1` | Responses per eval prompt. |
+| `--eval-max-response-len` | int | – | Max eval response length. Inherits from rollout if unset. |
+| `--eval-temperature` | float | – | Eval temperature. Inherits from rollout if unset. |
+| `--eval-top-p` | float | – | Eval top-p. Inherits from rollout if unset. |
+| `--eval-top-k` | int | – | Eval top-k. Inherits from rollout if unset. |
+| `--eval-num-gpus` | int | `0` | Dedicated eval fleet size. `0` = shared-engine eval. Requires `train_async.py`. |
+| `--eval-num-gpus-per-engine` | int | `1` | Eval engine TP, independent of rollout TP. |
+| `--eval-hf-dir` | str | – | Staging dir for per-eval HF snapshots (tmpfs recommended). Unset + `--save-hf` = reuse mode. |
+| `--eval-max-in-flight` | int | `2` | Snapshots the trainer may export ahead of the eval backend. Evals are serialized, so this buys lead time, not concurrency — and one more staged snapshot. |
+| `--eval-overflow-policy` | str | `backpressure` | At the cap: await the oldest eval, or `skip` the new point (logged as `eval/skipped_busy`). |
+| `--eval-keep-snapshots` | int | `2` | Retired snapshots kept under `--eval-hf-dir`; with `--eval-max-in-flight` this bounds the staging dir. `--save-hf` output is never deleted. |
+| `--eval-sglang-*` | – | – | Per-field override of any `--sglang-*` setting for the eval fleet only. Unset = inherit the rollout engines' value. Booleans take a `--no-` form (`--no-eval-sglang-enable-dp-attention`) so an inherited `True` can be turned off. `tp_size` is not exposed — use `--eval-num-gpus-per-engine`. |
+
+### Performance
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--tensor-model-parallel-size` | int | `1` | TP. |
+| `--pipeline-model-parallel-size` | int | `1` | PP. |
+| `--context-parallel-size` | int | `1` | CP. |
+| `--expert-model-parallel-size` | int | `1` | EP (MoE). |
+| `--expert-tensor-parallel-size` | int | `1` | TP within experts. |
+| `--sequence-parallel` | flag | off | Enable Megatron sequence parallel. |
+| `--use-dynamic-batch-size` | flag | off | Pack varlen samples. Recommended for varlen workloads. |
+| `--max-tokens-per-gpu` | int | – | Token budget per micro-batch per GPU. Required when dynamic batching is on. |
+| `--micro-batch-size` | int | `1` | Ignored when dynamic batching is on. |
+| `--recompute-granularity` | enum | Megatron default | `full` or `selective`. |
+| `--recompute-method` | enum | Megatron default | `uniform` or `block`. |
+| `--recompute-num-layers` | int | Megatron default | Recompute chunk size. |
+| `--gradient-checkpointing` | flag | off | FSDP equivalent of recompute flags. |
+| `--fsdp-cpu-offload` | flag | off | FSDP: offload params, grads, optimizer state to CPU. |
+| `--fsdp-cpu-backend` | str | `gloo` | FSDP: CPU backend for hybrid offload. |
+| `--dp-replicate-size` | int | `1` | FSDP2 hybrid-shard replica count. |
+| `--attn-implementation` | str | `flash_attention_2` | FSDP only: passed to `transformers`, e.g. `flash_attention_2`, `flash_attention_3`, `sdpa`, `eager`. |
+
+### RL algorithm
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--advantage-estimator` | enum | `grpo` | `grpo`, `gspo`, `ppo`, `reinforce_plus_plus`, `reinforce_plus_plus_baseline`. |
+| `--use-kl-loss` | flag | off | Compute KL vs. reference. |
+| `--kl-loss-coef` | float | `0.0` | KL weight in loss (0 means monitor). |
+| `--kl-loss-type` | enum | `k1` | `k1`, `k2`, `k3`, `low_var_kl`. |
+| `--entropy-coef` | float | `0.0` | Entropy bonus weight. |
+| `--observe-training-entropy` | flag | off | Log detached training entropy when entropy bonus weight is zero. |
+| `--eps-clip` | float | `0.2` | PPO/GRPO low clip. |
+| `--eps-clip-high` | float | – | Asymmetric high clip. |
+| `--use-tis` | flag | off | Truncated Importance Sampling. |
+| `--use-routing-replay` | flag | off | Forward/backward routing consistency. |
+| `--use-rollout-routing-replay` | flag | off | R3 — capture inference-side expert routing and replay it during training. |
+| `--calculate-per-token-loss` | flag | off | Per-token loss reduction. |
+| `--no-check-for-nan-in-loss-and-grad` | flag | off | Skip NaN/Inf guard (Megatron flag, debug only). |
+| `--true-on-policy-mode` | flag | off | Strict on-policy: reject samples from a prior policy. |
+
+### Optimizer
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--optimizer` | enum | `adam` | `adam`, `sgd`. |
+| `--lr` | float | `1e-6` | Learning rate. |
+| `--lr-decay-style` | enum | `constant` | `constant`, `linear`, `cosine`. |
+| `--lr-warmup-iters` | int | `0` | Warmup steps (Megatron flag). |
+| `--min-lr` | float | `0` | Lower LR bound for decay schedules (Megatron flag). |
+| `--weight-decay` | float | `0.1` | L2 weight decay. |
+| `--adam-beta1` | float | `0.9` | |
+| `--adam-beta2` | float | `0.98` | |
+| `--clip-grad` | float | `1.0` | Grad clipping (Megatron flag). |
+| `--optimizer-cpu-offload` | flag | off | Megatron CPU Adam (Megatron flag). |
+| `--overlap-cpu-optimizer-d2h-h2d` | flag | off | Overlap D2H/H2D with compute (Megatron flag). |
+| `--use-precision-aware-optimizer` | flag | off | Precision-aware optimizer path (Megatron flag). |
+
+### Reward and filters
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--rm-type` | str | – | Built-in reward: `math`, `dapo`, `deepscaler`, `gemma_math`, `f1`, `gpqa`, `ifbench`, `remote_rm`, `random`, `deterministic_random`. A `boxed_` prefix (e.g. `boxed_math`) extracts `\boxed{}` from the response before grading. |
+| `--rm-url` | str | – | Endpoint when `--rm-type remote_rm`. |
+| `--group-rm` | flag | off | Batched reward computation. |
+| `--custom-rm-path` | str | – | Custom reward function (see [Customization](/user-guide/customization)). |
+| `--dynamic-sampling-filter-path` | str | – | Group filter (DAPO-style). |
+| `--rollout-submission-granularity` | enum | driver | `group` or `sample`: what frees rollout submission capacity. Unset means `sample` under `--fully-async`, `group` otherwise. |
+| `--buffer-filter-path` | str | – | Buffer dequeue filter. |
+| `--rollout-sample-filter-path` | str | – | Per-sample filter. |
+
+### SGLang and router
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--sglang-router-ip` | str | – | Must stay unset: external router mode was removed. Miles always starts its own router. |
+| `--sglang-router-port` | int | – | Pins the port of the router miles starts; model `i` gets `port + i`. Unset lets it move off a busy port. |
+| `--sglang-*` | passthrough | | Any flag accepted by `python -m sglang.launch_server` works with this prefix. |
+| `--router-*` | passthrough | | Any flag accepted by the active router works with this prefix. |
+
+Common `--sglang-*` flags:
+
+```bash
+--sglang-mem-fraction-static 0.8
+--sglang-context-length 32768
+--sglang-log-level INFO
+--sglang-ep-size 8
+--sglang-enable-dp-attention
+--sglang-moe-a2a-backend deepep
+--sglang-moe-runner-backend triton
+--sglang-deepep-mode auto
+--sglang-cuda-graph-backend-prefill  # prefill graphs default to disabled in colocate mode
+```
+
+### Agentic sessions
+
+These flags wire an OpenAI-compatible agent loop through Miles' TITO session
+server. See [Agentic Rollout (TITO)](/user-guide/agentic-rollout) for the request
+contract, session behavior, and model-family selection.
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--custom-generate-function-path` | `<module>.<fn>` | – | Set to `miles.rollout.generate_hub.agentic_tool_call.generate` for the built-in agentic wrapper. |
+| `--custom-agent-function-path` | `<module>.<fn>` | – | Async agent-environment loop. Registered after selecting the built-in agentic wrapper. |
+| `--use-session-server` | optional `v1` / `v2` | off | Bare flag (or `v1`) selects the linear append-only server; `v2` selects tree serving. Requires `--hf-checkpoint`. |
+| `--tito-model` | enum | `default` | TITO model family. Named families load their registered fixed template; `default` is best-effort with a checkpoint-native or custom template. |
+| `--max-seq-len` | int | – | Total tokens per session, including prompts, completions, and environment responses. Registered with the agentic wrapper. |
+| `--session-server-ip` | str | router IP | Session-server bind address. |
+| `--session-server-external-host` | str | – | Host that peers outside the cluster reach every session server on. Keeps the session servers on the head node. Leave unset when each node sets `MILES_NODE_EXTERNAL_IP`. |
+| `--session-server-port` | int | auto | First port for standalone session-server instances. When unset, each worker port is auto-allocated. |
+| `--session-server-workers` | int | `32` | Number of instances, at least 1; an explicit `--session-server-port` anchors a consecutive range. |
+| `--session-sample-picker-path` | `<module>.<fn>` | `drop_same_prompt_retries` | v2 only: selects leaf samples before post-processing. The default trims identical re-sends, including a re-sent first turn; `drop_rolled_back_leaves` also trims a leaf whose later sibling sent a different request. |
+| `--session-sample-postprocessor-path` | `<module>.<fn>` | `default_postprocess` | v2 only: finalizes loss masks and rewards. |
+
+`--use-session-server v2` returns `list[Sample]` and rejects `--group-rm`, `--partial-rollout`, and `--recompute-logprobs-via-prefill`.
+
+### MTP / speculative decoding
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--mtp-num-layers` | int | `0` | Number of MTP layers in the checkpoint. |
+| `--enable-mtp-training` | flag | off | Train MTP alongside the policy. |
+| `--mtp-loss-scaling-factor` | float | `0.2` | Weight of MTP loss. |
+
+### Fault tolerance
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--use-fault-tolerance` | flag | off | Enable rank-level recovery and heartbeats. |
+| `--rollout-health-check-first-wait` | int | `0` | Grace period before heartbeats start. |
+| `--rollout-health-check-interval` | int | `30` | Seconds between heartbeats. |
+| `--rollout-health-check-timeout` | int | `30` | Heartbeat timeout. |
+
+### Async / partial rollout
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--partial-rollout` | flag | off | Resume aborted rollouts in the next iteration. |
+
+### Logging
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--use-wandb` | flag | off | Enable wandb. |
+| `--wandb-project` | str | – | Project name. |
+| `--wandb-group` | str | – | Group name. |
+| `--log-interval` | int | `1` | Stdout log cadence (rollouts). |
+| `--custom-rollout-log-function-path` | str | – | Custom train logger. |
+| `--custom-eval-rollout-log-function-path` | str | – | Custom eval logger. |
+
+### Profiling
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--profile-target` | enum+ | `[train_overall]` | Which sub-loop to profile: `train_overall`, `train_actor`, `train_log_probs`. |
+| `--use-pytorch-profiler` | flag | off | FSDP only: enable PyTorch profiler. |
+| `--profile-step-start` | int | `10` | FSDP only: first step to profile. |
+| `--profile-step-end` | int | `12` | FSDP only: last step to profile. |
+| `--memory-snapshot-path` | str | `snapshot.pickle` | FSDP only: memory snapshot output. |
+| `--tensorboard-dir` | str | – | FSDP only: TensorBoard output dir. |
+
+### Debugging
+
+| Flag | Type | Default | Notes |
+|---|---|---|---|
+| `--debug-rollout-only` | flag | off | Skip Megatron, only spin up SGLang. |
+| `--debug-train-only` | flag | off | Skip SGLang, only spin up Megatron. |
+| `--save-debug-rollout-data` | path | – | Pickle every rollout to disk. The template must contain `{rollout_id}`. |
+| `--load-debug-rollout-data` | path | – | Replay rollouts from disk (implies `--debug-train-only`). |
+| `--deterministic-mode` | flag | off | Megatron deterministic mode. |
+
+### Customization
+
+See [Customization](/user-guide/customization) for the full catalog of `--*-path` flags
+that replace or extend Miles's behavior.

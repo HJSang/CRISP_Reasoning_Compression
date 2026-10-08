@@ -1,0 +1,208 @@
+"""
+Shared tracking interface for experiment logging backends.
+
+Each backend implements ``init / log / finish``, and :class:`TrackingManager` fans out
+calls to every active backend.
+
+To add a new backend:
+--------------------
+1. Subclass :class:`TrackingBackend`.
+2. Add it to ``BACKEND_REGISTRY`` in ``tracking.py`` (not base --
+   importing a backend module into base would be circular).
+3. Add a corresponding ``--use-<name>`` CLI flag in ``arguments.py``.
+"""
+
+from __future__ import annotations
+
+import logging
+from abc import ABC, abstractmethod
+from typing import Any
+
+from miles.utils.workers.types import ClusterBackend
+
+logger = logging.getLogger(__name__)
+
+
+class TrackingBackend(ABC):
+    # Interface every logging backend must satisfy.
+
+    @classmethod
+    def is_supported(cls, args) -> bool:
+        return True
+
+    @abstractmethod
+    def init(self, args, *, primary: bool = True, **kwargs) -> None: ...
+
+    @abstractmethod
+    def log(self, metrics: dict[str, Any], step: int | None = None, **kwargs) -> None: ...
+
+    @abstractmethod
+    def finish(self) -> None: ...
+
+    def define_step_key_metric_group(self, prefix: str, step_key: str) -> None:
+        """Declare that ``{prefix}/*`` metrics plot against ``step_key``; no-op for
+        backends that take the step numerically on every log call."""
+        return
+
+
+# Thin adapters for backwards compatibility to keep wandb_utils and tensorboard_utils untouched.
+class WandbBackend(TrackingBackend):
+    # Delegates to the existing ``wandb_utils`` helpers.
+
+    def __init__(self) -> None:
+        self._defined_step_key_groups: set[tuple[str, str]] = set()
+
+    def init(self, args, *, primary: bool = True, **kwargs) -> None:
+        from . import wandb_utils
+
+        if primary:
+            wandb_utils.init_wandb_primary(args, **kwargs)
+        else:
+            wandb_utils.init_wandb_secondary(args, **kwargs)
+
+    def log(self, metrics: dict[str, Any], step: int | None = None, **kwargs) -> None:
+        import wandb
+
+        wandb.log(metrics)
+
+    def define_step_key_metric_group(self, prefix: str, step_key: str) -> None:
+        # Call from the primary tracking process: definitions from secondary shared-mode writers are lost.
+        if (prefix, step_key) in self._defined_step_key_groups:
+            return
+        import wandb
+
+        wandb.define_metric(step_key)
+        wandb.define_metric(f"{prefix}/*", step_metric=step_key)
+        self._defined_step_key_groups.add((prefix, step_key))
+
+    def finish(self) -> None:
+        import wandb
+
+        wandb.finish()
+
+
+class TensorboardBackend(TrackingBackend):
+    def __init__(self) -> None:
+        self._adapter = None
+
+    def init(self, args, *, primary: bool = True, **kwargs) -> None:
+        from .tensorboard_utils import _TensorboardAdapter
+
+        self._adapter = _TensorboardAdapter(args)
+
+    def log(self, metrics: dict[str, Any], step: int | None = None, *, step_key: str | None = None, **kwargs) -> None:
+        if self._adapter is not None:
+            # Strip the caller's exact step-key entry (e.g. "train/step",
+            # "rollout/step") — tensorboard receives step as an explicit
+            # argument instead. Matching by exact key rather than endswith
+            # avoids dropping user metrics that happen to end in "/step".
+            data = {k: v for k, v in metrics.items() if k != step_key}
+            self._adapter.log(data=data, step=step)
+
+    def finish(self) -> None:
+        if self._adapter is not None:
+            self._adapter.finish()
+
+
+class MlflowBackend(TrackingBackend):
+
+    def init(self, args, *, primary: bool = True, **kwargs) -> None:
+        from . import mlflow_utils
+
+        mlflow_utils.init_mlflow(args, primary=primary, **kwargs)
+
+    def log(self, metrics: dict[str, Any], step: int | None = None, **kwargs) -> None:
+        from . import mlflow_utils
+
+        mlflow_utils.log_metrics(metrics, step=step)
+
+    def finish(self) -> None:
+        from . import mlflow_utils
+
+        mlflow_utils.finish()
+
+
+class PrometheusBackend(TrackingBackend):
+    # Wraps the existing Ray-actor based prometheus collector. The actor lifetime is
+    # tied to the Ray job, so finish() is intentionally a no-op.
+
+    @classmethod
+    def is_supported(cls, args) -> bool:
+        return ClusterBackend(args.cluster_backend) is not ClusterBackend.KUBERNETES
+
+    def init(self, args, *, primary: bool = True, **kwargs) -> None:
+        from .prometheus_utils import init_prometheus
+
+        init_prometheus(args, start_server=primary)
+
+    def log(self, metrics: dict[str, Any], step: int | None = None, **kwargs) -> None:
+        from .prometheus_utils import get_prometheus
+
+        prom = get_prometheus()
+        assert prom is not None, (
+            "Prometheus collector is not initialized; ensure init_tracking(..., primary=...) ran on the "
+            "driver and workers can resolve the miles_prometheus_collector Ray actor."
+        )
+        prom.update.remote(metrics)
+
+    def finish(self) -> None:
+        return
+
+
+class MilesDashboardBackend(TrackingBackend):
+    # Live dashboard collection (see miles/dashboard). Lazy imports keep the
+    # dashboard package out of processes that never enable it.
+
+    def init(self, args, *, primary: bool = True, **kwargs) -> None:
+        from miles.dashboard.backend import init_dashboard
+
+        init_dashboard(args, primary=primary, **kwargs)
+
+    def log(self, metrics: dict[str, Any], step: int | None = None, *, step_key: str | None = None, **kwargs) -> None:
+        from miles.dashboard.backend import dashboard_log
+
+        dashboard_log(metrics, step=step, step_key=step_key)
+
+    def finish(self) -> None:
+        from miles.dashboard.backend import finish_dashboard
+
+        finish_dashboard()
+
+
+class TrackingManager:
+    # Initializes and logs to every enabled backend; used internally by ``tracking_utils``.
+
+    def __init__(self, registry: dict[str, tuple[type[TrackingBackend], str]]) -> None:
+        self._backends: list[TrackingBackend] = []
+        self._registry = registry
+
+    def init(self, args, *, primary: bool = True, **kwargs) -> None:
+        for name, (cls, flag) in self._registry.items():
+            if not getattr(args, flag, False):
+                continue
+            if not cls.is_supported(args):
+                logger.warning("Skipping tracking backend %s: unsupported on this cluster backend", name)
+                continue
+            logger.info("Initialising tracking backend: %s", name)
+            backend = cls()
+            backend.init(args, primary=primary, **kwargs)
+            self._backends.append(backend)
+
+    def log(self, metrics: dict[str, Any], step: int | None = None, step_key: str | None = None) -> None:
+        for backend in self._backends:
+            backend.log(metrics, step=step, step_key=step_key)
+
+    def define_step_key_metric_group(self, prefix: str, step_key: str) -> None:
+        for backend in self._backends:
+            backend.define_step_key_metric_group(prefix, step_key)
+
+    def finish(self) -> None:
+        for backend in self._backends:
+            try:
+                backend.finish()
+            except Exception:
+                logger.exception(
+                    "Error finishing tracking backend %s",
+                    type(backend).__name__,
+                )
+        self._backends.clear()

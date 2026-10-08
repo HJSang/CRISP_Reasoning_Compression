@@ -1,0 +1,536 @@
+import asyncio
+import concurrent.futures
+import time
+
+import pytest
+import requests
+
+from miles.utils.http_utils import MILES_HOST_IP_ENV
+from miles.utils.misc import NodeProbeMixin
+from miles.utils.test_utils.mock_sglang_server import (
+    Counter,
+    MockSGLangServer,
+    ProcessResult,
+    ProcessResultMetaInfo,
+    default_process_fn,
+    with_mock_server,
+)
+from miles.utils.test_utils.mock_tools import SAMPLE_TOOLS, TwoTurnStub
+
+
+def expected_logprobs(tokenizer, text: str) -> list[dict]:
+    output_ids = tokenizer.encode(text, add_special_tokens=False)
+    return [
+        {"token": tokenizer.convert_ids_to_tokens(tid), "token_id": tid, "logprob": -i / 128}
+        for i, tid in enumerate(output_ids)
+    ]
+
+
+def expected_prompt_token_ids(tokenizer, messages: list[dict], tools: list[dict] | None) -> list[int]:
+    prompt_str = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, tools=tools)
+    return tokenizer.encode(prompt_str, add_special_tokens=False)
+
+
+@pytest.fixture(scope="module")
+def mock_server():
+    with with_mock_server() as server:
+        yield server
+
+
+class TestProcessResultMetaInfo:
+    def test_to_dict_empty(self):
+        assert ProcessResultMetaInfo().to_dict() == {}
+
+    def test_to_dict_single_field(self):
+        assert ProcessResultMetaInfo(weight_version="v1").to_dict() == {"weight_version": "v1"}
+
+    def test_to_dict_partial_fields(self):
+        assert ProcessResultMetaInfo(weight_version="v1", spec_num_correct_drafts=10).to_dict() == {
+            "weight_version": "v1",
+            "spec_num_correct_drafts": 10,
+        }
+
+    def test_to_dict_all_fields(self):
+        assert ProcessResultMetaInfo(
+            weight_version="v1",
+            routed_experts="abc",
+            spec_num_correct_drafts=10,
+            spec_num_proposed_drafts=15,
+            spec_verify_ct=3,
+        ).to_dict() == {
+            "weight_version": "v1",
+            "routed_experts": "abc",
+            "spec_num_correct_drafts": 10,
+            "spec_num_proposed_drafts": 15,
+            "spec_verify_ct": 3,
+        }
+
+
+class TestDefaultProcessFn:
+    def test_math_question(self):
+        assert default_process_fn("What is 1+5?") == ProcessResult(text="\\boxed{6}", finish_reason="stop")
+        assert default_process_fn("What is 1+10?") == ProcessResult(text="\\boxed{11}", finish_reason="stop")
+
+    def test_unknown_question(self):
+        assert default_process_fn("Hello") == ProcessResult(text="I don't understand.", finish_reason="stop")
+
+
+class TestCounter:
+    def test_tracks_max(self):
+        counter = Counter()
+        assert counter.max_value == 0
+
+        with counter.track():
+            assert counter.max_value == 1
+            with counter.track():
+                assert counter.max_value == 2
+
+        counter.reset()
+        assert counter.max_value == 0
+
+    def test_concurrent_tasks(self):
+        counter = Counter()
+
+        async def task():
+            with counter.track():
+                await asyncio.sleep(0.1)
+
+        async def run_all():
+            await asyncio.gather(task(), task(), task())
+
+        asyncio.run(run_all())
+        assert counter.max_value == 3
+
+
+class TestMockServerBasic:
+    def test_start_stop(self, mock_server):
+        assert mock_server.port > 0
+        assert f"http://{mock_server.host}:{mock_server.port}" == mock_server.url
+
+    def test_request_log_and_reset_stats(self, mock_server):
+        mock_server.reset_stats()
+        assert len(mock_server.request_log) == 0
+
+        payload = {"input_ids": [1, 2, 3], "sampling_params": {"temperature": 0.5}, "return_logprob": True}
+        requests.post(f"{mock_server.url}/generate", json=payload, timeout=5.0)
+        assert len(mock_server.request_log) == 1
+        assert mock_server.request_log[0] == payload
+
+        mock_server.reset_stats()
+        assert len(mock_server.request_log) == 0
+        assert mock_server.max_concurrent == 0
+
+    @pytest.mark.parametrize("latency,min_time,max_time", [(0.0, 0.0, 0.3), (0.5, 0.5, 1.0)])
+    def test_latency(self, latency, min_time, max_time):
+        with with_mock_server(latency=latency) as server:
+            start = time.time()
+            requests.post(f"{server.url}/generate", json={"input_ids": [1], "sampling_params": {}}, timeout=5.0)
+            elapsed = time.time() - start
+            assert min_time <= elapsed < max_time
+
+    def test_max_concurrent_with_latency(self):
+        with with_mock_server(latency=0.1) as server:
+
+            def send_request():
+                requests.post(f"{server.url}/generate", json={"input_ids": [1], "sampling_params": {}}, timeout=5.0)
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+                futures = [executor.submit(send_request) for _ in range(3)]
+                concurrent.futures.wait(futures)
+
+            assert server.max_concurrent == 3
+
+    def test_health_endpoint(self, mock_server):
+        response = requests.get(f"{mock_server.url}/health", timeout=5.0)
+        assert response.status_code == 200
+        assert response.json() == {"status": "ok"}
+
+    def test_abort_request_endpoint(self, mock_server):
+        response = requests.post(f"{mock_server.url}/abort_request", json={}, timeout=5.0)
+        assert response.status_code == 200
+        assert response.json() == {"status": "ok"}
+
+
+class TestGenerateEndpoint:
+    def test_basic(self, mock_server):
+        prompt = "What is 1+7?"
+        input_ids = mock_server.tokenizer.encode(prompt, add_special_tokens=False)
+        assert input_ids == [3838, 374, 220, 16, 10, 22, 30]
+
+        response = requests.post(
+            f"{mock_server.url}/generate",
+            json={
+                "input_ids": input_ids,
+                "sampling_params": {"temperature": 0.7, "max_new_tokens": 10},
+                "return_logprob": True,
+            },
+            timeout=5.0,
+        )
+        assert response.status_code == 200
+        assert response.json() == {
+            "text": "\\boxed{8}",
+            "meta_info": {
+                "finish_reason": {"type": "stop"},
+                "prompt_tokens": len(input_ids),
+                "cached_tokens": 0,
+                "completion_tokens": 5,
+                "output_token_logprobs": [
+                    [-0.0, 59],
+                    [-0.0078125, 79075],
+                    [-0.015625, 90],
+                    [-0.0234375, 23],
+                    [-0.03125, 92],
+                ],
+            },
+        }
+
+    def test_with_meta_info(self):
+        def process_fn(_: str) -> ProcessResult:
+            return ProcessResult(
+                text="ok",
+                finish_reason="stop",
+                cached_tokens=5,
+                meta_info=ProcessResultMetaInfo(
+                    weight_version="v2.0",
+                    routed_experts="encoded_data",
+                    spec_num_correct_drafts=10,
+                    spec_num_proposed_drafts=15,
+                    spec_verify_ct=3,
+                ),
+            )
+
+        with with_mock_server(process_fn=process_fn) as server:
+            response = requests.post(
+                f"{server.url}/generate",
+                json={"input_ids": [1, 2, 3], "sampling_params": {}, "return_logprob": True},
+                timeout=5.0,
+            )
+
+            assert response.json() == {
+                "text": "ok",
+                "meta_info": {
+                    "finish_reason": {"type": "stop"},
+                    "prompt_tokens": 3,
+                    "cached_tokens": 5,
+                    "completion_tokens": 1,
+                    "output_token_logprobs": [[-0.0, 562]],
+                    "weight_version": "v2.0",
+                    "routed_experts": "encoded_data",
+                    "spec_num_correct_drafts": 10,
+                    "spec_num_proposed_drafts": 15,
+                    "spec_verify_ct": 3,
+                },
+            }
+
+    def test_finish_reason_length(self):
+        def process_fn(_: str) -> ProcessResult:
+            return ProcessResult(text="truncated output", finish_reason="length")
+
+        with with_mock_server(process_fn=process_fn) as server:
+            response = requests.post(
+                f"{server.url}/generate",
+                json={"input_ids": [1, 2, 3], "sampling_params": {}, "return_logprob": True},
+                timeout=5.0,
+            )
+            data = response.json()
+
+        finish_reason = data["meta_info"]["finish_reason"]
+        assert finish_reason["type"] == "length"
+        assert finish_reason["length"] == data["meta_info"]["completion_tokens"]
+
+
+class TestChatCompletionsEndpoint:
+    def test_basic(self, mock_server):
+        messages = [{"role": "user", "content": "What is 1+5?"}]
+        response = requests.post(
+            f"{mock_server.url}/v1/chat/completions",
+            json={
+                "model": "test-model",
+                "messages": messages,
+                "return_prompt_token_ids": True,
+            },
+            timeout=5.0,
+        )
+        assert response.status_code == 200
+        data = response.json()
+
+        assert data["id"].startswith("chatcmpl-")
+        assert isinstance(data["created"], int)
+        choice = data["choices"][0]
+        assert "meta_info" in choice
+        choice.pop("meta_info")
+        prompt_token_ids = expected_prompt_token_ids(mock_server.tokenizer, messages, None)
+        completion_logprobs = expected_logprobs(mock_server.tokenizer, "\\boxed{6}")
+        assert data == {
+            "id": data["id"],
+            "object": "chat.completion",
+            "created": data["created"],
+            "model": "mock-model",
+            "choices": [
+                {
+                    "index": 0,
+                    "message": {"role": "assistant", "content": "\\boxed{6}", "tool_calls": None},
+                    "logprobs": {"content": completion_logprobs},
+                    "prompt_token_ids": prompt_token_ids,
+                    "finish_reason": "stop",
+                }
+            ],
+            "usage": {
+                "prompt_tokens": len(prompt_token_ids),
+                "completion_tokens": len(completion_logprobs),
+                "total_tokens": len(prompt_token_ids) + len(completion_logprobs),
+            },
+        }
+
+    def test_chat_completions_forwards_weight_version_spans_in_meta_info(self):
+        """Per-token weight version spans set on the process result reach the chat choice's meta_info verbatim."""
+        spans = [{"version": "v1", "start": 0, "end": 1}, {"version": "v2", "start": 1, "end": 3}]
+
+        def process_fn(_: str) -> ProcessResult:
+            return ProcessResult(text="one two three", meta_info=ProcessResultMetaInfo(weight_versions=spans))
+
+        with with_mock_server(process_fn=process_fn) as server:
+            response = requests.post(
+                f"{server.url}/v1/chat/completions",
+                json={"model": "test", "messages": [{"role": "user", "content": "count"}]},
+                timeout=5.0,
+            )
+            meta_info = response.json()["choices"][0]["meta_info"]
+
+        assert meta_info["weight_versions"] == spans
+        assert "weight_version" not in meta_info
+        assert meta_info["completion_tokens"] == len(meta_info["output_token_logprobs"])
+
+    def test_with_tool_calls(self):
+        tool_call_response = 'Let me check for you.\n<tool_call>\n{"name": "get_year", "arguments": {}}\n</tool_call>'
+
+        def process_fn(_: str) -> ProcessResult:
+            return ProcessResult(text=tool_call_response, finish_reason="stop")
+
+        with with_mock_server(process_fn=process_fn) as server:
+            response = requests.post(
+                f"{server.url}/v1/chat/completions",
+                json={
+                    "model": "test",
+                    "messages": [{"role": "user", "content": "What year is it?"}],
+                    "tools": SAMPLE_TOOLS,
+                    "return_prompt_token_ids": True,
+                },
+                timeout=5.0,
+            )
+            data = response.json()
+
+            choice = data["choices"][0]
+            choice.pop("meta_info", None)
+            assert choice == {
+                "index": 0,
+                "message": {
+                    "role": "assistant",
+                    "content": "Let me check for you.",
+                    "tool_calls": [
+                        {
+                            "id": "call00000",
+                            "index": 0,
+                            "type": "function",
+                            "function": {"name": "get_year", "arguments": "{}"},
+                        }
+                    ],
+                },
+                "logprobs": {"content": expected_logprobs(server.tokenizer, tool_call_response)},
+                "prompt_token_ids": expected_prompt_token_ids(
+                    server.tokenizer,
+                    [{"role": "user", "content": "What year is it?"}],
+                    SAMPLE_TOOLS,
+                ),
+                "finish_reason": "tool_calls",
+            }
+
+    def test_with_tools_but_no_tool_call(self):
+        response_text = "The weather is sunny today."
+
+        def process_fn(_: str) -> ProcessResult:
+            return ProcessResult(text=response_text, finish_reason="stop")
+
+        with with_mock_server(process_fn=process_fn) as server:
+            response = requests.post(
+                f"{server.url}/v1/chat/completions",
+                json={
+                    "model": "test",
+                    "messages": [{"role": "user", "content": "What's the weather?"}],
+                    "tools": SAMPLE_TOOLS,
+                    "return_prompt_token_ids": True,
+                },
+                timeout=5.0,
+            )
+            data = response.json()
+
+            choice = data["choices"][0]
+            choice.pop("meta_info", None)
+            assert choice == {
+                "index": 0,
+                "message": {"role": "assistant", "content": response_text, "tool_calls": None},
+                "logprobs": {"content": expected_logprobs(server.tokenizer, response_text)},
+                "prompt_token_ids": expected_prompt_token_ids(
+                    server.tokenizer,
+                    [{"role": "user", "content": "What's the weather?"}],
+                    SAMPLE_TOOLS,
+                ),
+                "finish_reason": "stop",
+            }
+
+    def test_with_multiple_tool_calls(self):
+        multi_tool_response = (
+            "I will get year and temperature.\n"
+            '<tool_call>\n{"name": "get_year", "arguments": {}}\n</tool_call>\n'
+            '<tool_call>\n{"name": "get_temperature", "arguments": {"location": "Shanghai"}}\n</tool_call>'
+        )
+
+        def process_fn(_: str) -> ProcessResult:
+            return ProcessResult(text=multi_tool_response, finish_reason="stop")
+
+        with with_mock_server(process_fn=process_fn) as server:
+            response = requests.post(
+                f"{server.url}/v1/chat/completions",
+                json={
+                    "model": "test",
+                    "messages": [{"role": "user", "content": "What year and temperature?"}],
+                    "tools": SAMPLE_TOOLS,
+                    "return_prompt_token_ids": True,
+                },
+                timeout=5.0,
+            )
+            data = response.json()
+
+            choice = data["choices"][0]
+            choice.pop("meta_info", None)
+            assert choice == {
+                "index": 0,
+                "message": {
+                    "role": "assistant",
+                    "content": "I will get year and temperature.",
+                    "tool_calls": [
+                        {
+                            "id": "call00000",
+                            "index": 0,
+                            "type": "function",
+                            "function": {"name": "get_year", "arguments": "{}"},
+                        },
+                        {
+                            "id": "call00001",
+                            "index": 1,
+                            "type": "function",
+                            "function": {"name": "get_temperature", "arguments": '{"location": "Shanghai"}'},
+                        },
+                    ],
+                },
+                "logprobs": {"content": expected_logprobs(server.tokenizer, multi_tool_response)},
+                "prompt_token_ids": expected_prompt_token_ids(
+                    server.tokenizer,
+                    [{"role": "user", "content": "What year and temperature?"}],
+                    SAMPLE_TOOLS,
+                ),
+                "finish_reason": "tool_calls",
+            }
+
+
+class TestMultiTurnToolCallProcessFn:
+    @pytest.mark.parametrize(
+        "prompt,expected_response",
+        [
+            pytest.param(TwoTurnStub.FIRST_PROMPT, TwoTurnStub.FIRST_RESPONSE, id="first_turn"),
+            pytest.param(TwoTurnStub.SECOND_PROMPT, TwoTurnStub.SECOND_RESPONSE, id="second_turn"),
+        ],
+    )
+    def test_generate_endpoint(self, prompt, expected_response):
+        with with_mock_server(process_fn=TwoTurnStub.process_fn) as server:
+            input_ids = server.tokenizer.encode(prompt, add_special_tokens=False)
+            response = requests.post(
+                f"{server.url}/generate",
+                json={"input_ids": input_ids, "sampling_params": {}, "return_logprob": True},
+                timeout=5.0,
+            )
+            assert response.status_code == 200
+            data = response.json()
+            assert data["text"] == expected_response
+            assert data["meta_info"]["finish_reason"] == {"type": "stop"}
+
+    @pytest.mark.parametrize(
+        "messages,expected_content,expected_tool_calls,expected_finish_reason",
+        [
+            pytest.param(
+                TwoTurnStub.OPENAI_MESSAGES_FIRST_TURN,
+                TwoTurnStub.FIRST_RESPONSE_CONTENT,
+                TwoTurnStub.FIRST_TOOL_CALLS_SGLANG_WIRE,
+                "tool_calls",
+                id="first_turn",
+            ),
+            pytest.param(
+                TwoTurnStub.OPENAI_MESSAGES_SECOND_TURN_FROM_CLIENT,
+                TwoTurnStub.SECOND_RESPONSE,
+                None,
+                "stop",
+                id="second_turn",
+            ),
+        ],
+    )
+    def test_chat_completions_endpoint(self, messages, expected_content, expected_tool_calls, expected_finish_reason):
+        with with_mock_server(process_fn=TwoTurnStub.process_fn) as server:
+            response = requests.post(
+                f"{server.url}/v1/chat/completions",
+                json={"model": "test", "messages": messages, "tools": SAMPLE_TOOLS},
+                timeout=5.0,
+            )
+            assert response.status_code == 200
+            data = response.json()
+            assert data["choices"][0]["message"]["content"] == expected_content
+            assert data["choices"][0]["message"]["tool_calls"] == expected_tool_calls
+            assert data["choices"][0]["finish_reason"] == expected_finish_reason
+
+
+class TestNodeAddress:
+    def test_the_default_host_is_the_node_ip_instead_of_loopback(self):
+        """``with_mock_server`` must default to an address other nodes can reach."""
+        with with_mock_server() as server:
+            assert server.host == NodeProbeMixin._get_node_ip()
+            assert server.host != "127.0.0.1"
+            assert server.url == f"http://{NodeProbeMixin._get_node_ip()}:{server.port}"
+
+
+class TestHostResolution:
+    def test_an_explicit_host_is_kept_instead_of_the_node_ip(self):
+        """A caller that pins a host keeps it, so a test can still ask for a loopback-only mock."""
+        server = MockSGLangServer(
+            model_name="Qwen/Qwen3-0.6B", process_fn=default_process_fn, host="127.0.0.1", port=0
+        )
+
+        assert server.host == "127.0.0.1"
+        assert server.url == f"http://127.0.0.1:{server.port}"
+
+    def test_a_missing_host_falls_back_to_the_node_ip(self):
+        """Without an explicit host the mock advertises the node ip so peers on other nodes can dial it."""
+        server = MockSGLangServer(model_name="Qwen/Qwen3-0.6B", process_fn=default_process_fn, host=None, port=0)
+
+        assert server.host == NodeProbeMixin._get_node_ip()
+        assert server.host != "127.0.0.1"
+
+    def test_a_server_advertising_the_node_ip_still_answers_on_loopback(self, mock_server):
+        """The mock binds every interface, so advertising the node ip must not cut off local clients."""
+        response = requests.get(f"http://127.0.0.1:{mock_server.port}/health", timeout=5)
+
+        assert response.status_code == 200
+
+    def test_the_default_host_honours_the_node_ip_override(self, monkeypatch):
+        """A deployment publishes a reachable address through MILES_HOST_IP; the mock must serve on that one."""
+        monkeypatch.setenv(MILES_HOST_IP_ENV, "127.0.0.1")
+
+        with with_mock_server() as server:
+            assert server.url == f"http://127.0.0.1:{server.port}"
+            assert requests.get(f"{server.url}/health", timeout=10).status_code == 200
+
+    def test_an_explicit_host_wins_over_the_node_ip_override(self, monkeypatch):
+        """A caller that pins a host asked for that exact address; an env override must not silently replace it."""
+        monkeypatch.setenv(MILES_HOST_IP_ENV, "10.9.9.9")
+
+        with with_mock_server(host="127.0.0.1") as server:
+            assert server.host == "127.0.0.1"
+            assert requests.get(f"{server.url}/health", timeout=10).status_code == 200

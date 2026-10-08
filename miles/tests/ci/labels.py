@@ -1,0 +1,46 @@
+"""Canonical CI label registry.
+
+Tests declare a domain label set in `register_cuda_ci(..., labels=[...])` and
+`register_cpu_ci(..., labels=[...])`. The PR-side trigger for each label is
+`run-ci-<key>`: each entry below MUST have a matching `run-ci-<key>` label in
+the GitHub repo (maintainer-managed).
+
+Adding a new label:
+1) Add an entry below.
+2) Create the matching `run-ci-<key>` label in GitHub repo Settings -> Labels.
+   The workflow does not need editing -- the generic stage job filters tests
+   by labels at runtime.
+
+The workflow-only scope labels (`run-ci-all`, `run-ci-image`, `nightly`) are
+intentionally NOT listed here: they select a broad scope or cadence, which
+`tests/ci/ci_policy.py` `resolve_policy` maps to an include-label set drawn
+from the registry below.
+"""
+
+KNOWN_LABELS: dict[str, str] = {
+    "megatron": "Megatron-LM training tests",
+    "model-scripts": "Model launch script smoke tests",
+    "sglang": "SGLang patch / equivalence tests",
+    "fsdp": "FSDP training tests",
+    "torchtitan": "torchtitan training tests",
+    "short": "Short 8-GPU smoke tests",
+    "long": "Long-running training tests",
+    "ckpt": "Checkpoint save / load tests",
+    "lora": "LoRA training tests",
+    "multi-lora": "Tinker cookbook and multi-tenant gateway tests",
+    "eval": "Evaluation machinery tests (shared-engine / fleet / external postures)",
+    "precision": "Numerical precision parity tests",
+    "ft-short": "Fault-tolerance trainer comparison tests (no_failure / deterministic / with_failure)",
+    "ft-long": "Fault-tolerance trainer soak tests (random-crash survival, realistic-gsm8k convergence)",
+    "deploy": "Split deployment tests (a run installed as one helm release per deployment)",
+    "weight-update": "Weight update tests",
+    "fully-async": "Fully-async rollout tests",
+    "multi-policy": "Multi policy training tests (several policy models in one run)",
+    "replay": "Routing / indexer replay tests",
+    "qwen35": "Qwen3.5-35B-A3B MTP / spec-v2 e2e tests",
+    "mooncake": "Mooncake object-store rollout transfer tests",
+    "miles-plugin": "miles_plugins extension tests (optimizers, model plugins)",
+    "agentic": "Agentic sandbox e2e tests (need a sandbox-service route and key on the runner)",
+    "amd": "AMD MI350 ROCm tests (stage-c-4-gpu-mi350)",
+    "rpc-comm": "Ray cluster backend driving its workers over the rpc worker comm backend",
+}

@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/radixark/miles",
+  "revision": "b24cfa34b94a53a26edcb5dd0e8d9a16868505fa",
+  "import_date": "2026-10-08",
+  "import_method": "git archive of the pinned revision",
+  "integration": "vendored source tracked directly by CRISP_Reasoning_Compression",
+  "license_file": "LICENSE",
+  "notice_file": "NOTICE",
+  "upstream_files_modified_at_import": false
+}

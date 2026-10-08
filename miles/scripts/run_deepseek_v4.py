@@ -1,0 +1,771 @@
+"""
+DeepSeek V4 training script.
+
+Supports:
+  - DeepSeek-V4-Flash-FP8         Public FP8 repackage of deepseek-ai/DeepSeek-V4-Flash
+                                  (sgl-project/DeepSeek-V4-Flash-FP8, 291B, 43 layers).
+                                  Verified full-model profiles: 8 nodes x 8 GPUs on H200
+                                  or 8 nodes x 4 GPUs on GB300.
+  - DeepSeek-V4-Flash-FP8-4layer  4-layer prune of the above for single-node
+                                  smoke testing. **Cannot generate meaningful output -
+                                  pipeline-only sanity check.**
+  - DeepSeek-V4-Pro-FP8           Verified profile: 32 nodes x 8 GPUs on H200.
+  - DeepSeek-V4-Flash-0731        Official deepseek-ai release (MXFP4 routed experts).
+                                  prepare-fp8 casts the experts losslessly to blockwise
+                                  FP8; downstream is identical to DeepSeek-V4-Flash-FP8.
+
+Usage patterns:
+
+  1. One-shot full pipeline (download + convert + train):
+       python scripts/run_deepseek_v4.py full-train \
+           --model-name DeepSeek-V4-Flash-FP8-4layer \
+           --num-nodes 1 --num-gpus-per-node 8
+
+  2. Individual steps (download [-> MXFP4->FP8] -> FP8->BF16 -> BF16->torch_dist -> train):
+       python scripts/run_deepseek_v4.py prepare-download --model-name DeepSeek-V4-Flash-FP8
+       python scripts/run_deepseek_v4.py prepare-fp8      --model-name DeepSeek-V4-Flash-0731
+       python scripts/run_deepseek_v4.py prepare-single   --model-name DeepSeek-V4-Flash-FP8 \
+           --hf-checkpoint /root/models/DeepSeek-V4-Flash-FP8
+       python scripts/run_deepseek_v4.py prepare-spmd     --model-name DeepSeek-V4-Flash-FP8 \
+           --num-nodes 8 --num-gpus-per-node 8
+       python scripts/run_deepseek_v4.py train            --model-name DeepSeek-V4-Flash-FP8 \
+           --num-nodes 8 --num-gpus-per-node 8 \
+           --hf-checkpoint /root/models/DeepSeek-V4-Flash-FP8
+"""
+
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Literal
+
+import typer
+
+from miles.utils.external_utils import command_utils
+
+app = typer.Typer()
+
+_DEFAULT_MODEL_ORG = {
+    "DeepSeek-V4-Flash-FP8": "sgl-project",
+    # 4-layer prune of sgl-project/DeepSeek-V4-Flash-FP8.
+    "DeepSeek-V4-Flash-FP8-4layer": "Pinaster",
+    "DeepSeek-V4-Pro-FP8": "sgl-project",
+    # Official release with MXFP4 routed experts; cast to FP8 by prepare-fp8.
+    "DeepSeek-V4-Flash-0731": "deepseek-ai",
+}
+
+_MEGATRON_MODEL_TYPE = {
+    "DeepSeek-V4-Flash-FP8": "deepseek-v4-flash",
+    "DeepSeek-V4-Flash-FP8-4layer": "deepseek-v4-flash-4layer",
+    "DeepSeek-V4-Pro-FP8": "deepseek-v4-pro",
+    "DeepSeek-V4-Flash-0731": "deepseek-v4-flash",
+}
+
+_PRO_MODEL_NAMES = ("DeepSeek-V4-Pro-FP8",)
+_MXFP4_MODEL_NAMES = ("DeepSeek-V4-Flash-0731",)
+_FLASH_FULL_MODEL_NAMES = ("DeepSeek-V4-Flash-FP8", "DeepSeek-V4-Flash-0731")
+
+_DSV4_TE_PRECISION_CONFIG = """
+configs:
+  bf16:
+    transformer_engine_config_type: "TEQuantizationParams"
+    training_recipe: {}
+matchers:
+  dsa_indexer_weights_proj_bf16:
+    type: "glob"
+    enabled: true
+    pattern: "*.self_attention.indexer.linear_weights_proj"
+    config: "bf16"
+""".strip()
+
+
+@dataclass
+class ScriptArgs(command_utils.ExecuteTrainConfig):
+    mode: Literal["normal", "debug_minimal"] = "debug_minimal"
+    run_id: str = command_utils.create_run_id()
+    model_org: str = ""
+    model_name: Literal[
+        "DeepSeek-V4-Flash-FP8",
+        "DeepSeek-V4-Flash-FP8-4layer",
+        "DeepSeek-V4-Pro-FP8",
+        "DeepSeek-V4-Flash-0731",
+    ] = "DeepSeek-V4-Flash-FP8"
+
+    task: Literal["dapo_aime", "gsm8k"] = "dapo_aime"
+    enable_eval: bool = True
+
+    hf_checkpoint: str | None = None
+    data_dir: str = "/root/datasets"
+    model_dir: str = "/root/models"
+    # Defaults to model_dir. Set explicitly when shared NFS -> per-node local NVMe copy is needed.
+    model_local_dir: str | None = None
+    save_dir: str = "/root/models"
+    megatron_path: str = "/root/Megatron-LM"
+
+    # performance configs
+    num_gpus_per_node: int | None = None
+    hardware: Literal["auto", "H100", "H200", "B200", "B300", "GB200", "GB300"] = "auto"
+    # use colocate by default. will switch to disaggregated mode when 0 < rollout_num_nodes < num_nodes
+    rollout_num_nodes: int = 0
+    colocate: bool = field(init=False)
+    actor_num_nodes: int = field(init=False)
+    actor_num_gpus_per_node: int = field(init=False)
+    rollout_num_gpus: int = field(init=False)
+    enable_mtp: bool = False
+    dsv4_impl: Literal["miles", "megatron"] = "megatron"
+    # None lets Megatron resolve it: tilelang for --dsv4-impl miles, cuDNN for megatron.
+    dsa_kernel_backend: Literal["none", "tilelang", "cudnn"] | None = None
+    optimizer_offload: bool = True
+    use_fault_tolerance: bool = True
+    # None runs each recipe's own CP. Only the single-node miles impl lets it vary (TP takes the GPUs
+    # CP leaves, CP split with --allgather-cp); every other recipe accepts only its own CP size.
+    cp_size: int | None = None
+
+    # debug configs
+    dump_details: bool = False
+    debug_train_run_id: str | None = None
+    debug_train_rollout_id: str | None = None
+    debug_data_root: str = "/root/shared_data"
+    skip_saving: bool = False
+
+    # precision configs
+    enable_r3: bool = True
+    train_deterministic: bool = True
+    # Train and rollout precision are selected independently. The defaults
+    # preserve the previous fp8_training=True behavior on both sides.
+    train_fp8: bool = True
+    rollout_fp8: bool = True
+    train_mxfp8: bool = False
+    rollout_mxfp8: bool = False
+    enable_mis: bool = False
+
+    # pass any extra sglang/miles/megatron args through `--extra-args '--your-arg'`
+    extra_args: str = ""
+
+    def __post_init__(self):
+        self.hardware = command_utils.resolve_hardware(self)
+        self.num_gpus_per_node = self.num_gpus_per_node or command_utils.NUM_GPUS_OF_HARDWARE[self.hardware]
+        if not self.model_org:
+            self.model_org = _DEFAULT_MODEL_ORG[self.model_name]
+        if self.model_local_dir is None:
+            self.model_local_dir = self.model_dir
+        if self.model_name in _PRO_MODEL_NAMES:
+            self.enable_r3 = False
+        assert not (self.train_fp8 and self.train_mxfp8), "train_fp8 and train_mxfp8 are mutually exclusive"
+        assert not (self.rollout_fp8 and self.rollout_mxfp8), "rollout_fp8 and rollout_mxfp8 are mutually exclusive"
+        if self.hardware in ("H100", "H200"):
+            assert not (self.train_mxfp8 or self.rollout_mxfp8), "train_mxfp8/rollout_mxfp8 require Blackwell"
+        assert self.rollout_num_nodes >= 0
+        assert self.rollout_num_nodes < self.num_nodes
+        assert self.cp_size is None or self.cp_size >= 1, f"cp_size must be at least 1, got {self.cp_size}"
+        self.colocate = self.rollout_num_nodes == 0
+        self.actor_num_nodes = self.num_nodes - self.rollout_num_nodes
+        self.actor_num_gpus_per_node = self.num_gpus_per_node
+        if self.colocate:
+            self.rollout_num_gpus = self.num_nodes * self.num_gpus_per_node
+        else:
+            self.rollout_num_gpus = self.rollout_num_nodes * self.num_gpus_per_node
+
+    @property
+    def megatron_model_type(self):
+        return _MEGATRON_MODEL_TYPE[self.model_name]
+
+    @property
+    def fp8_name(self):
+        if self.model_name in _MXFP4_MODEL_NAMES:
+            return f"{self.model_name}-FP8"
+        return self.model_name
+
+    @property
+    def torch_dist_name(self):
+        return f"{self.model_name}_torch_dist"
+
+    @property
+    def bf16_name(self):
+        if self.model_name == "DeepSeek-V4-Pro-FP8":
+            return "DeepSeek-V4-Pro-BF16"
+        return f"{self.model_name}-bf16"
+
+    @property
+    def mxfp8_name(self):
+        return f"{self.model_name}-MXFP8"
+
+    @property
+    def rollout_name(self):
+        if self.rollout_mxfp8:
+            return self.mxfp8_name
+        if self.rollout_fp8:
+            return self.fp8_name
+        return self.bf16_name
+
+
+def _download_dataset(args: ScriptArgs):
+    """Download the task-specific dataset(s)."""
+    U = args.create_backend()
+    match args.task:
+        case "dapo_aime":
+            U.hf_download_dataset("zhuzilin/dapo-math-17k", data_dir=args.data_dir)
+            U.hf_download_dataset("zhuzilin/aime-2024", data_dir=args.data_dir)
+        case "gsm8k":
+            U.hf_download_dataset("zhuzilin/gsm8k", data_dir=args.data_dir)
+
+
+def _hf_checkpoint_path(args: ScriptArgs) -> str:
+    """Resolve hf_checkpoint path: explicit override wins, else {model_dir}/{model_name}."""
+    return args.hf_checkpoint or f"{args.model_dir}/{args.model_name}"
+
+
+def _ensure_4layer_model_type(args: ScriptArgs):
+    """Undo the old deepseek_ref workaround for local 4-layer prunes."""
+    if args.model_name != "DeepSeek-V4-Flash-FP8-4layer":
+        return
+    cfg = Path(_hf_checkpoint_path(args)) / "config.json"
+    if not cfg.exists():
+        return
+    text = cfg.read_text()
+    if '"model_type": "deepseek_ref"' in text:
+        cfg.write_text(text.replace('"model_type": "deepseek_ref"', '"model_type": "deepseek_v4"'))
+        print(f"[patch] {cfg}: model_type deepseek_ref -> deepseek_v4")
+
+
+def _prepare_download(args: ScriptArgs):
+    """Download HF checkpoint + task dataset. Idempotent: hf skips existing blobs."""
+    U = args.create_backend()
+    U.exec_command_cpu(f"mkdir -p {args.model_dir} {args.data_dir}")
+    # Only download if the user has NOT supplied a pre-existing checkpoint dir.
+    # (prepare_single / train with --hf-checkpoint bypass this.)
+    if args.hf_checkpoint is None:
+        dest = f"{args.model_dir}/{args.model_name}"
+        U.exec_command_cpu(f"hf download {args.model_org}/{args.model_name} " f"--local-dir {dest}")
+    _ensure_4layer_model_type(args)
+    _download_dataset(args)
+
+
+@app.command()
+@command_utils.dataclass_cli
+def prepare_download(args: ScriptArgs):
+    """Download HF checkpoint + dataset from HuggingFace. Run on one node (shared NFS)."""
+    _prepare_download(args)
+
+
+def _prepare_fp8(args: ScriptArgs):
+    """MXFP4 experts -> blockwise FP8 (lossless cast). Only for official MXFP4 releases."""
+    U = args.create_backend()
+    if args.model_name not in _MXFP4_MODEL_NAMES:
+        print(f"[prepare_fp8] {args.model_name} has no MXFP4 source; nothing to do.")
+        return
+    U.exec_command_gpu(
+        f"python tools/convert_mxfp4_to_fp8.py "
+        f"--model-dir {_hf_checkpoint_path(args)} "
+        f"--save-dir {args.model_dir}/{args.fp8_name} "
+    )
+
+
+@app.command()
+@command_utils.dataclass_cli
+def prepare_fp8(args: ScriptArgs):
+    """MXFP4 -> FP8 cast (needs prepare-download done first). One node."""
+    _prepare_fp8(args)
+
+
+def _prepare_single(args: ScriptArgs):
+    U = args.create_backend()
+    _download_dataset(args)
+
+    if args.model_name in _MXFP4_MODEL_NAMES:
+        src = f"{args.model_dir}/{args.fp8_name}"
+    else:
+        src = _hf_checkpoint_path(args)
+    U.fp8_cast_bf16(
+        path_src=src,
+        path_dst=f"{args.model_dir}/{args.bf16_name}/",
+    )
+
+
+@app.command()
+@command_utils.dataclass_cli
+def prepare_single(args: ScriptArgs):
+    """FP8 -> BF16 cast for Megatron. Needs --hf-checkpoint (or pre-downloaded). One node."""
+    _prepare_single(args)
+
+
+def _prepare_mxfp8(args: ScriptArgs):
+    """BF16 -> MXFP8 conversion for sglang rollout (Blackwell only).
+
+    head/wo_a/ffn.gate/compressor/norms/embed and the DSA indexer weights_proj
+    are all kept BF16 by SKIP_WEIGHT_SUBSTRINGS in tools/convert_hf_to_mxfp8.py.
+    """
+    U = args.create_backend()
+    if not args.rollout_mxfp8:
+        return
+    assert command_utils.GENERATION_HARDWARE[args.hardware] == "Blackwell", "rollout_mxfp8 requires Blackwell"
+    U.exec_command_gpu(
+        f"python tools/convert_hf_to_mxfp8.py "
+        f"--model-dir {args.model_dir}/{args.bf16_name} "
+        f"--save-dir {args.model_dir}/{args.mxfp8_name} "
+    )
+
+
+@app.command()
+@command_utils.dataclass_cli
+def prepare_mxfp8(args: ScriptArgs):
+    """BF16 -> MXFP8 conversion (needs prepare-single done first). One node."""
+    _prepare_mxfp8(args)
+
+
+def _prepare_spmd(args: ScriptArgs):
+    U = args.create_backend()
+    is_4layer = args.model_name == "DeepSeek-V4-Flash-FP8-4layer"
+    actor_num_nodes = args.actor_num_nodes
+    actor_num_gpus_per_node = args.actor_num_gpus_per_node
+    extra_args = f"--dsv4-impl {args.dsv4_impl} --expert-tensor-parallel-size 1 --context-parallel-size 1 "
+    if args.dsa_kernel_backend is not None:
+        extra_args += f"--dsa-kernel-backend {args.dsa_kernel_backend} "
+    if actor_num_nodes == 1 and is_4layer:
+        extra_args += (
+            "--tensor-model-parallel-size 1 " "--pipeline-model-parallel-size 1 " "--expert-model-parallel-size 1 "
+        )
+    elif actor_num_nodes == 8 and args.model_name in _FLASH_FULL_MODEL_NAMES:
+        extra_args += (
+            "--tensor-model-parallel-size 1 "
+            "--pipeline-model-parallel-size 8 "
+            "--expert-model-parallel-size 4 "
+            "--decoder-first-pipeline-num-layers 7 "
+            "--decoder-last-pipeline-num-layers 6 "
+        )
+    elif actor_num_nodes == 32 and actor_num_gpus_per_node == 8 and args.model_name == "DeepSeek-V4-Pro-FP8":
+        extra_args += (
+            "--tensor-model-parallel-size 8 "
+            "--pipeline-model-parallel-size 8 "
+            "--expert-model-parallel-size 32 "
+            "--decoder-first-pipeline-num-layers 7 "
+            "--decoder-last-pipeline-num-layers 6 "
+            "--make-vocab-size-divisible-by 32 "
+        )
+    else:
+        raise NotImplementedError(
+            f"No verified SPMD conversion config for {args.model_name} "
+            f"({actor_num_nodes} actor nodes x {actor_num_gpus_per_node} GPUs/node). "
+            f"Please specify your conversion parallel config in `run_deepseek_v4.py`."
+        )
+
+    num_gpus_for_convert = actor_num_gpus_per_node
+    if is_4layer:
+        # Convert on a single GPU (PP1). convert_hf_to_torch_dist auto-forces PP=world_size when
+        # >1 GPU, but the bumped Megatron asserts hash-MoE layers + PP>1 require an explicit
+        # pipeline_model_parallel_layout (which the convert doesn't set). PP1 sidesteps it and is
+        # plenty for the 4-layer prune. (Full Flash/Pro use explicit multi-PP convert configs.)
+        num_gpus_for_convert = 1
+
+    U.convert_checkpoint(
+        model_name=args.model_name,
+        hf_checkpoint=f"{args.model_dir}/{args.bf16_name}",
+        megatron_model_type=args.megatron_model_type,
+        num_gpus_per_node=num_gpus_for_convert,
+        multinode=True if actor_num_nodes > 1 else False,
+        num_nodes=actor_num_nodes,
+        extra_args=extra_args,
+        dir_dst=f"{args.model_dir}",
+        megatron_path=args.megatron_path,
+    )
+
+
+@app.command()
+@command_utils.dataclass_cli
+def prepare_spmd(args: ScriptArgs):
+    _prepare_spmd(args)
+
+
+def _prepare_cmd(args: ScriptArgs) -> dict[str, str]:
+    if args.model_local_dir == args.model_dir:
+        return {}
+
+    copies = [
+        command_utils.rsync_cmd(
+            f"{args.model_dir}/{args.torch_dist_name}", f"{args.model_local_dir}/{args.torch_dist_name}"
+        ),
+        command_utils.rsync_cmd(
+            f"{args.model_dir}/{args.rollout_name}", f"{args.model_local_dir}/{args.rollout_name}"
+        ),
+    ]
+    return {"trainer": " && ".join(copies)}
+
+
+def _get_parallel_config(args: ScriptArgs) -> str:
+    """Return parallel config args for tested GPU configurations.
+
+    Only includes configurations that have been verified to work.
+    Raises NotImplementedError for untested configurations.
+    """
+    actor_num_nodes = args.actor_num_nodes
+    actor_num_gpus_per_node = args.actor_num_gpus_per_node
+    total_gpus = actor_num_nodes * actor_num_gpus_per_node
+
+    # Single-node smoke-test configs
+    if actor_num_nodes == 1:
+        if args.dsv4_impl == "megatron":
+            # dsv4_hybrid needs cp_partition_mode='contiguous' for CP>1, which miles does not set
+            # The plugin rejects TP>1; the TP ranks go to DP instead.
+            return _parallel_flags(args, tp=1, cp=1, ep=actor_num_gpus_per_node)
+        cp_size = args.cp_size or 1
+        if actor_num_gpus_per_node % cp_size:
+            raise NotImplementedError(f"cp_size={cp_size} does not divide {actor_num_gpus_per_node} GPUs")
+        return _parallel_flags(args, tp=actor_num_gpus_per_node // cp_size, cp=cp_size, ep=actor_num_gpus_per_node)
+
+    if actor_num_gpus_per_node == 4:
+        if total_gpus == 32:  # 8 nodes x 4 GPUs
+            if args.dsv4_impl == "megatron":
+                # The plugin rejects TP>1 here, and dsv4_hybrid needs qkv_format=thd for
+                # CP>1, which no launcher exercises yet -- so the TP and CP ranks both go
+                # to DP. max-tokens-per-gpu below doubles to keep the per-micro-batch
+                # budget (max_tokens_per_gpu * cp_size) equal to the miles recipe's.
+                return _parallel_flags(args, tp=1, pp=8, pp_edge_layers=(4, 3), cp=1, ep=4)
+            return _parallel_flags(args, tp=2, pp=8, pp_edge_layers=(4, 3), cp=2, ep=4)
+
+    if actor_num_gpus_per_node == 8:
+        if total_gpus == 64:  # 8 nodes x 8 GPUs
+            return _parallel_flags(args, tp=8, pp=8, pp_edge_layers=(4, 3), cp=1, ep=8)
+        elif total_gpus == 256:  # 32 nodes x 8 GPUs (Pro)
+            return _parallel_flags(args, tp=8, pp=8, pp_edge_layers=(7, 6), cp=1, ep=32)
+
+    raise NotImplementedError(
+        f"No pre-set parallel config for {total_gpus} GPUs. "
+        f"Please specify your parallel config in `run_deepseek_v4._get_parallel_config`."
+    )
+
+
+def _parallel_flags(
+    args: ScriptArgs, *, tp: int, cp: int, ep: int, pp: int = 1, pp_edge_layers: tuple[int, int] | None = None
+) -> str:
+    """One recipe's parallel flags; a recipe runs its own CP size, so ``cp_size`` must be unset or equal."""
+    if args.cp_size not in (None, cp):
+        raise NotImplementedError(
+            f"cp_size={args.cp_size} is untested here: this recipe (--dsv4-impl {args.dsv4_impl}, "
+            f"{args.actor_num_nodes}x{args.actor_num_gpus_per_node} GPUs) runs CP{cp}"
+        )
+    flags = [f"--tensor-model-parallel-size {tp}"]
+    if tp > 1:
+        flags.append("--sequence-parallel")
+    flags.append(f"--pipeline-model-parallel-size {pp}")
+    if pp_edge_layers is not None:
+        first, last = pp_edge_layers
+        flags += [f"--decoder-first-pipeline-num-layers {first}", f"--decoder-last-pipeline-num-layers {last}"]
+    flags.append(f"--context-parallel-size {cp}")
+    if cp > 1:
+        flags.append("--allgather-cp")  # DeepSeek V4 rejects the zigzag CP split
+    flags += [f"--expert-model-parallel-size {ep}", "--expert-tensor-parallel-size 1"]
+    return "".join(f"{flag} " for flag in flags)
+
+
+def _train(args: ScriptArgs):
+    U = args.create_backend()
+    if args.train_mxfp8 or args.rollout_mxfp8:
+        assert command_utils.GENERATION_HARDWARE[args.hardware] == "Blackwell", "MXFP8 requires Blackwell"
+    if not args.rollout_fp8 or args.hf_checkpoint is None or args.model_name in _MXFP4_MODEL_NAMES:
+        rollout_checkpoint = f"{args.model_local_dir}/{args.rollout_name}"
+        if args.hf_checkpoint != rollout_checkpoint:
+            print(f"[precision] rollout checkpoint: {args.hf_checkpoint} -> {rollout_checkpoint}")
+            args.hf_checkpoint = rollout_checkpoint
+    print(
+        f"[precision] train_fp8={args.train_fp8}, rollout_fp8={args.rollout_fp8}, "
+        f"train_mxfp8={args.train_mxfp8}, rollout_mxfp8={args.rollout_mxfp8}"
+    )
+    print(
+        f"running on {args.num_nodes} nodes "
+        f"({args.actor_num_nodes} actor nodes x {args.actor_num_gpus_per_node} GPUs/node, "
+        f"{args.rollout_num_gpus} rollout GPUs, colocate={args.colocate})"
+    )
+    _ensure_4layer_model_type(args)
+
+    load_save_path = f"{args.save_dir}/{args.run_id}/checkpoints"
+    ckpt_args = f"--hf-checkpoint {args.hf_checkpoint} " f"--ref-load {args.model_local_dir}/{args.torch_dist_name} "
+    if not args.skip_saving:
+        ckpt_args += (
+            f"--load {load_save_path} " f"--save {load_save_path} " "--save-interval 20 " "--save-retain-interval 20 "
+        )
+
+    rollout_args = (
+        "--label-key label "
+        "--apply-chat-template "
+        "--rollout-shuffle "
+        "--rm-type math "
+        "--num-rollout 3000 "
+        "--rollout-batch-size 32 "
+        "--n-samples-per-prompt 8 "
+        "--rollout-temperature 0.8 "
+        "--num-steps-per-rollout 1 "
+        "--balance-data "
+    )
+
+    if args.mode != "debug_minimal":
+        rollout_args += (
+            "--over-sampling-batch-size 512 "
+            "--dynamic-sampling-filter-path miles.rollout.filter_hub.dynamic_sampling_filters.check_reward_nonzero_std "
+        )
+
+    eval_args = ""
+    if args.enable_eval:
+        eval_args += "--eval-interval 20 " "--eval-top-p 0.7 "
+
+    match args.task:
+        case "dapo_aime":
+            rollout_args += (
+                f"--prompt-data {args.data_dir}/dapo-math-17k/dapo-math-17k.jsonl "
+                "--input-key prompt "
+                f"--rollout-max-response-len 4096 "
+                """--apply-chat-template-kwargs '{"thinking_mode":"thinking"}' """
+            )
+            eval_args += (
+                f"--eval-prompt-data aime {args.data_dir}/aime-2024/aime-2024.jsonl "
+                "--n-samples-per-eval-prompt 8 "
+                "--eval-max-response-len 4096 "
+            )
+        case "gsm8k":
+            rollout_args += (
+                f"--prompt-data {args.data_dir}/gsm8k/train.parquet "
+                "--input-key messages "
+                "--rollout-max-response-len 256 "
+            )
+            eval_args += (
+                f"--eval-prompt-data gsm8k {args.data_dir}/gsm8k/test.parquet "
+                "--n-samples-per-eval-prompt 1 "
+                "--eval-max-response-len 256 "
+            )
+
+    perf_args = _get_parallel_config(args)
+
+    perf_args += (
+        "--recompute-granularity full "
+        "--recompute-method uniform "
+        "--recompute-num-layers 1 "
+        f"{'--use-dynamic-batch-size ' if args.dsv4_impl == 'megatron' else '--micro-batch-size 1 '}"
+        f"--max-tokens-per-gpu {4096 if args.dsv4_impl == 'megatron' else 2048} "
+    )
+
+    grpo_args = (
+        "--advantage-estimator grpo "
+        "--kl-loss-coef 0.00 "
+        "--kl-loss-type low_var_kl "
+        "--entropy-coef 0.00 "
+        "--eps-clip 0.2 "
+        "--eps-clip-high 0.28 "
+    )
+
+    optimizer_args = (
+        "--optimizer adam "
+        "--lr 1e-6 "
+        "--lr-decay-style constant "
+        "--weight-decay 0.1 "
+        "--adam-beta1 0.9 "
+        "--adam-beta2 0.98 "
+    )
+    if args.optimizer_offload:
+        optimizer_args += (
+            "--optimizer-cpu-offload " "--use-precision-aware-optimizer " "--overlap-cpu-optimizer-d2h-h2d "
+        )
+
+    if args.model_name == "DeepSeek-V4-Pro-FP8":
+        sglang_world_size = 32
+        sglang_tp_size = 32
+        sglang_dp_size = 32
+        sglang_ep_size = 32
+    elif args.hardware in ("GB200", "GB300"):
+        # Grace, prefer tp=8. tp=4 causes CPU OOM when colocate
+        sglang_world_size = sglang_tp_size = sglang_ep_size = min(args.rollout_num_gpus, 8)
+        sglang_dp_size = 1
+    else:
+        sglang_world_size = 4
+        sglang_tp_size = 4
+        sglang_dp_size = 1
+        sglang_ep_size = 4
+    assert (
+        sglang_world_size <= args.rollout_num_gpus
+    ), f"a {sglang_world_size}-GPU engine cannot start on {args.rollout_num_gpus} rollout GPUs"
+    # MXFP8 rollout dense GEMM uses the cutlass backend and routed MoE uses
+    # FlashInfer's TRT-LLM kernel (mirrors the pre-rebase MXFP8 recipe).
+    if args.rollout_mxfp8:
+        sglang_fp8_gemm_backend = "flashinfer_cutlass"
+    else:
+        sglang_fp8_gemm_backend = "auto"
+    if args.rollout_mxfp8:
+        sglang_moe_runner_backend = "flashinfer_trtllm_routed"
+    elif args.model_name == "DeepSeek-V4-Pro-FP8":
+        sglang_moe_runner_backend = "deep_gemm"
+    else:
+        sglang_moe_runner_backend = "auto"
+    sglang_args = (
+        f"--rollout-num-gpus-per-engine {sglang_world_size} "
+        f"--sglang-fp8-gemm-backend {sglang_fp8_gemm_backend} "
+        f"--sglang-moe-runner-backend {sglang_moe_runner_backend} "
+        f"--sglang-tp-size {sglang_tp_size} "
+        f"--sglang-dp-size {sglang_dp_size} "
+        f"--sglang-ep-size {sglang_ep_size} "
+        "--router-health-success-threshold 1 "
+        "--router-health-check-interval-secs 15 "
+        "--router-health-failure-threshold 40 "  # TODO improve
+    )
+    if args.model_name == "DeepSeek-V4-Pro-FP8":
+        sglang_args += (
+            "--sglang-enable-dp-attention "
+            "--sglang-cuda-graph-max-bs-decode 8 "
+            "--sglang-moe-a2a-backend deepep "
+            "--sglang-deepep-mode low_latency "
+        )
+    if args.enable_mtp:
+        sglang_args += (
+            "--sglang-speculative-algorithm EAGLE "
+            "--sglang-speculative-num-steps 3 "
+            "--sglang-speculative-eagle-topk 1 "
+            "--sglang-speculative-num-draft-tokens 4 "
+        )
+    extra_env_vars = {
+        "SGLANG_SKIP_CHECKPOINT_LOAD_CHECK": "1",
+        "SGLANG_DSV4_FP4_EXPERTS": "0",
+        "SGLANG_HEALTH_CHECK_TIMEOUT": "120",
+        "SGLANG_DG_CACHE_DIR_PER_PROCESS": "1",
+        "SGLANG_OPT_FP8_WO_A_GEMM": "0",
+        # Colocated multi-engine init can deadlock in the multimem all-gather rendezvous (sgl-project/sglang#36110).
+        "SGLANG_DISABLE_MULTIMEM_AG": "1",
+    }
+    if args.model_name == "DeepSeek-V4-Pro-FP8":
+        extra_env_vars["SGLANG_DEEPEP_NUM_MAX_DISPATCH_TOKENS_PER_RANK"] = "256"
+        extra_env_vars["SGLANG_JIT_DEEPGEMM_PRECOMPILE"] = "0"
+
+    misc_args = (
+        "--attention-dropout 0.0 "
+        "--hidden-dropout 0.0 "
+        "--attention-softmax-in-fp32 "
+        f"--update-weight-buffer-size {1 * 1024 ** 3} "
+        f"--actor-num-nodes {args.actor_num_nodes} "
+        f"--actor-num-gpus-per-node {args.actor_num_gpus_per_node} "
+        f"--num-gpus-per-node {args.num_gpus_per_node} "
+        "--train-memory-margin-bytes 3221225472 "
+        "--sglang-mem-fraction-static 0.7 "
+        "--accumulate-allreduce-grads-in-fp32 "
+        # GB300 host RAM is smaller than the engine weight mirror plus the trainer
+        # backup, so overlap the handoff on the GPU instead.
+        f"{'--colocate-memory-peak-device gpu ' if args.hardware == 'GB300' else ''}"
+        f"--dsv4-impl {args.dsv4_impl} "
+        f"{f'--dsa-kernel-backend {args.dsa_kernel_backend} ' if args.dsa_kernel_backend else ''}"
+        "--model-name deepseekv4 "  # for mbridge load
+        f"--qkv-format {'thd' if args.dsv4_impl == 'megatron' else 'bshd'} "
+        "--moe-router-freeze-gate "
+        "--freeze-e-score-correction-bias "
+        "--rollout-health-check-interval 300 "
+        "--rollout-health-check-timeout 300 "
+    )
+    if args.colocate:
+        misc_args += "--colocate "
+    else:
+        misc_args += f"--rollout-num-gpus {args.rollout_num_gpus} "
+
+    if args.dump_details:
+        misc_args += f"--dump-details {args.debug_data_root}/{args.run_id}/dump_details "
+
+    if args.enable_mis:
+        misc_args += (
+            "--use-tis "
+            "--custom-config-path examples/infra_features/train_infer_mismatch_helper/mis.yaml "
+            "--custom-tis-function-path examples.infra_features.train_infer_mismatch_helper.mis.compute_mis_weights_with_cp "
+        )
+
+    if args.use_fault_tolerance:
+        misc_args += "--use-fault-tolerance "
+
+    if args.debug_train_run_id is not None:
+        if args.debug_train_rollout_id is None:
+            args.debug_train_rollout_id = 1
+        misc_args += (
+            f"--load-debug-rollout-data "
+            f"{args.debug_data_root}/{args.debug_train_run_id}/dump_details/rollout_data/{args.debug_train_rollout_id}.pt "
+        )
+        misc_args += "--debug-train-only "
+
+    if args.enable_r3:
+        misc_args += "--use-rollout-routing-replay "
+
+    if args.train_deterministic:
+        misc_args += "--deterministic-mode "
+        extra_env_vars |= {
+            "NCCL_ALGO": "Ring",
+            "NVTE_ALLOW_NONDETERMINISTIC_ALGO": "0",
+            "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+        }
+
+    if args.train_mxfp8:
+        misc_args += "--transformer-impl transformer_engine " "--bf16 " "--fp8-format e4m3 " "--fp8-recipe mxfp8 "
+    elif args.train_fp8:
+        misc_args += "--transformer-impl transformer_engine " "--bf16 " "--fp8-format e4m3 " "--fp8-recipe blockwise "
+
+    if (args.train_fp8 or args.train_mxfp8) and "--te-precision-config-file" not in args.extra_args:
+        misc_args += f"--te-precision-config-file " f"{command_utils.encode_pseudo_file(_DSV4_TE_PRECISION_CONFIG)} "
+
+    train_args = (
+        f"{ckpt_args} "
+        f"{rollout_args} "
+        f"{optimizer_args} "
+        f"{grpo_args} "
+        f"{command_utils.get_default_wandb_args(__file__, run_id=args.run_id)} "
+        f"{perf_args} "
+        f"{eval_args} "
+        f"{sglang_args} "
+        f"{misc_args} "
+        f"{args.extra_args} "
+    )
+
+    U.execute_train(
+        train_args=train_args,
+        num_gpus_per_node=args.num_gpus_per_node,
+        megatron_model_type=args.megatron_model_type,
+        extra_env_vars={**extra_env_vars},
+        megatron_path=args.megatron_path,
+        prepare_cmd=_prepare_cmd(args),
+    )
+
+
+@app.command()
+@command_utils.dataclass_cli
+def train(args: ScriptArgs):
+    """Run training. Assumes data/model/torch_dist are already prepared on {model_local_dir}."""
+    _train(args)
+
+
+@app.command()
+@command_utils.dataclass_cli
+def full_train(args: ScriptArgs):
+    _prepare_download(args)
+
+    if args.model_name in _MXFP4_MODEL_NAMES:
+        fp8_sentinel = Path(f"{args.model_dir}/{args.fp8_name}") / "model.safetensors.index.json"
+        if not fp8_sentinel.exists():
+            _prepare_fp8(args)
+        else:
+            print(f"[full_train] Skipping MXFP4->FP8 cast: {fp8_sentinel} already exists.")
+
+    bf16_dir = Path(f"{args.model_dir}/{args.bf16_name}")
+    bf16_sentinel = bf16_dir / "model.safetensors.index.json"
+    if not bf16_sentinel.exists():
+        _prepare_single(args)
+    else:
+        print(f"[full_train] Skipping FP8->BF16 cast: {bf16_sentinel} already exists.")
+
+    if args.rollout_mxfp8:
+        mxfp8_sentinel = Path(f"{args.model_dir}/{args.mxfp8_name}") / "model.safetensors.index.json"
+        if not mxfp8_sentinel.exists():
+            _prepare_mxfp8(args)
+        else:
+            print(f"[full_train] Skipping BF16->MXFP8 conversion: {mxfp8_sentinel} already exists.")
+
+    torch_dist_dir = Path(f"{args.model_dir}/{args.torch_dist_name}")
+    torch_dist_sentinel = torch_dist_dir / "latest_checkpointed_iteration.txt"
+    if not torch_dist_sentinel.exists():
+        _prepare_spmd(args)
+    else:
+        print(f"[full_train] Skipping BF16->torch_dist conversion: {torch_dist_sentinel} already exists.")
+
+    if args.hf_checkpoint is None:
+        args.hf_checkpoint = f"{args.model_local_dir}/{args.rollout_name}"
+
+    _train(args)
+
+
+if __name__ == "__main__":
+    app()
