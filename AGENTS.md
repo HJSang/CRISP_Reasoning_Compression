@@ -21,5 +21,18 @@
 - The user requested experiment-plan review before a full run. Do not launch
   full experiments until that review is explicitly approved. Approval of a
   bounded pilot does not authorize a larger run.
-- Keep credentials, private machine identifiers, model checkpoints, and run
-  outputs out of this public repository.
+- Public changes must not contain private identity or infrastructure information:
+  personal names/emails/usernames, user-specific absolute paths, actual host or
+  devbox names, hardware codenames, node/cluster/reservation identifiers, private
+  addresses, internal storage endpoints, credentials, or raw operational logs.
+  Use generic labels such as `worker-a` and configurable paths. Keep real values
+  in ignored local configuration and inject them at runtime.
+- Check both file contents and Git author/committer metadata before a public
+  push. Use neutral project metadata for new commits. Do not embed a private
+  identifier in a public denylist, test fixture, screenshot, or example.
+- Preserve required upstream license notices and existing public scholarly
+  attribution. Do not claim this named public repository is anonymous. Any
+  removal of previously published Git metadata needs a separately authorized
+  history-cleanup operation; a new commit cannot erase an older commit.
+- Keep model checkpoints, generated traces, raw run outputs, and local runtime
+  configuration out of this public repository.

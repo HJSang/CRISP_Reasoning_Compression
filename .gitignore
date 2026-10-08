@@ -8,3 +8,9 @@ __pycache__/
 /artifacts/
 /checkpoints/
 /wandb/
+.env
+.env.*
+!.env.example
+/private/
+/local/
+/runtime/
