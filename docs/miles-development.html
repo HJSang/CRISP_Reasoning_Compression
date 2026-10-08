@@ -19,8 +19,9 @@
 <p>Upstream: <a href="https://github.com/radixark/miles/tree/b24cfa34b94a53a26edcb5dd0e8d9a16868505fa">radixark/miles at the imported revision</a>. The import preserves upstream source, license, notices, and developer instructions. The provenance file records the baseline revision; future patches are committed directly in CRISP.</p>
 <h2>Where to make changes</h2>
 <table><thead><tr><th>Work</th><th>Location from the CRISP root</th></tr></thead><tbody>
-<tr><td>PI prompt construction and teacher scoring</td><td><code>miles/miles/rollout/on_policy_distillation.py</code> and experiment-local scoring hooks</td></tr>
-<tr><td>Token-level OPD signal</td><td><code>miles/miles/backends/training_utils/loss/hub/opd.py</code></td></tr>
+<tr><td>PI prompt construction</td><td>Experiment-local rollout hooks and typed batch fields under <code>miles/miles/</code></td></tr>
+<tr><td>Full-vocabulary teacher targets</td><td>Proposed OPSD helper in <code>miles/miles/backends/megatron_utils/</code>, using the existing forward-only path</td></tr>
+<tr><td>OPSD divergence / existing OPD signal</td><td>Proposed <code>miles/miles/backends/training_utils/loss/hub/opsd.py</code>; existing <code>opd.py</code> remains separate</td></tr>
 <tr><td>Loss implementation and reduction</td><td><code>miles/miles/backends/training_utils/loss/hub/losses.py</code> and <code>loss/objective.py</code></td></tr>
 <tr><td>Experiment entry points</td><td><code>miles/examples/on_policy_distillation/</code></td></tr>
 <tr><td>Focused validation</td><td><code>miles/tests/</code></td></tr>
@@ -33,7 +34,8 @@ cd CRISP_Reasoning_Compression/miles</pre>
 <p>Run Miles commands from that directory so package imports and relative paths match upstream. Follow <a href="../miles/README.md">Miles setup documentation</a> for a compatible GPU environment. Environment installation is not performed by this repository import. Commit from the CRISP root as usual; no submodule update or separate Miles push is needed.</p>
 <h2>Research protocol remains under review</h2>
 <p>Public code and reports use generic worker labels and configurable paths. Real user identities, personal paths, hardware codenames, hostnames, cluster or reservation identifiers, private endpoints, credentials, and raw runtime logs belong in ignored local configuration. Review new file contents and Git metadata before pushing. Required upstream attribution remains intact.</p>
-<p>The planned study separates PI corrections from checkpoint differences and measures actual unhinted student learning. The inspected Miles OPD implementation uses sampled-token or top-k reverse-KL signals; it does not implement the earlier proposed full-vocabulary forward-KL experiment. The loss choice, run matrix, and compute budget must be settled explicitly in the experiment review.</p>
+<p>Read the <a href="opsd-implementation-design.html">OPSD implementation and reference-validation design</a> first. It proposes porting the original full-vocabulary loss with a frozen base teacher and canonical LoRA, then validating loss, gradients, identical-token model updates and distributed reduction against the pinned author repository. This supersedes the earlier sampled-token implementation proposal. The existing Miles OPD signal is a different objective and remains separate.</p>
+<p>The later scientific study separates PI corrections from checkpoint differences and measures actual unhinted student learning. Its run matrix and compute budget must be revised after the reference-validation pilot; the earlier sampled-token cost projection does not cover this port.</p>
 <p>This change establishes the source baseline and development location. It does not add the PI scorer, change the loss, install dependencies, or launch training. The existing upstream examples are reference implementations, not approval to start a full run. A bounded pilot and a full study have separate review gates.</p>
 <p class="small">Validation for the import checks the upstream Git tree against the tracked copy, including executable bits and symlink targets, and verifies that no nested Git repository or submodule was introduced. Runtime correctness of later experiment patches requires their own tests.</p>
 </body></html>

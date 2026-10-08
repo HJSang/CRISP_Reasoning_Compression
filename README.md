@@ -18,6 +18,11 @@ ordinary source. The initial import is pinned to upstream commit
 preserved. Read the [HTML development guide](docs/miles-development.html) for
 the code layout and workflow.
 
+The [OPSD implementation and reference-validation design](docs/opsd-implementation-design.html)
+proposes the original full-vocabulary loss, fixed base teacher, canonical LoRA,
+and independent loss/gradient/update checks against the author repository.
+This design is awaiting review; implementation and runtime validation are pending.
+
 Run Miles commands from the `miles/` working directory. The existing `workspace/`
 implementation and paper results below describe the original CRISP pipeline.
 The new experiment protocol is pending review; no training is launched by this
