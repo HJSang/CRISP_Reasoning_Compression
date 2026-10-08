@@ -99,7 +99,9 @@ def _args(model):
     return SimpleNamespace(
         loss_type="opsd_loss",
         vocab_size=128,
-        padded_vocab_size=128,
+        # Regression: Bridge may leave its 128-column head unpadded while the
+        # launch arguments describe a 256-column padded vocabulary.
+        padded_vocab_size=256,
         opsd_beta=0.0,
         opsd_temperature=1.1,
         opsd_token_clip=0.05,

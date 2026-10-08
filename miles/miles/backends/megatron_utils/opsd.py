@@ -3,6 +3,7 @@
 from functools import partial
 
 import torch
+from megatron.core.utils import get_attr_wrapped_model
 
 from miles.backends.megatron_utils.lora.utils import _is_adapter_param_name
 from miles.backends.megatron_utils.model import forward_only
@@ -50,7 +51,14 @@ def score_teacher(actor, rollout_data, num_microbatches, *, rollout_id):
     tp = get_parallel_state().tp
     if sum(num_microbatches) * args.micro_batch_size != len(rollout_data["tokens"]):
         raise ValueError("OPSD requires the fixed microbatch schedule to cover the entire local rollout")
-    width = args.padded_vocab_size // tp.size
+    # Bridge can disable padding even when Megatron's CLI computes a larger
+    # padded_vocab_size. Budget and validate against the constructed output head.
+    if len(actor.model) != 1 or not get_attr_wrapped_model(actor.model[0], "parallel_output"):
+        raise ValueError("OPSD requires one model chunk with vocabulary-parallel output")
+    model_vocab_size = get_attr_wrapped_model(actor.model[0], "vocab_size")
+    if model_vocab_size < args.vocab_size or model_vocab_size % tp.size:
+        raise ValueError("OPSD model vocabulary must cover the HF vocabulary and divide evenly across TP")
+    width = model_vocab_size // tp.size
     real_width = min(width, max(0, args.vocab_size - tp.rank * width))
     data = teacher_batch(
         rollout_data,
@@ -67,7 +75,7 @@ def score_teacher(actor, rollout_data, num_microbatches, *, rollout_id):
     try:
         actor._switch_model("teacher")
         targets = forward_only(
-            partial(_collect_targets, rollout_id=rollout_id),
+            partial(_collect_targets, rollout_id=rollout_id, local_vocab_width=width),
             args=args,
             model=actor.model,
             data_iterator=iterator,
@@ -88,11 +96,20 @@ def score_teacher(actor, rollout_data, num_microbatches, *, rollout_id):
 
 @torch.no_grad()
 def _collect_targets(
-    logits, *, args, unconcat_tokens, total_lengths, response_lengths, sample_indices, rollout_id, **_
+    logits,
+    *,
+    args,
+    unconcat_tokens,
+    total_lengths,
+    response_lengths,
+    sample_indices,
+    rollout_id,
+    local_vocab_width,
+    **_,
 ):
     tp = get_parallel_state().tp
-    if logits.size(-1) * tp.size != args.padded_vocab_size:
-        raise ValueError("OPSD requires vocabulary-sharded model logits matching the padded vocabulary")
+    if logits.size(-1) != local_vocab_width:
+        raise ValueError("OPSD logits must match the constructed model's vocabulary shard")
     targets = []
     for block, tokens, response, index in zip(
         response_logits(logits, total_lengths, response_lengths),
