@@ -36,9 +36,10 @@ class RayCommandBackend(BaseCommandBackend):
             None if config.external_mooncake else self._resolve_mooncake_master_port(request.train_args)
         )
 
-        self._clean_up_previous_run(external_ray=external_ray)
-
         if not external_ray:
+            # An externally managed cluster may host unrelated jobs. Its owner,
+            # not this launcher, is responsible for process cleanup.
+            self._clean_up_previous_run(external_ray=False)
             self.exec_command_cpu(
                 # will prevent ray from buffering stdout/stderr
                 f"export PYTHONUNBUFFERED=1 && "
