@@ -21,8 +21,11 @@ the code layout and workflow.
 The [OPSD implementation and reference-validation design](docs/opsd-implementation-design.html)
 records the implemented full-vocabulary loss, fixed-base Megatron teacher, paired
 token prefixes and canonical LoRA path. Independent author-loss tests, a ten-step
-HF replay, and tiny Megatron TP1/TP2 checks pass. The linked HTML report separates
-those results from the remaining 4B, adapter-mapping and live-loop gates.
+HF replay, tiny Megatron TP1/TP2 checks, and the bounded 4B live pilot pass. The
+linked HTML report separates those results from mapped update parity and learning
+evaluation. The proposed [two parallel experiment plan](docs/two-node-experiment-plan.html)
+assigns PI-content utility and checkpoint separation to independent nodes; it
+requires review before launch.
 
 Run Miles commands from the `miles/` working directory. The existing `workspace/`
 implementation and paper results below describe the original CRISP pipeline.

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Two parallel OPSD experiments: PI utility and checkpoint effects</title>
+<style>
+:root{--ink:#17313c;--muted:#586f77;--bg:#f4f7f6;--paper:#fff;--line:#d4e0de;--green:#096859;--soft:#e3f1eb;--blue:#275d8b;--warn:#fff2d8}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,sans-serif}a{color:var(--green);text-underline-offset:3px}.layout{display:grid;grid-template-columns:180px minmax(0,960px);gap:32px;max-width:1250px;margin:auto;padding:32px 24px 72px}main{min-width:0}nav{position:sticky;top:24px;align-self:start;font-size:13px}nav a{display:block;margin-bottom:11px}h1{font-size:42px;line-height:1.12;letter-spacing:-.035em;margin:16px 0}h2{font-size:26px;line-height:1.3;border-top:1px solid var(--line);padding-top:25px;margin-top:42px}h3{font-size:19px;margin-top:24px}.status{display:inline-block;padding:6px 12px;background:var(--soft);border:1px solid #b1cec0;border-radius:6px;font-size:13px}.lead,.note{padding:16px 20px;border-left:4px solid var(--green);background:var(--soft);margin:20px 0}.note{background:var(--warn);border-color:#aa7828}.small,.meta{color:var(--muted);font-size:14px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.card{padding:22px;background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--green);border-radius:8px}.card.b{border-top-color:var(--blue)}.card h3{margin:5px 0 10px}.card p{margin:8px 0}.label{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:white;border:1px solid var(--line);padding:16px;border-radius:7px}.stat strong{display:block;font-size:27px;line-height:1.3}.stat span{font-size:12px;color:var(--muted)}.scroll{overflow:auto}table{width:100%;border-collapse:collapse;background:white;font-size:14px;margin:16px 0}th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}th{background:#e8efec}code{font:.88em ui-monospace,Menlo,monospace;background:#e6eee9;padding:2px 4px;border-radius:3px;overflow-wrap:anywhere}pre{background:#19343f;color:#f1f8f4;padding:18px;border-radius:8px;overflow:auto;font:13px/1.65 ui-monospace,Menlo,monospace}pre code{background:none;padding:0;overflow-wrap:normal}li{margin:6px 0}details{background:white;border:1px solid var(--line);padding:12px 16px;margin:16px 0}summary{cursor:pointer;font-weight:650}.timeline{display:grid;grid-template-columns:100px 1fr 1fr;gap:8px;margin:20px 0;font-size:14px}.timeline div{background:white;padding:13px;border:1px solid var(--line);border-radius:5px}.timeline .head{font-weight:700;background:var(--soft)}.timeline .phase{background:#edf1f0;font-weight:600}.timeline .joint{grid-column:2/4}.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{font-size:14px}input{display:block;width:100%;font:inherit;padding:8px;border:1px solid #a6beb4;border-radius:4px}output{display:block;padding:12px;background:var(--soft);margin-top:14px;font-weight:600}@media(max-width:850px){.layout{display:block;padding:20px 16px 50px}nav{position:static;columns:2;margin-bottom:24px}h1{font-size:32px}.cards{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.scroll table{min-width:680px}.timeline{grid-template-columns:70px 1fr 1fr;font-size:12px}.timeline div{padding:8px}.form{grid-template-columns:1fr}}@media print{nav{display:none}.layout{display:block;padding:0}body{background:white}details{break-inside:avoid}}
+</style>
+</head>
+<body><div class="layout"><nav aria-label="Contents">
+<a href="#overview">Two experiments</a><a href="#evidence">What the pilot established</a><a href="#targets">PI / checkpoint decomposition</a><a href="#arms">Experiment arms</a><a href="#recipe">Shared recipe</a><a href="#data">Data and evaluation</a><a href="#batch">First batch and counts</a><a href="#schedule">Parallel schedule</a><a href="#gates">Implementation gates</a><a href="#analysis">Analysis and next decisions</a><a href="#budget">Compute budget</a><a href="#sources">Sources and history</a>
+</nav><main>
+<p class="status">Proposed for review · October 8, 2026 · no new runs launched</p>
+<h1>Two nodes.<br>Two independent OPSD experiments.</h1>
+<p class="meta">Miles · Qwen3-4B · math first · one active training branch per node</p>
+<div class="lead"><strong>TL;DR:</strong> Run PI-content utility on <code>worker-a</code> and PI/checkpoint separation on <code>worker-b</code>, concurrently. Both branch from the same warmed student, keep the same frozen base teacher, and evaluate without PI. Start with eight paired blocks per experiment to validate learning measurements and estimate variance. Review those results before a larger study.</div>
+<div class="cards" id="overview">
+<section class="card"><div class="label">Experiment A · worker-a</div><h3>Which PI content teaches?</h3><p>Compare no PI, answer-only PI, a worked solution, and an unrelated matched example.</p><p><strong>Primary question:</strong> do pre-update PI corrections predict gains on fresh, unhinted questions?</p></section>
+<section class="card b"><div class="label">Experiment B · worker-b</div><h3>What comes from checkpoint drift?</h3><p>Compare checkpoint anchoring, raw OPSD, transported PI, and current-student PI.</p><p><strong>Primary question:</strong> how do PI and checkpoint anchoring contribute separately and together?</p></section>
+</div>
+<div class="stats"><div class="stat"><strong>2</strong><span>concurrent experiments, one per node</span></div><div class="stat"><strong>64</strong><span>short adaptation branches total</span></div><div class="stat"><strong>4,608</strong><span>primary evaluation completions</span></div><div class="stat"><strong>128</strong><span>proposed GPU-hour ceiling, not forecast</span></div></div>
+<p>A <a href="two-node-experiment-plan.json">non-executable manifest</a> records the proposed counts and gates.</p>
+<p>The two experiment suites run in parallel; the four arms within each suite run sequentially. Shared preparation is followed by independent jobs. The next approved seed swaps the experiment-to-node assignments. Actual host names and operational details stay in private runtime configuration.</p>
+
+<h2 id="evidence">What we know, and what we still need</h2>
+<p>The <a href="opsd-implementation-design.html#bounded-pilot">bounded correctness pilot</a> passed one full Qwen3-4B HF reference diagnostic and two Miles TP2 updates. All eight Miles response tapes match the original OPSD teacher input IDs and masks. The HF diagnostic's maximum loss error was 4.20×10<sup>−9</sup>, with zero logit-gradient error.</p>
+<p>This validates the implemented path within its tested scope. It does not establish learning gains, original-trainer reproduction, or mapped HF↔Megatron update parity. Three of eight Miles responses hit the 1,024-token cap; eight held-out questions were prepared but never evaluated. Training timings from two short updates cannot forecast native-thinking evaluation cost.</p>
+<div class="note"><strong>Three deliberate changes from the compatibility pilot:</strong> enable thinking for both student and teacher, propose an 8,192-token response budget, and disable the original per-vocabulary contribution clip for the scientific objective. All study arms share these settings. Preserve the original off/on, 1,024-token, clipped recipe as a separate reference check.</div>
+
+<h2 id="targets">Separate PI from checkpoint effects</h2>
+<p>At the same student-generated response prefix, score the complete vocabulary with one tokenizer, template mode, scoring temperature and backend:</p>
+<pre><code>p   = current student θ, no PI
+r   = frozen base teacher φ₀, no PI
+q_c = frozen base teacher φ₀, with context c
+s_c = current student θ, with context c
+
+C_c = log q_c − log r                 PI/context correction
+K   = log r − log p                   checkpoint correction
+G_c = log q_c − log p = C_c + K        raw OPSD correction
+I_c = C_c − (log s_c − log p)          checkpoint × context change
+
+q[a,b] = softmax(log stopgrad(p) + a C_c + b K)
+q[0,0] = p          q[0,1] = r
+q[1,0] ∝ p q_c/r    q[1,1] = q_c</code></pre>
+<p>All target quantities are detached and recomputed once before each optimizer update. The transported target <code>q[1,0]</code> applies the frozen teacher's PI correction to the current student. Use log-space normalization across all vocabulary shards; do not divide small floating-point probabilities directly. This is an exact algebraic factorization, not proof that separately prompted LLM calls define a coherent Bayesian joint distribution.</p>
+<p>At initialization, <code>θ=φ₀</code>, so <code>K=0</code> and the key arms collapse. First produce a common <code>θ₆₄</code> using 64 raw worked-solution OPSD updates, then branch every arm from that checkpoint with <strong>fresh identical optimizer state</strong>. Keep <code>φ₀</code> frozen. The conclusion is conditional on this warm-up history; it is not a universal statement about teacher age.</p>
+<p>For the unchanged baseline, skip optimizer steps entirely. A nominal zero loss with inherited Adam moments can still change parameters. In diagnostics, identical weights and identical no-PI prefixes must give zero correction within numerical tolerance.</p>
+
+<h2 id="arms">The two experiment matrices</h2>
+<h3>A · PI content and subsequent learning</h3>
+<div class="scroll"><table><thead><tr><th>Arm</th><th>Detached target</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>A0 · unchanged</td><td>No update</td><td>Common θ₆₄ baseline; evaluate once per block.</td></tr>
+<tr><td>A1 · no PI</td><td>r</td><td>Isolate checkpoint anchoring with the exact student prefix.</td></tr>
+<tr><td>A2 · answer only</td><td>q<sub>answer</sub></td><td>Does the final answer provide useful supervision?</td></tr>
+<tr><td>A3 · worked solution</td><td>q<sub>worked</sub></td><td>Does a reference derivation add useful learning?</td></tr>
+<tr><td>A4 · unrelated example</td><td>q<sub>unrelated</sub></td><td>Length/style control using a different problem and its solution, labeled as unrelated.</td></tr>
+</tbody></table></div>
+<p>Use one neutral context wrapper for A2–A4; the original “solution to this problem” wording is unsuitable for an unrelated example. Score an empty wrapper as an additional diagnostic. A1 uses no wrapper at all so its token prefix exactly matches the student's. Consequently A3−A1 is the total context effect; A3−A4 tests relevance under approximate length/style matching, and the empty-wrapper diagnostic reveals instruction/position effects. These controls do not perfectly isolate reasoning content from context length.</p>
+<h3>B · PI, checkpoint anchoring, and their interaction</h3>
+<div class="scroll"><table><thead><tr><th>Arm</th><th>Detached target</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>B00 · unchanged</td><td>No update</td><td>Same baseline as A0.</td></tr>
+<tr><td>B01 · checkpoint only</td><td>r</td><td>Checkpoint correction without PI.</td></tr>
+<tr><td>B10 · transported PI</td><td>normalize(p q<sub>worked</sub>/r)</td><td>PI correction without the explicit frozen-checkpoint term.</td></tr>
+<tr><td>B11 · raw OPSD</td><td>q<sub>worked</sub></td><td>PI and checkpoint correction together.</td></tr>
+<tr><td>BS · synchronized PI</td><td>s<sub>worked</sub></td><td>PI scored by the current pre-update student; refresh each update.</td></tr>
+</tbody></table></div>
+<p>A1/B01 and A3/B11 are deliberately duplicated across nodes to check reproducibility. They are not extra independent statistical replicates. B10 and BS are different methods: transporting an old checkpoint's correction need not equal scoring PI with the current student.</p>
+<pre><code>U = unhinted endpoint accuracy, measured on a common block panel
+PI without checkpoint anchoring:   U10 − U00
+PI with checkpoint anchoring:      U11 − U01
+Factorial interaction:             U11 − U10 − U01 + U00
+Current versus frozen PI:          US − U11</code></pre>
+<p>These are effects of the specified training interventions. They are not an additive decomposition of gradients or an attribution of every learned token. Different target entropy and update magnitude can mediate the outcomes.</p>
+
+<h2 id="recipe">One shared scientific recipe</h2>
+<div class="scroll"><table><thead><tr><th>Component</th><th>Proposed fixed setting</th></tr></thead><tbody>
+<tr><td>Model / tokenizer</td><td><a href="https://huggingface.co/Qwen/Qwen3-4B/tree/1cfa9a7208912126459214e8b04321603b3df60c">Qwen3-4B</a>, revision <code>1cfa9a7208912126459214e8b04321603b3df60c</code>.</td></tr>
+<tr><td>Adaptation</td><td>Canonical LoRA rank 64, alpha 128, dropout 0; q/k/v/o and gate/up/down projections. Frozen non-adapter base. No full-parameter training in this batch.</td></tr>
+<tr><td>Loss</td><td>Full-vocabulary forward KL <code>D_KL(target || student)</code>, β=0, scoring temperature 1.1, contribution clipping disabled (<code>--opsd-token-clip 0</code>), no extra temperature-squared multiplier. Mean valid response tokens within each sample, then mean four samples using microbatch one.</td></tr>
+<tr><td>Optimizer</td><td>Adam, LR 5×10<sup>−6</sup> constant, β=(0.9, 0.999), ε=10<sup>−8</sup>, weight decay 0, gradient norm cap 0.1. One update per fresh rollout batch; no additional reward, reference KL, advantage normalization or PPO clipping.</td></tr>
+<tr><td>Batch / parallelism</td><td>Four distinct questions × one response per update; microbatch one. TP2, DP1, PP1, CP1. Every arm uses the same question order within its block.</td></tr>
+<tr><td>Training generation</td><td>Thinking on; temperature 1.1, top-p 0.95, top-k 20, min-p 0. Token IDs in / out; fresh on-policy trajectories after every update.</td></tr>
+<tr><td>Evaluation generation</td><td>No PI; thinking on; temperature 0.6, top-p 0.95, top-k 20, min-p 0. One sample per question for feasibility; common question/seed schedule across arms.</td></tr>
+<tr><td>Length</td><td>Propose 8,192 response tokens, total sequence cap 12,288; teacher prefix ≤4,096 and student prefix ≤2,048. Eligibility checks cover all planned contexts. No silent prefix truncation.</td></tr>
+<tr><td>Training seed</td><td>17 for the first batch. Derive sampling seeds from block, question and update; record separate evaluation seeds. Later replication seeds 29 and 43 require the next-stage review.</td></tr>
+</tbody></table></div>
+<p>The unclipped objective is a deliberate scientific baseline: its exact KL has a clear zero point and no negative clipped sums. The original author implementation clips individual vocabulary contributions at 0.05, which is not clipping a summed token KL. Before the study, test both settings against the pinned reference on the same short tapes; retain the clipped result as compatibility evidence, not as a pooled scientific arm. This study is not an exact reproduction of the author's recipe.</p>
+<p>Score <code>p,r,q,s</code> with the Megatron forward-only path to reduce backend confounding. SGLang generates student trajectories and evaluates immutable checkpoints. Sampling filters define the visited-prefix distribution; full-vocabulary KL is still computed exactly at those prefixes. A sampled next-token log-ratio is not that KL.</p>
+
+<h2 id="data">Data, PI construction, and leakage controls</h2>
+<p>Use <a href="https://huggingface.co/datasets/siyanzhao/Openthoughts_math_30k_opsd/tree/1f33e9dc2e8a1c639ca74f8024ad4a9f1f5eae62">the pinned author math dataset</a> at revision <code>1f33e9dc2e8a1c639ca74f8024ad4a9f1f5eae62</code> (29,434 loaded rows). Build a new study manifest; the pilot's first-32/next-8 split is only a wiring fixture. Do not filter by the dataset's model-relative <code>correct</code> field.</p>
+<ol>
+<li>Normalize and deduplicate exact problems, cluster near-duplicates and shared problem templates, then hash-order groups into disjoint pools. Reserve 1,024 groups for warm-up, 4,096 adaptation, 256 profiling, 2,048 utility, 256 development and 1,024 final test (8,704 total). These are requested pool sizes, not a completed split; insufficient eligible groups stops preparation.</li>
+<li>Keep related problem instances together across pools. Stratify adaptation and utility blocks by coarse topic/difficulty, without sharing duplicate/template groups. Each pilot block uses 16 adaptation questions and 64 unique utility questions; eight utility panels are disjoint. The same panels serve A and B.</li>
+<li>Answer-only PI uses the canonical <code>Answer</code> field. Require a parsable reference final answer that matches it for worked-solution PI; audit reasoning on a fixed sample. Final-answer agreement does not verify every reasoning step. Quarantine ambiguous labels before branch outcomes are observed.</li>
+<li>Choose unrelated examples from the adaptation pool, with a different duplicate/template group and a similar token-length bin (within ±10% where available). Exclude final-test and utility answers from all PI construction. Log unmatched exclusions before sampling blocks.</li>
+<li>Generate evaluation requests from a prompt-only export. Store answers separately for grading. Pin the math parser/equivalence checker and its version; manually audit 50 fixed examples, including malformed and ambiguous outputs. Report parse failures and timeouts; missing final answers count as incorrect.</li>
+</ol>
+<p>Student and teacher chat templates are applied once to different prefixes, then receive the identical response-ID suffix. Score the first response token at each prefix's last logit row. Include genuine generated EOS; do not invent EOS at the response cap. Keep cap-hit samples in training/evaluation and report their rate. A response cap is a compute budget, not evidence of a completed derivation.</p>
+<p>This internal holdout estimates adaptation gains on this data distribution. It does not establish absence of pretraining contamination or transfer to independent math benchmarks, code, or frontier models. Final-test data stay sealed during feasibility and method selection.</p>
+
+<h2 id="batch">The first paired batch, counted explicitly</h2>
+<div class="scroll"><table><thead><tr><th>Work</th><th>Per experiment</th><th>Combined total</th></tr></thead><tbody>
+<tr><td>Common warm-up</td><td colspan="2">Once: 64 updates × four questions = 256 training responses; save steps 0, 16 and 64. Distribute one immutable θ₆₄ checkpoint.</td></tr>
+<tr><td>Pre-update PI features</td><td colspan="2">Shared: eight blocks × 16 adaptation questions × two θ₆₄ responses = 256 trajectories. Score relevant contexts; reuse eligible first-update tapes.</td></tr>
+<tr><td>Adaptation branches</td><td>Eight blocks × four active arms = 32</td><td><strong>64 branches</strong></td></tr>
+<tr><td>Branch optimizer steps</td><td>32 × four = 128</td><td><strong>256 updates</strong>, plus 64 warm-up updates</td></tr>
+<tr><td>Training response uses</td><td>32 × four updates × four responses = 512</td><td>1,024 uses; shared initial tapes reduce new generations.</td></tr>
+<tr><td>Endpoint evaluation</td><td>32 × 64 questions = 2,048</td><td>4,096 completions</td></tr>
+<tr><td>Unchanged baseline evaluation</td><td colspan="2">Once: eight × 64 = 512 completions, shared across experiments.</td></tr>
+<tr><td>Primary evaluation total</td><td colspan="2"><strong>4,608 completions</strong>; step four only. Worst-case response allowance: 37,748,736 tokens at 8,192 per completion.</td></tr>
+</tbody></table></div>
+<p>Save branch checkpoints after updates one and four, but only step four receives the full utility evaluation. Every branch resets to θ₆₄ and fresh optimizer moments. Initial training tapes can be shared because all students begin identical; updates two through four require each arm's own fresh rollouts. Evaluation randomness is paired by request seed, not by forcing identical responses.</p>
+<p><strong>Eight blocks and one training seed make this a feasibility and variance study.</strong> It can expose broken controls, instability or a large effect. It cannot establish a general PI selector or reliably detect a two-percentage-point gain. Readiness checks and profiling completions are additional, logged separately, and included in the compute ceiling.</p>
+
+<h2 id="schedule">Use both nodes concurrently</h2>
+<div class="timeline" role="group" aria-label="Execution waves">
+<div class="head">Wave</div><div class="head">worker-a</div><div class="head">worker-b</div>
+<div class="phase">0 · gates</div><div>Prompt/target/gradient checks; long-context memory profile.</div><div>Independent scoring check; evaluator audit and throughput profile.</div>
+<div class="phase">1 · prepare</div><div>Common 64-update warm-up; freeze θ₆₄.</div><div>Base-model evaluation and same-experiment readiness checks.</div>
+<div class="phase">2 · share</div><div class="joint">Verify checkpoint hashes; score common pre-update tapes; evaluate the shared unchanged baseline. Both workers now start from the same θ₆₄.</div>
+<div class="phase">3 · parallel</div><div><strong>Experiment A:</strong> eight blocks × four PI-content arms, sequential within this node.</div><div><strong>Experiment B:</strong> eight blocks × four checkpoint/PI arms, sequential within this node.</div>
+<div class="phase">4 · review</div><div class="joint">Join results, audit duplicated controls, estimate costs and uncertainty; review before expanding.</div>
+<div class="phase">Later</div><div>Experiment B at the next approved seed.</div><div>Experiment A at the next approved seed.</div>
+</div>
+<p><strong>One experiment owns each node's allocation.</strong> Start with the validated TP2/DP1 two-GPU colocated actor/rollout configuration. The other six GPUs can serve immutable checkpoint evaluation for that same experiment after memory, port and placement checks. Begin with one TP2 evaluator; add replicas only when isolation and throughput are measured. At most one active training branch per node. TP2×DP2 training is a later scaling option requiring DP equivalence checks.</p>
+<p>Fresh read-only checks on October 8 found both eight-GPU nodes idle. Availability is temporary; recheck reservations and processes at launch. Use distinct Ray temporary roots, namespaces, ports, GPU masks and output directories. Inspect the actual cluster selected by each driver. Preserve unrelated services; no broad process cleanup. There is no cross-node training process group.</p>
+<p>Randomize arm order within a block. Keep all arms of a block for one experiment on its assigned node. Duplicated A/B controls expose host/runtime differences; swapping assignments across later seeds further reduces host confounding. Three seeds still offer limited power to estimate a separate host effect.</p>
+
+<h2 id="gates">Implementation work before this plan can run</h2>
+<p>The existing launcher intentionally refuses more than ten updates and only supports a frozen base PI teacher with fixed off/on modes. It cannot execute this study unchanged. Add a separate bounded research launcher; preserve the correctness pilot's guard.</p>
+<div class="scroll"><table><thead><tr><th>Gate</th><th>Required acceptance evidence</th></tr></thead><tbody>
+<tr><td>Prompt and target modes</td><td>Explicit no-PI, empty-wrapper, answer, worked and unrelated contexts; configurable matched thinking modes. <code>solution=None</code> currently omits teacher input and is not a training no-PI control. Exact response IDs/masks, causal offsets, and sequence budgets must pass for every mode.</td></tr>
+<tr><td>Four distributions</td><td>Frozen φ₀ and current θ snapshots; correct adapter restoration after success and failure. p/r/q/s all use Megatron scoring. Test C+K=G, normalized target endpoints, detached targets, teacher stability, and current-teacher refresh/version identity.</td></tr>
+<tr><td>Reference and update checks</td><td>Preserve original prompt/loss parity in compatibility mode. Compare clipped/unclipped loss and gradients to pinned author code on identical tapes. Compare mapped 4B HF/Megatron adapter updates on a short batch with numerical tolerances recorded before the scientific run. Do not infer optimizer parity from input-ID equality.</td></tr>
+<tr><td>8K capacity</td><td>At TP2, FP32 targets occupy about 2.32 GiB per 8K response per rank, or 9.27 GiB for a batch of four. Existing 8 GiB cache / 1 GiB microbatch limits are insufficient. Propose 16 GiB final-target cache and 3 GiB per target sample; account for up to 48 GiB/rank of aggregate CPU staging/intermediates and measure GPU forward peaks. Construct targets sequentially; persist summaries, not dense vocab tensors.</td></tr>
+<tr><td>Length and timing</td><td>Profile 64 fixed questions with two native-thinking responses each, plus evaluator throughput. If &gt;10% hit 8K, stop and revise the common cap/budget before scientific branches. Do not extend only one arm or silently reduce loss coverage. Test concurrent evaluator placement with owned resources.</td></tr>
+<tr><td>Identifiable checkpoint drift</td><td>At θ₆₄, require median token-distribution RMS(log r−log p) to exceed five times the same statistic from repeated same-weight no-PI scoring, using a 10<sup>−5</sup> floor on the noise estimate. Report its distribution and bootstrap interval. If unresolved, review warm-up design; do not select a checkpoint by final-test accuracy.</td></tr>
+<tr><td>Evaluation and artifacts</td><td>Manifested duplicate-group splits, fixed grader audit, prompt-only evaluation requests, correct adapter hashes, all branch seeds, finite checkpoints, response cap/EOS accounting, and a measured cost projection under the approved cap.</td></tr>
+</tbody></table></div>
+<p>These are gates to implement and validate after plan review, not claims of completed work. A failed scientific-identification gate may require a revised experiment; it does not justify silently substituting another loss, teacher or dataset.</p>
+
+<h2 id="analysis">What will decide the next experiment?</h2>
+<h3>PI utility</h3>
+<p>For each context and block, predict <code>U_context−U_noPI</code> using features measured before adaptation. Start with two predeclared PI features: mean full-vocabulary <code>D_KL(q_c || r)</code> and its difference between correct and incorrect initial student responses. Record that the latter is unavailable for all-correct/all-incorrect blocks; keep those blocks. Compare against difficulty, response length/cap rate, raw OPSD divergence <code>D_KL(q_c || p)</code> and checkpoint drift. Token curves and entropy/EOS changes are secondary diagnostics.</p>
+<p>In this eight-block batch, plot paired outcomes and estimate variance; do not fit and announce a successful selector. A later, separately reviewed study needs new discovery and held-out blocks, a frozen low-capacity predictor, grouped validation, and a comparison of its chosen PI against fixed worked-solution PI and a compute-matched random choice. Training and evaluation of the selector must not reuse outcome labels.</p>
+<h3>Checkpoint effects</h3>
+<p>Report B10−B11, BS−B11 and the full factorial contrast, plus every arm's absolute accuracy, response length, cap rate, entropy and pre/post-clipping update norms. If transported PI wins, inspect a development-only matched-update-norm comparison before concluding the checkpoint anchor is harmful. If synchronized PI wins, distinguish freshness from amplification or collapse before testing EMA.</p>
+<p>Pair by problem and block, and bootstrap whole blocks with their shared controls; do not treat tokens, related problems, or duplicated cross-node controls as independent samples. Report feasibility intervals as exploratory. In confirmation, report training seeds separately and use paired problem-group uncertainty with prespecified multiplicity control for B10−B11 and BS−B11.</p>
+<p>A +2 percentage-point target is a desired practical effect, not a power guarantee. For illustration, a paired comparison with discordance 0.20 needs roughly 3,920 independent questions for 80% power at two-sided 5% significance to detect 0.02, before clustering or multiple comparisons. Estimate actual discordance and training variability from the pilot before sizing confirmation.</p>
+<details><summary>Conditional next stage, after reviewing feasibility</summary><p>Run two independent follow-ups concurrently: A expands PI-utility prediction to new blocks; B runs longer checkpoint comparisons. Replicate selected comparisons at training seeds 29 and 43 with their own common warm-ups and swapped node assignments. Freeze the loss, prompt, length and selection rules before consuming final test. A separate retention panel and independent math benchmark are required before claiming general improvement; pin their revisions and graders in that review.</p><p>Only then move to code transfer, MOPD routing, an RL-trained PI generator, teacher EMA schedules, or a larger publicly available reasoning model. Qwen3-4B feasibility cannot establish behavior on frontier GLM, Kimi or DeepSeek models. No automatic frontier run or open-ended hyperparameter sweep is included.</p></details>
+
+<h2 id="budget">Budget ceilings and stopping rules</h2>
+<div class="scroll"><table><thead><tr><th>Stage</th><th>Proposed cap</th><th>What it covers</th></tr></thead><tbody>
+<tr><td>Readiness</td><td>32 GPU-hours</td><td>Reference/update checks, length/memory profiles, evaluator audit, runtime isolation.</td></tr>
+<tr><td>First paired study</td><td>96 additional GPU-hours</td><td>Common warm-up, features, both experiment matrices, checkpointing and unhinted evaluation.</td></tr>
+<tr><td>Total</td><td><strong>128 GPU-hours</strong></td><td>Eight hours with both eight-GPU allocations charged throughout the execution window. This is a ceiling, not a completion promise.</td></tr>
+</tbody></table></div>
+<p>Charge all GPUs assigned to an experiment for its wall time, including idle slots, conversion, restarts and evaluation. Report active-device time and reservation idle time separately. Readiness must yield a measured projection; if the matrix does not fit, stop for review with a reduced balanced matrix or a revised budget. Do not drop the expensive or unsuccessful arm after observing utility. No automatic reservation renewal or next-stage launch is included.</p>
+<details><summary>Evaluation cost calculator — supply measured throughput</summary>
+<p class="small">Use completed responses per second at the actual cap and concurrency, measured on each node while training/evaluation overlap as planned. This calculator covers the 4,608 primary completions only; profiling, warm-up, feature scoring, training and startup are additional.</p>
+<div class="form"><label>worker-a completed responses / second<input id="rate-a" type="number" min="0.001" step="0.01" placeholder="Measured value"></label><label>worker-b completed responses / second<input id="rate-b" type="number" min="0.001" step="0.01" placeholder="Measured value"></label></div>
+<output id="estimate" aria-live="polite">Enter measured rates to estimate evaluation wall time.</output>
+<p class="small">Split the 512 baseline requests evenly: each node evaluates 2,304 total requests. Approximate elapsed hours = max(2,304/rate-a, 2,304/rate-b)/3,600. Allocation cost for this synchronized window = 16 × elapsed hours.</p>
+</details>
+<p>Stop immediately for nonfinite values, incorrect token alignment, evaluation PI leakage, mixed student versions, corrupt checkpoints, missing teacher restoration or unexplained cross-node control mismatch. Pause at a budget or length gate rather than changing the protocol mid-comparison. Persist owned artifacts before reservation expiry.</p>
+<div class="lead"><strong>Review decision:</strong> approve or revise the paired feasibility study, its matched-mode unclipped FKL recipe, and the 128 GPU-hour maximum. The earlier authorization covered only the completed correctness pilot. This document launches nothing; the larger study still needs the requested review.</div>
+
+<h2 id="sources">Evidence, sources, and history</h2>
+<ul>
+<li><a href="opsd-implementation-design.html#bounded-pilot">Measured Miles correctness pilot</a>, source baseline <a href="https://github.com/HJSang/CRISP_Reasoning_Compression/tree/4f2235868a58305baef3a19a8477279711d57841">4f22358</a>: scope, exact tokenizer/data pins, live token audit and remaining validation gaps.</li>
+<li><a href="https://arxiv.org/html/2601.18734">Self-Distilled Reasoner</a> and <a href="https://github.com/siyan-zhao/OPSD/tree/ae7d2519e94920c4eb6206c0c26de46d9c50abae">pinned original OPSD code</a>: frozen privileged teacher and original full-vocabulary recipe. Our new mechanism protocol deliberately changes mode, length and contribution clipping.</li>
+<li><a href="https://arxiv.org/html/2609.20612v2">What Does Privileged Information Add to On-Policy Self-Distillation?</a>: motivates no-PI controls and separating thinking mode/horizon from PI. Its reported effects depend on model and execution regime; they do not establish the outcome of this experiment.</li>
+<li><a href="https://arxiv.org/html/2601.19897">Self-Distillation Enables Continual Learning</a>: motivates a later teacher-refresh/EMA study. Results in that setup do not establish an optimal teacher schedule for this math study.</li>
+</ul>
+<p class="small">This plan supersedes the earlier sampled-token, full-parameter, 192-branch execution draft. Its open scientific questions are retained; its loss, resource layout and compute projections are retired. Earlier evidence remains in Git history and the implementation report. Current additions are a proposal only: no new training, reservation changes or measured learning results.</p>
+</main></div>
+<script>
+const rateA=document.getElementById('rate-a'),rateB=document.getElementById('rate-b'),estimate=document.getElementById('estimate');
+function updateEstimate(){const a=Number(rateA.value),b=Number(rateB.value);if(!Number.isFinite(a)||!Number.isFinite(b)||a<=0||b<=0){estimate.textContent='Enter positive measured rates for both nodes.';return;}const hours=Math.max(2304/a,2304/b)/3600;estimate.textContent=`Primary evaluation: approximately ${hours.toFixed(2)} hours and ${(16*hours).toFixed(1)} allocated GPU-hours. Other work is additional.`;}
+rateA.addEventListener('input',updateEstimate);rateB.addEventListener('input',updateEstimate);
+</script>
+</body></html>

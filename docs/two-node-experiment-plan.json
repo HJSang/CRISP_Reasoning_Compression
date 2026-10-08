@@ -1,0 +1,173 @@
+{
+  "schema_version": 3,
+  "status": "PROPOSED_FOR_REVIEW",
+  "executable": false,
+  "new_gpu_work_authorized": false,
+  "review_required_before_launch": true,
+  "date": "2026-10-08",
+  "supersedes": "historical sampled-token execution draft",
+  "framework": {
+    "name": "Miles",
+    "directory": "miles",
+    "source_baseline": "4f2235868a58305baef3a19a8477279711d57841",
+    "study_changes": "not_implemented"
+  },
+  "execution": {
+    "independent_experiments": 2,
+    "experiments_per_node": 1,
+    "active_training_branches_per_node": 1,
+    "cross_node_training": false,
+    "gpus_per_node": 8,
+    "training_tp": 2,
+    "training_dp": 1,
+    "training_pp": 1,
+    "training_cp": 1,
+    "initial_assignment": {
+      "worker-a": "A_PI_content_utility",
+      "worker-b": "B_PI_checkpoint_separation"
+    },
+    "later_assignment": "swap experiment-to-node assignment at the next reviewed training seed"
+  },
+  "model": {
+    "id": "Qwen/Qwen3-4B",
+    "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "student_thinking": true,
+    "teacher_thinking": true,
+    "lora_rank": 64,
+    "lora_alpha": 128,
+    "lora_dropout": 0
+  },
+  "dataset": {
+    "id": "siyanzhao/Openthoughts_math_30k_opsd",
+    "revision": "1f33e9dc2e8a1c639ca74f8024ad4a9f1f5eae62",
+    "split_status": "not_created",
+    "requested_disjoint_groups": {
+      "warmup": 1024,
+      "adaptation": 4096,
+      "profiling": 256,
+      "utility": 2048,
+      "development": 256,
+      "final_test": 1024
+    }
+  },
+  "loss": {
+    "name": "full_vocabulary_forward_kl",
+    "beta": 0,
+    "temperature": 1.1,
+    "contribution_clip": null,
+    "extra_temperature_squared_factor": false,
+    "reduction": "mean_valid_response_tokens_then_mean_samples",
+    "all_targets_detached": true,
+    "target_refresh": "once_before_each_optimizer_update"
+  },
+  "optimizer": {
+    "name": "Adam",
+    "lr": 5e-06,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0,
+    "grad_norm_clip": 0.1,
+    "fresh_state_per_branch": true
+  },
+  "training": {
+    "seed": 17,
+    "global_batch": 4,
+    "microbatch": 1,
+    "updates_per_rollout_batch": 1,
+    "temperature": 1.1,
+    "top_p": 0.95,
+    "top_k": 20,
+    "min_p": 0,
+    "response_cap": 8192,
+    "total_sequence_cap": 12288,
+    "teacher_prefix_cap": 4096,
+    "student_prefix_cap": 2048
+  },
+  "evaluation": {
+    "pi": false,
+    "thinking": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "min_p": 0,
+    "response_cap": 8192,
+    "samples_per_question": 1,
+    "endpoint_update": 4,
+    "grader_pin_status": "required_before_launch"
+  },
+  "arms": {
+    "A": {
+      "A0": "unchanged",
+      "A1": "frozen_no_pi",
+      "A2": "frozen_answer_only",
+      "A3": "frozen_worked_solution",
+      "A4": "frozen_unrelated_example"
+    },
+    "B": {
+      "B00": "unchanged",
+      "B01": "frozen_no_pi",
+      "B10": "normalize(current_no_pi*frozen_worked_pi/frozen_no_pi)",
+      "B11": "frozen_worked_solution",
+      "BS": "current_worked_solution"
+    }
+  },
+  "first_batch": {
+    "warmup_updates": 64,
+    "warmup_response_uses": 256,
+    "blocks_per_experiment": 8,
+    "adaptation_questions_per_block": 16,
+    "preupdate_feature_responses_shared": 256,
+    "active_arms_per_experiment": 4,
+    "branches_total": 64,
+    "updates_per_branch": 4,
+    "branch_updates_total": 256,
+    "branch_training_response_uses": 1024,
+    "evaluation_questions_per_block": 64,
+    "branch_eval_completions": 4096,
+    "shared_baseline_eval_completions": 512,
+    "primary_eval_completions_total": 4608,
+    "primary_eval_response_token_ceiling": 37748736,
+    "readiness_work": "additional, separately counted within cap"
+  },
+  "capacity_proposal": {
+    "final_target_cache_gib_per_rank": 16,
+    "target_microbatch_gib_per_rank": 3,
+    "aggregate_cpu_staging_gib_per_rank": 48,
+    "status": "requires_profile"
+  },
+  "gates": {
+    "profile_questions": 64,
+    "profile_responses_per_question": 2,
+    "cap_hit_fraction_max": 0.1,
+    "checkpoint_signal_to_repeat_noise_min": 5,
+    "repeat_noise_floor": 1e-05,
+    "reference_update_check": "pending",
+    "runtime_isolation": "must_pass",
+    "data_and_grader_audit": "must_pass",
+    "cost_projection": "must_fit_reviewed_cap"
+  },
+  "gpu_hour_caps": {
+    "readiness": 32,
+    "paired_study_including_warmup": 96,
+    "total": 128,
+    "basis": "all_assigned_gpus_times_job_wall_hours_including_idle_slots"
+  },
+  "automatic_reservation_extension": false,
+  "confirmation_authorized": false,
+  "later_training_seeds_proposed": [
+    29,
+    43
+  ],
+  "deferred": [
+    "confirmatory_selector",
+    "longer_multiseed_runs",
+    "retention_and_independent_benchmarks",
+    "code_transfer",
+    "MOPD",
+    "RL_PI_generator",
+    "frontier_models"
+  ]
+}

@@ -10,6 +10,8 @@
 <div class="lead"><strong>TL;DR:</strong> The full-vocabulary OPSD loss, paired token prefixes and frozen Megatron teacher prepass are implemented. Pinned author-code tests, ten-step FP32 HF replay and tiny Megatron TP1/TP2 checks pass. The bounded Qwen3-4B pilot also passes: one HF reference update and two Miles live updates. Mapped HF↔Megatron adapter-update parity and scientific experiments remain separate gates.</div>
 
 
+<p class="note"><strong>Next study, pending review:</strong> <a href="two-node-experiment-plan.html">Two parallel experiments: PI utility and checkpoint effects</a>. One independent experiment per node; the proposed matched-mode, longer-context, unclipped-FKL recipe is distinct from the completed compatibility pilot.</p>
+
 <h2 id="implementation-status">Implementation status · October 8, 2026</h2>
 <p><strong>The Megatron OPSD path is implemented.</strong> Student generation sends templated token IDs to SGLang and keeps the returned response IDs. A separately templated privileged teacher prefix is joined to that same response. Miles scores the teacher in a forward-only prepass, copies full-vocabulary log-probabilities to a bounded CPU store, restores the actor, and trains through its existing packed Megatron forward/backward pipeline.</p>
 <div class="scroll"><table><thead><tr><th>Check</th><th>Measured result</th><th>What it establishes</th></tr></thead><tbody>
