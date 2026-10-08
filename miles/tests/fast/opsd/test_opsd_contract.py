@@ -1,11 +1,8 @@
 """Paired-prefix, packed-position and Miles loss-boundary regression tests."""
 
-import hashlib
-import importlib.util
 import os
 from argparse import Namespace
 from dataclasses import replace
-from pathlib import Path
 
 import pytest
 import torch
@@ -14,6 +11,7 @@ from miles.backends.training_utils.data.opsd import teacher_batch
 from miles.backends.training_utils.loss.hub.opsd import OPSDTarget, reference_loss, response_logits
 from miles.backends.training_utils.loss.hub.opsd_math import OPSDLossConfig
 from miles.utils.opsd_prompts import make_opsd_prefixes, validate_response_ids
+from tests.opsd_reference import load_author_collator
 
 
 def _batch():
@@ -130,16 +128,8 @@ def test_author_collator_qwen3_batch_one():
         pytest.skip("Set OPSD_REFERENCE_DIR and OPSD_TOKENIZER_PATH for real-tokenizer parity")
     from transformers import AutoTokenizer
 
-    source = Path(reference_dir) / "data_collator.py"
-    assert (
-        hashlib.sha256(source.read_bytes()).hexdigest()
-        == "5b96f3b3ae2f04e2b9dbf03509d3cd723c1b637d9362ab4697135d9f885b8381"
-    )
-    spec = importlib.util.spec_from_file_location("original_opsd_collator", source)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_path, local_files_only=True)
-    collator = module.SelfDistillationDataCollator(tokenizer, max_length=4096, reason_first=False)
+    collator = load_author_collator(reference_dir)(tokenizer, max_length=4096, reason_first=False)
     for problem, solution in [("What is 2 + 2?", "Add to obtain 4."), ("求 7−3。", "7−3=4.\nTherefore \\boxed{4}.")]:
         paired = make_opsd_prefixes(tokenizer, problem=problem, solution=solution)
         original = collator([{"problem": problem, "solution": solution}])

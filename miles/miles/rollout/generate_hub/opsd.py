@@ -22,6 +22,14 @@ async def generate(input: GenerateFnInput) -> GenerateFnOutput:
     if not input.evaluation and (not isinstance(solution, str) or not solution.strip()):
         raise ValueError("OPSD training requires a nonempty metadata.solution")
     prefixes = make_opsd_prefixes(input.state.tokenizer, problem=sample.prompt, solution=solution)
+    pad_token_id = input.state.tokenizer.pad_token_id
+    # The author masks every PAD ID, including IDs inside a rendered chat prefix.
+    # THD packing has no per-token attention holes: reject those inputs rather
+    # than silently changing context (e.g. EOS-as-PAD masks Qwen chat delimiters).
+    if any(pad_token_id in prefix for prefix in (prefixes.student_ids, prefixes.teacher_ids)):
+        raise ValueError(
+            "OPSD packed prompts must not contain PAD IDs; use distinct PAD/EOS and filter literal PAD text"
+        )
     # Reserve the entire requested response for both conditions; no teacher-only truncation.
     response_cap = input.sampling_params["max_new_tokens"]
     for prefix in (prefixes.student_ids, prefixes.teacher_ids):
@@ -43,10 +51,12 @@ async def generate(input: GenerateFnInput) -> GenerateFnOutput:
     validate_response_ids(
         tokens=sample.tokens, student_prefix=prefixes.student_ids, response_length=sample.response_length
     )
-    # Match the author's labels[labels == pad_token_id] = -100, including EOS
-    # if this tokenizer aliases EOS to PAD. Other mask semantics are a new recipe.
+    # Match the author's labels[labels == pad_token_id] = -100. Packed attention
+    # can ignore trailing PAD for the loss, but cannot reproduce interior holes.
     response = sample.tokens[len(prefixes.student_ids) :]
-    sample.loss_mask = [int(token != input.state.tokenizer.pad_token_id) for token in response]
+    if pad_token_id in response and any(token != pad_token_id for token in response[response.index(pad_token_id) :]):
+        raise ValueError("OPSD packed responses permit PAD only at the end; interior PAD changes teacher attention")
+    sample.loss_mask = [int(token != pad_token_id) for token in response]
     if not input.evaluation:
         sample.reward = 0.0  # OPSD uses distributions, not a reward model.
     return GenerateFnOutput(samples=sample)
