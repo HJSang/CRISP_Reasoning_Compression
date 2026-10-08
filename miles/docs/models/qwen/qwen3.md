@@ -126,3 +126,11 @@ The 4 B / 8 B / 14 B recipes leave Adam on GPU.
 
 - [Low Precision RL](/advanced/low-precision)
 - [Backends Beyond Megatron](/advanced/architecture-support) — for the FSDP variant.
+
+## CRISP OPSD correctness pilot
+
+This vendored tree adds `scripts/run_qwen3_4b_opsd.py` for the bounded frozen-base
+OPSD pilot. Read the [HTML implementation and validation report](https://github.com/HJSang/CRISP_Reasoning_Compression/blob/main/docs/opsd-implementation-design.html#implementation-status)
+for paired-input format, target-memory budgets, command examples and unvalidated
+reproduction gates. The launcher defaults to two updates; the full study requires
+a separate reviewed plan.

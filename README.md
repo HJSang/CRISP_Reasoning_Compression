@@ -19,9 +19,10 @@ preserved. Read the [HTML development guide](docs/miles-development.html) for
 the code layout and workflow.
 
 The [OPSD implementation and reference-validation design](docs/opsd-implementation-design.html)
-proposes the original full-vocabulary loss, fixed base teacher, canonical LoRA,
-and independent loss/gradient/update checks against the author repository.
-This design is awaiting review; implementation and runtime validation are pending.
+records the implemented full-vocabulary loss, fixed-base Megatron teacher, paired
+token prefixes and canonical LoRA path. Independent author-loss tests, a ten-step
+HF replay, and tiny Megatron TP1/TP2 checks pass. The linked HTML report separates
+those results from the remaining 4B, adapter-mapping and live-loop gates.
 
 Run Miles commands from the `miles/` working directory. The existing `workspace/`
 implementation and paper results below describe the original CRISP pipeline.
