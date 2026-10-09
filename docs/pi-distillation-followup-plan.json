@@ -446,12 +446,49 @@
         ],
         "exact_warmed_source_loaded": true,
         "queue_counts": {
-          "done": 0,
+          "done": 1,
           "running": 1,
           "pending": 1,
           "failed": 0
         },
-        "hosted_finite_training_verified": true
+        "hosted_finite_training_verified": true,
+        "evaluations": {
+          "step_1": {
+            "completions": 800,
+            "checkpoint_sha256": "c00df04945cd3403481ae289edd693c8d8b426d881fbddc2ea2858920717c012",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.17083333333333334,
+                "completions": 240,
+                "cap_hit_fraction": 0.0875,
+                "parse_failure_fraction": 0.075,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.13333333333333333,
+                "completions": 240,
+                "cap_hit_fraction": 0.029166666666666667,
+                "parse_failure_fraction": 0.020833333333333332,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.659375,
+                "completions": 320,
+                "cap_hit_fraction": 0.003125,
+                "parse_failure_fraction": 0.003125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 4.051361960069901,
+            "output_tokens_per_second": 8530.193248951677
+          }
+        },
+        "hosted_evaluations_verified": [
+          1
+        ]
       }
     },
     "baseline_evaluation": {
@@ -572,6 +609,7 @@
       "First branch pair is incomplete; no return-OPD generality result yet.",
       "Independent HF/Megatron update parity remains failed and accepted for exploration.",
       "Legacy 64 immutable-source PI features remain pending."
-    ]
+    ],
+    "partial_result_note": "Continued PI step 1 recovered some AMC23 accuracy but fell further on both AIME datasets; no matched OPD evaluation is complete at this snapshot."
   }
 }
