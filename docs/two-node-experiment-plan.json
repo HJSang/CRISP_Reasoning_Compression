@@ -1,6 +1,6 @@
 {
   "schema_version": 15,
-  "status": "corrected_tracked_restart_initializing",
+  "status": "corrected_B_running_first_updates_verified",
   "executable": false,
   "new_gpu_work_authorized": true,
   "review_required_before_launch": false,
@@ -990,9 +990,9 @@
     "source_commit": "268f58f",
     "recovery_checkpoints": false,
     "temporary_eval_snapshots": "local storage; delete after successful verified evaluation and upload",
-    "current_status": "initializing four corrected controllers",
+    "current_status": "all four first losses finite and hosted; evaluation in progress",
     "matrix_and_budget_unchanged": true,
-    "speedup_claim": "pending measured corrected-run timings",
+    "speedup_claim": "saving overhead reduced from about 38\u201341 seconds to 14.36\u201314.56 seconds on first unblocked calls; no overall multiplier established",
     "validation": {
       "focused_cpu": 31,
       "tracking_service": 10,
@@ -1004,6 +1004,45 @@
         "failed": 88,
         "errors": 134
       }
-    }
+    },
+    "workers": {
+      "worker-a": {
+        "arm": "B01_frozen_no_pi",
+        "observed_updates": 1,
+        "first_loss": 0.02219287119805813,
+        "warm_load_confirmed": true,
+        "native_checkpoints_written": false,
+        "hosted_loss_history_verified": true
+      },
+      "worker-b": {
+        "arm": "B10_transported_PI",
+        "observed_updates": 2,
+        "first_loss": 0.1004326269030571,
+        "warm_load_confirmed": true,
+        "native_checkpoints_written": false,
+        "hosted_loss_history_verified": true
+      },
+      "worker-c": {
+        "arm": "B11_frozen_worked_solution",
+        "observed_updates": 2,
+        "first_loss": 0.05484228581190109,
+        "warm_load_confirmed": true,
+        "native_checkpoints_written": false,
+        "hosted_loss_history_verified": true
+      },
+      "worker-d": {
+        "arm": "BS_current_worked_solution",
+        "observed_updates": 2,
+        "first_loss": 0.04886435717344284,
+        "warm_load_confirmed": true,
+        "native_checkpoints_written": false,
+        "hosted_loss_history_verified": true
+      }
+    },
+    "unblocked_export_seconds": [
+      14.43040418624878,
+      14.558241367340088,
+      14.360893487930298
+    ]
   }
 }
