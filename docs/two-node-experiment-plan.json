@@ -1,16 +1,16 @@
 {
-  "schema_version": 11,
-  "status": "PAUSED_BY_USER",
+  "schema_version": 13,
+  "status": "FULL_PARAMETER_READINESS_UPDATE_GATE_FAILED",
   "executable": false,
-  "new_gpu_work_authorized": false,
+  "new_gpu_work_authorized": true,
   "review_required_before_launch": false,
-  "date": "2026-10-08",
+  "date": "2026-10-09",
   "supersedes": "historical sampled-token execution draft",
   "framework": {
     "name": "Miles",
     "directory": "miles",
     "source_baseline": "4f2235868a58305baef3a19a8477279711d57841",
-    "study_changes": "implemented_scoring_launcher_data_and_evaluator_components_full_orchestration_pending"
+    "study_changes": "full_parameter_training_and_full_checkpoint_evaluation_implemented_readiness_in_progress"
   },
   "execution": {
     "independent_experiments": 2,
@@ -23,22 +23,35 @@
     "training_pp": 1,
     "training_cp": 1,
     "initial_assignment": {
-      "worker-a": "A_PI_content_utility",
-      "worker-b": "B_PI_checkpoint_separation"
+      "worker-a": "A1_frozen_no_pi",
+      "worker-b": "A2_frozen_answer_only",
+      "worker-c": "A3_frozen_worked_solution",
+      "worker-d": "A4_frozen_unrelated_example"
     },
-    "later_assignment": "swap experiment-to-node assignment at the next reviewed training seed"
+    "later_assignment": {
+      "worker-a": "B01_frozen_no_pi",
+      "worker-b": "B10_transported_PI",
+      "worker-c": "B11_frozen_worked_solution",
+      "worker-d": "BS_current_worked_solution"
+    },
+    "worker_count": 4,
+    "parallel_runs": 4,
+    "schedule": "Four arms concurrently for each of eight paired blocks in A, then the four B arms concurrently for each block. Same common theta64, seed17 and original matrices; no new seeds or arms."
   },
   "model": {
     "id": "Qwen/Qwen3-4B",
     "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
     "student_thinking": false,
     "teacher_thinking": false,
-    "lora_rank": 64,
-    "lora_alpha": 128,
-    "lora_dropout": 0,
+    "lora_rank": 0,
+    "lora_alpha": null,
+    "lora_dropout": null,
     "teacher_mode_status": "CONFIRMED_MATCHED_OFF",
     "original_compatibility_teacher_thinking": true,
-    "all_study_modes": "non_thinking_rollout_teacher_scoring_and_evaluation"
+    "all_study_modes": "non_thinking_rollout_teacher_scoring_and_evaluation",
+    "training_mode": "full_parameter",
+    "trainable_parameters": "all_student_parameters",
+    "teacher_parameters": "frozen_pinned_base_checkpoint"
   },
   "dataset": {
     "id": "siyanzhao/Openthoughts_math_30k_opsd",
@@ -79,12 +92,13 @@
     "eps": 1e-08,
     "weight_decay": 0,
     "grad_norm_clip": 0.1,
-    "fresh_state_per_branch": true
+    "fresh_state_per_branch": true,
+    "lr_status": "retained_5e-6_initial_full_parameter_setting_not_yet_validated"
   },
   "training": {
     "seed": 17,
     "global_batch": 4,
-    "microbatch": 2,
+    "microbatch": 1,
     "updates_per_rollout_batch": 1,
     "temperature": 1.0,
     "top_p": 1.0,
@@ -97,7 +111,8 @@
     "thinking": false,
     "presence_penalty": 0.0,
     "frequency_penalty": 0.0,
-    "repetition_penalty": 1.0
+    "repetition_penalty": 1.0,
+    "microbatch_status": "selected_one_for_lower_memory_no_observed_speed_loss_in_controlled_full_parameter_4K_replay"
   },
   "evaluation": {
     "pi": false,
@@ -106,11 +121,11 @@
     "top_p": 0.8,
     "top_k": 20,
     "min_p": 0,
-    "response_cap": 8192,
+    "response_cap": 16384,
     "samples_per_question": 8,
     "endpoint_update": 4,
     "grader_pin_status": "implementation_and_dependency_hashes_recorded_40_live_plus_10_format_cases_audited",
-    "total_context_cap": 12288,
+    "total_context_cap": 20480,
     "templated_prefix_cap": 4096,
     "response_budget_includes": "all_generated_reasoning_and_final_answer",
     "max_position_embeddings_at_pinned_revision": 40960,
@@ -127,11 +142,11 @@
       "reuse_identical_branch_start_baseline": true,
       "include_final_step_once": true,
       "deduplicate_rounded_steps": true,
-      "checkpoint": "immutable_snapshot_with_optimizer_step_and_adapter_hash",
+      "checkpoint": "immutable_full_HF_snapshot_with_completed_optimizer_step_and_content_digest",
       "queue": "bounded_async_pause_training_on_backpressure_never_skip_scheduled_step",
       "resume": "persist_job_identity_and_results_no_duplicate_completed_evaluations",
       "cache_key": [
-        "model_adapter_hashes",
+        "full_model_config_and_weight_content_hashes",
         "tokenizer_template",
         "evaluator_version",
         "dataset_revisions_and_content_hashes",
@@ -140,8 +155,17 @@
         "request_seeds"
       ]
     },
-    "profiled_concurrency_per_gpu": 128,
-    "fleet_validation": "single_gpu_profile_complete_multi_replica_contention_pending"
+    "profiled_concurrency_per_gpu": null,
+    "fleet_validation": "16K_context_memory_throughput_and_full_checkpoint_loading_require_new_profile_after_resume",
+    "concurrency_candidate": 32,
+    "truncation_policy": {
+      "user_accepted": "approximately_10_percent",
+      "response_cap": 16384,
+      "overall_measured": 0.08125,
+      "report_per_dataset": true,
+      "material_worsening_requires_review": true,
+      "replaces_prior_five_percent_gate": true
+    }
   },
   "arms": {
     "A": {
@@ -201,13 +225,19 @@
     "primary_endpoint_eval_completions_including_shared_baseline": 52000,
     "primary_endpoint_subset_already_in_total": true,
     "scheduled_eval_completions_total": 213600,
-    "scheduled_eval_response_token_ceiling": 1749811200,
+    "scheduled_eval_response_token_ceiling": 3499622400,
     "eval_allocation": {
       "worker-a": {
-        "branch_completions": 102400
+        "branch_completions": 51200
       },
       "worker-b": {
-        "branch_completions": 102400,
+        "branch_completions": 51200
+      },
+      "worker-c": {
+        "branch_completions": 51200
+      },
+      "worker-d": {
+        "branch_completions": 51200,
         "shared_warmup_completions": 8800
       }
     }
@@ -216,7 +246,7 @@
     "final_target_cache_gib_per_rank": 8,
     "target_microbatch_gib_per_rank": 2,
     "aggregate_cpu_staging_gib_per_rank": 24,
-    "status": "4K_replay_passed_microbatch_2_selected"
+    "status": "full_parameter_capacity_unmeasured_prior_LoRA_profile_historical_only"
   },
   "gates": {
     "profile_questions": 64,
@@ -224,21 +254,32 @@
     "cap_hit_fraction_max": 0.1,
     "checkpoint_signal_to_repeat_noise_min": 5,
     "repeat_noise_floor": 1e-05,
-    "reference_update_check": "failed_mapped_4B_BF16_update_tolerances",
+    "reference_update_check": "full_parameter_forward_backward_update_and_frozen_teacher_checks_pending_prior_LoRA_mapped_gate_failed",
     "runtime_isolation": "passed_owned_isolated_clusters_preserved_shared_services",
     "data_and_grader_audit": "partial_final_data_reasoning_audit_pending",
-    "cost_projection": "single_gpu_evaluation_profile_complete_full_fleet_projection_pending",
+    "cost_projection": "reprofile_full_parameter_training_16K_evaluation_full_checkpoint_export_load_and_storage",
     "eval_profile_questions": 64,
     "eval_profile_responses_per_question": 2,
-    "eval_cap_hit_fraction_max": 0.05,
-    "teacher_mode_choice": "confirmed_student_and_teacher_thinking_off_verify_all_four_scoring_distributions"
+    "eval_cap_hit_fraction_max": null,
+    "teacher_mode_choice": "confirmed_student_and_teacher_thinking_off_verify_all_four_scoring_distributions",
+    "checkpoint_storage": "measure_native_and_HF_snapshot_storage_I_O_and_retention_before_full_run",
+    "eval_length_check": "retain_requested_16K_report_observed_truncation_user_accepted_approximately_10_percent_material_worsening_review",
+    "eval_truncation_policy": {
+      "response_cap": 16384,
+      "thinking": false,
+      "user_decision": "User accepted the observed approximately 10% truncation and chose to retain 16K; report final per-dataset censoring transparently.",
+      "prior_limit": 0.05,
+      "action": "retain_16K_and_report_truncation",
+      "material_worsening_requires_review": true
+    }
   },
   "gpu_hour_caps": {
-    "readiness": 32,
+    "readiness": 64,
     "paired_study_including_warmup": 96,
-    "total": 128,
+    "total": 160,
     "basis": "all_assigned_gpus_times_job_wall_hours_including_idle_slots",
-    "runtime_feasibility": "no_full_launch_until_numerical_and_length_gates_resolved_and_full_schedule_validated"
+    "runtime_feasibility": "no_full_launch_until_numerical_and_length_gates_resolved_and_full_schedule_validated",
+    "authorization": "User explicitly approved 64 readiness / 160 total on 2026-10-09; full study remains 96."
   },
   "automatic_reservation_extension": false,
   "confirmation_authorized": false,
@@ -278,12 +319,12 @@
     "selected_loss_temperature": 1.0
   },
   "benchmark_evaluation": {
-    "status": "BASELINE_AND_ADAPTER_SMOKES_COMPLETED_FULL_STUDY_NOT_LAUNCHED",
+    "status": "16K_NON_THINKING_FULL_PARAMETER_PROTOCOL_SELECTED_NOT_RUN",
     "when": "initial_baseline_and_each_10_percent_optimizer_update_milestone",
-    "response_cap": 8192,
+    "response_cap": 16384,
     "benchmark_entries_before_overlap_audit": 100,
     "completions_per_checkpoint": 800,
-    "response_token_ceiling_per_checkpoint": 6553600,
+    "response_token_ceiling_per_checkpoint": 13107200,
     "preparation_status": "pinned_prompt_only_and_separate_label_exports_hashed_heuristic_overlap_filter_complete",
     "metric": "per_dataset_Avg_at_8_not_pass_at_8_or_majority_vote",
     "training_overlap_policy": "exclude_matching_problem_groups_from_training_PI_donor_profiling_development_and_reserved_internal_pools",
@@ -326,7 +367,7 @@
     "uncertainty": "paired_resampling_of_adaptation_blocks_and_benchmark_problem_groups_retaining_all_arms_checkpoints_and_shared_controls"
   },
   "full_runs_launched": false,
-  "protocol_exception_review_required": true,
+  "protocol_exception_review_required": false,
   "readiness_results": {
     "date": "2026-10-08",
     "full_run_authorization": "User requested smoke tests, memory/speed tuning, then full runs after passing gates.",
@@ -361,7 +402,9 @@
           "AIME_2024": 0.19166666666666668,
           "AIME_2025": 0.11666666666666667,
           "AMC23": 0.0125
-        }
+        },
+        "response_cap": 8192,
+        "total_context_cap": 12288
       },
       {
         "concurrency": 128,
@@ -374,14 +417,17 @@
           "AIME_2024": 0.16666666666666666,
           "AIME_2025": 0.1375,
           "AMC23": 0.025
-        }
+        },
+        "response_cap": 8192,
+        "total_context_cap": 12288
       }
     ],
     "evaluation_profile_caveat": "Different schedules produced different sampled outputs. Throughput comparison does not estimate an accuracy effect.",
     "adapter_evaluation_smoke": {
       "completions": 64,
       "loaded_adapter_sha256": "1476c52790c1d6c3cf3f1740189b2acb74e217bbddf8e0eaa22c1a6413f44f12",
-      "status": "completed_not_a_quality_gate_pass"
+      "status": "completed_not_a_quality_gate_pass",
+      "response_cap": 8192
     },
     "mapped_update": {
       "status": "failed",
@@ -424,19 +470,193 @@
       "manual_reasoning_audit": "limited spot checks only; final candidate audit incomplete"
     },
     "pending": [
-      "resolve HF/Megatron update discrepancy without loosening tolerances",
-      "user decision on common 8K evaluation cap and truncation gate",
-      "finish final data reasoning audit",
-      "end-to-end evaluation queue and immutable cache identity validation",
-      "shared PI-feature extraction and branch orchestration",
-      "multi-GPU evaluator contention and total-budget projection",
-      "theta64 drift gate after authorized warmup"
+      "full_parameter_teacher_freeze_restoration_forward_backward_and_mapped_update_validation",
+      "16K_non_thinking_evaluation_length_memory_throughput_reprofile_after_explicit_resume",
+      "full_parameter_batch_size_and_total_cost_profile_effective_batch_four",
+      "full_model_checkpoint_export_reload_version_pin_and_queue_end_to_end_validation",
+      "checkpoint_storage_IO_and_retention_budget_validation",
+      "finish_final_data_reasoning_audit",
+      "shared_PI_feature_extraction_and_branch_orchestration",
+      "theta64_drift_gate_after_authorized_warmup"
     ],
     "public_artifacts": "Only aggregate metrics and generic worker labels; runtime configs, raw responses and logs stay private.",
     "owned_gpu_jobs_active": false,
-    "owned_evaluators_stopped": true
+    "owned_evaluators_stopped": true,
+    "recipe": "historical_LoRA_rank_64_training_and_8192_token_evaluation"
   },
-  "resume_requires_explicit_user_instruction": true,
-  "pause_reason": "User is reusing both nodes for other work.",
-  "monitor_status": "PAUSED"
+  "resume_requires_explicit_user_instruction": false,
+  "monitor_status": "ACTIVE",
+  "protocol_revision": {
+    "date": "2026-10-09",
+    "training_mode": "full_parameter",
+    "evaluation_response_cap": 16384,
+    "evaluation_thinking": false,
+    "evaluation_context_cap": 20480,
+    "prior_LoRA_and_8K_metrics_are_historical": true,
+    "gpu_validation": "tiny_full_parameter_TP2_passed_four_real_model_smokes_and_16K_profile_running"
+  },
+  "current_readiness": {
+    "tiny_full_parameter_tp2": {
+      "status": "passed",
+      "teacher_max_abs_logprob_error": 0.0035505294799804688,
+      "optimizer_updates": 2,
+      "frozen_teacher_bitwise_stable": true,
+      "exception_restore_passed": true,
+      "transported_dense_max_abs_error": 0.0
+    },
+    "focused_CPU": "39 passed, 24 external/distributed checks skipped locally; remote pinned-author suite 78 passed, 1 skipped; 9 evaluator protocol tests passed locally",
+    "four_smokes": "completed_two_updates_per_context_unrelated_retested_with_matched_block",
+    "evaluation_16K": {
+      "status": "completed",
+      "adapter_sha256": null,
+      "checkpoint_sha256": "b0016d6c2daf51fb81e19915884e8c24e1f819fe71f6ac9fda3d59e02e0209c8",
+      "prompts_sha256": "57ab614317fe8d8e614da2b7ea22f5fae7e3751d2d028bd5801cd266edc35163",
+      "labels_sha256": "a6ad70a1449c7f7149d0a5a4dd96c865b25cdf75851ce1f7af02f9a2978c5028",
+      "elapsed_seconds": 1198.1969929650077,
+      "concurrency_per_server": 32,
+      "servers": 1,
+      "completions": 800,
+      "responses_per_second": 0.6676698445222716,
+      "output_tokens_per_second": 2316.995465937609,
+      "mean_response_tokens": 3470.27125,
+      "p95_latency_seconds": 213.90226372052274,
+      "metrics": {
+        "AIME 2024": {
+          "avg_at_8": 0.2125,
+          "completions": 240,
+          "cap_hit_fraction": 0.12916666666666668,
+          "parse_failure_fraction": 0.11666666666666667,
+          "grader_timeouts": 0,
+          "unexpected_thinking_delimiters": 0
+        },
+        "AIME 2025": {
+          "avg_at_8": 0.20416666666666666,
+          "completions": 240,
+          "cap_hit_fraction": 0.09166666666666666,
+          "parse_failure_fraction": 0.07916666666666666,
+          "grader_timeouts": 0,
+          "unexpected_thinking_delimiters": 0
+        },
+        "AMC23": {
+          "avg_at_8": 0.671875,
+          "completions": 320,
+          "cap_hit_fraction": 0.0375,
+          "parse_failure_fraction": 0.028125,
+          "grader_timeouts": 0,
+          "unexpected_thinking_delimiters": 0
+        }
+      },
+      "interpretation": "Readiness baseline, not evidence of training gains; concurrency-dependent sampling."
+    },
+    "full_runs_launched": false,
+    "full_mapped_update": {
+      "status": "failed",
+      "training_mode": "full_parameter",
+      "examples": 4,
+      "mean_loss": 0.010582976741716266,
+      "grad_norm": 2.9601025581359863,
+      "mapped_gradients": {
+        "cosine": 0.9730727487428699,
+        "relative_l2_error": 0.2534193433075197
+      },
+      "mapped_update": {
+        "cosine": 0.8735106433010196,
+        "relative_l2_error": 0.505161604034182
+      },
+      "max_parameter_error": 1.52587890625e-05,
+      "tolerances": {
+        "minimum_update_cosine": 0.95,
+        "maximum_update_relative_l2_error": 0.35,
+        "maximum_parameter_error": 2e-05
+      }
+    },
+    "identity_check": {
+      "status": "passed",
+      "updates": 2,
+      "losses": [
+        0.0,
+        0.0
+      ],
+      "gradient_norms": [
+        0.0,
+        0.0
+      ]
+    },
+    "full_checkpoint_reload": {
+      "status": "passed",
+      "updates": 2
+    },
+    "full_4K_microbatch_two": {
+      "status": "passed",
+      "peak_gpu_gib": 73.6640625,
+      "train_seconds": 6.207693099975586
+    },
+    "six_replica_queue": {
+      "status": "passed_final_milestone_drained",
+      "replicas": 6,
+      "completions": 800,
+      "response_cap": 16384,
+      "responses_per_second": 3.1600935061407274,
+      "thinking_delimiters": 0,
+      "peak_gpu_gib": 114.748046875,
+      "generation_seconds": 253.1570659049903,
+      "total_process_seconds": 372.5393946170807,
+      "output_tokens_per_second": 9431.409672349715
+    },
+    "checkpoint_bytes_per_update": 64380567856,
+    "checkpoint_retention_status": "pending_before_full_matrix",
+    "broad_launcher_suite": {
+      "modified": "558 passed, 70 failed, 10 errors, 34 skipped",
+      "baseline_comparison": "same 80 failure/error cases at unchanged baseline; no introduced failures; suite remains not green"
+    },
+    "controlled_full_4K_replay": {
+      "microbatch_one": {
+        "train_seconds": 6.186232566833496,
+        "peak_gpu_gib": 51.73828125
+      },
+      "microbatch_two": {
+        "train_seconds": 6.207693099975586,
+        "peak_gpu_gib": 73.6640625
+      },
+      "selected_microbatch": 1,
+      "caveat": "One step per setting on the same tape; timing difference is within measurement noise. MB1 uses less memory."
+    },
+    "optimizer_isolation": {
+      "status": "passed",
+      "training_mode": "full_parameter",
+      "examples": 4,
+      "mean_loss": 0.010582976741716266,
+      "grad_norm": 2.5686421394348145,
+      "mapped_gradients": {
+        "cosine": 1.0,
+        "relative_l2_error": 0.0
+      },
+      "mapped_update": {
+        "cosine": 0.9999999810492424,
+        "relative_l2_error": 0.00019468311424730134
+      },
+      "max_parameter_error": 7.62939453125e-06,
+      "tolerances": {
+        "minimum_update_cosine": 0.95,
+        "maximum_update_relative_l2_error": 0.35,
+        "maximum_parameter_error": 2e-05
+      },
+      "scope": "Same captured gradients deliberately supplied to HF Adam; isolates optimizer/mapping only, not independent forward/backward parity."
+    },
+    "wandb": "disabled_readiness_metrics_private_logs_and_HTML_only",
+    "active_GPU_jobs": 0,
+    "readiness_gpu_hour_accounting": {
+      "prior_gpu_hours": 29.6,
+      "new_job_union_gpu_hours": 9.294056256612143,
+      "total_gpu_hours_upper_estimate": 38.894056256612146,
+      "unplaced_CPU_test_seconds_charged_separately_conservatively": true,
+      "all_four_worker_window_gpu_hours_upper_bound": 47.737264016469325
+    },
+    "current_cost_projection": {
+      "status": "does_not_fit_yet",
+      "evaluation_only_allocated_gpu_hours_current_schedule": 168.77137726999354,
+      "study_cap_gpu_hours": 96,
+      "basis": "Measured six-replica C32 rate extrapolated to four equal fleets; generation only. Excludes initialization, reload, checkpoint IO, training, feature pass and contention. Further throughput tuning required; do not reduce matrix or skip checkpoints."
+    }
+  }
 }
