@@ -23,9 +23,11 @@ records the implemented full-vocabulary loss, fixed-base Megatron teacher, paire
 token prefixes and canonical LoRA path. Independent author-loss tests, a ten-step
 HF replay, tiny Megatron TP1/TP2 checks, and the bounded 4B live pilot pass. The
 linked HTML report separates those results from mapped update parity and learning
-evaluation. The proposed [two parallel experiment plan](docs/two-node-experiment-plan.html)
-assigns PI-content utility and checkpoint separation to independent nodes; it
-requires review before launch.
+evaluation. The [four-arm experiment report](docs/two-node-experiment-plan.html)
+records the completed full-parameter two-block comparison and its limitations.
+The [PI-then-distillation follow-up proposal](docs/pi-distillation-followup-plan.html)
+adds independent warm-up replication, mechanism controls and cross-model/domain
+validation; it requires review before new GPU experiments.
 
 Run Miles commands from the `miles/` working directory. The existing `workspace/`
 implementation and paper results below describe the original CRISP pipeline.

@@ -1,0 +1,387 @@
+{
+  "schema_version": 1,
+  "title": "Does PI warm-up followed by original-teacher distillation generalize?",
+  "status": "proposal_for_review",
+  "launch_authorized": false,
+  "executable": false,
+  "new_gpu_jobs_launched": 0,
+  "scope": "Independent replication first; causal mechanisms and cross-model/domain validation conditional",
+  "current_evidence": {
+    "independent_warmup_checkpoints": 1,
+    "continuation_blocks": 2,
+    "nonthinking": true,
+    "offline_diagnostics": {
+      "AIME 2024": {
+        "questions": 30,
+        "questions_accuracy_up": 12,
+        "questions_accuracy_down": 4,
+        "gain_questions_with_nonincreased_mean_length": 5,
+        "spearman_question_accuracy_delta_vs_length_delta": -0.13918623966745372,
+        "paired_draw_transitions": {
+          "wrong_to_right": {
+            "count": 43,
+            "mean_length_delta": -2195.279069767442
+          },
+          "right_to_wrong": {
+            "count": 18,
+            "mean_length_delta": 3271.222222222222
+          },
+          "both_right": {
+            "count": 84,
+            "mean_length_delta": 85.5952380952381
+          },
+          "both_wrong": {
+            "count": 335,
+            "mean_length_delta": 2580.528358208955
+          }
+        },
+        "base_parse_failure": 0.11666666666666667,
+        "student_parse_failure": 0.19583333333333333
+      },
+      "AIME 2025": {
+        "questions": 30,
+        "questions_accuracy_up": 10,
+        "questions_accuracy_down": 6,
+        "gain_questions_with_nonincreased_mean_length": 2,
+        "spearman_question_accuracy_delta_vs_length_delta": -0.2710033157320803,
+        "paired_draw_transitions": {
+          "wrong_to_right": {
+            "count": 42,
+            "mean_length_delta": -926.2619047619048
+          },
+          "right_to_wrong": {
+            "count": 23,
+            "mean_length_delta": 5077.782608695652
+          },
+          "both_right": {
+            "count": 75,
+            "mean_length_delta": 115.64
+          },
+          "both_wrong": {
+            "count": 340,
+            "mean_length_delta": 2699.4823529411765
+          }
+        },
+        "base_parse_failure": 0.07916666666666666,
+        "student_parse_failure": 0.14166666666666666
+      },
+      "AMC23": {
+        "questions": 40,
+        "questions_accuracy_up": 13,
+        "questions_accuracy_down": 10,
+        "gain_questions_with_nonincreased_mean_length": 5,
+        "spearman_question_accuracy_delta_vs_length_delta": -0.2664378946291773,
+        "paired_draw_transitions": {
+          "wrong_to_right": {
+            "count": 80,
+            "mean_length_delta": -704.0125
+          },
+          "right_to_wrong": {
+            "count": 63,
+            "mean_length_delta": 1866.5079365079366
+          },
+          "both_right": {
+            "count": 367,
+            "mean_length_delta": 168.8801089918256
+          },
+          "both_wrong": {
+            "count": 130,
+            "mean_length_delta": 1001.2153846153847
+          }
+        },
+        "base_parse_failure": 0.028125,
+        "student_parse_failure": 0.0234375
+      }
+    },
+    "toy_status": "illustration_only_not_fitted_to_LLM",
+    "toy": [
+      {
+        "step": 0,
+        "teacher_KL_surrogate": 0.55,
+        "utility_change_surrogate": -1.0,
+        "uniform_shrink_utility": -1.0
+      },
+      {
+        "step": 1,
+        "teacher_KL_surrogate": 0.170125,
+        "utility_change_surrogate": -0.050000000000000044,
+        "uniform_shrink_utility": -0.5
+      },
+      {
+        "step": 2,
+        "teacher_KL_surrogate": 0.0719753125,
+        "utility_change_surrogate": 0.40249999999999997,
+        "uniform_shrink_utility": -0.25
+      },
+      {
+        "step": 3,
+        "teacher_KL_surrogate": 0.04456709453124999,
+        "utility_change_surrogate": 0.6073749999999999,
+        "uniform_shrink_utility": -0.125
+      },
+      {
+        "step": 4,
+        "teacher_KL_surrogate": 0.03512414656445312,
+        "utility_change_surrogate": 0.6895062499999999,
+        "uniform_shrink_utility": -0.0625
+      },
+      {
+        "step": 5,
+        "teacher_KL_surrogate": 0.030425128211918933,
+        "utility_change_surrogate": 0.7112809374999998,
+        "uniform_shrink_utility": -0.03125
+      },
+      {
+        "step": 6,
+        "teacher_KL_surrogate": 0.027140074695631834,
+        "utility_change_surrogate": 0.7038418906249998,
+        "uniform_shrink_utility": -0.015625
+      },
+      {
+        "step": 7,
+        "teacher_KL_surrogate": 0.024414266533901476,
+        "utility_change_surrogate": 0.6827122960937497,
+        "uniform_shrink_utility": -0.0078125
+      },
+      {
+        "step": 8,
+        "teacher_KL_surrogate": 0.022013962827119517,
+        "utility_change_surrogate": 0.6556079312890623,
+        "uniform_shrink_utility": -0.00390625
+      }
+    ]
+  },
+  "stage_1": {
+    "model": "Qwen/Qwen3-4B",
+    "model_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "replicate_seeds": [
+      29,
+      43,
+      71
+    ],
+    "independent_warmup_checkpoints": 3,
+    "warmup": {
+      "updates": 7,
+      "teacher": "original_frozen_checkpoint",
+      "context": "worked_solution_PI",
+      "questions_per_replicate": 28,
+      "select_by_benchmark_accuracy": false,
+      "optimizer": "fresh_Adam",
+      "evaluation_steps": [
+        0,
+        7
+      ],
+      "cadence_basis": "explicitly retain original shared warm-up step-0/step-7 protocol"
+    },
+    "branches": [
+      {
+        "id": "pi_then_original_opd",
+        "context": "none",
+        "teacher": "original_frozen_checkpoint",
+        "updates": 4,
+        "fresh_adam": true
+      },
+      {
+        "id": "pi_then_pi",
+        "context": "worked_solution_PI",
+        "teacher": "original_frozen_checkpoint",
+        "updates": 4,
+        "fresh_adam": true
+      }
+    ],
+    "controls": [
+      "original_checkpoint_evaluated_per_replicate_seed_bank",
+      "same_replicate_warmed_checkpoint_cached_without_further_training"
+    ],
+    "branch_questions_per_replicate": 16,
+    "branch_questions_shared_between_methods": true,
+    "data_groups_disjoint_across_replicates_and_stages": true,
+    "training": {
+      "full_parameters": true,
+      "loss": "detached_full_vocabulary_forward_KL_sample_mean",
+      "scoring_temperature": 1.0,
+      "effective_batch": 4,
+      "microbatch": 1,
+      "lr": 5e-06,
+      "lr_schedule": "constant",
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "weight_decay": 0,
+      "gradient_clip": 0.1,
+      "dropout": 0,
+      "thinking": false,
+      "response_cap": 4096,
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "top_k": -1
+    },
+    "evaluation": {
+      "datasets": [
+        "AIME 2024",
+        "AIME 2025",
+        "AMC23"
+      ],
+      "questions": [
+        30,
+        30,
+        40
+      ],
+      "responses_per_question": 8,
+      "response_cap": 16384,
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "thinking": false,
+      "PI": false,
+      "branch_steps": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "warmup_steps": [
+        0,
+        7
+      ],
+      "seed_mapping": "hash(protocol_namespace,replicate_seed,question_id,draw); paired across methods; exclude run_id and checkpoint identity"
+    },
+    "counts": {
+      "warmup_updates": 21,
+      "branch_updates": 24,
+      "total_updates": 45,
+      "trained_branches": 6,
+      "unique_training_question_groups": 132,
+      "training_response_uses": 180,
+      "evaluation_checkpoints": 30,
+      "evaluation_completions": 24000
+    },
+    "primary_endpoint": "per_dataset_Avg_at_8_at_branch_update_4_minus_original_checkpoint",
+    "secondary_contrasts": [
+      "return_OPD_minus_continued_PI",
+      "return_OPD_minus_own_warmed_checkpoint"
+    ],
+    "practical_threshold_pp_per_dataset": 2,
+    "provisional_replication_rule": "For each dataset separately: mean gain >=2pp over original and positive gain in at least 2 of 3 independent warmups. Report all three; no pooled success label or confirmatory claim.",
+    "analysis": "crossed paired resampling of warmup replicates and question IDs; identical question resample across replicates/methods; generation seed bank nested in replicate; report seed-only and question-only sensitivity",
+    "no_automatic_extension": true,
+    "estimated_gpu_hours": [
+      26,
+      30
+    ],
+    "proposed_gpu_hour_cap": 32,
+    "proposed_wall_window_hours": 3,
+    "admission_rule": "Measure first complete paired seed; admit remaining paired seeds only if all required evaluations and cleanup fit conservative remaining cost and time; never skip reached evaluations."
+  },
+  "mechanism_tests": [
+    {
+      "question": "Does correct PI content matter?",
+      "arms": [
+        "true_PI_then_OPD",
+        "length_matched_shuffled_PI_then_OPD",
+        "KL_matched_generic_perturbation_then_OPD",
+        "true_PI_without_return"
+      ],
+      "controls": "fixed diagnostic KL for perturbation matching; never select warmups by benchmark degradation"
+    },
+    {
+      "question": "Is the return update more than scalar interpolation?",
+      "arms": [
+        "on_policy_return",
+        "diagnostic_KL_matched_parameter_interpolation",
+        "unchanged_warm",
+        "original"
+      ],
+      "measure": "parameter displacement projection/residual and fixed-tape functional drift"
+    },
+    {
+      "question": "Does current student state visitation matter?",
+      "arms": [
+        "current_student_prefixes",
+        "all_16_prefixes_presampled_from_warmed_student",
+        "original_teacher_prefixes"
+      ],
+      "controls": "same question order, seed labels, four responses/update and loss normalization; report token/FLOP differences"
+    },
+    {
+      "question": "Does termination behavior drive the gain?",
+      "arms": [
+        "full_FKL",
+        "termination_Bernoulli_KL_only",
+        "conditional_nonstop_token_KL_only",
+        "no_update"
+      ],
+      "evaluation": "predeclared 4K/8K/16K caps and accuracy-token frontier; longer cap disabled unless separately approved"
+    },
+    {
+      "question": "Does benefit peak then decay under contraction?",
+      "arms": [
+        "return_updates_1_through_8"
+      ],
+      "controls": "conditional bounded eight-update experiment, evaluate every reached update; fixed endpoints, no best-checkpoint reporting"
+    }
+  ],
+  "conditional_generality": {
+    "model_cells": [
+      "Qwen/Qwen3-8B",
+      "zai-org/GLM-4-9B-0414_after_Miles_and_template_validation"
+    ],
+    "minimum_independent_warmups_per_cell": 3,
+    "datasets": [
+      "new_sealed_math_question_groups",
+      "math_to_code_transfer_on_pinned_EvalPlus_or_dated_LiveCodeBench"
+    ],
+    "checkpoint_stage_controls": [
+      "fixed_PI_warmup_doses_3_7_14",
+      "no_outcome_based_checkpoint_selection"
+    ],
+    "frontier_stage": "only after replication, mechanism review, per-model memory/speed profiling and a separate resource plan; do not infer frontier behavior from dense proxies"
+  },
+  "constraints": {
+    "no_native_or_optimizer_recovery_saves": true,
+    "temporary_HF_snapshots_only": true,
+    "delete_after_all_declared_eval_and_tracking": true,
+    "existing_source_models_retained": true,
+    "restricted_private_wandb": true,
+    "public_worker_names": [
+      "worker-a",
+      "worker-b",
+      "worker-c",
+      "worker-d"
+    ],
+    "accepted_independent_HF_Megatron_mismatch_remains_failed": true,
+    "no_open_ended_parity_work": true,
+    "legacy_64_PI_features_still_pending": true
+  },
+  "budget_context": {
+    "prior_study_gpu_hours": 53.08183865388234,
+    "prior_readiness_gpu_hours_estimate": 39.12600701438056,
+    "remaining_study_gpu_hours": 42.91816134611766,
+    "proposed_first_stage_gpu_hours": 32,
+    "old_deadline_unix": 1791582364.570868,
+    "new_execution_window_requires_review": true,
+    "later_stages_included_in_32_gpu_hours": false
+  },
+  "implementation_pending": [
+    "replicate-specific evaluation seed namespace; current evaluator hardcodes seed 17",
+    "new disjoint warmup and adaptation manifests",
+    "shared warmup source and paired reset-Adam branch builder",
+    "preflight cost/admission checks for complete paired seeds",
+    "fixed-tape diagnostics and neutral descriptive run labels",
+    "conditional interpolation and termination-loss probes if later approved"
+  ],
+  "sources": {
+    "on_policy_distillation": "https://arxiv.org/abs/2306.13649",
+    "regularization_theory": "https://proceedings.neurips.cc/paper_files/paper/2020/hash/2288f691b58edecadcc9a8691762b4fd-Abstract.html",
+    "born_again_networks": "https://proceedings.mlr.press/v80/furlanello18a.html",
+    "qwen8b": "https://huggingface.co/Qwen/Qwen3-8B",
+    "glm_proxy": "https://huggingface.co/zai-org/GLM-4-9B-0414",
+    "evalplus": "https://github.com/evalplus/evalplus",
+    "livecodebench": "https://livecodebench.github.io/",
+    "original_opsd": "https://arxiv.org/abs/2601.18734",
+    "sdft_2026_revision": "https://arxiv.org/abs/2601.19897v2"
+  }
+}
