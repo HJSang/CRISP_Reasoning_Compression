@@ -1,6 +1,6 @@
 {
   "schema_version": 15,
-  "status": "corrected_B_running_first_updates_verified",
+  "status": "recovering_reached_evaluations_before_fresh_balanced_retry",
   "executable": false,
   "new_gpu_work_authorized": true,
   "review_required_before_launch": false,
@@ -990,7 +990,7 @@
     "source_commit": "268f58f",
     "recovery_checkpoints": false,
     "temporary_eval_snapshots": "local storage; delete after successful verified evaluation and upload",
-    "current_status": "all four first losses finite and hosted; evaluation in progress",
+    "current_status": "all four stopped after three finite updates; two completed evaluations recovered; drain all twelve reached evaluations before fresh two-block retry",
     "matrix_and_budget_unchanged": true,
     "speedup_claim": "saving overhead reduced from about 38\u201341 seconds to 14.36\u201314.56 seconds on first unblocked calls; no overall multiplier established",
     "validation": {
@@ -1043,6 +1043,16 @@
       14.43040418624878,
       14.558241367340088,
       14.360893487930298
-    ]
+    ],
+    "evaluation_recovery": {
+      "fix_commit": "fa63329",
+      "reached_updates_per_arm": 3,
+      "required_partial_evaluations": 12,
+      "verified_reused_evaluations": 2,
+      "optimizer_recovery": false,
+      "prior_partial_branches": "diagnostics only; do not replace complete four-update branches",
+      "retry": "two matched blocks from same warm source with fresh Adam, only after drain and at least one hour before existing deadline",
+      "validation": "10 focused tests; live independent evaluator inheritance check passes; hosted metrics verified"
+    }
   }
 }
