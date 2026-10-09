@@ -1,5 +1,5 @@
 {
-  "schema_version": 13,
+  "schema_version": 14,
   "status": "FULL_PARAMETER_READINESS_UPDATE_GATE_FAILED",
   "executable": false,
   "new_gpu_work_authorized": true,
@@ -13,7 +13,7 @@
     "study_changes": "full_parameter_training_and_full_checkpoint_evaluation_implemented_readiness_in_progress"
   },
   "execution": {
-    "independent_experiments": 2,
+    "independent_experiments": 1,
     "experiments_per_node": 1,
     "active_training_branches_per_node": 1,
     "cross_node_training": false,
@@ -23,20 +23,21 @@
     "training_pp": 1,
     "training_cp": 1,
     "initial_assignment": {
-      "worker-a": "A1_frozen_no_pi",
-      "worker-b": "A2_frozen_answer_only",
-      "worker-c": "A3_frozen_worked_solution",
-      "worker-d": "A4_frozen_unrelated_example"
-    },
-    "later_assignment": {
       "worker-a": "B01_frozen_no_pi",
       "worker-b": "B10_transported_PI",
       "worker-c": "B11_frozen_worked_solution",
       "worker-d": "BS_current_worked_solution"
     },
+    "later_assignment": {
+      "worker-a": "A1_frozen_no_pi",
+      "worker-b": "A2_frozen_answer_only",
+      "worker-c": "A3_frozen_worked_solution",
+      "worker-d": "A4_frozen_unrelated_example"
+    },
     "worker_count": 4,
     "parallel_runs": 4,
-    "schedule": "Four arms concurrently for each of eight paired blocks in A, then the four B arms concurrently for each block. Same common theta64, seed17 and original matrices; no new seeds or arms."
+    "schedule": "B first: two matched blocks, four arms concurrently, four updates per branch. Review at 2 and 4 completed blocks; extend only for useful unresolved questions within caps, at most 8. A is conditional follow-up, not an automatic wave.",
+    "conditional_followup_experiments": 1
   },
   "model": {
     "id": "Qwen/Qwen3-4B",
@@ -153,10 +154,11 @@
         "grader_version",
         "sampling_configuration",
         "request_seeds"
-      ]
+      ],
+      "early_stop": "warmup stops only at existing listed milestones; drain every reached evaluation; branch stage review only after all four updates in all arms; no retrospective milestone rescaling"
     },
     "profiled_concurrency_per_gpu": 32,
-    "fleet_validation": "six_replica_full_checkpoint_queue_passed_800_responses_16K_non_thinking; concurrency_tuning_and_full_study_feasibility_still_pending",
+    "fleet_validation": "six_replica_full_checkpoint_queue_passed_800_responses_16K_non_thinking; staged_cost_contention_retention_and_recovery_validation_pending",
     "concurrency_candidate": 32,
     "truncation_policy": {
       "user_accepted": "approximately_10_percent",
@@ -183,70 +185,11 @@
       "BS": "current_worked_solution"
     }
   },
-  "first_batch": {
-    "warmup_updates": 64,
-    "warmup_response_uses": 256,
-    "blocks_per_experiment": 8,
-    "adaptation_questions_per_block": 16,
-    "preupdate_feature_responses_shared": 256,
-    "active_arms_per_experiment": 4,
-    "branches_total": 64,
-    "updates_per_branch": 4,
-    "branch_updates_total": 256,
-    "branch_training_response_uses": 1024,
-    "readiness_work": "additional, separately counted within cap",
-    "evaluation_questions_shared_across_blocks": 100,
-    "eval_completions_per_checkpoint": 800,
-    "warmup_eval_steps": [
-      0,
-      7,
-      13,
-      20,
-      26,
-      32,
-      39,
-      45,
-      52,
-      58,
-      64
-    ],
-    "branch_eval_steps": [
-      1,
-      2,
-      3,
-      4
-    ],
-    "warmup_eval_checkpoints": 11,
-    "branch_eval_checkpoints": 256,
-    "scheduled_eval_checkpoints_total": 267,
-    "warmup_eval_completions": 8800,
-    "branch_milestone_eval_completions": 204800,
-    "shared_branch_baseline_reused_from_warmup_step": 64,
-    "primary_endpoint_eval_completions_including_shared_baseline": 52000,
-    "primary_endpoint_subset_already_in_total": true,
-    "scheduled_eval_completions_total": 213600,
-    "scheduled_eval_response_token_ceiling": 3499622400,
-    "eval_allocation": {
-      "worker-a": {
-        "branch_completions": 51200
-      },
-      "worker-b": {
-        "branch_completions": 51200
-      },
-      "worker-c": {
-        "branch_completions": 51200
-      },
-      "worker-d": {
-        "branch_completions": 51200,
-        "shared_warmup_completions": 8800
-      }
-    }
-  },
   "capacity_proposal": {
     "final_target_cache_gib_per_rank": 8,
     "target_microbatch_gib_per_rank": 2,
     "aggregate_cpu_staging_gib_per_rank": 24,
-    "status": "full_parameter_capacity_unmeasured_prior_LoRA_profile_historical_only"
+    "status": "full_parameter_MB1_measured_51.738_GiB_at_4K_target_staging_and_branch_orchestration_remain_gated"
   },
   "gates": {
     "profile_questions": 64,
@@ -257,12 +200,12 @@
     "reference_update_check": "Independent full-model update fails; isolated identical-gradient optimizer/mapping passes. Continue forward/backward investigation without relaxing tolerances.",
     "runtime_isolation": "passed_owned_isolated_clusters_preserved_shared_services",
     "data_and_grader_audit": "partial_final_data_reasoning_audit_pending",
-    "cost_projection": "At measured six-replica C32 throughput, evaluation generation alone projects about 169 allocated GPU-hours under the planned schedule; full study cap is 96. Further throughput tuning required.",
+    "cost_projection": "Validate total initial two-block B-stage cost including actual warmup, training, features, checkpoint IO, startup, queue drain and all assigned idle GPUs. At the measured six-replica rate, generation alone is at most about 42.8 GPUh with maximum warmup and all 32 GPUs charged. Historical A+B envelope is no longer mandatory.",
     "eval_profile_questions": 64,
     "eval_profile_responses_per_question": 2,
     "eval_cap_hit_fraction_max": null,
     "teacher_mode_choice": "confirmed_student_and_teacher_thinking_off_verify_all_four_scoring_distributions",
-    "checkpoint_storage": "measure_native_and_HF_snapshot_storage_I_O_and_retention_before_full_run",
+    "checkpoint_storage": "full_export_reload_and_six_replica_final_drain_passed; storage_IO_retention_and_restart_recovery_still_require_validation",
     "eval_length_check": "retain_requested_16K_report_observed_truncation_user_accepted_approximately_10_percent_material_worsening_review",
     "eval_truncation_policy": {
       "response_cap": 16384,
@@ -271,14 +214,15 @@
       "prior_limit": 0.05,
       "action": "retain_16K_and_report_truncation",
       "material_worsening_requires_review": true
-    }
+    },
+    "adaptive_stop": "Validate fixed milestone warmup stop, complete balanced block barriers, durable review decisions, resume identity and draining every reached evaluation before scientific launch."
   },
   "gpu_hour_caps": {
     "readiness": 64,
     "paired_study_including_warmup": 96,
     "total": 160,
     "basis": "all_assigned_gpus_times_job_wall_hours_including_idle_slots",
-    "runtime_feasibility": "no_full_launch_until_numerical_and_length_gates_resolved_and_full_schedule_validated",
+    "runtime_feasibility": "no_scientific_launch_until_numerical_data_execution_and_initial_stage_total_cost_gates_pass; review_each_extension_within_same_caps",
     "authorization": "User explicitly approved 64 readiness / 160 total on 2026-10-09; full study remains 96."
   },
   "automatic_reservation_extension": false,
@@ -319,7 +263,7 @@
     "selected_loss_temperature": 1.0
   },
   "benchmark_evaluation": {
-    "status": "16K_NON_THINKING_FULL_PARAMETER_PROTOCOL_SELECTED_NOT_RUN",
+    "status": "READINESS_BASELINE_AND_FULL_CHECKPOINT_QUEUE_COMPLETE_SCIENTIFIC_BRANCHES_NOT_STARTED",
     "when": "initial_baseline_and_each_10_percent_optimizer_update_milestone",
     "response_cap": 16384,
     "benchmark_entries_before_overlap_audit": 100,
@@ -363,7 +307,7 @@
         "completions_per_checkpoint": 320
       }
     ],
-    "interpretation": "monitoring_and_exploratory_step_four_effects_not_untouched_final_test_if_used_for_selection",
+    "interpretation": "adaptive_exploratory_step_four_effects_per_dataset_not_confirmatory_or_untouched_final_test",
     "uncertainty": "paired_resampling_of_adaptation_blocks_and_benchmark_problem_groups_retaining_all_arms_checkpoints_and_shared_controls"
   },
   "full_runs_launched": false,
@@ -482,7 +426,8 @@
     "public_artifacts": "Only aggregate metrics and generic worker labels; runtime configs, raw responses and logs stay private.",
     "owned_gpu_jobs_active": false,
     "owned_evaluators_stopped": true,
-    "recipe": "historical_LoRA_rank_64_training_and_8192_token_evaluation"
+    "recipe": "historical_LoRA_rank_64_training_and_8192_token_evaluation",
+    "status": "historical_LoRA_evidence_and_pending_list_superseded_by_current_readiness"
   },
   "resume_requires_explicit_user_instruction": false,
   "monitor_status": "ACTIVE",
@@ -493,7 +438,7 @@
     "evaluation_thinking": false,
     "evaluation_context_cap": 20480,
     "prior_LoRA_and_8K_metrics_are_historical": true,
-    "gpu_validation": "tiny_full_parameter_TP2_passed_four_real_model_smokes_and_16K_profile_running"
+    "gpu_validation": "four_context_full_parameter_smokes_identity_reload_and_16K_queue_passed_independent_update_parity_failed"
   },
   "current_readiness": {
     "tiny_full_parameter_tp2": {
@@ -648,35 +593,210 @@
     "readiness_gpu_hour_accounting": {
       "prior_gpu_hours": 29.6,
       "new_job_union_gpu_hours": 9.294056256612143,
-      "total_gpu_hours_upper_estimate": 38.894056256612146,
+      "total_gpu_hours_upper_estimate": 39.12600701438056,
       "unplaced_CPU_test_seconds_charged_separately_conservatively": true,
-      "all_four_worker_window_gpu_hours_upper_bound": 47.737264016469325
+      "all_four_worker_window_gpu_hours_upper_bound": 47.96921477423774,
+      "PR3741_cancelled_validation_gpu_hours": 0.23195075776841906
     },
-    "current_cost_projection": {
-      "status": "does_not_fit_yet",
+    "pending": [
+      "independent_full_parameter_forward_backward_and_mapped_update_parity",
+      "checkpoint_storage_IO_retention_and_queue_recovery",
+      "finish_final_data_reasoning_audit",
+      "streamed_shared_PI_features_and_balanced_branch_orchestration",
+      "adaptive_warmup_drift_stop_and_stage_barrier_validation",
+      "initial_stage_total_cost_and_extension_feasibility"
+    ],
+    "historical_full_matrix_cost_projection": {
+      "status": "superseded_full_A_plus_B_envelope",
       "evaluation_only_allocated_gpu_hours_current_schedule": 168.77137726999354,
       "study_cap_gpu_hours": 96,
       "basis": "Measured six-replica C32 rate extrapolated to four equal fleets; generation only. Excludes initialization, reload, checkpoint IO, training, feature pass and contention. Further throughput tuning required; do not reduce matrix or skip checkpoints."
+    },
+    "current_cost_projection": {
+      "status": "staged_total_cost_not_yet_validated",
+      "measured_six_replica_responses_per_second": 3.1600935061407274,
+      "initial_two_block_generation_only_max_warmup_gpu_hours": 42.75541557506503,
+      "study_cap_gpu_hours": 96,
+      "basis": "Assume all 32 assigned GPUs charged throughout serialized warmup evaluation then concurrent branch evaluations at equal measured fleet rates. Excludes training, features, startup, IO and contention; no cost-gate pass inferred."
     }
   },
   "next_scientific_runs": {
-    "warmup": "64 worked-solution OPSD updates with the original base teacher frozen; evaluate baseline and every scheduled milestone",
+    "priority": "B_checkpoint_separation",
+    "warmup": "up to 64 worked-solution OPSD updates; stop at earliest fixed drift-check milestone passing the predeclared noise gate",
     "first_wave": [
-      "frozen_no_pi",
-      "frozen_answer_only",
-      "frozen_worked_solution",
-      "frozen_unrelated_example"
+      "B01_frozen_no_pi",
+      "B10_transported_PI",
+      "B11_frozen_worked_solution",
+      "BS_current_worked_solution"
     ],
-    "second_wave": [
-      "frozen_no_pi",
-      "transported_PI",
-      "frozen_worked_solution",
-      "current_worked_solution"
+    "initial_blocks": 2,
+    "conditional_extension_cumulative_blocks": [
+      4,
+      8
     ],
-    "blocks_per_wave": 8,
     "updates_per_branch": 4,
-    "shared_start": "same theta64 with fresh Adam for every branch",
+    "shared_start": "theta_star with fresh Adam for every branch",
     "unchanged_baseline": true,
-    "launch_status": "pending_numerical_cost_data_and_execution_gates"
+    "A_followup": "conditional only after B review; no automatic matrix or epoch completion",
+    "launch_status": "pending_numerical_data_cost_and_adaptive_execution_gates"
+  },
+  "historical_full_matrix_envelope": {
+    "warmup_updates": 64,
+    "warmup_response_uses": 256,
+    "blocks_per_experiment": 8,
+    "adaptation_questions_per_block": 16,
+    "preupdate_feature_responses_shared": 256,
+    "active_arms_per_experiment": 4,
+    "branches_total": 64,
+    "updates_per_branch": 4,
+    "branch_updates_total": 256,
+    "branch_training_response_uses": 1024,
+    "readiness_work": "additional, separately counted within cap",
+    "evaluation_questions_shared_across_blocks": 100,
+    "eval_completions_per_checkpoint": 800,
+    "warmup_eval_steps": [
+      0,
+      7,
+      13,
+      20,
+      26,
+      32,
+      39,
+      45,
+      52,
+      58,
+      64
+    ],
+    "branch_eval_steps": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "warmup_eval_checkpoints": 11,
+    "branch_eval_checkpoints": 256,
+    "scheduled_eval_checkpoints_total": 267,
+    "warmup_eval_completions": 8800,
+    "branch_milestone_eval_completions": 204800,
+    "shared_branch_baseline_reused_from_warmup_step": 64,
+    "primary_endpoint_eval_completions_including_shared_baseline": 52000,
+    "primary_endpoint_subset_already_in_total": true,
+    "scheduled_eval_completions_total": 213600,
+    "scheduled_eval_response_token_ceiling": 3499622400,
+    "eval_allocation": {
+      "worker-a": {
+        "branch_completions": 51200
+      },
+      "worker-b": {
+        "branch_completions": 51200
+      },
+      "worker-c": {
+        "branch_completions": 51200
+      },
+      "worker-d": {
+        "branch_completions": 51200,
+        "shared_warmup_completions": 8800
+      }
+    },
+    "status": "superseded_8_blocks_each_A_and_B_not_a_required_workload"
+  },
+  "first_batch": {
+    "experiment": "B_checkpoint_separation",
+    "initial_blocks": 2,
+    "maximum_blocks": 8,
+    "cumulative_review_blocks": [
+      2,
+      4,
+      8
+    ],
+    "active_arms": 4,
+    "updates_per_branch": 4,
+    "adaptation_questions_per_block": 16,
+    "warmup_max_updates": 64,
+    "warmup_eval_and_drift_check_steps": [
+      7,
+      13,
+      20,
+      26,
+      32,
+      39,
+      45,
+      52,
+      58,
+      64
+    ],
+    "warmup_stop": "earliest listed milestone passing the fixed-panel drift-to-repeat-noise gate; stop at 64 as unresolved if none passes; do not select by benchmark accuracy",
+    "shared_start": "theta_star_selected_by_drift_gate_with_fresh_Adam_each_branch",
+    "preupdate_feature_responses_per_block": 32,
+    "feature_collection": "only blocks actually reached",
+    "eval_completions_per_checkpoint": 800,
+    "branch_eval_steps": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "warmup_eval_completions_rule": "800*(1+number_of_reached_warmup_milestones)",
+    "branch_baseline": "reuse_identical_theta_star_evaluation",
+    "stages": [
+      {
+        "cumulative_blocks": 2,
+        "branches": 8,
+        "branch_updates": 32,
+        "branch_training_response_uses": 128,
+        "preupdate_feature_responses": 64,
+        "branch_eval_checkpoints": 32,
+        "branch_eval_completions": 25600,
+        "eval_completions_with_maximum_warmup": 34400,
+        "evaluation_generation_only_gpu_hours_with_maximum_warmup": 42.75541557506503
+      },
+      {
+        "cumulative_blocks": 4,
+        "branches": 16,
+        "branch_updates": 64,
+        "branch_training_response_uses": 256,
+        "preupdate_feature_responses": 128,
+        "branch_eval_checkpoints": 64,
+        "branch_eval_completions": 51200,
+        "eval_completions_with_maximum_warmup": 60000,
+        "evaluation_generation_only_gpu_hours_with_maximum_warmup": 60.75769581719767
+      },
+      {
+        "cumulative_blocks": 8,
+        "branches": 32,
+        "branch_updates": 128,
+        "branch_training_response_uses": 512,
+        "preupdate_feature_responses": 256,
+        "branch_eval_checkpoints": 128,
+        "branch_eval_completions": 102400,
+        "eval_completions_with_maximum_warmup": 111200,
+        "evaluation_generation_only_gpu_hours_with_maximum_warmup": 96.76225630146295
+      }
+    ],
+    "no_epoch_requirement": true,
+    "readiness_work": "additional, separately counted within readiness cap",
+    "implementation_status": "design_recorded_adaptive_stop_and_recovery_orchestration_not_yet_validated"
+  },
+  "early_decision": {
+    "user_accepted_practical_improvement_percentage_points": 2,
+    "metric": "per_dataset_unhinted_step_four_Avg_at_8",
+    "benefit_contrasts": [
+      "B10-B00",
+      "BS-B00"
+    ],
+    "raw_OPSD_comparisons": [
+      "B10-B11",
+      "BS-B11"
+    ],
+    "checkpoint_and_interaction": [
+      "B11-B01",
+      "B11-B10-B01+B00"
+    ],
+    "review_unit": "complete matched block; all four arms and all reached evaluations drain before an efficacy review",
+    "continue_rule": "At 2 or 4 blocks, record the unresolved question and why additional blocks could change the decision. Extend to the next balanced stage only if numerics remain valid and measured total cost fits. No automatic completion of 8 blocks or A.",
+    "stop_rule": "Stop on invalid controls, non-finite updates, numerical failure, inability to fund the next complete stage, or sufficient exploratory mechanism evidence. Stop at 8 as inconclusive if useful effects remain uncertain. Failure stops are immediate; preserve and finish valid pending evaluations when possible.",
+    "interpretation": "A point estimate >=2pp is a candidate signal, not proof. A point estimate <2pp is not proof of futility. Report all three datasets and adverse effects; no best-benchmark or best-checkpoint selection.",
+    "uncertainty": "Exploratory paired block/problem resampling with question-only and block-only sensitivity; two blocks cannot reliably estimate training variability. Repeated nominal 95% intervals do not give optional-stopping-valid significance. No confirmatory success/futility claim in this adaptive pilot.",
+    "implementation_status": "planned_not_yet_enforced_by_a_validated_study_controller"
   }
 }
