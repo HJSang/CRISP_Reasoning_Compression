@@ -33,7 +33,7 @@ def response_logits(logits, total_lengths, response_lengths):
         offset = end
 
 
-def reference_loss(logits, batch, *, config, vocab_size, vocab_start=0, group=None):
+def reference_loss(logits, batch, *, config, vocab_size, vocab_start=0, group=None, reduction="reference"):
     """Mean over valid tokens in this microbatch, matching the author function.
 
     Megatron subsequently averages microbatches and DP ranks. Do not apply Miles'
@@ -68,6 +68,12 @@ def reference_loss(logits, batch, *, config, vocab_size, vocab_start=0, group=No
     count = mask.sum()
     if count.item() == 0:
         raise ValueError("OPSD reference reduction is undefined for a microbatch with zero valid tokens")
+    if reduction == "sample_mean":
+        if any(not sample_mask.any().item() for sample_mask in masks):
+            raise ValueError("OPSD sample mean requires valid tokens in every response")
+        return torch.stack([loss[sample_mask].mean() for loss, sample_mask in zip(losses, masks, strict=True)]).mean(), count
+    if reduction != "reference":
+        raise ValueError(f"Unknown OPSD reduction: {reduction}")
     return torch.cat(losses)[mask].sum() / count, count
 
 
@@ -86,10 +92,12 @@ def opsd_loss_function(args, batch, logits):
         vocab_size=args.vocab_size,
         vocab_start=tp.rank * logits.size(-1),
         group=tp.group if tp.size > 1 else None,
+        reduction=getattr(args, "opsd_reduction", "reference"),
     )
-    # Logging averages microbatches, just as the reference loss does; token count
-    # is a diagnostic, not its hidden denominator.
-    values = torch.stack((loss.detach().new_tensor(1), loss.detach(), count.to(loss.dtype)))
+    # The trainer aggregates metric sums over the rollout count. Fixed-size
+    # microbatches need sample weighting here; this does not scale autograd.
+    samples = len(batch["response_lengths"])
+    values = torch.stack((loss.detach().new_tensor(samples), loss.detach() * samples, count.to(loss.dtype)))
     return (
         loss,
         torch.ones((), dtype=torch.int64, device=logits.device),

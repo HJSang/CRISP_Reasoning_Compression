@@ -1,8 +1,11 @@
 """Frozen-teacher prepass in Miles' existing model slot, before student autograd."""
 
+import math
+from dataclasses import replace
 from functools import partial
 
 import torch
+import torch.distributed as dist
 from megatron.core.utils import get_attr_wrapped_model
 
 from miles.backends.megatron_utils.lora.utils import _is_adapter_param_name
@@ -60,6 +63,10 @@ def score_teacher(actor, rollout_data, num_microbatches, *, rollout_id):
         raise ValueError("OPSD model vocabulary must cover the HF vocabulary and divide evenly across TP")
     width = model_vocab_size // tp.size
     real_width = min(width, max(0, args.vocab_size - tp.rank * width))
+    if getattr(args, "opsd_target", "frozen") == "transported":
+        staging_bytes = 4 * sum(rollout_data["response_lengths"]) * real_width * 4
+        if staging_bytes > args.opsd_aggregate_staging_gib * 1024**3:
+            raise ValueError("Transported OPSD targets exceed the aggregate CPU staging budget")
     data = teacher_batch(
         rollout_data,
         seq_length=args.seq_length,
@@ -68,12 +75,37 @@ def score_teacher(actor, rollout_data, num_microbatches, *, rollout_id):
         microbatch_bytes=int(args.opsd_target_microbatch_gib * 1024**3),
         micro_batch_size=args.micro_batch_size,
     )
+    target_mode = getattr(args, "opsd_target", "frozen")
+    targets = _score(
+        actor,
+        data,
+        num_microbatches,
+        rollout_id=rollout_id,
+        width=width,
+        model_tag="actor" if target_mode == "current" else "teacher",
+    )
+    if target_mode == "transported":
+        # No-PI passes use the exact student sequence, never an empty context wrapper.
+        unprivileged = {key: rollout_data[key] for key in data}
+        reference = _score(
+            actor, unprivileged, num_microbatches, rollout_id=rollout_id, width=width, model_tag="teacher"
+        )
+        student = _score(actor, unprivileged, num_microbatches, rollout_id=rollout_id, width=width, model_tag="actor")
+        targets = _transport_targets(targets, reference, student, device=rollout_data["tokens"][0].device)
+    if [target.sample_index for target in targets] != list(data["sample_indices"]):
+        raise ValueError("OPSD teacher prepass changed sample ordering")
+    rollout_data["opsd_targets"] = targets
+    rollout_data["opsd_rollout_ids"] = [rollout_id] * len(targets)
+
+
+def _score(actor, data, num_microbatches, *, rollout_id, width, model_tag):
+    args = actor.args
     iterator = [DataIterator(data, micro_batch_size=args.micro_batch_size)]
     prior_modes = [module.training for module in actor.model]
     # All target computation and weight restoration precede the first student
     # graph. The finally also restores state after a failed scoring callback.
     try:
-        actor._switch_model("teacher")
+        actor._switch_model(model_tag)
         targets = forward_only(
             partial(_collect_targets, rollout_id=rollout_id, local_vocab_width=width),
             args=args,
@@ -88,10 +120,48 @@ def score_teacher(actor, rollout_data, num_microbatches, *, rollout_id):
         actor._switch_model("actor")
         for module, training in zip(actor.model, prior_modes, strict=True):
             module.train(training)
-    if [target.sample_index for target in targets] != list(data["sample_indices"]):
-        raise ValueError("OPSD teacher prepass changed sample ordering")
-    rollout_data["opsd_targets"] = targets
-    rollout_data["opsd_rollout_ids"] = [rollout_id] * len(targets)
+    return targets
+
+
+@torch.no_grad()
+def _transport_targets(privileged, reference, student, *, device):
+    """Normalize p*q/r over all real vocabulary shards with bounded GPU staging."""
+    tp = get_parallel_state().tp
+    result = []
+    for q, r, p in zip(privileged, reference, student, strict=True):
+        if not _target_identity(q) == _target_identity(r) == _target_identity(p):
+            raise ValueError("Transported OPSD target alignment mismatch")
+        if not q.log_probs.shape == r.log_probs.shape == p.log_probs.shape:
+            raise ValueError("Transported OPSD target shape mismatch")
+        output = torch.empty_like(q.log_probs)
+        for start in range(0, len(output), 128):
+            section = slice(start, start + 128)
+            values = (
+                p.log_probs[section].to(device) + q.log_probs[section].to(device) - r.log_probs[section].to(device)
+            )
+            maximum = (
+                values.amax(-1, keepdim=True) if values.size(-1) else values.new_full((len(values), 1), -math.inf)
+            )
+            if tp.size > 1:
+                dist.all_reduce(maximum, op=dist.ReduceOp.MAX, group=tp.group)
+            values -= maximum
+            denominator = values.exp().sum(-1, keepdim=True)
+            if tp.size > 1:
+                dist.all_reduce(denominator, group=tp.group)
+            output[section] = (values - denominator.log()).cpu()
+        result.append(replace(q, log_probs=output))
+    return result
+
+
+def _target_identity(target):
+    return (
+        target.sample_index,
+        target.rollout_id,
+        target.response_ids,
+        target.temperature,
+        target.vocab_size,
+        target.vocab_start,
+    )
 
 
 @torch.no_grad()

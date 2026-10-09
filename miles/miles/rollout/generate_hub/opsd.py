@@ -11,17 +11,25 @@ from miles.rollout.generate_utils.generate_endpoint_utils import (
     update_sample_from_response,
 )
 from miles.utils.http_utils import post
-from miles.utils.opsd_prompts import make_opsd_prefixes, validate_response_ids
+from miles.utils.opsd_prompts import make_opsd_prefixes, make_study_prefixes, validate_response_ids
 
 
 async def generate(input: GenerateFnInput) -> GenerateFnOutput:
     args, sample = input.args, input.sample
     if not isinstance(sample.prompt, str) or sample.multimodal_inputs or sample.response_length:
         raise ValueError("OPSD requires a raw text problem and a fresh single-turn sample")
-    solution = None if input.evaluation else sample.metadata["solution"]
-    if not input.evaluation and (not isinstance(solution, str) or not solution.strip()):
-        raise ValueError("OPSD training requires a nonempty metadata.solution")
-    prefixes = make_opsd_prefixes(input.state.tokenizer, problem=sample.prompt, solution=solution)
+    mode = getattr(args, "opsd_context", "original")
+    if input.evaluation or mode == "original":
+        solution = None if input.evaluation else sample.metadata["solution"]
+        if not input.evaluation and (not isinstance(solution, str) or not solution.strip()):
+            raise ValueError("OPSD training requires a nonempty metadata.solution")
+        prefixes = make_opsd_prefixes(input.state.tokenizer, problem=sample.prompt, solution=solution)
+    else:
+        key = {"answer": "answer", "worked": "solution", "unrelated": "unrelated_context"}.get(mode)
+        context = sample.metadata[key] if key else ("" if mode == "empty" else None)
+        if key and (not isinstance(context, str) or not context.strip()):
+            raise ValueError(f"OPSD {mode} context must be nonempty text")
+        prefixes = make_study_prefixes(input.state.tokenizer, problem=sample.prompt, context=context)
     pad_token_id = input.state.tokenizer.pad_token_id
     # The author masks every PAD ID, including IDs inside a rendered chat prefix.
     # THD packing has no per-token attention holes: reject those inputs rather
@@ -32,8 +40,9 @@ async def generate(input: GenerateFnInput) -> GenerateFnOutput:
         )
     # Reserve the entire requested response for both conditions; no teacher-only truncation.
     response_cap = input.sampling_params["max_new_tokens"]
+    sequence_cap = (getattr(args, "eval_max_context_len", None) or args.seq_length) if input.evaluation else args.seq_length
     for prefix in (prefixes.student_ids, prefixes.teacher_ids):
-        if prefix and len(prefix) + response_cap > args.seq_length:
+        if prefix and len(prefix) + response_cap > sequence_cap:
             raise ValueError("OPSD prefix plus response cap exceeds --seq-length; filter the dataset first")
     sample.teacher_prompt_ids = list(prefixes.teacher_ids) if prefixes.teacher_ids else None
     payload, halt_status = compute_request_payload(

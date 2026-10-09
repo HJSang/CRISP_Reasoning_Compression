@@ -97,6 +97,44 @@ def test_reference_microbatch_mean_and_gradients_ignore_padding():
     assert torch.count_nonzero(got_grad[..., 5:]) == 0
 
 
+def test_sample_mean_is_invariant_to_microbatch_partition():
+    """Unequal response lengths must not reweight examples when tuning batches."""
+    logits, batch, config = _loss_fixture()
+    combined, count = reference_loss(logits, batch, config=config, vocab_size=5, reduction="sample_mean")
+    separate = []
+    offset = 0
+    for index, total in enumerate(batch["total_lengths"]):
+        one = {key: [value[index]] for key, value in batch.items()}
+        loss, _ = reference_loss(logits[:, offset : offset + total], one, config=config, vocab_size=5)
+        separate.append(loss)
+        offset += total
+    expected = torch.stack(separate).mean()
+    torch.testing.assert_close(combined, expected)
+    actual_grad = torch.autograd.grad(combined, logits, retain_graph=True)[0]
+    torch.testing.assert_close(actual_grad, torch.autograd.grad(expected, logits)[0])
+    assert count == 3
+
+
+def test_study_prompt_mode_and_exact_no_pi_prefix():
+    from miles.utils.opsd_prompts import make_study_prefixes
+
+    class Tokenizer:
+        def apply_chat_template(self, messages, *, tokenize, add_generation_prompt, enable_thinking):
+            assert not tokenize and add_generation_prompt and not enable_thinking
+            return "<user>" + messages[0]["content"] + "<assistant><think></think>"
+
+        def encode(self, text, *, add_special_tokens):
+            assert not add_special_tokens
+            return list(text.encode())
+
+    tokenizer = Tokenizer()
+    plain = make_study_prefixes(tokenizer, problem="2+2?", context=None)
+    worked = make_study_prefixes(tokenizer, problem="2+2?", context="The answer is 4.")
+    empty = make_study_prefixes(tokenizer, problem="2+2?", context="")
+    assert plain.student_ids == plain.teacher_ids == worked.student_ids == empty.student_ids
+    assert len({plain.teacher_ids, worked.teacher_ids, empty.teacher_ids}) == 3
+
+
 @pytest.mark.parametrize(
     "change",
     [dict(sample_index=9), dict(rollout_id=4), dict(response_ids=(4, 3)), dict(temperature=2), dict(vocab_start=5)],

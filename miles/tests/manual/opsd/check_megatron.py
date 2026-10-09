@@ -17,18 +17,24 @@ import torch
 import torch.distributed as dist
 from megatron.bridge import AutoBridge
 from megatron.bridge.peft.canonical_lora import CanonicalLoRA
-from megatron.core import parallel_state as mpu, tensor_parallel
+from megatron.core import parallel_state as mpu
+from megatron.core import tensor_parallel
 from transformers import Qwen3Config, Qwen3ForCausalLM
 
 from miles.backends.megatron_utils.checkpoint import _load_checkpoint_hf
-from miles.backends.megatron_utils.opsd import score_teacher, verify_teacher_base, zero_teacher_adapters
-from miles.backends.megatron_utils.model import run_forward_backward_pass
 from miles.backends.megatron_utils.lora.utils import reduce_marked_lora_grads
+from miles.backends.megatron_utils.model import run_forward_backward_pass
+from miles.backends.megatron_utils.opsd import (
+    _transport_targets,
+    score_teacher,
+    verify_teacher_base,
+    zero_teacher_adapters,
+)
 from miles.backends.training_utils.data.rollout import DataIterator
 from miles.backends.training_utils.parallel import ParallelState, set_parallel_state
+from miles.utils.dumper_utils import DumperMegatronUtil, DumperPhase
 from miles.utils.ft_utils.process_group_utils import GroupInfo
 from miles.utils.tensor_backper import TensorBackuper
-from miles.utils.dumper_utils import DumperMegatronUtil, DumperPhase
 
 
 def _initialize():
@@ -135,6 +141,45 @@ def _data():
     )
 
 
+def _study_targets(actor, data):
+    args = actor.args
+    args.opsd_temperature, args.opsd_token_clip = 1.0, 0.0
+    args.opsd_aggregate_staging_gib = 0.1
+    args.opsd_target = "frozen"
+    score_teacher(actor, data, [2], rollout_id=4)
+    q = data["opsd_targets"]
+    plain = data | {
+        "teacher_prompt_ids": [
+            tokens[:-length].tolist() for tokens, length in zip(data["tokens"], data["response_lengths"], strict=True)
+        ]
+    }
+    score_teacher(actor, plain, [2], rollout_id=4)
+    r = plain["opsd_targets"]
+    args.opsd_target = "current"
+    score_teacher(actor, plain, [2], rollout_id=4)
+    p = plain["opsd_targets"]
+    args.opsd_target = "transported"
+    score_teacher(actor, data, [2], rollout_id=4)
+    maximum_error = 0.0
+    for candidate, qi, ri, pi in zip(data["opsd_targets"], q, r, p, strict=True):
+        shards = [torch.empty_like(candidate.log_probs.cuda()) for _ in range(dist.get_world_size())]
+        full = []
+        for target in (candidate, qi, ri, pi):
+            dist.all_gather(shards, target.log_probs.cuda())
+            full.append(torch.cat(shards, dim=-1).clone())
+        expected = (full[3] + full[1] - full[2]).log_softmax(-1)
+        error = (full[0] - expected).abs().max().item()
+        maximum_error = max(maximum_error, error)
+        torch.testing.assert_close(full[0], expected, atol=2e-6, rtol=2e-6)
+    # q=r makes transport the current policy. At matching checkpoints p=r,
+    # transport must instead reduce exactly to the privileged distribution.
+    for actual, expected in zip(_transport_targets(r, r, p, device="cuda"), p, strict=True):
+        torch.testing.assert_close(actual.log_probs, expected.log_probs, atol=2e-6, rtol=2e-6)
+    for actual, expected in zip(_transport_targets(q, r, r, device="cuda"), q, strict=True):
+        torch.testing.assert_close(actual.log_probs, expected.log_probs, atol=2e-6, rtol=2e-6)
+    return maximum_error
+
+
 def _run(work_dir):
     reference, model, peft = _models(work_dir)
     args, data = _args(model), _data()
@@ -179,6 +224,7 @@ def _run(work_dir):
         score_teacher(actor, data, [2], rollout_id=step + 1)
         for before, after in zip(initial_targets, data["opsd_targets"], strict=True):
             torch.testing.assert_close(before, after.log_probs, atol=0, rtol=0)
+    transport_error = _study_targets(actor, data)
     # Exercise restoration after failure inside forward_only, after eval mode and
     # teacher weights have been installed, not just an input-validation failure.
     actor_weights = {name: param.detach().clone() for name, param in model[0].named_parameters()}
@@ -207,6 +253,8 @@ def _run(work_dir):
             frozen_teacher_bitwise_stable=True,
             exception_restore_passed=True,
             pipeline_backward=True,
+            transported_dense_max_abs_error=transport_error,
+            study_target_identities_passed=True,
         )
         (work_dir / "result.json").write_text(json.dumps(result, indent=2))
         print(json.dumps(result))

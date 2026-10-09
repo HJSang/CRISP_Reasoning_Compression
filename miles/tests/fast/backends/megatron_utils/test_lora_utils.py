@@ -249,6 +249,7 @@ class TestLoadTrainingStateOptimizerGate:
         self._write_training_state(tmp_path)
         model = [SimpleNamespace(named_parameters=lambda: [(name, torch.nn.Parameter(torch.zeros(2)))])]
         optimizer_loads, optimizer = self._recorder()
+        optimizer.reload_model_params = lambda: None
         scheduler_loads, scheduler = self._recorder()
 
         loaded, iteration, optimizer_restored = load_lora_adapter(
@@ -262,3 +263,31 @@ class TestLoadTrainingStateOptimizerGate:
         assert (loaded, iteration, optimizer_restored) == (True, 11, False)
         assert optimizer_loads == []
         assert scheduler_loads == [{"lr": 0.5}]
+
+
+def test_fresh_optimizer_zero_gradient_step_preserves_loaded_adapter(tmp_path, monkeypatch):
+    """Stale FP32 masters must not undo a loaded checkpoint on the first step."""
+    _single_rank(monkeypatch)
+    model = _AdapterModel()
+    parameters = [model.lora_A, model.lora_B]
+    masters = [torch.nn.Parameter(param.detach().float().clone()) for param in parameters]
+    adam = torch.optim.Adam(masters, lr=5e-6)
+
+    def reload():
+        with torch.no_grad():
+            for master, parameter in zip(masters, parameters, strict=True):
+                master.copy_(parameter)
+
+    optimizer = SimpleNamespace(reload_model_params=reload)
+    torch.save(
+        {"lora_A": torch.full((1, 2), 0.25), "lora_B": torch.full((2, 1), 0.5)}, tmp_path / "adapter_megatron_rank0.pt"
+    )
+    load_lora_adapter([model], str(tmp_path), optimizer=optimizer, load_optimizer=False)
+    before = [param.detach().clone() for param in parameters]
+    for master in masters:
+        master.grad = torch.zeros_like(master)
+    adam.step()
+    with torch.no_grad():
+        for param, master, expected in zip(parameters, masters, before, strict=True):
+            param.copy_(master)
+            torch.testing.assert_close(param, expected, atol=0, rtol=0)

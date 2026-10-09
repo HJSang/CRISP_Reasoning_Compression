@@ -7,7 +7,26 @@ from pathlib import Path
 def add_opsd_arguments(parser):
     group = parser.add_argument_group("OPSD full-vocabulary loss")
     group.add_argument("--opsd-beta", type=float, default=0.0)
-    group.add_argument("--opsd-temperature", type=float, default=1.1, help="Loss temperature, independent of sampling.")
+    group.add_argument(
+        "--opsd-context", choices=["original", "none", "answer", "worked", "unrelated", "empty"], default="original"
+    )
+    group.add_argument("--opsd-target", choices=["frozen", "current", "transported"], default="frozen")
+    group.add_argument("--opsd-reduction", choices=["reference", "sample_mean"], default="reference")
+    group.add_argument(
+        "--opsd-eval-queue",
+        type=Path,
+        default=None,
+        help="Private checkpoint evaluation queue for the study save hook.",
+    )
+    group.add_argument(
+        "--opsd-aggregate-staging-gib",
+        type=float,
+        default=24.0,
+        help="Maximum aggregate CPU distribution storage per rank for transported targets.",
+    )
+    group.add_argument(
+        "--opsd-temperature", type=float, default=1.1, help="Loss temperature, independent of sampling."
+    )
     group.add_argument(
         "--opsd-token-clip", type=float, default=0.05, help="Clip each vocabulary contribution; 0 disables."
     )
@@ -28,7 +47,12 @@ def validate_opsd_args(args):
         return
     if not 0 <= args.opsd_beta <= 1:
         raise ValueError("--opsd-beta must be in [0, 1]")
-    for name in ("opsd_temperature", "opsd_target_cache_gib", "opsd_target_microbatch_gib"):
+    for name in (
+        "opsd_temperature",
+        "opsd_target_cache_gib",
+        "opsd_target_microbatch_gib",
+        "opsd_aggregate_staging_gib",
+    ):
         value = getattr(args, name)
         if not math.isfinite(value) or value <= 0:
             raise ValueError(f"--{name.replace('_', '-')} must be finite and positive")
@@ -59,3 +83,5 @@ def validate_opsd_args(args):
             raise ValueError(f"OPSD v1 requires {description}")
     if args.opd_teacher_load is None or not Path(args.opd_teacher_load).is_dir():
         raise ValueError("OPSD requires --opd-teacher-load pointing to the HF or converted frozen base checkpoint")
+    if args.opsd_context == "original" and args.opsd_target != "frozen":
+        raise ValueError("Original compatibility mode requires the frozen teacher")

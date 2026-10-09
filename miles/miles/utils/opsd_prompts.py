@@ -54,6 +54,23 @@ def _encode_prefix(tokenizer, content: str, *, thinking: bool) -> tuple[int, ...
     return tuple(tokenizer.encode(text, add_special_tokens=False))
 
 
+def make_study_prefixes(tokenizer, *, problem: str, context: str | None) -> PairedPrefixes:
+    """Matched non-thinking prefixes with a neutral wrapper for every PI arm.
+
+    None means the exact no-PI student prefix; an empty string keeps the wrapper
+    for the instruction/position diagnostic. Response IDs are appended by callers.
+    """
+    student = make_opsd_prefixes(tokenizer, problem=problem, solution=None).student_ids
+    if context is None:
+        return PairedPrefixes(student_ids=student, teacher_ids=student)
+    message = (
+        f"Problem: {problem}\n\nAdditional reference context:\n"
+        f"=== Context Begin ===\n{context}\n=== Context End ===\n\n"
+        f"Solve the problem independently using any relevant information above.\n{_ANSWER_INSTRUCTION}"
+    )
+    return PairedPrefixes(student_ids=student, teacher_ids=_encode_prefix(tokenizer, message, thinking=False))
+
+
 def validate_response_ids(*, tokens, student_prefix, response_length: int) -> None:
     if not 0 <= response_length <= len(tokens) or len(tokens) - response_length != len(student_prefix):
         raise ValueError("OPSD generation changed the student prefix length")

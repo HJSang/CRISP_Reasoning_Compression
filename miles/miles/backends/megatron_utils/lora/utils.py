@@ -269,6 +269,12 @@ def load_lora_adapter(
             param.data.copy_(state_dict[name].to(device=param.device))
         logger.info(f"Loaded {len(adapter_params)} adapter tensors from Megatron-native checkpoint: {native_path}")
 
+        # The optimizer was constructed before native adapter tensors were read.
+        # Refresh FP32 masters even when starting with fresh Adam moments; otherwise
+        # the first step can overwrite the loaded adapter with its initialization.
+        if optimizer is not None:
+            optimizer.reload_model_params()
+
         iteration, optimizer_restored = _load_training_state(
             adapter_dir, optimizer, opt_param_scheduler, load_optimizer
         )
