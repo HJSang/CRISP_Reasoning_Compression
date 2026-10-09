@@ -88,7 +88,8 @@ async def train(args, *, disposer: Disposer):
             await save_training_model(actor_model)
         if args.use_critic:
             await save_training_model(critic_model)
-        await rollout_executor.save(rollout_id)
+        if args.save is not None:
+            await rollout_executor.save(rollout_id)
 
     if args.num_rollout > args.start_rollout_id and args.eval_interval is not None and not args.skip_eval_before_train:
         await inference_controller.prepare_eval()

@@ -1964,6 +1964,10 @@ def get_miles_extra_args_provider(add_custom_arguments=None):
             # wandb parameters
             parser.add_argument("--use-wandb", action="store_true", default=False)
             parser.add_argument(
+                "--wandb-opsd-profile", action="store_true", default=False,
+                help="Log only approved OPSD fields and numeric metrics; disable automatic host/code/log capture.",
+            )
+            parser.add_argument(
                 "--wandb-mode",
                 type=str,
                 default=None,
@@ -3459,13 +3463,15 @@ def miles_validate_args(args):
         )
 
     if args.save_interval is not None:
-        assert args.save is not None, "'--save' is required when save_interval is set."
+        assert args.save is not None or (args.train_backend == "megatron" and args.save_hf is not None), (
+            "Periodic saves require --save or Megatron --save-hf."
+        )
 
     if args.save_trigger_sentinel is not None:
         assert args.save is not None, "'--save' is required when save_trigger_sentinel is set."
 
     if args.custom_megatron_post_save_hook_path is not None:
-        assert args.save is not None, "'--save' is required when custom_megatron_post_save_hook_path is set."
+        assert args.save is not None or args.save_hf is not None, "Post-save hooks require a native or HF export."
 
     validate_lora_args(args)
     validate_opsd_args(args)

@@ -13,6 +13,8 @@ import time
 from pathlib import Path
 
 from miles.utils.opsd_checkpoint import checkpoint_digest
+from miles.utils.opsd_study import retire_evaluation_snapshot
+from miles.utils.tracking_utils.opsd_wandb import log_evaluation
 
 
 def _write(path, value):
@@ -97,6 +99,9 @@ def main():
                 record = json.loads(result.read_text())
                 if record["checkpoint_sha256"] != job["checkpoint_sha256"] or record["completions"] != 800:
                     raise ValueError("Evaluation hash or completion-count mismatch")
+                if identity := job.get("wandb"):
+                    log_evaluation(identity, record, completed_updates=job["completed_updates"])
+                retire_evaluation_snapshot(job)
                 _write(args.queue / "done" / active.name, job | {"result": str(result), "exit_code": code})
                 active.unlink()
             except Exception as error:

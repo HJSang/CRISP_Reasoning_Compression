@@ -4,6 +4,8 @@ Requires a pinned local base checkpoint, filtered study JSONL, and an isolated
 Ray cluster. The effective batch remains four when tuning microbatch size.
 Evaluation workers consume immutable full HF checkpoints separately. Previous
 LoRA capacity measurements do not validate this full-parameter recipe.
+Set WANDB_ENTITY and WANDB_PROJECT after authenticating the SDK on every worker
+to enable the restricted OPSD tracking profile; credentials never enter argv.
 
 Args:
   --model-dir / --data-dir / --output-dir: Local checkpoint, input and result roots.
@@ -13,6 +15,7 @@ Args:
   --micro-batch-size: One, two, or four; sample-mean loss preserves weighting.
   --initial-checkpoint: Optional starting full HF or native checkpoint; Adam resets.
   --stop-after-rollout: Stop this job early while retaining the planned eval cadence.
+  --save-checkpoints: Opt in to recovery saves; otherwise only temporary eval snapshots.
 
 Example:
   MILES_SCRIPT_EXTERNAL_RAY=1 python scripts/run_qwen3_4b_opsd_study.py --num-rollout 2
@@ -43,6 +46,7 @@ class ScriptArgs(U.ExecuteTrainConfig):
     replay_path: str | None = None
     capture_full_update: bool = False
     evaluation_queue: str | None = None
+    save_checkpoints: bool = False
     seed: int = 17
     rollout_seed: int = 17
     megatron_path: str = "/root/Megatron-LM"
@@ -71,9 +75,15 @@ def execute(args: ScriptArgs):
         f"--hf-checkpoint {model} --load {initial} --opd-teacher-load {model} "
         "--megatron-to-hf-mode bridge --finetune --no-load-optim --no-load-rng "
         "--start-rollout-id 0 "
-        f"--save {shlex.quote(f'{args.output_dir}/{args.run_id}/checkpoints')} --save-interval 1 "
-        f"--save-hf {shlex.quote(f'{args.output_dir}/{args.run_id}/hf/step_{{rollout_id}}')} "
     )
+    if args.save_checkpoints:
+        checkpoint += f"--save {shlex.quote(f'{args.output_dir}/{args.run_id}/checkpoints')} "
+    if args.save_checkpoints or args.evaluation_queue is not None:
+        snapshot_dir = "hf" if args.save_checkpoints else "eval-snapshots"
+        checkpoint += (
+            "--save-interval 1 "
+            f"--save-hf {shlex.quote(f'{args.output_dir}/{args.run_id}/{snapshot_dir}/step_{{rollout_id}}')} "
+        )
     if args.evaluation_queue is not None:
         checkpoint += (
             "--custom-megatron-post-save-hook-path miles.utils.opsd_study.enqueue_evaluation "
@@ -129,7 +139,7 @@ def execute(args: ScriptArgs):
             + parallel
             + inference
             + misc
-            + U.get_default_wandb_args(__file__, run_id=args.run_id)
+            + U.get_default_wandb_args(__file__, run_id=args.run_id, opsd_profile=True)
         ).strip(),
         megatron_model_type="qwen3-4B",
         megatron_path=args.megatron_path,

@@ -29,9 +29,6 @@ nvidia-smi topo -m 2>/dev/null | grep -o 'NV[0-9][0-9]*' | wc -l
   --no-load-optim
   --no-load-rng
   --start-rollout-id 0
-  --save /root/shared_data/260101-000000-000/checkpoints
-  --save-interval 1
-  --save-hf '/root/shared_data/260101-000000-000/hf/step_{rollout_id}'
   --prompt-data /root/datasets/warmup.jsonl
   --input-key problem
   --metadata-key metadata
@@ -87,8 +84,10 @@ nvidia-smi topo -m 2>/dev/null | grep -o 'NV[0-9][0-9]*' | wc -l
   --accumulate-allreduce-grads-in-fp32
   --attention-softmax-in-fp32
   --use-wandb
-  --wandb-project miles-run_qwen3_4b_opsd_study
+  --wandb-opsd-profile
+  --wandb-mode online
+  --wandb-project opsd
+  --wandb-team team
   --wandb-group 260101-000000-000
-  --wandb-key 'frozen-wandb-api-key'
   --disable-wandb-random-suffix
   --deploy-component all

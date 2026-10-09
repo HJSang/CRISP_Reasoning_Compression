@@ -1,6 +1,7 @@
 """Study checkpoint evaluation cadence and bounded queue, outside the trainer."""
 
 import json
+import shutil
 import time
 from pathlib import Path
 
@@ -29,7 +30,7 @@ def _check_worker(queue: Path) -> None:
 
 
 def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
-    """Run after the existing synchronous save; final update drains this run.
+    """Run after a completed HF export; final update drains this run.
 
     Miles checkpoint directory indices are zero-based rollout IDs. Jobs expose
     the completed optimizer update (ID + 1) so plots and percentage milestones
@@ -51,7 +52,8 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
         raise RuntimeError("Full-parameter study evaluation requires --save-hf")
     checkpoint = Path(hf_checkpoint_dir)
     digest = checkpoint_digest(checkpoint)
-    job_name = f"{Path(args.save).parent.name}-step-{step:04d}.json"
+    run_dir = Path(args.save).parent if args.save is not None else checkpoint.parent.parent
+    job_name = f"{run_dir.name}-step-{step:04d}.json"
     job = {
         "completed_updates": step,
         "rollout_id": rollout_id,
@@ -59,7 +61,12 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
         "checkpoint_sha256": digest,
         "checkpoint_kind": "full_model",
         "planned_updates": args.num_rollout,
+        "temporary_snapshot": args.save is None,
     }
+    if getattr(args, "wandb_opsd_profile", False) and getattr(args, "use_wandb", False):
+        if not args.wandb_run_id:
+            raise RuntimeError("Tracked OPSD evaluation requires the initialized trainer run ID")
+        job["wandb"] = {"entity": args.wandb_team, "project": args.wandb_project, "run_id": args.wandb_run_id}
     deadline = time.monotonic() + 3600
     while True:
         _check_worker(queue)
@@ -81,3 +88,15 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
             if time.monotonic() > deadline:
                 raise TimeoutError("Final checkpoint evaluation did not complete")
             time.sleep(1)
+
+
+def retire_evaluation_snapshot(job: dict) -> None:
+    """Delete only a successful job's owned temporary export, never its source model."""
+    if not job.get("temporary_snapshot", False):
+        return
+    checkpoint = Path(job["checkpoint"])
+    if checkpoint.is_symlink() or checkpoint.parent.name != "eval-snapshots":
+        raise ValueError("Temporary evaluation snapshot is outside the study export layout")
+    if checkpoint.name != f"step_{job['rollout_id']}" or not (checkpoint / ".complete").is_file():
+        raise ValueError("Refusing to retire an incomplete or misidentified evaluation snapshot")
+    shutil.rmtree(checkpoint)

@@ -160,13 +160,15 @@ def test_compute_log_prob_replays_sampling_support_only_for_actor_scores(
     assert forward_only.call_args.kwargs["use_rollout_sampling_mask"] is expected
 
 
-def test_save_model_does_not_manage_lifecycle(actor_module, monkeypatch):
+@pytest.mark.parametrize("save_native", [True, False])
+def test_save_model_does_not_manage_lifecycle(actor_module, monkeypatch, save_native):
     worker = object.__new__(actor_module.MegatronTrainRayActor)
     worker.args = Namespace(
         async_save=False,
         custom_megatron_post_save_hook_path=None,
         debug_rollout_only=False,
         save_hf=None,
+        save="/checkpoints" if save_native else None,
     )
     worker.role = "actor"
     worker._heartbeat = Mock()
@@ -185,9 +187,12 @@ def test_save_model_does_not_manage_lifecycle(actor_module, monkeypatch):
 
     worker.save_model(6)
 
-    save.assert_called_once_with(
-        6, worker.model, worker.optimizer, worker.opt_param_scheduler, snapshot_publisher=worker.snapshot_publisher
-    )
+    if save_native:
+        save.assert_called_once_with(
+            6, worker.model, worker.optimizer, worker.opt_param_scheduler, snapshot_publisher=worker.snapshot_publisher
+        )
+    else:
+        save.assert_not_called()
     worker.wake_up.assert_not_called()
     worker.sleep.assert_not_called()
     reload_groups.assert_not_called()
@@ -201,6 +206,7 @@ def test_force_sync_save_overlaps_hf_export_with_async_checkpoint(actor_module, 
         custom_megatron_post_save_hook_path=None,
         debug_rollout_only=False,
         save_hf="/checkpoints/hf/{rollout_id}",
+        save="/checkpoints",
     )
     worker.role = "actor"
     worker._heartbeat = Mock()

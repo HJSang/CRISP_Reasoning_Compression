@@ -51,10 +51,12 @@ class WandbBackend(TrackingBackend):
 
     def __init__(self) -> None:
         self._defined_step_key_groups: set[tuple[str, str]] = set()
+        self._opsd_profile = False
 
     def init(self, args, *, primary: bool = True, **kwargs) -> None:
         from . import wandb_utils
 
+        self._opsd_profile = getattr(args, "wandb_opsd_profile", False)
         if primary:
             wandb_utils.init_wandb_primary(args, **kwargs)
         else:
@@ -63,6 +65,12 @@ class WandbBackend(TrackingBackend):
     def log(self, metrics: dict[str, Any], step: int | None = None, **kwargs) -> None:
         import wandb
 
+        if self._opsd_profile:
+            from .opsd_wandb import metrics as select_metrics
+
+            metrics = select_metrics(metrics)
+            if not metrics:
+                return
         wandb.log(metrics)
 
     def define_step_key_metric_group(self, prefix: str, step_key: str) -> None:

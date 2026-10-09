@@ -84,10 +84,25 @@ def _parse_extra_env_vars(text: str):
         return {kv[0]: kv[1] for item in text.split(" ") if item.strip() != "" if (kv := item.split("=")) or True}
 
 
-def get_default_wandb_args(test_file: str, run_name_prefix: str | None = None, run_id: str | None = None):
+def get_default_wandb_args(
+    test_file: str, run_name_prefix: str | None = None, run_id: str | None = None, *, opsd_profile: bool = False
+):
     from miles.utils.logging_utils import configure_logger_raw
 
     configure_logger_raw("launcher")
+    if opsd_profile:
+        project = os.environ.get("WANDB_PROJECT")
+        if not project:
+            return ""
+        entity = os.environ.get("WANDB_ENTITY")
+        if not entity or not run_id:
+            raise ValueError("OPSD W&B requires WANDB_ENTITY and an explicit neutral run ID")
+        # SDK/netrc authentication avoids exposing credentials in argv or launch records.
+        return (
+            "--use-wandb --wandb-opsd-profile --wandb-mode online "
+            f"--wandb-project {shlex.quote(project)} --wandb-team {shlex.quote(entity)} "
+            f"--wandb-group {shlex.quote(run_id)} --disable-wandb-random-suffix "
+        )
     if not os.environ.get("WANDB_API_KEY"):
         logger.info("Skip wandb configuration since WANDB_API_KEY is not found")
         return ""

@@ -1,11 +1,13 @@
 import logging
 import os
 from copy import deepcopy
+from pathlib import Path
 
 import wandb
 from wandb.sdk.lib.runid import generate_id
 
 from miles.utils.env_report.launcher_report import read_launcher_report
+from miles.utils.tracking_utils import opsd_wandb
 
 logger = logging.getLogger(__name__)
 
@@ -80,15 +82,25 @@ def init_wandb_primary(args):
         init_kwargs["dir"] = args.wandb_dir
         logger.info(f"W&B logs will be stored in: {args.wandb_dir}")
 
+    if getattr(args, "wandb_opsd_profile", False):
+        init_kwargs["settings"] = opsd_wandb.settings(primary=True, mode="offline" if offline else "shared")
+
     wandb.init(**init_kwargs)
 
     _init_wandb_common()
 
     # Set wandb_run_id in args for easy access throughout the training process
     args.wandb_run_id = wandb.run.id
+    if getattr(args, "wandb_opsd_profile", False):
+        if args.save is not None:
+            opsd_wandb.save_run_link(Path(args.save).parent, wandb.run)
+        elif args.save_hf is not None:
+            opsd_wandb.save_run_link(Path(args.save_hf).parent.parent, wandb.run)
 
 
 def _compute_config_for_logging(args):
+    if getattr(args, "wandb_opsd_profile", False):
+        return opsd_wandb.config(args)
     output = deepcopy(args.__dict__)
 
     whitelist_env_vars = [
@@ -144,7 +156,7 @@ def init_wandb_secondary(args, router_addr=None):
         "id": wandb_run_id,
         "entity": args.wandb_team,
         "project": args.wandb_project,
-        "config": args.__dict__,
+        "config": _compute_config_for_logging(args) if getattr(args, "wandb_opsd_profile", False) else args.__dict__,
         "resume": "allow",
         "reinit": True,
         "settings": _wandb_settings(**settings_kwargs),
@@ -154,6 +166,9 @@ def init_wandb_secondary(args, router_addr=None):
     if args.wandb_dir:
         os.makedirs(args.wandb_dir, exist_ok=True)
         init_kwargs["dir"] = args.wandb_dir
+
+    if getattr(args, "wandb_opsd_profile", False):
+        init_kwargs["settings"] = opsd_wandb.settings(primary=False, mode="offline" if offline else "shared")
 
     wandb.init(**init_kwargs)
 

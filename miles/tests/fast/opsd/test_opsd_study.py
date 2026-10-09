@@ -1,7 +1,9 @@
 """Checkpoint cadence, queue failure handling and metric invariance."""
 
 import json
+import shlex
 from argparse import Namespace
+from types import SimpleNamespace
 
 import pytest
 import torch
@@ -9,7 +11,7 @@ from tests.fast.opsd.test_opsd_contract import _loss_fixture
 
 from miles.backends.training_utils.loss.hub.opsd import opsd_loss_function
 from miles.utils.opsd_checkpoint import checkpoint_digest
-from miles.utils.opsd_study import enqueue_evaluation, evaluation_steps
+from miles.utils.opsd_study import enqueue_evaluation, evaluation_steps, retire_evaluation_snapshot
 
 
 @pytest.mark.parametrize("missing", ["MILES_SCRIPT_EXTERNAL_RAY", "RAY_ADDRESS"])
@@ -29,6 +31,25 @@ def test_percentage_cadence_deduplicates_and_includes_final_once():
     assert evaluation_steps(1) == (1,)
     with pytest.raises(ValueError):
         evaluation_steps(0)
+
+
+@pytest.mark.parametrize("recovery", [False, True])
+def test_study_launcher_separates_temporary_eval_from_recovery_saves(monkeypatch, recovery):
+    from scripts.run_qwen3_4b_opsd_study import ScriptArgs, execute
+
+    monkeypatch.setenv("MILES_SCRIPT_EXTERNAL_RAY", "1")
+    monkeypatch.setenv("RAY_ADDRESS", "http://127.0.0.1:8265")
+    monkeypatch.delenv("WANDB_PROJECT", raising=False)
+    calls = []
+    backend = SimpleNamespace(execute_train=lambda **kwargs: calls.append(kwargs))
+    monkeypatch.setattr(ScriptArgs, "create_backend", lambda _: backend)
+    execute(ScriptArgs(evaluation_queue="/queue", save_checkpoints=recovery, run_id="branch"))
+    argv = shlex.split(calls[0]["train_args"])
+    assert ("--save" in argv) is recovery
+    assert argv[argv.index("--save-interval") + 1] == "1"
+    assert "--custom-megatron-post-save-hook-path" in argv
+    directory = "hf" if recovery else "eval-snapshots"
+    assert argv[argv.index("--save-hf") + 1].endswith(f"/branch/{directory}/step_{{rollout_id}}")
 
 
 @pytest.mark.parametrize("stop", [0, 8])
@@ -80,7 +101,10 @@ def test_queue_uses_completed_updates_and_refuses_changed_checkpoint(tmp_path):
     (checkpoint / "config.json").write_text('{"model_type":"qwen3"}')
     weights = checkpoint / "model.safetensors"
     weights.write_bytes(b"immutable-test-model")
-    args = Namespace(opsd_eval_queue=queue, num_rollout=64, save=str(tmp_path / "run/checkpoints"))
+    args = Namespace(
+        opsd_eval_queue=queue, num_rollout=64, save=str(tmp_path / "run/checkpoints"),
+        use_wandb=True, wandb_opsd_profile=True, wandb_team="team", wandb_project="opsd", wandb_run_id="test-run",
+    )
     enqueue_evaluation(args, 5, checkpoint, None)
     assert not (queue / "pending").exists()
     with pytest.raises(RuntimeError, match="--save-hf"):
@@ -89,6 +113,7 @@ def test_queue_uses_completed_updates_and_refuses_changed_checkpoint(tmp_path):
     job = queue / "pending/run-step-0007.json"
     assert json.loads(job.read_text())["completed_updates"] == 7
     assert json.loads(job.read_text())["checkpoint_kind"] == "full_model"
+    assert json.loads(job.read_text())["wandb"] == {"entity": "team", "project": "opsd", "run_id": "test-run"}
     enqueue_evaluation(args, 6, checkpoint, checkpoint)
     assert len(list((queue / "pending").glob("*.json"))) == 1
     weights.write_bytes(b"modified-model")
@@ -102,6 +127,7 @@ def test_queue_uses_completed_updates_and_refuses_changed_checkpoint(tmp_path):
 def test_full_checkpoint_identity_covers_metadata_and_rejects_partial_exports(tmp_path):
     with pytest.raises(ValueError, match="completion marker"):
         checkpoint_digest(tmp_path)
+
     (tmp_path / ".complete").touch()
     (tmp_path / "config.json").write_text("{}")
     (tmp_path / "model.safetensors").write_bytes(b"weights")
@@ -111,6 +137,28 @@ def test_full_checkpoint_identity_covers_metadata_and_rejects_partial_exports(tm
     (tmp_path / "model.safetensors.index.json").write_text('{"weight_map":{"weight":"missing.safetensors"}}')
     with pytest.raises(ValueError, match="missing an indexed shard"):
         checkpoint_digest(tmp_path)
+
+
+def test_temporary_snapshot_queue_keeps_identity_and_deletes_only_consumed_export(tmp_path):
+    queue = tmp_path / "queue"
+    queue.mkdir()
+    (queue / "heartbeat.json").write_text("{}")
+    checkpoint = tmp_path / "run" / "eval-snapshots" / "step_6"
+    checkpoint.mkdir(parents=True)
+    (checkpoint / ".complete").touch()
+    (checkpoint / "config.json").write_text("{}")
+    (checkpoint / "model.safetensors").write_bytes(b"snapshot")
+    args = Namespace(opsd_eval_queue=queue, num_rollout=64, save=None)
+    enqueue_evaluation(args, 6, None, checkpoint)
+    job = json.loads((queue / "pending/run-step-0007.json").read_text())
+    assert job["temporary_snapshot"] is True
+    assert job["checkpoint_sha256"] == checkpoint_digest(checkpoint)
+    with pytest.raises(ValueError, match="outside"):
+        retire_evaluation_snapshot(job | {"checkpoint": str(tmp_path / "source")})
+    retire_evaluation_snapshot(job | {"temporary_snapshot": False})
+    assert checkpoint.exists()
+    retire_evaluation_snapshot(job)
+    assert not checkpoint.exists()
 
 
 def test_logged_loss_matches_sample_mean_not_inverse_microbatch(monkeypatch):

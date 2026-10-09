@@ -832,13 +832,14 @@ class MegatronTrainRayActor(TrainRayActor):
 
         self._finalize_pending_async_save()
 
-        save(
-            rollout_id,
-            self.model,
-            self.optimizer,
-            self.opt_param_scheduler,
-            snapshot_publisher=self.snapshot_publisher,
-        )
+        if self.args.save is not None:
+            save(
+                rollout_id,
+                self.model,
+                self.optimizer,
+                self.opt_param_scheduler,
+                snapshot_publisher=self.snapshot_publisher,
+            )
 
         if self.args.save_hf is not None and self.role == "actor":
             assert self.snapshot_publisher is not None, "HF export requires a snapshot publisher"
@@ -854,7 +855,11 @@ class MegatronTrainRayActor(TrainRayActor):
 
             from miles.utils.function_registry import load_function
 
-            checkpoint_dir = get_checkpoint_name(self.args.save, rollout_id, return_base_dir=True)
+            checkpoint_dir = (
+                get_checkpoint_name(self.args.save, rollout_id, return_base_dir=True)
+                if self.args.save is not None
+                else None
+            )
             hf_checkpoint_dir = (
                 self.args.save_hf.format(rollout_id=rollout_id)
                 if self.args.save_hf is not None and self.role == "actor"

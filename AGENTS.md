@@ -36,3 +36,13 @@
   history-cleanup operation; a new commit cannot erase an older commit.
 - Keep model checkpoints, generated traces, raw run outputs, and local runtime
   configuration out of this public repository.
+- Enable W&B for future OPSD experiments using the restricted OPSD tracking
+  profile. Resolve the destination from ignored local configuration and verify
+  SDK authentication before reserving GPUs. Save each run URL with its private
+  run record. Upload approved numeric metrics and recipe fields only; never raw
+  responses, launch arguments, credentials, host metadata or source snapshots.
+  Do not retrofit tracking into an already-running experiment without a request.
+- Do not save recovery checkpoints for the current OPSD study. Use temporary
+  local evaluation snapshots only, remove each after successful evaluation,
+  and retain aggregate metrics and private response tapes. Preserve existing
+  source checkpoints; restarting a branch uses its fixed warmed source.

@@ -100,6 +100,8 @@ def recorded(request, monkeypatch, tmp_path):
     if rel == "scripts/run_qwen3_4b_opsd_study.py":
         monkeypatch.setenv("MILES_SCRIPT_EXTERNAL_RAY", "1")
         monkeypatch.setenv("RAY_ADDRESS", "http://127.0.0.1:8265")
+        monkeypatch.setenv("WANDB_ENTITY", "team")
+        monkeypatch.setenv("WANDB_PROJECT", "opsd")
     recording = install_command_recorder(monkeypatch)
     module = import_launch_script(REPO_ROOT / rel)
     call_entrypoint(
