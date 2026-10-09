@@ -1,6 +1,6 @@
 {
   "schema_version": 15,
-  "status": "FOUR_SCIENTIFIC_B_ARMS_LAUNCHED",
+  "status": "corrected_tracked_restart_initializing",
   "executable": false,
   "new_gpu_work_authorized": true,
   "review_required_before_launch": false,
@@ -880,7 +880,7 @@
       "evaluation_gpus_per_worker": 6,
       "evaluation_replicas": 6,
       "evaluation_concurrency_per_replica": 32,
-      "retain_all_initial_stage_checkpoints": true,
+      "retain_all_initial_stage_checkpoints": false,
       "deadline_seconds_from_initial_stage_setup": 10800,
       "accounting": "Charge all eight assigned GPUs during each job, including waits; three-hour four-worker envelope caps study at 96 GPU-hours."
     },
@@ -896,7 +896,7 @@
         "interpretation": "Broad suite not green; environment/root-path failures observed, but no fresh baseline comparison was run. Focused modified-path checks passed."
       }
     },
-    "tracking": "Private logs and aggregate HTML; W&B disabled; no hosted run links.",
+    "tracking": "Restricted online W&B; destination and actual links private; no automatic source, host, console, requirements or response upload.",
     "common_checkpoint_sha256": "4c0d71023eaea23851516072eb0c5619f2c506af23766ac713dae78b2937cf5a",
     "warmup_completed_updates": 7,
     "warmup_evaluations_completed": [
@@ -980,6 +980,30 @@
         "mean": 61.7192543234144
       },
       "interpretation": "Actor timing excludes rollout, teacher passes, checkpoint IO and evaluation waits. End-to-end step time averaged 61.7 seconds; save time averaged 31.8 seconds. Short-run measurements only."
+    },
+    "code_commit": "268f58f"
+  },
+  "tracking_restart": {
+    "updated_utc": "2026-10-09 19:53 UTC",
+    "original_B_attempt": "excluded: warmed HF source overridden with base model",
+    "first_tracked_startup": "failed before training: inherited W&B SDK service; fixed and live validated",
+    "source_commit": "268f58f",
+    "recovery_checkpoints": false,
+    "temporary_eval_snapshots": "local storage; delete after successful verified evaluation and upload",
+    "current_status": "initializing four corrected controllers",
+    "matrix_and_budget_unchanged": true,
+    "speedup_claim": "pending measured corrected-run timings",
+    "validation": {
+      "focused_cpu": 31,
+      "tracking_service": 10,
+      "launcher_snapshots": 2,
+      "linux_selected_passes": 41,
+      "linux_unrelated_failures": 2,
+      "broad_launcher": {
+        "passed": 348,
+        "failed": 88,
+        "errors": 134
+      }
     }
   }
 }
