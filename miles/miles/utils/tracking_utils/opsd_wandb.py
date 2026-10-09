@@ -6,6 +6,7 @@ Authentication stays in the SDK's environment/netrc lookup, never in run config.
 
 import json
 import math
+import os
 from numbers import Real
 from pathlib import Path
 
@@ -96,6 +97,9 @@ def evaluation_metrics(record: dict, *, completed_updates: int) -> dict:
 
 def log_evaluation(identity: dict, record: dict, *, completed_updates: int) -> None:
     payload = evaluation_metrics(record, completed_updates=completed_updates)
+    # The queue can inherit the trainer's SDK service through their common parent.
+    # A shared hosted run still needs a separate local service in each process.
+    os.environ.pop("WANDB_SERVICE", None)
     # A secondary writer must not finish the still-running trainer's shared run.
     with wandb.init(
         entity=identity["entity"], project=identity["project"], id=identity["run_id"],

@@ -109,8 +109,10 @@ def test_evaluation_payload_keeps_scores_but_excludes_responses_and_provenance()
 
 def test_evaluation_writer_joins_without_finishing_the_training_run(monkeypatch):
     calls, logged = [], []
+    monkeypatch.setenv("WANDB_SERVICE", "inherited-primary-service")
 
     def init(**kwargs):
+        assert "WANDB_SERVICE" not in opsd_wandb.os.environ
         calls.append(kwargs)
         return nullcontext(SimpleNamespace(log=logged.append))
 
