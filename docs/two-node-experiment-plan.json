@@ -1,16 +1,16 @@
 {
-  "schema_version": 10,
-  "status": "PROPOSED_FOR_REVIEW",
+  "schema_version": 11,
+  "status": "READINESS_BLOCKED",
   "executable": false,
-  "new_gpu_work_authorized": false,
-  "review_required_before_launch": true,
+  "new_gpu_work_authorized": true,
+  "review_required_before_launch": false,
   "date": "2026-10-08",
   "supersedes": "historical sampled-token execution draft",
   "framework": {
     "name": "Miles",
     "directory": "miles",
     "source_baseline": "4f2235868a58305baef3a19a8477279711d57841",
-    "study_changes": "not_implemented"
+    "study_changes": "implemented_scoring_launcher_data_and_evaluator_components_full_orchestration_pending"
   },
   "execution": {
     "independent_experiments": 2,
@@ -43,7 +43,7 @@
   "dataset": {
     "id": "siyanzhao/Openthoughts_math_30k_opsd",
     "revision": "1f33e9dc2e8a1c639ca74f8024ad4a9f1f5eae62",
-    "split_status": "not_created",
+    "split_status": "prepared_version_5_disjoint_manifested_pools_manual_reasoning_audit_incomplete",
     "requested_disjoint_groups": {
       "warmup": 1024,
       "adaptation": 4096,
@@ -84,7 +84,7 @@
   "training": {
     "seed": 17,
     "global_batch": 4,
-    "microbatch": 1,
+    "microbatch": 2,
     "updates_per_rollout_batch": 1,
     "temperature": 1.0,
     "top_p": 1.0,
@@ -109,7 +109,7 @@
     "response_cap": 8192,
     "samples_per_question": 8,
     "endpoint_update": 4,
-    "grader_pin_status": "required_before_launch",
+    "grader_pin_status": "implementation_and_dependency_hashes_recorded_40_live_plus_10_format_cases_audited",
     "total_context_cap": 12288,
     "templated_prefix_cap": 4096,
     "response_budget_includes": "all_generated_reasoning_and_final_answer",
@@ -139,7 +139,9 @@
         "sampling_configuration",
         "request_seeds"
       ]
-    }
+    },
+    "profiled_concurrency_per_gpu": 128,
+    "fleet_validation": "single_gpu_profile_complete_multi_replica_contention_pending"
   },
   "arms": {
     "A": {
@@ -214,7 +216,7 @@
     "final_target_cache_gib_per_rank": 8,
     "target_microbatch_gib_per_rank": 2,
     "aggregate_cpu_staging_gib_per_rank": 24,
-    "status": "requires_profile"
+    "status": "4K_replay_passed_microbatch_2_selected"
   },
   "gates": {
     "profile_questions": 64,
@@ -222,10 +224,10 @@
     "cap_hit_fraction_max": 0.1,
     "checkpoint_signal_to_repeat_noise_min": 5,
     "repeat_noise_floor": 1e-05,
-    "reference_update_check": "pending",
-    "runtime_isolation": "must_pass",
-    "data_and_grader_audit": "must_pass",
-    "cost_projection": "must_fit_reviewed_cap",
+    "reference_update_check": "failed_mapped_4B_BF16_update_tolerances",
+    "runtime_isolation": "passed_owned_isolated_clusters_preserved_shared_services",
+    "data_and_grader_audit": "partial_final_data_reasoning_audit_pending",
+    "cost_projection": "single_gpu_evaluation_profile_complete_full_fleet_projection_pending",
     "eval_profile_questions": 64,
     "eval_profile_responses_per_question": 2,
     "eval_cap_hit_fraction_max": 0.05,
@@ -236,7 +238,7 @@
     "paired_study_including_warmup": 96,
     "total": 128,
     "basis": "all_assigned_gpus_times_job_wall_hours_including_idle_slots",
-    "runtime_feasibility": "reprofile_4096_rollout_8192_eval_with_213600_scheduled_eval_completions_before_review"
+    "runtime_feasibility": "no_full_launch_until_numerical_and_length_gates_resolved_and_full_schedule_validated"
   },
   "automatic_reservation_extension": false,
   "confirmation_authorized": false,
@@ -276,13 +278,13 @@
     "selected_loss_temperature": 1.0
   },
   "benchmark_evaluation": {
-    "status": "PLANNED_ALL_SCHEDULED_CHECKPOINTS_NOT_LAUNCHED",
+    "status": "BASELINE_AND_ADAPTER_SMOKES_COMPLETED_FULL_STUDY_NOT_LAUNCHED",
     "when": "initial_baseline_and_each_10_percent_optimizer_update_milestone",
     "response_cap": 8192,
     "benchmark_entries_before_overlap_audit": 100,
     "completions_per_checkpoint": 800,
     "response_token_ceiling_per_checkpoint": 6553600,
-    "preparation_status": "source_revisions_pinned_content_hashes_and_audits_pending",
+    "preparation_status": "pinned_prompt_only_and_separate_label_exports_hashed_heuristic_overlap_filter_complete",
     "metric": "per_dataset_Avg_at_8_not_pass_at_8_or_majority_vote",
     "training_overlap_policy": "exclude_matching_problem_groups_from_training_PI_donor_profiling_development_and_reserved_internal_pools",
     "datasets": [
@@ -322,5 +324,116 @@
     ],
     "interpretation": "monitoring_and_exploratory_step_four_effects_not_untouched_final_test_if_used_for_selection",
     "uncertainty": "paired_resampling_of_adaptation_blocks_and_benchmark_problem_groups_retaining_all_arms_checkpoints_and_shared_controls"
+  },
+  "full_runs_launched": false,
+  "protocol_exception_review_required": true,
+  "readiness_results": {
+    "date": "2026-10-08",
+    "full_run_authorization": "User requested smoke tests, memory/speed tuning, then full runs after passing gates.",
+    "full_runs_launched": false,
+    "selected_microbatch": 2,
+    "effective_batch": 4,
+    "controlled_4K_replay": {
+      "microbatch_2": {
+        "peak_gpu_gib": 50.09,
+        "train_seconds": 8.1089
+      },
+      "microbatch_4": {
+        "peak_gpu_gib": 87.93,
+        "train_seconds": 7.879
+      },
+      "scope": "four synthetic 4096-token responses with maximal student/teacher prefixes; not learning evidence"
+    },
+    "training_profile": {
+      "responses": 128,
+      "cap_hits": 1,
+      "mean_tokens": 997.12,
+      "seconds": 34.49
+    },
+    "evaluation_profiles": [
+      {
+        "concurrency": 32,
+        "completions": 800,
+        "seconds": 617.8297,
+        "tokens_per_second": 3593.14,
+        "responses_per_second": 1.29486,
+        "cap_fraction": {
+          "AIME_2024": 0.19166666666666668,
+          "AIME_2025": 0.11666666666666667,
+          "AMC23": 0.0125
+        }
+      },
+      {
+        "concurrency": 128,
+        "completions": 800,
+        "seconds": 374.424,
+        "tokens_per_second": 5845.14,
+        "responses_per_second": 2.136615,
+        "peak_gpu_gib": 94.2,
+        "cap_fraction": {
+          "AIME_2024": 0.16666666666666666,
+          "AIME_2025": 0.1375,
+          "AMC23": 0.025
+        }
+      }
+    ],
+    "evaluation_profile_caveat": "Different schedules produced different sampled outputs. Throughput comparison does not estimate an accuracy effect.",
+    "adapter_evaluation_smoke": {
+      "completions": 64,
+      "loaded_adapter_sha256": "1476c52790c1d6c3cf3f1740189b2acb74e217bbddf8e0eaa22c1a6413f44f12",
+      "status": "completed_not_a_quality_gate_pass"
+    },
+    "mapped_update": {
+      "status": "failed",
+      "mean_loss": 0.07312913774512708,
+      "grad_norm": 3.2153685092926025,
+      "update_cosine": 0.9333312982591488,
+      "update_relative_l2_error": 0.36513933391043146,
+      "max_parameter_error": 1.0013580322265625e-05,
+      "tolerances": {
+        "minimum_update_cosine": 0.95,
+        "maximum_update_relative_l2_error": 0.35,
+        "maximum_parameter_error": 2e-05
+      },
+      "examples": 4,
+      "match_norm_arithmetic": false,
+      "mapped_gradients": {
+        "cosine": 0.9932767023124218,
+        "relative_l2_error": 0.14572511323497825
+      }
+    },
+    "mapped_update_scope": "four identical real prefixes/responses truncated to 32 response tokens; FP64 comparison reductions; representative base-weight probes bitwise equal, first-layer BF16 activations diverge slightly; root cause not established",
+    "tests": {
+      "remote_focused_passed": 111,
+      "additional_evaluation_protocol_passed": 4,
+      "grader_format_cases_rechecked": 10,
+      "study_launcher_snapshot_passed": 2,
+      "broad_macOS_launcher_suite": "410 passed, 26 failed, 134 errors; environment-dependent Linux/root-path failures; not green",
+      "isolated_launcher_guard_passed": 2
+    },
+    "data": {
+      "source_rows": 29434,
+      "eligible_groups": 28422,
+      "reserved_disjoint_groups": 8704,
+      "rejections": {
+        "reference_answer": 874,
+        "solved_prompt_artifact": 18,
+        "duplicate_group": 120
+      },
+      "unmatched_unrelated_donors": 2,
+      "manual_reasoning_audit": "limited spot checks only; final candidate audit incomplete"
+    },
+    "pending": [
+      "resolve HF/Megatron update discrepancy without loosening tolerances",
+      "user decision on common 8K evaluation cap and truncation gate",
+      "finish final data reasoning audit",
+      "end-to-end evaluation queue and immutable cache identity validation",
+      "shared PI-feature extraction and branch orchestration",
+      "multi-GPU evaluator contention and total-budget projection",
+      "theta64 drift gate after authorized warmup"
+    ],
+    "public_artifacts": "Only aggregate metrics and generic worker labels; runtime configs, raw responses and logs stay private.",
+    "owned_gpu_jobs_active": false,
+    "owned_evaluators_stopped": true
   }
 }
