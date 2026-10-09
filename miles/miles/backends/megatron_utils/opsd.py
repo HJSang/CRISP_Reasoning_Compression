@@ -6,10 +6,8 @@ from functools import partial
 
 import torch
 import torch.distributed as dist
-from megatron.core.utils import get_attr_wrapped_model
 
 from miles.backends.megatron_utils.lora.utils import _is_adapter_param_name
-from miles.backends.megatron_utils.model import forward_only
 from miles.backends.training_utils.data.opsd import teacher_batch
 from miles.backends.training_utils.data.rollout import DataIterator
 from miles.backends.training_utils.loss.hub.opsd import OPSDTarget, response_logits
@@ -37,12 +35,18 @@ def zero_teacher_adapters(model):
         raise ValueError("OPSD could not identify the canonical LoRA parameters")
 
 
-def verify_teacher_base(backuper):
-    """The initial self-distillation recipe uses the actor's identical frozen base."""
+def verify_teacher_base(backuper, *, full_parameter=False):
+    """LoRA shares a frozen base; full-parameter branches may start from a warmed actor."""
     actor, teacher = backuper.get("actor"), backuper.get("teacher")
     if actor.keys() != teacher.keys():
         raise ValueError("OPSD actor and teacher snapshots have different parameter sets")
     for name in actor:
+        if actor[name].shape != teacher[name].shape or actor[name].dtype != teacher[name].dtype:
+            raise ValueError("OPSD actor and teacher snapshots have incompatible tensors")
+        if full_parameter:
+            if not torch.isfinite(teacher[name]).all():
+                raise ValueError("OPSD frozen teacher contains nonfinite parameters")
+            continue
         if not _is_adapter_param_name(name) and not torch.equal(actor[name], teacher[name]):
             raise ValueError(
                 "OPSD teacher base differs from the frozen actor base; checkpoint ablations require a separate recipe"
@@ -50,6 +54,9 @@ def verify_teacher_base(backuper):
 
 
 def score_teacher(actor, rollout_data, num_microbatches, *, rollout_id):
+    # GPU runtime dependencies stay optional for CPU snapshot-contract checks.
+    from megatron.core.utils import get_attr_wrapped_model
+
     args = actor.args
     tp = get_parallel_state().tp
     if sum(num_microbatches) * args.micro_batch_size != len(rollout_data["tokens"]):
@@ -99,6 +106,8 @@ def score_teacher(actor, rollout_data, num_microbatches, *, rollout_id):
 
 
 def _score(actor, data, num_microbatches, *, rollout_id, width, model_tag):
+    from miles.backends.megatron_utils.model import forward_only
+
     args = actor.args
     iterator = [DataIterator(data, micro_batch_size=args.micro_batch_size)]
     prior_modes = [module.training for module in actor.model]

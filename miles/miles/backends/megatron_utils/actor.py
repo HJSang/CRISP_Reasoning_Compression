@@ -431,7 +431,7 @@ class MegatronTrainRayActor(TrainRayActor):
         if self.with_opd_teacher:
             self.load_other_checkpoint("teacher", self.args.opd_teacher_load)
             if self.args.loss_type == "opsd_loss":
-                verify_teacher_base(self.weights_backuper)
+                verify_teacher_base(self.weights_backuper, full_parameter=not is_lora_enabled(self.args))
 
         if self.args.keep_old_actor:
             # Load old_actor checkpoint
@@ -984,7 +984,7 @@ class MegatronTrainRayActor(TrainRayActor):
         if model_tag == "teacher" and self.args.opd_teacher_ckpt_step is not None:
             self.args.ckpt_step = old_ckpt_step
 
-        if model_tag == "teacher" and self.args.loss_type == "opsd_loss":
+        if model_tag == "teacher" and self.args.loss_type == "opsd_loss" and is_lora_enabled(self.args):
             zero_teacher_adapters(self.model)
         self.weights_backuper.backup(model_tag)
         self._active_model_tag = model_tag

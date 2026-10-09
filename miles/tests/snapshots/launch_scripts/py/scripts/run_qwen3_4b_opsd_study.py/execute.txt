@@ -31,6 +31,7 @@ nvidia-smi topo -m 2>/dev/null | grep -o 'NV[0-9][0-9]*' | wc -l
   --start-rollout-id 0
   --save /root/shared_data/260101-000000-000/checkpoints
   --save-interval 1
+  --save-hf '/root/shared_data/260101-000000-000/hf/step_{rollout_id}'
   --prompt-data /root/datasets/warmup.jsonl
   --input-key problem
   --metadata-key metadata
@@ -53,12 +54,8 @@ nvidia-smi topo -m 2>/dev/null | grep -o 'NV[0-9][0-9]*' | wc -l
   --opsd-context worked
   --opsd-target frozen
   --opsd-target-cache-gib 8
-  --opsd-target-microbatch-gib 4
-  --lora-type canonical_lora
-  --lora-rank 64
-  --lora-alpha 128
-  --lora-dropout 0
-  --target-modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj
+  --opsd-target-microbatch-gib 2
+  --lora-rank 0
   --optimizer adam
   --lr 5e-6
   --lr-decay-style constant
@@ -71,7 +68,7 @@ nvidia-smi topo -m 2>/dev/null | grep -o 'NV[0-9][0-9]*' | wc -l
   --pipeline-model-parallel-size 1
   --context-parallel-size 1
   --global-batch-size 4
-  --micro-batch-size 2
+  --micro-batch-size 1
   --seq-length 8192
   --actor-num-nodes 1
   --actor-num-gpus-per-node 2
@@ -80,7 +77,6 @@ nvidia-smi topo -m 2>/dev/null | grep -o 'NV[0-9][0-9]*' | wc -l
   --train-backend megatron
   --rollout-num-gpus-per-engine 1
   --sglang-mem-fraction-static 0.4
-  --sglang-lora-backend triton
   --sglang-enable-deterministic-inference
   --sglang-sampling-backend pytorch
   --sglang-cuda-graph-max-bs-decode 4

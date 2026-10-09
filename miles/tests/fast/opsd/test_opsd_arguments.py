@@ -43,6 +43,16 @@ def test_default_opsd_contract(tmp_path):
     assert (args.opsd_beta, args.opsd_temperature, args.opsd_token_clip) == (0.0, 1.1, 0.05)
 
 
+def test_full_parameter_study_accepts_zero_rank_but_rejects_adapter_load(tmp_path):
+    args = _args(tmp_path)
+    args.lora_rank = 0
+    args.opsd_context = "worked"
+    validate_opsd_args(args)
+    args.lora_adapter_path = "adapter"
+    with pytest.raises(ValueError, match="full parameters or canonical LoRA"):
+        validate_opsd_args(args)
+
+
 @pytest.mark.parametrize(
     "key, value, match",
     [

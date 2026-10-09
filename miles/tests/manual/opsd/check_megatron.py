@@ -59,7 +59,7 @@ def _initialize():
     )
 
 
-def _models(work_dir):
+def _models(work_dir, *, full_parameter=False):
     torch.manual_seed(41)
     config = Qwen3Config(
         vocab_size=128,
@@ -92,13 +92,13 @@ def _models(work_dir):
     provider.calculate_per_token_loss = False
     provider.finalize()
     model = provider.provide_distributed_model(wrap_with_ddp=False)
-    peft = CanonicalLoRA(dim=4, alpha=8, dropout=0.0)
-    model = peft(model)
+    if not full_parameter:
+        model = CanonicalLoRA(dim=4, alpha=8, dropout=0.0)(model)
     # Exercise the same HF reload operation used by the actor teacher snapshot.
     _load_checkpoint_hf(
         model, None, SimpleNamespace(megatron_to_hf_mode="bridge", fp16=False, bf16=True), str(work_dir / "base")
     )
-    return reference, model, peft
+    return reference, model
 
 
 def _args(model):
@@ -180,14 +180,15 @@ def _study_targets(actor, data):
     return maximum_error
 
 
-def _run(work_dir):
-    reference, model, peft = _models(work_dir)
+def _run(work_dir, *, full_parameter=False):
+    reference, model = _models(work_dir, full_parameter=full_parameter)
     args, data = _args(model), _data()
     backuper = TensorBackuper.create(lambda: model[0].named_parameters())
     backuper.backup("actor")
-    zero_teacher_adapters(model)
+    if not full_parameter:
+        zero_teacher_adapters(model)
     backuper.backup("teacher")
-    verify_teacher_base(backuper)
+    verify_teacher_base(backuper, full_parameter=full_parameter)
     backuper.restore("actor")
     actor = SimpleNamespace(args=args, model=model, _switch_model=backuper.restore)
     score_teacher(actor, data, [2], rollout_id=0)
@@ -216,11 +217,13 @@ def _run(work_dir):
         metrics = run_forward_backward_pass(args, dumper, [iterator], model, 2, num_rollouts=2)
         losses.extend(metric["values"][1].item() for metric in metrics)
         assert all(torch.isfinite(metric["values"]).all() for metric in metrics)
-        reduce_marked_lora_grads(model)
+        if not full_parameter:
+            reduce_marked_lora_grads(model)
         assert any(param.grad is not None and param.grad.abs().sum() > 0 for param in parameters)
         assert all(param.grad is None for param in model[0].parameters() if not param.requires_grad)
         optimizer.step()
         backuper.backup("actor")
+        verify_teacher_base(backuper, full_parameter=full_parameter)
         score_teacher(actor, data, [2], rollout_id=step + 1)
         for before, after in zip(initial_targets, data["opsd_targets"], strict=True):
             torch.testing.assert_close(before, after.log_probs, atol=0, rtol=0)
@@ -246,6 +249,7 @@ def _run(work_dir):
     if dist.get_rank() == 0:
         result = dict(
             status="passed",
+            training_mode="full_parameter" if full_parameter else "lora",
             tp=dist.get_world_size(),
             hf_teacher_max_abs_logprob_error=maximum_error,
             microbatch_losses=losses,
@@ -263,11 +267,12 @@ def _run(work_dir):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--work-dir", type=Path, required=True)
+    parser.add_argument("--full-parameter", action="store_true")
     args = parser.parse_args()
     args.work_dir.mkdir(parents=True, exist_ok=True)
     _initialize()
     try:
-        _run(args.work_dir)
+        _run(args.work_dir, full_parameter=args.full_parameter)
     finally:
         dist.destroy_process_group()
 

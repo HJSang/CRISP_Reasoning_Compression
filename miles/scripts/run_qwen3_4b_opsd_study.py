@@ -1,8 +1,9 @@
-"""Matched non-thinking Qwen3-4B OPSD study and capacity smoke runs.
+"""Full-parameter, non-thinking Qwen3-4B OPSD study and capacity smoke runs.
 
 Requires a pinned local base checkpoint, filtered study JSONL, and an isolated
 Ray cluster. The effective batch remains four when tuning microbatch size.
-Evaluation workers consume the immutable adapter checkpoints separately.
+Evaluation workers consume immutable full HF checkpoints separately. Previous
+LoRA capacity measurements do not validate this full-parameter recipe.
 
 Args:
   --model-dir / --data-dir / --output-dir: Local checkpoint, input and result roots.
@@ -10,7 +11,7 @@ Args:
   --target: frozen, current, or transported full-vocabulary distribution.
   --num-rollout: Completed optimizer updates, bounded at 64 per study job.
   --micro-batch-size: One, two, or four; sample-mean loss preserves weighting.
-  --adapter-path: Optional starting native LoRA checkpoint; Adam state resets.
+  --initial-checkpoint: Optional starting full HF or native checkpoint; Adam resets.
 
 Example:
   MILES_SCRIPT_EXTERNAL_RAY=1 python scripts/run_qwen3_4b_opsd_study.py --num-rollout 2
@@ -33,11 +34,12 @@ class ScriptArgs(U.ExecuteTrainConfig):
     dataset_name: str = "warmup.jsonl"
     num_gpus_per_node: int = 2
     num_rollout: int = 2
-    micro_batch_size: int = 2
+    micro_batch_size: int = 1
     context: str = "worked"
     target: str = "frozen"
-    adapter_path: str | None = None
+    initial_checkpoint: str | None = None
     replay_path: str | None = None
+    capture_full_update: bool = False
     evaluation_queue: str | None = None
     seed: int = 17
     rollout_seed: int = 17
@@ -57,15 +59,17 @@ class ScriptArgs(U.ExecuteTrainConfig):
 def execute(args: ScriptArgs):
     if os.environ.get("MILES_SCRIPT_EXTERNAL_RAY") != "1" or not os.environ.get("RAY_ADDRESS"):
         raise ValueError("Create an isolated Ray cluster and set MILES_SCRIPT_EXTERNAL_RAY=1 and RAY_ADDRESS")
+    if args.capture_full_update and (args.replay_path is None or args.target != "frozen"):
+        raise ValueError("Full-update capture is only for a frozen-teacher correctness replay")
     model = shlex.quote(f"{args.model_dir}/Qwen3-4B")
+    initial = shlex.quote(args.initial_checkpoint) if args.initial_checkpoint else model
     checkpoint = (
-        f"--hf-checkpoint {model} --load {model} --opd-teacher-load {model} "
+        f"--hf-checkpoint {model} --load {initial} --opd-teacher-load {model} "
         "--megatron-to-hf-mode bridge --finetune --no-load-optim --no-load-rng "
         "--start-rollout-id 0 "
         f"--save {shlex.quote(f'{args.output_dir}/{args.run_id}/checkpoints')} --save-interval 1 "
+        f"--save-hf {shlex.quote(f'{args.output_dir}/{args.run_id}/hf/step_{{rollout_id}}')} "
     )
-    if args.adapter_path is not None:
-        checkpoint += f"--lora-adapter-path {shlex.quote(args.adapter_path)} "
     if args.evaluation_queue is not None:
         checkpoint += (
             "--custom-megatron-post-save-hook-path miles.utils.opsd_study.enqueue_evaluation "
@@ -83,14 +87,14 @@ def execute(args: ScriptArgs):
         if args.num_rollout != 1:
             raise ValueError("Capacity replay permits one update only; study updates require fresh rollouts")
         rollout += f"--load-debug-rollout-data {shlex.quote(args.replay_path)} --debug-train-only "
-        rollout += "--custom-megatron-before-train-step-hook-path tools.opsd.verify_update.capture_initial_adapter "
+        if args.capture_full_update:
+            rollout += "--custom-megatron-before-train-step-hook-path tools.opsd.verify_full_update.capture_gradients "
     algorithm = (
         "--loss-type opsd_loss --disable-compute-advantages-and-returns "
         "--opsd-beta 0 --opsd-temperature 1.0 --opsd-token-clip 0 --opsd-reduction sample_mean "
         f"--opsd-context {args.context} --opsd-target {args.target} "
         f"--opsd-target-cache-gib 8 --opsd-target-microbatch-gib {2 * args.micro_batch_size} "
-        "--lora-type canonical_lora --lora-rank 64 --lora-alpha 128 --lora-dropout 0 "
-        "--target-modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj "
+        "--lora-rank 0 "
     )
     optimizer = (
         "--optimizer adam --lr 5e-6 --lr-decay-style constant --weight-decay 0 "
@@ -102,7 +106,7 @@ def execute(args: ScriptArgs):
         "--actor-num-nodes 1 --actor-num-gpus-per-node 2 --num-gpus-per-node 2 --colocate --train-backend megatron "
     )
     inference = (
-        "--rollout-num-gpus-per-engine 1 --sglang-mem-fraction-static 0.4 --sglang-lora-backend triton "
+        "--rollout-num-gpus-per-engine 1 --sglang-mem-fraction-static 0.4 "
         "--sglang-enable-deterministic-inference --sglang-sampling-backend pytorch "
         "--sglang-cuda-graph-max-bs-decode 4 --sglang-max-running-requests 4 "
     )
