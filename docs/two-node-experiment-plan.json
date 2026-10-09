@@ -1,6 +1,6 @@
 {
-  "schema_version": 14,
-  "status": "FULL_PARAMETER_READINESS_UPDATE_GATE_FAILED",
+  "schema_version": 15,
+  "status": "FOUR_SCIENTIFIC_B_ARMS_LAUNCHED",
   "executable": false,
   "new_gpu_work_authorized": true,
   "review_required_before_launch": false,
@@ -10,7 +10,7 @@
     "name": "Miles",
     "directory": "miles",
     "source_baseline": "4f2235868a58305baef3a19a8477279711d57841",
-    "study_changes": "full_parameter_training_and_full_checkpoint_evaluation_implemented_readiness_in_progress"
+    "study_changes": "full_parameter_study_with_bounded_stop_and_final_evaluation_drain"
   },
   "execution": {
     "independent_experiments": 1,
@@ -57,7 +57,7 @@
   "dataset": {
     "id": "siyanzhao/Openthoughts_math_30k_opsd",
     "revision": "1f33e9dc2e8a1c639ca74f8024ad4a9f1f5eae62",
-    "split_status": "prepared_version_5_disjoint_manifested_pools_manual_reasoning_audit_incomplete",
+    "split_status": "pinned_v5_initial_stage_subsets_audited_and_manifested_before_training; full_proof_certification_not_claimed",
     "requested_disjoint_groups": {
       "warmup": 1024,
       "adaptation": 4096,
@@ -94,7 +94,7 @@
     "weight_decay": 0,
     "grad_norm_clip": 0.1,
     "fresh_state_per_branch": true,
-    "lr_status": "retained_5e-6_initial_full_parameter_setting_not_yet_validated"
+    "lr_status": "5e-6_retained_from_full_parameter_smokes_and_current_finite_warmup"
   },
   "training": {
     "seed": 17,
@@ -197,9 +197,9 @@
     "cap_hit_fraction_max": 0.1,
     "checkpoint_signal_to_repeat_noise_min": 5,
     "repeat_noise_floor": 1e-05,
-    "reference_update_check": "Independent full-model update fails; isolated identical-gradient optimizer/mapping passes. Continue forward/backward investigation without relaxing tolerances.",
+    "reference_update_check": "Independent HF/Megatron update check remains failed. User accepted this limitation for the exploratory within-Miles study on October 9; do not claim parity or reproduction.",
     "runtime_isolation": "passed_owned_isolated_clusters_preserved_shared_services",
-    "data_and_grader_audit": "partial_final_data_reasoning_audit_pending",
+    "data_and_grader_audit": "Initial 28 warmup and 32 adaptation questions reviewed before training. Three warmup candidates rejected and three adaptation references replaced; matching bins and shared block identity preserved. Detailed derivation spot audit is not a formal proof certificate.",
     "cost_projection": "Validate total initial two-block B-stage cost including actual warmup, training, features, checkpoint IO, startup, queue drain and all assigned idle GPUs. At the measured six-replica rate, generation alone is at most about 42.8 GPUh with maximum warmup and all 32 GPUs charged. Historical A+B envelope is no longer mandatory.",
     "eval_profile_questions": 64,
     "eval_profile_responses_per_question": 2,
@@ -215,14 +215,14 @@
       "action": "retain_16K_and_report_truncation",
       "material_worsening_requires_review": true
     },
-    "adaptive_stop": "Validate fixed milestone warmup stop, complete balanced block barriers, durable review decisions, resume identity and draining every reached evaluation before scientific launch."
+    "adaptive_stop": "Bounded stop and final evaluation drain implemented and locally tested; live seven-update stage exercises the transition. Two-block worker controllers stop after all required evaluations; recovery beyond fail-closed stopping remains unvalidated."
   },
   "gpu_hour_caps": {
     "readiness": 64,
     "paired_study_including_warmup": 96,
     "total": 160,
     "basis": "all_assigned_gpus_times_job_wall_hours_including_idle_slots",
-    "runtime_feasibility": "no_scientific_launch_until_numerical_data_execution_and_initial_stage_total_cost_gates_pass; review_each_extension_within_same_caps",
+    "runtime_feasibility": "User authorized initial exploratory launch despite documented update mismatch; hard shared deadline bounds assigned GPU cost; review cost and information before each extension.",
     "authorization": "User explicitly approved 64 readiness / 160 total on 2026-10-09; full study remains 96."
   },
   "automatic_reservation_extension": false,
@@ -310,7 +310,7 @@
     "interpretation": "adaptive_exploratory_step_four_effects_per_dataset_not_confirmatory_or_untouched_final_test",
     "uncertainty": "paired_resampling_of_adaptation_blocks_and_benchmark_problem_groups_retaining_all_arms_checkpoints_and_shared_controls"
   },
-  "full_runs_launched": false,
+  "full_runs_launched": true,
   "protocol_exception_review_required": false,
   "readiness_results": {
     "date": "2026-10-08",
@@ -493,7 +493,7 @@
       },
       "interpretation": "Readiness baseline, not evidence of training gains; concurrency-dependent sampling."
     },
-    "full_runs_launched": false,
+    "full_runs_launched": true,
     "full_mapped_update": {
       "status": "failed",
       "training_mode": "full_parameter",
@@ -549,7 +549,7 @@
       "output_tokens_per_second": 9431.409672349715
     },
     "checkpoint_bytes_per_update": 64380567856,
-    "checkpoint_retention_status": "pending_before_full_matrix",
+    "checkpoint_retention_status": "Retain all native and HF snapshots for initial stage; shared free capacity approximately 77 TB at launch. No checkpoint deletion required.",
     "broad_launcher_suite": {
       "modified": "558 passed, 70 failed, 10 errors, 34 skipped",
       "baseline_comparison": "same 80 failure/error cases at unchanged baseline; no introduced failures; suite remains not green"
@@ -589,7 +589,7 @@
       "scope": "Same captured gradients deliberately supplied to HF Adam; isolates optimizer/mapping only, not independent forward/backward parity."
     },
     "wandb": "disabled_readiness_metrics_private_logs_and_HTML_only",
-    "active_GPU_jobs": 0,
+    "active_GPU_jobs": "four_B_arm_training_processes_running_with_isolated_evaluation_fleets",
     "readiness_gpu_hour_accounting": {
       "prior_gpu_hours": 29.6,
       "new_job_union_gpu_hours": 9.294056256612143,
@@ -599,12 +599,10 @@
       "PR3741_cancelled_validation_gpu_hours": 0.23195075776841906
     },
     "pending": [
-      "independent_full_parameter_forward_backward_and_mapped_update_parity",
-      "checkpoint_storage_IO_retention_and_queue_recovery",
-      "finish_final_data_reasoning_audit",
-      "streamed_shared_PI_features_and_balanced_branch_orchestration",
-      "adaptive_warmup_drift_stop_and_stage_barrier_validation",
-      "initial_stage_total_cost_and_extension_feasibility"
+      "independent_HF_Megatron_update_mismatch_known_user_accepted_limitation",
+      "same_backend_Megatron_score_noise_and_shared_PI_features_before_mechanism_analysis",
+      "live_balanced_stage_completion_and_all_evaluation_records",
+      "per_dataset_step_four_effects_and_measured_cost_review"
     ],
     "historical_full_matrix_cost_projection": {
       "status": "superseded_full_A_plus_B_envelope",
@@ -613,7 +611,7 @@
       "basis": "Measured six-replica C32 rate extrapolated to four equal fleets; generation only. Excludes initialization, reload, checkpoint IO, training, feature pass and contention. Further throughput tuning required; do not reduce matrix or skip checkpoints."
     },
     "current_cost_projection": {
-      "status": "staged_total_cost_not_yet_validated",
+      "status": "bounded_initial_stage_launched_with_live_measurements_and_hard_deadline",
       "measured_six_replica_responses_per_second": 3.1600935061407274,
       "initial_two_block_generation_only_max_warmup_gpu_hours": 42.75541557506503,
       "study_cap_gpu_hours": 96,
@@ -638,7 +636,7 @@
     "shared_start": "theta_star with fresh Adam for every branch",
     "unchanged_baseline": true,
     "A_followup": "conditional only after B review; no automatic matrix or epoch completion",
-    "launch_status": "pending_numerical_data_cost_and_adaptive_execution_gates"
+    "launch_status": "four_B_arm_controllers_launched_after_completed_warmup_and_both_evaluations"
   },
   "historical_full_matrix_envelope": {
     "warmup_updates": 64,
@@ -775,7 +773,7 @@
     ],
     "no_epoch_requirement": true,
     "readiness_work": "additional, separately counted within readiness cap",
-    "implementation_status": "design_recorded_adaptive_stop_and_recovery_orchestration_not_yet_validated"
+    "implementation_status": "warmup_early_stop_and_final_drain_completed_live; four_initial_two_block_controllers_launched; balanced_completion_pending"
   },
   "early_decision": {
     "user_accepted_practical_improvement_percentage_points": 2,
@@ -797,6 +795,191 @@
     "stop_rule": "Stop on invalid controls, non-finite updates, numerical failure, inability to fund the next complete stage, or sufficient exploratory mechanism evidence. Stop at 8 as inconclusive if useful effects remain uncertain. Failure stops are immediate; preserve and finish valid pending evaluations when possible.",
     "interpretation": "A point estimate >=2pp is a candidate signal, not proof. A point estimate <2pp is not proof of futility. Report all three datasets and adverse effects; no best-benchmark or best-checkpoint selection.",
     "uncertainty": "Exploratory paired block/problem resampling with question-only and block-only sensitivity; two blocks cannot reliably estimate training variability. Repeated nominal 95% intervals do not give optional-stopping-valid significance. No confirmatory success/futility claim in this adaptive pilot.",
-    "implementation_status": "planned_not_yet_enforced_by_a_validated_study_controller"
+    "implementation_status": "private_controllers_enforce_two_blocks_then_stop; efficacy_review_requires_complete_balanced_stage"
+  },
+  "scientific_launch": {
+    "date": "2026-10-09",
+    "authorization": "Explicit user instruction: launch full runs after discussing numerical parity and adaptive execution limitations.",
+    "scope": "Initial two matched B blocks; four arms in parallel after shared checkpoint; four updates per branch; no full epoch and no automatic A wave.",
+    "source_commit": "12e66fc",
+    "phase": "four_training_processes_running",
+    "warmup_planned_horizon": 64,
+    "warmup_stop_after_updates": 7,
+    "warmup_required_evaluations": [
+      0,
+      7
+    ],
+    "branch_checkpoint": "shared_warmup_update_7",
+    "numerical_parity": {
+      "status": "failed_user_accepted_exploratory_exception",
+      "update_cosine": 0.87351064,
+      "relative_l2_error": 0.5051616,
+      "minimum_cosine": 0.95,
+      "maximum_relative_l2_error": 0.35
+    },
+    "checkpoint_drift_probe": {
+      "status": "pass_auxiliary_only",
+      "backend": "HF BF16 SDPA auxiliary same-backend probe",
+      "panel": "Four pre-existing short response tapes; exact archived token IDs; fixed before outcome inspection.",
+      "limitation": "This identifies checkpoint change on that panel; it does not validate Megatron numerical noise or replace the 64-trajectory PI feature pass.",
+      "median_vocab_rms_logprob_drift": 11.857122421264648,
+      "median_repeat_noise": 0.0,
+      "threshold": 5e-05,
+      "response_tokens": 128,
+      "probability_health": {
+        "tapes": [
+          {
+            "kl_r_p": 0.06525129079818726,
+            "top1_agreement": 0.90625,
+            "base_response_nll": 0.07073761522769928,
+            "warmed_response_nll": 0.16368743777275085,
+            "base_entropy": 0.11464913934469223,
+            "warmed_entropy": 0.16404949128627777
+          },
+          {
+            "kl_r_p": 0.0034748646430671215,
+            "top1_agreement": 1.0,
+            "base_response_nll": 0.06664063036441803,
+            "warmed_response_nll": 0.0428294762969017,
+            "base_entropy": 0.012543423101305962,
+            "warmed_entropy": 0.028122182935476303
+          },
+          {
+            "kl_r_p": 0.026300497353076935,
+            "top1_agreement": 1.0,
+            "base_response_nll": 0.05110618472099304,
+            "warmed_response_nll": 0.14967018365859985,
+            "base_entropy": 0.03724999725818634,
+            "warmed_entropy": 0.09194377809762955
+          },
+          {
+            "kl_r_p": 0.046776723116636276,
+            "top1_agreement": 0.96875,
+            "base_response_nll": 0.07981181144714355,
+            "warmed_response_nll": 0.12219579517841339,
+            "base_entropy": 0.10539040714502335,
+            "warmed_entropy": 0.18359482288360596
+          }
+        ],
+        "all_finite": true,
+        "checkpoint_choice_independent_of_eval": true
+      },
+      "interpretation": "Unweighted vocabulary RMS is sensitive to rare-token log probabilities. Supplementary probability-weighted KL is 0.00347\u20130.06525 nats per tape and top-1 agreement is 90.625\u2013100%; finite on all 128 tokens. Small fixed panel, not a general validation certificate."
+    },
+    "data_review": {
+      "warmup_rows": 28,
+      "adaptation_rows": 32,
+      "warmup_candidates_rejected": 3,
+      "adaptation_references_replaced": 3,
+      "shared_across_arms": true,
+      "selected_before_training": true,
+      "later_blocks_require_audit": true
+    },
+    "runtime": {
+      "training_gpus_per_worker": 2,
+      "evaluation_gpus_per_worker": 6,
+      "evaluation_replicas": 6,
+      "evaluation_concurrency_per_replica": 32,
+      "retain_all_initial_stage_checkpoints": true,
+      "deadline_seconds_from_initial_stage_setup": 10800,
+      "accounting": "Charge all eight assigned GPUs during each job, including waits; three-hour four-worker envelope caps study at 96 GPU-hours."
+    },
+    "evaluation": "AIME 2024 / AIME 2025 / AMC23; eight responses per question; 800 per checkpoint; no PI; thinking disabled; 16K response cap; every reached milestone including actual final stage checkpoint.",
+    "feature_status": "Shared 64 pre-update-checkpoint trajectories and PI features remain pending; preserve immutable theta-star and fixed seeds, collect before utility-model fitting or effect interpretation. Do not claim feature-to-learning evidence yet.",
+    "tests": {
+      "focused_study_and_evaluation_passed": 20,
+      "affected_launcher_snapshots_passed": 2,
+      "broad_macOS_suite": {
+        "passed": 348,
+        "failed": 88,
+        "errors": 134,
+        "interpretation": "Broad suite not green; environment/root-path failures observed, but no fresh baseline comparison was run. Focused modified-path checks passed."
+      }
+    },
+    "tracking": "Private logs and aggregate HTML; W&B disabled; no hosted run links.",
+    "common_checkpoint_sha256": "4c0d71023eaea23851516072eb0c5619f2c506af23766ac713dae78b2937cf5a",
+    "warmup_completed_updates": 7,
+    "warmup_evaluations_completed": [
+      0,
+      7
+    ],
+    "warmup_exit_code": 0,
+    "warmup_all_seven_losses_finite": true,
+    "warmup_loss_range": [
+      0.03949502483010292,
+      0.059957560151815414
+    ],
+    "warmup_training_gpu_peak_mib": 60211,
+    "warmup_evaluation_gpu_peak_mib": 117502,
+    "warmup_elapsed_seconds": 1008.0714690685272,
+    "warmup_evaluation_throughput": [
+      {
+        "step": 0,
+        "completions": 800,
+        "elapsed_seconds": 282.7684562000213,
+        "responses_per_second": 2.8291698824925002,
+        "output_tokens_per_second": 9817.986904579602,
+        "mean_response_tokens": 3470.27125,
+        "checkpoint_sha256": "b0016d6c2daf51fb81e19915884e8c24e1f819fe71f6ac9fda3d59e02e0209c8"
+      },
+      {
+        "step": 7,
+        "completions": 800,
+        "elapsed_seconds": 208.14285052003106,
+        "responses_per_second": 3.8435141923023215,
+        "output_tokens_per_second": 8462.289219155722,
+        "mean_response_tokens": 2201.70625,
+        "checkpoint_sha256": "4c0d71023eaea23851516072eb0c5619f2c506af23766ac713dae78b2937cf5a"
+      }
+    ],
+    "workers": {
+      "worker-a": {
+        "arm": "B01_frozen_no_pi",
+        "controller_launched": true,
+        "phase": "training_process_running",
+        "completed_branch_updates": 0
+      },
+      "worker-b": {
+        "arm": "B10_transported_PI",
+        "controller_launched": true,
+        "phase": "training_process_running",
+        "completed_branch_updates": 0
+      },
+      "worker-c": {
+        "arm": "B11_frozen_worked_solution",
+        "controller_launched": true,
+        "phase": "training_process_running",
+        "completed_branch_updates": 0
+      },
+      "worker-d": {
+        "arm": "BS_current_worked_solution",
+        "controller_launched": true,
+        "phase": "training_process_running",
+        "completed_branch_updates": 0
+      }
+    },
+    "warmup_training_timing": {
+      "perf/actor_train_time": {
+        "min": 1.1419963836669922,
+        "max": 3.141690492630005,
+        "mean": 1.6609819957188197
+      },
+      "perf/actor_train_tok_per_s": {
+        "min": 1552.9855698533945,
+        "max": 4534.673976632328,
+        "mean": 3012.5085639050076
+      },
+      "perf/save_model_time": {
+        "min": 31.045697450637817,
+        "max": 34.71320819854736,
+        "mean": 31.7934734026591
+      },
+      "perf/step_time": {
+        "min": 54.51760673522949,
+        "max": 70.44333291053772,
+        "mean": 61.7192543234144
+      },
+      "interpretation": "Actor timing excludes rollout, teacher passes, checkpoint IO and evaluation waits. End-to-end step time averaged 61.7 seconds; save time averaged 31.8 seconds. Short-run measurements only."
+    }
   }
 }
