@@ -11,10 +11,9 @@ import torch
 import torch.distributed as dist
 import torch.multiprocessing as mp
 import torch.nn.functional as F
+from tests.opsd_reference import load_author_loss
 
 from miles.backends.training_utils.loss.hub.opsd_math import OPSDLossConfig, opsd_per_token_loss, vocab_log_softmax
-
-from tests.opsd_reference import load_author_loss
 
 
 @pytest.fixture(scope="module")
@@ -64,6 +63,32 @@ def test_unclipped_forward_kl_analytic_gradient_and_padded_vocab():
     assert torch.count_nonzero(gradient[:, 9:]) == 0
 
 
+@pytest.mark.parametrize("temperature", [1.0, 1.1])
+def test_identical_full_vocabulary_target_has_exactly_zero_adam_update(temperature):
+    torch.manual_seed(17)
+    logits = torch.nn.Parameter(torch.randn(4, 151936))
+    before = logits.detach().clone()
+    teacher = vocab_log_softmax(before, vocab_size=151936, temperature=temperature)
+    optimizer = torch.optim.Adam([logits], lr=5e-6, eps=1e-8)
+    loss = opsd_per_token_loss(
+        logits, teacher, vocab_size=151936, config=OPSDLossConfig(temperature=temperature, token_clip=None)
+    ).mean()
+    loss.backward()
+    assert loss.item() == 0
+    assert torch.count_nonzero(logits.grad) == 0
+    optimizer.step()
+    torch.testing.assert_close(logits, before, atol=0, rtol=0)
+
+
+def test_unclipped_forward_kl_gradcheck_with_nonunit_teacher_mass():
+    logits = torch.randn(2, 7, dtype=torch.float64, requires_grad=True)
+    teacher = torch.randn(2, 5, dtype=torch.float64).log_softmax(-1) + 0.2
+    assert torch.autograd.gradcheck(
+        lambda x: opsd_per_token_loss(x, teacher, vocab_size=5, config=OPSDLossConfig(token_clip=None)),
+        (logits,),
+    )
+
+
 def test_clip_is_per_vocabulary_entry_and_can_produce_negative_sum():
     student = torch.tensor([[0.01, 0.99]], dtype=torch.float64).log().requires_grad_()
     teacher = torch.tensor([[0.5, 0.5]], dtype=torch.float64).log()
@@ -88,8 +113,7 @@ def _tp_worker(rank, rendezvous):
         full = torch.randn(4, 8, generator=generator, dtype=torch.float64) * 3
         teacher = torch.randn(4, 8, generator=generator, dtype=torch.float64)
         for vocab in [7, 3]:  # Also cover an entirely padded TP shard.
-            for beta in [0.0, 0.4, 1.0]:
-                config = OPSDLossConfig(beta=beta)
+            for config in [OPSDLossConfig(beta=beta) for beta in [0.0, 0.4, 1.0]] + [OPSDLossConfig(token_clip=None)]:
                 local = full[:, rank * 4 : (rank + 1) * 4].clone().requires_grad_()
                 q = vocab_log_softmax(
                     teacher[:, rank * 4 : (rank + 1) * 4],
@@ -105,6 +129,16 @@ def _tp_worker(rank, rendezvous):
                 expected_grad = torch.autograd.grad(expected, dense)[0][:, rank * 4 : (rank + 1) * 4]
                 torch.testing.assert_close(got, expected, atol=1e-10, rtol=1e-8)
                 torch.testing.assert_close(grad, expected_grad, atol=1e-10, rtol=1e-8)
+                if config.token_clip is None:
+                    identical = local.detach().float().requires_grad_()
+                    same_q = vocab_log_softmax(
+                        identical.detach(), vocab_size=vocab, temperature=config.temperature, group=dist.group.WORLD
+                    )
+                    zero = opsd_per_token_loss(
+                        identical, same_q, vocab_size=vocab, config=config, group=dist.group.WORLD
+                    ).mean()
+                    assert zero.item() == 0
+                    assert torch.count_nonzero(torch.autograd.grad(zero, identical)[0]) == 0
     finally:
         dist.destroy_process_group()
 

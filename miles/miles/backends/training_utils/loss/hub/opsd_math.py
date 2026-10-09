@@ -99,6 +99,38 @@ def vocab_log_softmax(
     return F.log_softmax(values, dim=-1) if size == 1 else _VocabLogSoftmax.apply(values, group)
 
 
+class _UnclippedForwardKL(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, logits, teacher, vocab_size, temperature, group):
+        student = vocab_log_softmax(logits, vocab_size=vocab_size, temperature=temperature, group=group)
+        teacher = teacher.detach().to(device=student.device, dtype=student.dtype)
+        if teacher.shape != student.shape:
+            raise ValueError("Teacher target shape must match response positions and real local vocabulary")
+        p, q = student.exp(), teacher.exp()
+        masses = torch.stack((p.sum(-1, keepdim=True), q.sum(-1, keepdim=True)))
+        if _group_size(group) > 1:
+            dist.all_reduce(masses, group=group)
+        # Subtract normalized probabilities before scaling. When p=q this is
+        # exactly zero; chained log-softmax backward can leave rounding noise
+        # that Adam amplifies. Keep q's mass for the original KL derivative.
+        gradient = (p / masses[0] - q / masses[1]) * (masses[1] / temperature)
+        ctx.save_for_backward(gradient)
+        ctx.shape, ctx.dtype = logits.shape, logits.dtype
+        loss = (q * (teacher - student)).sum(-1)
+        if _group_size(group) > 1:
+            dist.all_reduce(loss, group=group)
+        return loss
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        (gradient,) = ctx.saved_tensors
+        # Padding never participates; the replicated TP loss needs no second
+        # backward all-reduce, which would multiply gradients by the TP size.
+        result = gradient.new_zeros(ctx.shape, dtype=ctx.dtype)
+        result[:, : gradient.size(-1)] = gradient * grad_output[:, None]
+        return result, None, None, None, None
+
+
 def opsd_per_token_loss(
     student_logits: torch.Tensor,
     teacher_log_probs: torch.Tensor,
@@ -112,6 +144,8 @@ def opsd_per_token_loss(
     Teacher log probabilities must already use config.temperature and the same
     global vocabulary/shard. This boundary always detaches teacher targets.
     """
+    if config.beta == 0 and config.token_clip is None:
+        return _UnclippedForwardKL.apply(student_logits, teacher_log_probs, vocab_size, config.temperature, group)
     student = vocab_log_softmax(student_logits, vocab_size=vocab_size, temperature=config.temperature, group=group)
     teacher = teacher_log_probs.detach().to(device=student.device, dtype=student.dtype)
     if teacher.shape != student.shape:
