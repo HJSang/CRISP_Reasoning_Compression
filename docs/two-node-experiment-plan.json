@@ -155,8 +155,8 @@
         "request_seeds"
       ]
     },
-    "profiled_concurrency_per_gpu": null,
-    "fleet_validation": "16K_context_memory_throughput_and_full_checkpoint_loading_require_new_profile_after_resume",
+    "profiled_concurrency_per_gpu": 32,
+    "fleet_validation": "six_replica_full_checkpoint_queue_passed_800_responses_16K_non_thinking; concurrency_tuning_and_full_study_feasibility_still_pending",
     "concurrency_candidate": 32,
     "truncation_policy": {
       "user_accepted": "approximately_10_percent",
@@ -254,10 +254,10 @@
     "cap_hit_fraction_max": 0.1,
     "checkpoint_signal_to_repeat_noise_min": 5,
     "repeat_noise_floor": 1e-05,
-    "reference_update_check": "full_parameter_forward_backward_update_and_frozen_teacher_checks_pending_prior_LoRA_mapped_gate_failed",
+    "reference_update_check": "Independent full-model update fails; isolated identical-gradient optimizer/mapping passes. Continue forward/backward investigation without relaxing tolerances.",
     "runtime_isolation": "passed_owned_isolated_clusters_preserved_shared_services",
     "data_and_grader_audit": "partial_final_data_reasoning_audit_pending",
-    "cost_projection": "reprofile_full_parameter_training_16K_evaluation_full_checkpoint_export_load_and_storage",
+    "cost_projection": "At measured six-replica C32 throughput, evaluation generation alone projects about 169 allocated GPU-hours under the planned schedule; full study cap is 96. Further throughput tuning required.",
     "eval_profile_questions": 64,
     "eval_profile_responses_per_question": 2,
     "eval_cap_hit_fraction_max": null,
@@ -658,5 +658,25 @@
       "study_cap_gpu_hours": 96,
       "basis": "Measured six-replica C32 rate extrapolated to four equal fleets; generation only. Excludes initialization, reload, checkpoint IO, training, feature pass and contention. Further throughput tuning required; do not reduce matrix or skip checkpoints."
     }
+  },
+  "next_scientific_runs": {
+    "warmup": "64 worked-solution OPSD updates with the original base teacher frozen; evaluate baseline and every scheduled milestone",
+    "first_wave": [
+      "frozen_no_pi",
+      "frozen_answer_only",
+      "frozen_worked_solution",
+      "frozen_unrelated_example"
+    ],
+    "second_wave": [
+      "frozen_no_pi",
+      "transported_PI",
+      "frozen_worked_solution",
+      "current_worked_solution"
+    ],
+    "blocks_per_wave": 8,
+    "updates_per_branch": 4,
+    "shared_start": "same theta64 with fresh Adam for every branch",
+    "unchanged_baseline": true,
+    "launch_status": "pending_numerical_cost_data_and_execution_gates"
   }
 }

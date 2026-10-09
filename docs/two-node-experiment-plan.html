@@ -8,7 +8,7 @@
 </style>
 </head>
 <body><div class="layout"><nav aria-label="Contents">
-<a href="#findings-summary">What we learned</a><a href="#readiness-results">Current status</a><a href="#overview">Two experiments</a><a href="#evidence">What the pilot established</a><a href="#targets">PI / checkpoint decomposition</a><a href="#arms">Experiment arms</a><a href="#recipe">Shared recipe</a><a href="#data">Training data</a><a href="#evaluation-suite">Evaluation suite · 16K</a><a href="#batch">First batch and counts</a><a href="#schedule">Parallel schedule</a><a href="#gates">Implementation gates</a><a href="#analysis">Analysis and next decisions</a><a href="#budget">Compute budget</a><a href="#sources">Sources and history</a>
+<a href="#next-full-runs">Next full experiments</a><a href="#findings-summary">What we learned</a><a href="#readiness-results">Current status</a><a href="#overview">Two experiments</a><a href="#evidence">What the pilot established</a><a href="#targets">PI / checkpoint decomposition</a><a href="#arms">Experiment arms</a><a href="#recipe">Shared recipe</a><a href="#data">Training data</a><a href="#evaluation-suite">Evaluation suite · 16K</a><a href="#batch">First batch and counts</a><a href="#schedule">Parallel schedule</a><a href="#gates">Implementation gates</a><a href="#analysis">Analysis and next decisions</a><a href="#budget">Compute budget</a><a href="#sources">Sources and history</a>
 </nav><main>
 <p class="status">Resumed · October 9, 2026 · full-parameter smokes passed; update parity still fails</p>
 <h1>Four workers.<br>Four OPSD arms in parallel.</h1>
@@ -21,6 +21,20 @@
 <div class="stats"><div class="stat"><strong>4</strong><span>concurrent arms, one per node</span></div><div class="stat"><strong>64</strong><span>short adaptation branches total</span></div><div class="stat"><strong>213,600</strong><span>scheduled evaluation completions</span></div><div class="stat"><strong>160</strong><span>GPU-hour ceiling, not forecast</span></div></div>
 <p>A <a href="two-node-experiment-plan.json">non-executable manifest</a> records the recipe, measured readiness and remaining gates.</p>
 <p>Each block runs four arms concurrently. Complete the eight PI-content blocks, then the eight checkpoint-separation blocks. Every branch starts from the same warmed checkpoint with fresh Adam state. The two scientific matrices and seed 17 are preserved. Host mappings and operational details remain private.</p>
+
+<section id="next-full-runs"><h2>Next scientific runs, in order</h2>
+<p><strong>First create the shared student checkpoint:</strong> 64 worked-solution OPSD updates from the pinned Qwen3-4B base, with the original base teacher frozen. Evaluate the initial model and each scheduled 10% milestone. Verify that checkpoint drift is measurable before branching. This warm-up has not run yet.</p>
+<table><thead><tr><th>Parallel worker</th><th>First-wave training arm</th><th>Question it answers</th></tr></thead><tbody>
+<tr><td>worker-a</td><td>Frozen teacher, no PI</td><td>What does the original-checkpoint anchor do by itself?</td></tr>
+<tr><td>worker-b</td><td>Frozen teacher, answer-only PI</td><td>How much does knowing the correct answer teach?</td></tr>
+<tr><td>worker-c</td><td>Frozen teacher, worked-solution PI</td><td>Does the reasoning explanation add useful learning?</td></tr>
+<tr><td>worker-d</td><td>Frozen teacher, unrelated matched example</td><td>Does extra context alone explain the effect?</td></tr>
+</tbody></table>
+<p>Every branch starts from the same warmed student with fresh Adam state. Keep an unchanged-student baseline. Run eight paired question blocks, four updates per arm per block, resetting to the common start for each block. The first wave therefore has 32 branches and 128 optimizer updates. These deliberately short branches measure learning caused by each PI intervention; they are not evidence of long-run convergence.</p>
+<p><strong>Second wave:</strong> preserve the checkpoint-separation comparison: frozen no-PI target, frozen worked-solution target, transported target <code>normalize(p × q / r)</code>, and current-student worked-solution target. Here <code>p</code> is current-student/no-PI, <code>q</code> frozen-teacher/PI, and <code>r</code> frozen-teacher/no-PI, all evaluated on the same response prefix. This asks whether the PI correction remains useful after removing the old-checkpoint pull.</p>
+<p><strong>Shared recipe:</strong> full parameters; non-thinking student, teacher and evaluation; effective batch four with microbatch one; sample-mean full-vocabulary forward KL; Adam LR 5×10<sup>−6</sup>; scoring temperature 1. Training uses 4,096 response tokens and T=1, top-p=1, top-k=−1. Evaluation uses 16,384 response tokens and T=0.7, top-p=0.8, top-k=20, with eight responses per question on AIME 2024, AIME 2025 and AMC23. Evaluate each 10% optimizer milestone; rounding makes this every update in a four-update branch.</p>
+<p><strong>Launch order is still conditional:</strong> resolve the independent full-model update disagreement, finish the data audit and shared feature/orchestration work, validate storage retention and recovery, and establish a feasible evaluation schedule. At the measured concurrency, the planned schedule projects roughly 169 allocated GPU-hours for evaluation generation alone versus the approved 96-hour study cap. Tune evaluation throughput before deciding whether a budget revision is necessary; keep the scientific matrix and evaluation points fixed.</p>
+</section>
 
 <h2 id="findings-summary">What we have learned · October 9, 2026</h2>
 <div class="lead"><strong>TL;DR:</strong> the tested Miles implementation preserves the original OPSD token/loss contract, and individual training and evaluation jobs work. We have not established learning gains, full HF/Megatron update equivalence, or benefits from transported PI. Full-parameter readiness work and monitoring have resumed on four workers.</div>
