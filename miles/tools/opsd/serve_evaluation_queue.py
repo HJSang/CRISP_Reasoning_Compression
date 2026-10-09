@@ -5,13 +5,14 @@ training job; no evaluation point is silently skipped. All outputs are private.
 """
 
 import argparse
-import hashlib
 import json
 import subprocess
 import sys
 import threading
 import time
 from pathlib import Path
+
+from miles.utils.opsd_checkpoint import checkpoint_digest
 
 
 def _write(path, value):
@@ -58,11 +59,10 @@ def main():
             result = args.queue / "results" / active.name
             code = 1
             try:
-                adapter = Path(job["adapter"])
-                if (
-                    hashlib.sha256((adapter / "adapter_model.safetensors").read_bytes()).hexdigest()
-                    != job["adapter_sha256"]
-                ):
+                if job.get("checkpoint_kind") != "full_model":
+                    raise ValueError("Study queue requires full-model checkpoints; use a fresh queue after LoRA")
+                checkpoint = Path(job["checkpoint"])
+                if checkpoint_digest(checkpoint) != job["checkpoint_sha256"]:
                     raise ValueError("Checkpoint hash changed after enqueue")
                 command = [
                     sys.executable,
@@ -75,8 +75,8 @@ def main():
                     str(args.prompts),
                     "--labels",
                     str(args.labels),
-                    "--adapter",
-                    str(adapter),
+                    "--checkpoint",
+                    str(checkpoint),
                     "--output",
                     str(result),
                     "--concurrency",
@@ -95,7 +95,7 @@ def main():
                 if code != 0:
                     raise RuntimeError(f"Evaluation process exited {code}")
                 record = json.loads(result.read_text())
-                if record["adapter_sha256"] != job["adapter_sha256"] or record["completions"] != 800:
+                if record["checkpoint_sha256"] != job["checkpoint_sha256"] or record["completions"] != 800:
                     raise ValueError("Evaluation hash or completion-count mismatch")
                 _write(args.queue / "done" / active.name, job | {"result": str(result), "exit_code": code})
                 active.unlink()

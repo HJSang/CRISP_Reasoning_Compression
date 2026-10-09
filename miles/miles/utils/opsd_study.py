@@ -1,9 +1,10 @@
 """Study checkpoint evaluation cadence and bounded queue, outside the trainer."""
 
-import hashlib
 import json
 import time
 from pathlib import Path
+
+from miles.utils.opsd_checkpoint import checkpoint_digest
 
 
 def evaluation_steps(updates: int) -> tuple[int, ...]:
@@ -42,17 +43,17 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
         raise ValueError("Study save hook requires --opsd-eval-queue")
     for name in ("pending", "running", "done", "failed"):
         (queue / name).mkdir(parents=True, exist_ok=True)
-    checkpoint = Path(checkpoint_dir) / "adapter"
-    weights = checkpoint / "adapter_model.safetensors"
-    if not weights.is_file():
-        raise RuntimeError("Completed study checkpoint has no HF adapter export")
-    digest = hashlib.sha256(weights.read_bytes()).hexdigest()
+    if hf_checkpoint_dir is None:
+        raise RuntimeError("Full-parameter study evaluation requires --save-hf")
+    checkpoint = Path(hf_checkpoint_dir)
+    digest = checkpoint_digest(checkpoint)
     job_name = f"{Path(args.save).parent.name}-step-{step:04d}.json"
     job = {
         "completed_updates": step,
         "rollout_id": rollout_id,
-        "adapter": str(checkpoint),
-        "adapter_sha256": digest,
+        "checkpoint": str(checkpoint),
+        "checkpoint_sha256": digest,
+        "checkpoint_kind": "full_model",
         "planned_updates": args.num_rollout,
     }
     deadline = time.monotonic() + 3600
@@ -63,7 +64,7 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
         existing = [queue / name / job_name for name in ("pending", "running", "done")]
         if any(path.exists() for path in existing):
             for path in existing:
-                if path.exists() and json.loads(path.read_text())["adapter_sha256"] != digest:
+                if path.exists() and json.loads(path.read_text()).get("checkpoint_sha256") != digest:
                     raise ValueError("Evaluation job identity collides with a different checkpoint")
             break
         if sum(len(list((queue / name).glob("*.json"))) for name in ("pending", "running")) < 2:

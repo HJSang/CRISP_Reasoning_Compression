@@ -1,7 +1,7 @@
 """Eight-response, non-thinking evaluation against dedicated SGLang endpoints.
 
-The caller owns the servers and pins an optional immutable HF LoRA adapter before
-requests begin. Prompt-only JSONL and separate labels prevent PI leakage. Results
+The caller owns the servers and pins an immutable full HF checkpoint (or a legacy
+LoRA adapter) before requests begin. Prompt-only JSONL and separate labels prevent PI leakage. Results
 are written atomically and include checkpoint and input content hashes. Raw
 responses belong outside the public checkout.
 
@@ -23,6 +23,7 @@ import aiohttp
 import numpy as np
 from transformers import AutoTokenizer
 
+from miles.backends.sglang_utils.sglang_api_client import SGLangApiClient
 from miles.rollout.rm_hub import math_utils
 from miles.rollout.rm_hub.math_utils import (
     extract_boxed_answer,
@@ -30,6 +31,7 @@ from miles.rollout.rm_hub.math_utils import (
     grade_answer_sympy,
     mathd_normalize_answer,
 )
+from miles.utils.opsd_checkpoint import checkpoint_digest
 from miles.utils.opsd_prompts import make_study_prefixes
 
 
@@ -70,7 +72,7 @@ async def _server_configuration(session, url, model, context_length, needs_adapt
     }
 
 
-async def _sample(session, url, semaphore, row, prefix, draw, adapter_name, sink, sampling):
+async def _sample(session, url, semaphore, row, prefix, draw, adapter_name, sink, sampling, weight_version=None):
     seed = int.from_bytes(hashlib.sha256(f"opsd-eval-17:{row['id']}:{draw}".encode()).digest()[:4], "big") % (2**31)
     payload = {
         "input_ids": list(prefix),
@@ -89,6 +91,8 @@ async def _sample(session, url, semaphore, row, prefix, draw, adapter_name, sink
         output = await _post(session, url + "/generate", payload)
         elapsed = time.monotonic() - start
     meta = output["meta_info"]
+    if weight_version is not None and str(meta.get("weight_version")) != weight_version:
+        raise ValueError("Evaluation response came from a different full-model checkpoint")
     result = {
         "id": row["id"],
         "dataset": row["dataset"],
@@ -98,10 +102,52 @@ async def _sample(session, url, semaphore, row, prefix, draw, adapter_name, sink
         "tokens": meta["completion_tokens"],
         "finish_reason": meta["finish_reason"],
         "latency_seconds": elapsed,
+        "weight_version": meta.get("weight_version"),
     }
     sink.write(json.dumps(result) + "\n")
     sink.flush()
     return result
+
+
+async def _verify_full_versions(urls, expected):
+    versions = await asyncio.gather(*[SGLangApiClient(url).get_weight_version() for url in urls])
+    if not versions or any(str(version) != expected for version in versions):
+        raise ValueError("Evaluator fleet did not retain the requested full-model checkpoint")
+
+
+async def _pin_full_checkpoint(urls, checkpoint, version):
+    results = await asyncio.gather(
+        *[
+            SGLangApiClient(url).update_weights_from_disk(model_path=str(checkpoint), weight_version=version)
+            for url in urls
+        ]
+    )
+    if any(not result or result.get("success") is not True for result in results):
+        raise RuntimeError("Failed to load the full-model checkpoint on every evaluator")
+    await _verify_full_versions(urls, version)
+
+
+async def _generate_rows(session, args, prompts, prefixes, adapter_name, sink, sampling, checkpoint_hash):
+    semaphores = [asyncio.Semaphore(args.concurrency) for _ in args.urls]
+    requests = []
+    for row, prefix in zip(prompts, prefixes, strict=True):
+        for draw in range(args.responses):
+            server = len(requests) % len(args.urls)
+            requests.append(
+                _sample(
+                    session,
+                    args.urls[server],
+                    semaphores[server],
+                    row,
+                    prefix,
+                    draw,
+                    adapter_name,
+                    sink,
+                    sampling,
+                    checkpoint_hash,
+                )
+            )
+    return await asyncio.gather(*requests)
 
 
 class _GradingTimeout(BaseException):
@@ -195,6 +241,8 @@ async def _evaluate(args):
     if args.limit_questions is not None:
         prompts = prompts[: args.limit_questions]
     labels = {row["id"]: row["answer"] for row in map(json.loads, args.labels.read_text().splitlines())}
+    checkpoint_hash = checkpoint_digest(args.checkpoint) if args.checkpoint else None
+    # Every branch retains the pinned base tokenizer/template; only weights change.
     tokenizer = AutoTokenizer.from_pretrained(args.model, local_files_only=True)
     provenance = _provenance(args, tokenizer)
     prefixes = [make_study_prefixes(tokenizer, problem=row["problem"], context=None).student_ids for row in prompts]
@@ -211,8 +259,12 @@ async def _evaluate(args):
     async with aiohttp.ClientSession(timeout=timeout, connector=aiohttp.TCPConnector(limit=0)) as session:
         loaded = []
         try:
+            if args.checkpoint:
+                await _pin_full_checkpoint(args.urls, args.checkpoint, checkpoint_hash)
             provenance["engines"] = await asyncio.gather(
                 *[
+                    # server_info retains the launch model after a weight reload.
+                    # The checkpoint digest/version checks establish dynamic identity.
                     _server_configuration(session, url, args.model, spec["total_context_cap"], bool(args.adapter))
                     for url in args.urls
                 ]
@@ -227,34 +279,26 @@ async def _evaluate(args):
                     if result.get("success") is False:
                         raise RuntimeError(f"Adapter load failed: {result}")
                     loaded.append(url)
-            semaphores = [asyncio.Semaphore(args.concurrency) for _ in args.urls]
-            requests = []
-            for row, prefix in zip(prompts, prefixes, strict=True):
-                for draw in range(args.responses):
-                    server = len(requests) % len(args.urls)
-                    requests.append(
-                        _sample(
-                            session,
-                            args.urls[server],
-                            semaphores[server],
-                            row,
-                            prefix,
-                            draw,
-                            adapter_name,
-                            sink,
-                            sampling,
-                        )
-                    )
             start = time.monotonic()
-            rows = await asyncio.gather(*requests)
+            rows = await _generate_rows(
+                session, args, prompts, prefixes, adapter_name, sink, sampling, checkpoint_hash
+            )
             elapsed = time.monotonic() - start
+            if args.checkpoint:
+                await _verify_full_versions(args.urls, checkpoint_hash)
         finally:
             sink.close()
             for url in loaded:
                 await _post(session, url + "/unload_lora_adapter", {"lora_name": adapter_name})
     if args.adapter and adapter_hash != _file_hash(args.adapter / "adapter_model.safetensors"):
         raise ValueError("Adapter changed during evaluation")
+    if args.checkpoint and checkpoint_hash != checkpoint_digest(args.checkpoint):
+        raise ValueError("Full-model checkpoint changed during evaluation")
     _grade(rows, labels)
+    _save_results(args, rows, spec, elapsed, provenance, adapter_hash, checkpoint_hash)
+
+
+def _save_results(args, rows, spec, elapsed, provenance, adapter_hash, checkpoint_hash):
     metrics = {}
     for dataset in dict.fromkeys(row["dataset"] for row in rows):
         subset = [row for row in rows if row["dataset"] == dataset]
@@ -271,6 +315,7 @@ async def _evaluate(args):
     result = {
         "status": "completed",
         "adapter_sha256": adapter_hash,
+        "checkpoint_sha256": checkpoint_hash,
         "prompts_sha256": _file_hash(args.prompts),
         "labels_sha256": _file_hash(args.labels),
         "elapsed_seconds": elapsed,
@@ -298,7 +343,9 @@ def main():
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--prompts", type=Path, required=True)
     parser.add_argument("--labels", type=Path, required=True)
-    parser.add_argument("--adapter", type=Path)
+    weights = parser.add_mutually_exclusive_group()
+    weights.add_argument("--adapter", type=Path, help="Legacy LoRA diagnostic only.")
+    weights.add_argument("--checkpoint", type=Path, help="Completed full-model HF checkpoint for the study.")
     parser.add_argument("--urls", nargs="+", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--concurrency", type=int, default=32)

@@ -8,6 +8,7 @@ import torch
 from tests.fast.opsd.test_opsd_contract import _loss_fixture
 
 from miles.backends.training_utils.loss.hub.opsd import opsd_loss_function
+from miles.utils.opsd_checkpoint import checkpoint_digest
 from miles.utils.opsd_study import enqueue_evaluation, evaluation_steps
 
 
@@ -35,23 +36,42 @@ def test_queue_uses_completed_updates_and_refuses_changed_checkpoint(tmp_path):
     queue.mkdir()
     (queue / "heartbeat.json").write_text("{}")
     checkpoint = tmp_path / "checkpoint"
-    (checkpoint / "adapter").mkdir(parents=True)
-    weights = checkpoint / "adapter/adapter_model.safetensors"
-    weights.write_bytes(b"immutable-test-adapter")
+    checkpoint.mkdir()
+    (checkpoint / ".complete").touch()
+    (checkpoint / "config.json").write_text('{"model_type":"qwen3"}')
+    weights = checkpoint / "model.safetensors"
+    weights.write_bytes(b"immutable-test-model")
     args = Namespace(opsd_eval_queue=queue, num_rollout=64, save=str(tmp_path / "run/checkpoints"))
     enqueue_evaluation(args, 5, checkpoint, None)
     assert not (queue / "pending").exists()
-    enqueue_evaluation(args, 6, checkpoint, None)
+    with pytest.raises(RuntimeError, match="--save-hf"):
+        enqueue_evaluation(args, 6, checkpoint, None)
+    enqueue_evaluation(args, 6, checkpoint, checkpoint)
     job = queue / "pending/run-step-0007.json"
     assert json.loads(job.read_text())["completed_updates"] == 7
-    enqueue_evaluation(args, 6, checkpoint, None)
+    assert json.loads(job.read_text())["checkpoint_kind"] == "full_model"
+    enqueue_evaluation(args, 6, checkpoint, checkpoint)
     assert len(list((queue / "pending").glob("*.json"))) == 1
-    weights.write_bytes(b"modified-adapter")
+    weights.write_bytes(b"modified-model")
     with pytest.raises(ValueError, match="collides"):
-        enqueue_evaluation(args, 6, checkpoint, None)
+        enqueue_evaluation(args, 6, checkpoint, checkpoint)
     (queue / "failed/bad.json").write_text("{}")
     with pytest.raises(RuntimeError, match="Evaluation failed"):
-        enqueue_evaluation(args, 6, checkpoint, None)
+        enqueue_evaluation(args, 6, checkpoint, checkpoint)
+
+
+def test_full_checkpoint_identity_covers_metadata_and_rejects_partial_exports(tmp_path):
+    with pytest.raises(ValueError, match="completion marker"):
+        checkpoint_digest(tmp_path)
+    (tmp_path / ".complete").touch()
+    (tmp_path / "config.json").write_text("{}")
+    (tmp_path / "model.safetensors").write_bytes(b"weights")
+    original = checkpoint_digest(tmp_path)
+    (tmp_path / "tokenizer_config.json").write_text('{"chat_template":"new-template"}')
+    assert checkpoint_digest(tmp_path) != original
+    (tmp_path / "model.safetensors.index.json").write_text('{"weight_map":{"weight":"missing.safetensors"}}')
+    with pytest.raises(ValueError, match="missing an indexed shard"):
+        checkpoint_digest(tmp_path)
 
 
 def test_logged_loss_matches_sample_mean_not_inverse_microbatch(monkeypatch):
@@ -63,3 +83,12 @@ def test_logged_loss_matches_sample_mean_not_inverse_microbatch(monkeypatch):
     loss, _, log = opsd_loss_function(args, batch, logits)
     torch.testing.assert_close(log["values"][1] / 2, loss)
     assert log["values"][0] == 2
+
+
+def test_full_update_capture_cannot_run_on_live_study(monkeypatch):
+    from scripts.run_qwen3_4b_opsd_study import ScriptArgs, execute
+
+    monkeypatch.setenv("MILES_SCRIPT_EXTERNAL_RAY", "1")
+    monkeypatch.setenv("RAY_ADDRESS", "http://127.0.0.1:8265")
+    with pytest.raises(ValueError, match="correctness replay"):
+        execute(ScriptArgs(capture_full_update=True))
