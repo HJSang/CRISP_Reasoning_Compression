@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "approved_ready_for_bounded_launch",
+  "status": "running_first_warmup",
   "launch_authorized": true,
   "executable": true,
-  "new_gpu_jobs_launched": 0,
+  "new_gpu_jobs_launched": 1,
   "scope": "Independent replication first; causal mechanisms and cross-model/domain validation conditional",
   "current_evidence": {
     "independent_warmup_checkpoints": 1,
@@ -398,5 +398,14 @@
     "max_teacher_prefix_tokens": 1643,
     "manual_reasoning_audit": "spot review and documented corrections; not full proof certification",
     "new_loss_or_batch_change": false
+  },
+  "execution": {
+    "start_utc": "2026-10-09 22:12 UTC",
+    "deadline_utc": "2026-10-10 01:12 UTC",
+    "phase": "first_warmup",
+    "worker": "worker-a",
+    "replicate_seed": 29,
+    "code_commit": "28f3bb6",
+    "additional_replicates": "conditional_on_complete_first_pair_cost"
   }
 }
