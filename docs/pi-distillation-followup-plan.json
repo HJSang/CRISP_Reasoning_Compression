@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "running_first_warmup",
+  "status": "running_first_pair",
   "launch_authorized": true,
   "executable": true,
-  "new_gpu_jobs_launched": 1,
+  "new_gpu_jobs_launched": 3,
   "scope": "Independent replication first; causal mechanisms and cross-model/domain validation conditional",
   "current_evidence": {
     "independent_warmup_checkpoints": 1,
@@ -402,14 +402,176 @@
   "execution": {
     "start_utc": "2026-10-09 22:12 UTC",
     "deadline_utc": "2026-10-10 01:12 UTC",
-    "phase": "first_warmup",
-    "worker": "worker-a",
+    "as_of_utc": "2026-10-09 22:32 UTC",
+    "phase": "first_pair",
     "replicate_seed": 29,
     "code_commit": "28f3bb6",
     "additional_replicates": "conditional_on_complete_first_pair_cost",
-    "verified_optimizer_updates": 1,
-    "initial_kl_loss": 0.05619274079799652,
-    "source_loaded": true,
-    "baseline_evaluation_status": "in_progress"
+    "stage_gpu_hours_at_ledger_snapshot": 3.2282009172439574,
+    "stage_gpu_hour_cap": 32,
+    "warmup": {
+      "verified_optimizer_updates": 7,
+      "required_evaluations_completed": 2,
+      "exit_code": 0,
+      "owned_cleanup_completed": true,
+      "elapsed_seconds": 700.0612814426422,
+      "hosted_history_verified": true,
+      "wandb_state_discrepancy": "W&B reports crashed despite successful controller exit and complete hosted training/evaluation metrics; SDK lifecycle attribution is not yet diagnosed."
+    },
+    "branches": {
+      "replication-s29-opd": {
+        "verified_optimizer_updates": 3,
+        "planned_optimizer_updates": 4,
+        "losses": [
+          0.03688175976276398,
+          0.016711020842194557,
+          0.00860280729830265
+        ],
+        "exact_warmed_source_loaded": true,
+        "queue_counts": {
+          "done": 0,
+          "running": 1,
+          "pending": 1,
+          "failed": 0
+        },
+        "hosted_finite_training_verified": true
+      },
+      "replication-s29-pi": {
+        "verified_optimizer_updates": 3,
+        "planned_optimizer_updates": 4,
+        "losses": [
+          0.06717886030673981,
+          0.04028165712952614,
+          0.0329778827726841
+        ],
+        "exact_warmed_source_loaded": true,
+        "queue_counts": {
+          "done": 0,
+          "running": 1,
+          "pending": 1,
+          "failed": 0
+        },
+        "hosted_finite_training_verified": true
+      }
+    },
+    "baseline_evaluation": {
+      "completions": 800,
+      "checkpoint_sha256": "b0016d6c2daf51fb81e19915884e8c24e1f819fe71f6ac9fda3d59e02e0209c8",
+      "metrics": {
+        "AIME 2024": {
+          "avg_at_8": 0.20833333333333334,
+          "completions": 240,
+          "cap_hit_fraction": 0.18333333333333332,
+          "parse_failure_fraction": 0.16666666666666666,
+          "grader_timeouts": 0,
+          "unexpected_thinking_delimiters": 0
+        },
+        "AIME 2025": {
+          "avg_at_8": 0.19166666666666668,
+          "completions": 240,
+          "cap_hit_fraction": 0.07916666666666666,
+          "parse_failure_fraction": 0.06666666666666667,
+          "grader_timeouts": 0,
+          "unexpected_thinking_delimiters": 0
+        },
+        "AMC23": {
+          "avg_at_8": 0.7125,
+          "completions": 320,
+          "cap_hit_fraction": 0.025,
+          "parse_failure_fraction": 0.015625,
+          "grader_timeouts": 0,
+          "unexpected_thinking_delimiters": 0
+        }
+      },
+      "responses_per_second": 2.7919588378070133,
+      "output_tokens_per_second": 9721.698391803344
+    },
+    "warmup_evaluation": {
+      "completions": 800,
+      "checkpoint_sha256": "9b88e6c79399a2142a4ae6594209eb5764f6c2bfa02e312990f9b6a9d83b1d8c",
+      "metrics": {
+        "AIME 2024": {
+          "avg_at_8": 0.18333333333333332,
+          "completions": 240,
+          "cap_hit_fraction": 0.08333333333333333,
+          "parse_failure_fraction": 0.0625,
+          "grader_timeouts": 0,
+          "unexpected_thinking_delimiters": 0
+        },
+        "AIME 2025": {
+          "avg_at_8": 0.15416666666666667,
+          "completions": 240,
+          "cap_hit_fraction": 0.0375,
+          "parse_failure_fraction": 0.016666666666666666,
+          "grader_timeouts": 0,
+          "unexpected_thinking_delimiters": 0
+        },
+        "AMC23": {
+          "avg_at_8": 0.61875,
+          "completions": 320,
+          "cap_hit_fraction": 0.009375,
+          "parse_failure_fraction": 0.009375,
+          "grader_timeouts": 0,
+          "unexpected_thinking_delimiters": 0
+        }
+      },
+      "responses_per_second": 3.6192247574497993,
+      "output_tokens_per_second": 7818.3081334453655
+    },
+    "gpu_measurements": [
+      {
+        "run_id": "replication-s29-warmup",
+        "gpu_samples": 4648,
+        "groups": {
+          "training_rollout": {
+            "peak_memory_mib": 59889.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 14.131669535283994
+          },
+          "evaluation": {
+            "peak_memory_mib": 116818.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 73.44951233505451
+          }
+        }
+      },
+      {
+        "run_id": "replication-s29-opd",
+        "gpu_samples": 2160,
+        "groups": {
+          "training_rollout": {
+            "peak_memory_mib": 59889.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 11.481481481481481
+          },
+          "evaluation": {
+            "peak_memory_mib": 116800.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 41.40925925925926
+          }
+        }
+      },
+      {
+        "run_id": "replication-s29-pi",
+        "gpu_samples": 2128,
+        "groups": {
+          "training_rollout": {
+            "peak_memory_mib": 59887.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 11.610902255639099
+          },
+          "evaluation": {
+            "peak_memory_mib": 116800.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 41.560776942355886
+          }
+        }
+      }
+    ],
+    "limitations": [
+      "First branch pair is incomplete; no return-OPD generality result yet.",
+      "Independent HF/Megatron update parity remains failed and accepted for exploration.",
+      "Legacy 64 immutable-source PI features remain pending."
+    ]
   }
 }
