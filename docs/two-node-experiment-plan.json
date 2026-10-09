@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 8,
   "status": "PROPOSED_FOR_REVIEW",
   "executable": false,
   "new_gpu_work_authorized": false,
@@ -36,8 +36,9 @@
     "lora_rank": 64,
     "lora_alpha": 128,
     "lora_dropout": 0,
-    "teacher_mode_status": "PROVISIONAL_MATCHED_OFF_PENDING_USER_PREFERENCE",
-    "original_compatibility_teacher_thinking": true
+    "teacher_mode_status": "CONFIRMED_MATCHED_OFF",
+    "original_compatibility_teacher_thinking": true,
+    "all_study_modes": "non_thinking_rollout_teacher_scoring_and_evaluation"
   },
   "dataset": {
     "id": "siyanzhao/Openthoughts_math_30k_opsd",
@@ -60,7 +61,8 @@
     "extra_temperature_squared_factor": false,
     "reduction": "mean_valid_response_tokens_then_mean_samples",
     "all_targets_detached": true,
-    "target_refresh": "once_before_each_optimizer_update"
+    "target_refresh": "once_before_each_optimizer_update",
+    "temperature_note": "scoring_temperature_1.1_is_distinct_from_rollout_temperature_1.0"
   },
   "optimizer": {
     "name": "Adam",
@@ -79,33 +81,38 @@
     "global_batch": 4,
     "microbatch": 1,
     "updates_per_rollout_batch": 1,
-    "temperature": 1.1,
-    "top_p": 0.95,
-    "top_k": 20,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": -1,
     "min_p": 0,
-    "response_cap": 8192,
-    "total_sequence_cap": 12288,
+    "response_cap": 4096,
+    "total_sequence_cap": 8192,
     "teacher_prefix_cap": 4096,
     "student_prefix_cap": 2048,
-    "thinking": false
+    "thinking": false,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0,
+    "repetition_penalty": 1.0
   },
   "evaluation": {
     "pi": false,
-    "thinking": true,
-    "temperature": 0.6,
-    "top_p": 0.95,
+    "thinking": false,
+    "temperature": 0.7,
+    "top_p": 0.8,
     "top_k": 20,
     "min_p": 0,
-    "response_cap": 30000,
+    "response_cap": 8192,
     "samples_per_question": 1,
     "endpoint_update": 4,
     "grader_pin_status": "required_before_launch",
-    "total_context_cap": 32768,
-    "templated_prefix_cap": 2768,
-    "response_budget_includes": "thinking_and_final_answer",
+    "total_context_cap": 12288,
+    "templated_prefix_cap": 4096,
+    "response_budget_includes": "all_generated_reasoning_and_final_answer",
     "external_samples_per_question": "dataset_specific_in_external_evaluation",
     "max_position_embeddings_at_pinned_revision": 40960,
-    "rope_scaling": null
+    "rope_scaling": null,
+    "sampling_source": "https://huggingface.co/Qwen/Qwen3-4B#best-practices",
+    "sampling_mode": "qwen3_recommended_non_thinking"
   },
   "arms": {
     "A": {
@@ -138,13 +145,13 @@
     "branch_eval_completions": 4096,
     "shared_baseline_eval_completions": 512,
     "primary_eval_completions_total": 4608,
-    "primary_eval_response_token_ceiling": 138240000,
+    "primary_eval_response_token_ceiling": 37748736,
     "readiness_work": "additional, separately counted within cap"
   },
   "capacity_proposal": {
-    "final_target_cache_gib_per_rank": 16,
-    "target_microbatch_gib_per_rank": 3,
-    "aggregate_cpu_staging_gib_per_rank": 48,
+    "final_target_cache_gib_per_rank": 8,
+    "target_microbatch_gib_per_rank": 2,
+    "aggregate_cpu_staging_gib_per_rank": 24,
     "status": "requires_profile"
   },
   "gates": {
@@ -160,14 +167,14 @@
     "eval_profile_questions": 64,
     "eval_profile_responses_per_question": 2,
     "eval_cap_hit_fraction_max": 0.05,
-    "teacher_mode_choice": "resolve_before_launch_if_original_off_on_is_selected_revise_factorization_to_include_mode_effect"
+    "teacher_mode_choice": "confirmed_student_and_teacher_thinking_off_verify_all_four_scoring_distributions"
   },
   "gpu_hour_caps": {
     "readiness": 32,
     "paired_study_including_warmup": 96,
     "total": 128,
     "basis": "all_assigned_gpus_times_job_wall_hours_including_idle_slots",
-    "long_eval_feasibility": "requires_new_throughput_projection_with_30000_output_tokens"
+    "runtime_feasibility": "requires_throughput_projection_with_4096_rollout_and_8192_eval_tokens"
   },
   "automatic_reservation_extension": false,
   "confirmation_authorized": false,
@@ -187,10 +194,10 @@
   "external_evaluation": {
     "status": "PROPOSED_CONFIRMATION_STAGE_NOT_AUTHORIZED",
     "when": "prespecified_longer_run_endpoints_and_unchanged_starting_checkpoints",
-    "response_cap": 30000,
+    "response_cap": 8192,
     "benchmark_entries_before_overlap_audit": 902,
     "completions_per_checkpoint": 4848,
-    "response_token_ceiling_per_checkpoint": 145440000,
+    "response_token_ceiling_per_checkpoint": 39714816,
     "preparation_status": "source_revisions_pinned_content_hashes_and_audits_pending",
     "primary_dataset": "MATH-500",
     "metric": "mean_per_question_sample_correctness_Avg_at_k_not_pass_at_k",
@@ -260,16 +267,22 @@
   },
   "original_sampling_comparison": {
     "reference_revision": "ae7d2519e94920c4eb6206c0c26de46d9c50abae",
-    "matched_training": {
-      "temperature": 1.1,
-      "top_p": 0.95,
-      "top_k": 20
-    },
     "original_response_cap": 1024,
     "original_student_thinking": false,
     "original_teacher_thinking": true,
     "original_loss_contribution_clip": 0.05,
     "original_eval_response_cap": 38912,
-    "entire_protocol_identical": false
+    "entire_protocol_identical": false,
+    "original_training": {
+      "temperature": 1.1,
+      "top_p": 0.95,
+      "top_k": 20
+    },
+    "selected_training": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "top_k": -1
+    },
+    "sampling_matches_original": false
   }
 }
