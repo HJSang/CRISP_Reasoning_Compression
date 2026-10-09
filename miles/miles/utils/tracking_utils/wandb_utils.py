@@ -169,6 +169,9 @@ def init_wandb_secondary(args, router_addr=None):
 
     if getattr(args, "wandb_opsd_profile", False):
         init_kwargs["settings"] = opsd_wandb.settings(primary=False, mode="offline" if offline else "shared")
+        # Ray forwards the primary process's environment. Shared-mode writers
+        # need separate SDK services even though they join the same hosted run.
+        os.environ.pop("WANDB_SERVICE", None)
 
     wandb.init(**init_kwargs)
 

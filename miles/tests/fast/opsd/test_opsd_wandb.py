@@ -43,6 +43,7 @@ def test_all_writers_disable_automatic_capture(primary):
 @pytest.mark.parametrize("primary", [True, False])
 def test_existing_wandb_init_uses_profile_for_every_writer(monkeypatch, primary):
     calls = []
+    monkeypatch.setenv("WANDB_SERVICE", "inherited-primary-service")
     monkeypatch.setattr(wandb_utils.wandb, "init", lambda **kw: calls.append(kw))
     monkeypatch.setattr(wandb_utils.wandb, "define_metric", lambda *a, **kw: None)
     monkeypatch.setattr(wandb_utils.wandb, "run", SimpleNamespace(id="test-run"))
@@ -56,6 +57,7 @@ def test_existing_wandb_init_uses_profile_for_every_writer(monkeypatch, primary)
         wandb_utils.init_wandb_primary(args)
     else:
         wandb_utils.init_wandb_secondary(args, router_addr="http://private-router")
+        assert "WANDB_SERVICE" not in wandb_utils.os.environ
     assert calls[0]["config"] == {"seed": 17.0}
     assert calls[0]["settings"].x_disable_stats
     assert calls[0]["settings"].x_stats_open_metrics_endpoints is None
