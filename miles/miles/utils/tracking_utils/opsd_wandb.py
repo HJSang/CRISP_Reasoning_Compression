@@ -7,6 +7,7 @@ Authentication stays in the SDK's environment/netrc lookup, never in run config.
 import json
 import math
 import os
+import re
 from numbers import Real
 from pathlib import Path
 
@@ -38,6 +39,27 @@ EVAL_FIELDS = (
     "grader_timeouts", "unexpected_thinking_delimiters",
 )
 EVAL_DATASETS = {"AIME 2024": "AIME_2024", "AIME 2025": "AIME_2025", "AMC23": "AMC23"}
+
+
+def run_name(*, target: str, context: str, seed: int, group: str) -> str:
+    """Describe the recipe without exposing arbitrary group names or local paths."""
+    teacher = "current teacher" if target == "current" else "frozen teacher"
+    information = {
+        "none": "no PI", "answer": "answer PI", "worked": "worked-solution PI",
+        "unrelated": "unrelated PI", "empty": "empty PI wrapper",
+    }[context]
+    target_label = {"frozen": "direct target", "current": "direct target", "transported": "transported target"}[target]
+    parts = [teacher, information, target_label]
+    # Only the known neutral study identifier contributes block/attempt metadata.
+    branch = re.fullmatch(r"B(?:01|10|11|S)(?:-r(?P<attempt>[0-9]+))?-block-(?P<block>[0-9]+)", group)
+    if branch:
+        parts.append(f"block {int(branch['block']):02d}")
+    elif re.fullmatch(r"B-warmup-u[0-9]+", group):
+        parts.append("warm-up")
+    parts.append(f"seed {seed}")
+    if branch and branch["attempt"] is not None:
+        parts.append(f"attempt {int(branch['attempt']):02d}")
+    return " | ".join(parts)
 
 
 def settings(*, primary: bool, mode: str = "shared") -> wandb.Settings:

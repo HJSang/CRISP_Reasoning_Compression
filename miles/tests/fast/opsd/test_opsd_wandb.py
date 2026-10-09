@@ -52,13 +52,14 @@ def test_existing_wandb_init_uses_profile_for_every_writer(monkeypatch, primary)
         wandb_random_suffix=False, wandb_group="B10-block-00", wandb_team="team",
         wandb_project="opsd", wandb_run_id="test-run", wandb_dir=None,
         sglang_enable_metrics=True, env_report="/private/launch.json", seed=17, save=None, save_hf=None,
+        opsd_target="transported", opsd_context="worked",
     )
     if primary:
         wandb_utils.init_wandb_primary(args)
     else:
         wandb_utils.init_wandb_secondary(args, router_addr="http://private-router")
         assert "WANDB_SERVICE" not in wandb_utils.os.environ
-    assert calls[0]["config"] == {"seed": 17.0}
+    assert calls[0]["config"] == {"seed": 17.0, "opsd_target": "transported", "opsd_context": "worked"}
     assert calls[0]["settings"].x_disable_stats
     assert calls[0]["settings"].x_stats_open_metrics_endpoints is None
 

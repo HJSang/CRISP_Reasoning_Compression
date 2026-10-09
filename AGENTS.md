@@ -46,3 +46,7 @@
   local evaluation snapshots only, remove each after successful evaluation,
   and retain aggregate metrics and private response tapes. Preserve existing
   source checkpoints; restarting a branch uses its fixed warmed source.
+- Give future W&B runs descriptive display names: teacher checkpoint policy,
+  PI context, target construction, block, seed and attempt when available.
+  Keep operational run IDs and groups stable and neutral. Derive names from
+  validated recipe fields; never include personal or hardware identifiers.
