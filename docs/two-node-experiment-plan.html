@@ -10,7 +10,7 @@
 <body><div class="layout"><nav aria-label="Contents">
 <a href="#readiness-results">Current status</a><a href="#overview">Two experiments</a><a href="#evidence">What the pilot established</a><a href="#targets">PI / checkpoint decomposition</a><a href="#arms">Experiment arms</a><a href="#recipe">Shared recipe</a><a href="#data">Training data</a><a href="#evaluation-suite">Evaluation suite · 8K</a><a href="#batch">First batch and counts</a><a href="#schedule">Parallel schedule</a><a href="#gates">Implementation gates</a><a href="#analysis">Analysis and next decisions</a><a href="#budget">Compute budget</a><a href="#sources">Sources and history</a>
 </nav><main>
-<p class="status">Readiness blocked · October 8, 2026 · full experiments not launched</p>
+<p class="status">Paused by user · October 8, 2026 · both nodes available for other work</p>
 <h1>Two nodes.<br>Two independent OPSD experiments.</h1>
 <p class="meta">Miles · Qwen3-4B · math first · one active training branch per node</p>
 <div class="lead"><strong>TL;DR:</strong> Run PI-content utility on <code>worker-a</code> and PI/checkpoint separation on <code>worker-b</code>, concurrently. Both branch from the same warmed student, keep the same frozen base teacher, and evaluate without PI. Start with eight paired blocks per experiment to validate learning measurements and estimate variance. Review those results before a larger study.</div>
@@ -22,8 +22,9 @@
 <p>A <a href="two-node-experiment-plan.json">non-executable manifest</a> records the recipe, measured readiness and remaining gates.</p>
 <p>The two experiment suites run in parallel; the four arms within each suite run sequentially. Shared preparation is followed by independent jobs. The next approved seed swaps the experiment-to-node assignments. Actual host names and operational details stay in private runtime configuration.</p>
 
-<h2 id="readiness-results">Current status: smoke work complete; full launch blocked</h2>
-<p><strong>No 64-update warm-up or scientific experiment matrix has started.</strong> The two nodes were used for independent training, numerical and evaluation diagnostics. Full runs are authorized after readiness gates pass. The numerical update gate and evaluation length gate currently fail; the full queue, feature pass and multi-replica schedule still need validation.</p>
+<h2 id="readiness-results">Current status: paused by user</h2>
+<p class="note"><strong>Paused at the user’s request.</strong> Experiment monitoring is paused, no OPSD jobs are active, and both nodes have been checked for released GPU memory. Existing reservations and unrelated services are unchanged. Saved checkpoints and results are preserved. Resume only after an explicit user request.</p>
+<p><strong>No 64-update warm-up or scientific experiment matrix has started.</strong> The two nodes were used for independent training, numerical and evaluation diagnostics. The earlier conditional launch authorization is suspended during this pause. The numerical update gate and evaluation length gate currently fail; the full queue, feature pass and multi-replica schedule still need validation.</p>
 <div class="scroll"><table><thead><tr><th>Check</th><th>Measured result</th><th>Interpretation</th></tr></thead><tbody>
 <tr><td>Training and reload</td><td>Two-update normal training passed; transported-target training from a saved adapter passed. TP2 target normalization, algebraic identities, frozen-teacher stability and restoration after failure passed.</td><td>Individual training jobs work. These diagnostics do not establish learning gains.</td></tr>
 <tr><td>Worst-case 4K replay</td><td>Microbatch 2: 50.09 GiB/GPU, 8.11 s training. Microbatch 4: 87.93 GiB/GPU, 7.88 s.</td><td>Select microbatch <strong>2</strong>, effective batch <strong>4</strong>. Synthetic fixed-length tape controls the comparison; normal generation timings are length-dependent.</td></tr>
@@ -231,7 +232,7 @@ Trigger after the optimizer update; include the final step exactly once.</code><
 <p class="small">worker-b handles 8,800 shared warm-up/baseline requests, then each node handles 102,400 branch requests. Approximate evaluation service hours = [8,800/rate-b + max(102,400/rate-a, 102,400/rate-b)]/3,600. Allocation cost for these windows with both nodes assigned = 16 × hours. The scheduler may wait for checkpoints, so measured end-to-end runtime is still required.</p>
 </details>
 <p>Stop immediately for nonfinite values, incorrect token alignment, evaluation PI leakage, mixed student versions, corrupt checkpoints, missing teacher restoration or unexplained cross-node control mismatch. Pause at a budget or length gate rather than changing the protocol mid-comparison. Persist owned artifacts before reservation expiry.</p>
-<div class="lead"><strong>Authorization:</strong> the user requested smoke tests, memory/speed tuning, then full runs. That launch authorization stands, conditional on passing readiness gates. The pending decision concerns the failed 8K evaluation truncation gate; numerical validation and the remaining execution checks also need to pass. No full experiments have launched.</div>
+<div class="lead"><strong>Authorization:</strong> the user requested smoke tests, memory/speed tuning, then full runs. The user has since paused this work to use both nodes elsewhere; do not resume without an explicit instruction. The pending decision concerns the failed 8K evaluation truncation gate; numerical validation and the remaining execution checks also need to pass. No full experiments have launched.</div>
 
 <h2 id="sources">Evidence, sources, and history</h2>
 <ul>

@@ -1,8 +1,8 @@
 {
   "schema_version": 11,
-  "status": "READINESS_BLOCKED",
+  "status": "PAUSED_BY_USER",
   "executable": false,
-  "new_gpu_work_authorized": true,
+  "new_gpu_work_authorized": false,
   "review_required_before_launch": false,
   "date": "2026-10-08",
   "supersedes": "historical sampled-token execution draft",
@@ -435,5 +435,8 @@
     "public_artifacts": "Only aggregate metrics and generic worker labels; runtime configs, raw responses and logs stay private.",
     "owned_gpu_jobs_active": false,
     "owned_evaluators_stopped": true
-  }
+  },
+  "resume_requires_explicit_user_instruction": true,
+  "pause_reason": "User is reusing both nodes for other work.",
+  "monitor_status": "PAUSED"
 }
