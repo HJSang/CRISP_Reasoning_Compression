@@ -1,6 +1,6 @@
 {
   "schema_version": 15,
-  "status": "r5_second_block_finishing_one_arm_complete",
+  "status": "r5_training_complete_final_evaluations_draining",
   "executable": false,
   "new_gpu_work_authorized": true,
   "review_required_before_launch": false,
@@ -990,7 +990,7 @@
     "source_commit": "268f58f",
     "recovery_checkpoints": false,
     "temporary_eval_snapshots": "local storage; delete after successful verified evaluation and upload",
-    "current_status": "all four first blocks evaluated; second blocks finishing, current-checkpoint PI complete",
+    "current_status": "all training updates complete; final no-PI evaluations draining",
     "matrix_and_budget_unchanged": true,
     "speedup_claim": "saving overhead reduced from about 38\u201341 seconds to 14.36\u201314.56 seconds on first unblocked calls; no overall multiplier established",
     "validation": {
@@ -1056,23 +1056,23 @@
     }
   },
   "latest_monitor": {
-    "time_utc": "2026-10-09T21:00:03.252821+00:00",
-    "phase": "second matched block finishing; current-checkpoint PI arm complete",
+    "time_utc": "2026-10-09T21:14:11.881590+00:00",
+    "phase": "all training updates complete; final no-PI evaluations draining",
     "current_arms": {
       "B01": {
-        "training_updates": 7,
-        "evaluations": 4,
-        "complete": false
-      },
-      "B10": {
         "training_updates": 8,
         "evaluations": 7,
         "complete": false
       },
+      "B10": {
+        "training_updates": 8,
+        "evaluations": 8,
+        "complete": true
+      },
       "B11": {
         "training_updates": 8,
-        "evaluations": 6,
-        "complete": false
+        "evaluations": 8,
+        "complete": true
       },
       "BS": {
         "training_updates": 8,
@@ -1080,14 +1080,16 @@
         "complete": true
       }
     },
-    "training_updates": 31,
-    "completed_evaluations": 25,
+    "training_updates": 32,
+    "completed_evaluations": 31,
     "planned_updates": 32,
     "planned_evaluations": 32,
     "recovered_r4_evaluations": 12,
-    "verified_hosted_local_evaluations": 37,
+    "verified_hosted_local_evaluations": 43,
     "new_failures": false,
     "completed_worker_gpus_released": [
+      "worker-b",
+      "worker-c",
       "worker-d"
     ]
   },
