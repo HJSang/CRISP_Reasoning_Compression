@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "proposal_for_review",
-  "launch_authorized": false,
-  "executable": false,
+  "status": "approved_ready_for_bounded_launch",
+  "launch_authorized": true,
+  "executable": true,
   "new_gpu_jobs_launched": 0,
   "scope": "Independent replication first; causal mechanisms and cross-model/domain validation conditional",
   "current_evidence": {
@@ -274,7 +274,9 @@
     ],
     "proposed_gpu_hour_cap": 32,
     "proposed_wall_window_hours": 3,
-    "admission_rule": "Measure first complete paired seed; admit remaining paired seeds only if all required evaluations and cleanup fit conservative remaining cost and time; never skip reached evaluations."
+    "admission_rule": "Measure first complete paired seed; admit remaining paired seeds only if all required evaluations and cleanup fit conservative remaining cost and time; never skip reached evaluations.",
+    "approved_gpu_hour_cap": 32,
+    "approved_wall_window_hours": 3
   },
   "mechanism_tests": [
     {
@@ -362,16 +364,12 @@
     "remaining_study_gpu_hours": 42.91816134611766,
     "proposed_first_stage_gpu_hours": 32,
     "old_deadline_unix": 1791582364.570868,
-    "new_execution_window_requires_review": true,
+    "new_execution_window_requires_review": false,
     "later_stages_included_in_32_gpu_hours": false
   },
   "implementation_pending": [
-    "replicate-specific evaluation seed namespace; current evaluator hardcodes seed 17",
-    "new disjoint warmup and adaptation manifests",
-    "shared warmup source and paired reset-Adam branch builder",
-    "preflight cost/admission checks for complete paired seeds",
-    "fixed-tape diagnostics and neutral descriptive run labels",
-    "conditional interpolation and termination-loss probes if later approved"
+    "conditional mechanism and cross-model probes require later review; not included in this launch",
+    "legacy 64 pre-update PI features remain pending"
   ],
   "sources": {
     "on_policy_distillation": "https://arxiv.org/abs/2306.13649",
@@ -383,5 +381,22 @@
     "livecodebench": "https://livecodebench.github.io/",
     "original_opsd": "https://arxiv.org/abs/2601.18734",
     "sdft_2026_revision": "https://arxiv.org/abs/2601.19897v2"
+  },
+  "implementation_validation": {
+    "focused_cpu_tests": 39,
+    "linux_focused_cpu_tests": 38,
+    "launcher_snapshots_passed": 2,
+    "broad_launcher_suite": {
+      "passed": 348,
+      "failed": 88,
+      "errors": 134,
+      "status": "same local environment failures as prior study; not green"
+    },
+    "data_groups": 132,
+    "exact_overlap_with_prior_stage": 0,
+    "reference_final_answer_agreement": true,
+    "max_teacher_prefix_tokens": 1643,
+    "manual_reasoning_audit": "spot review and documented corrections; not full proof certification",
+    "new_loss_or_batch_change": false
   }
 }

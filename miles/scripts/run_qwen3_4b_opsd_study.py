@@ -16,6 +16,8 @@ Args:
   --initial-checkpoint: Optional starting full HF or native checkpoint; Adam resets.
   --stop-after-rollout: Stop this job early while retaining the planned eval cadence.
   --save-checkpoints: Opt in to recovery saves; otherwise only temporary eval snapshots.
+  --snapshot-interval: Export interval; seven for a seven-update warm-up, one for branches.
+  --retain-final-snapshot: Keep the final HF snapshot until paired branches have consumed it.
 
 Example:
   MILES_SCRIPT_EXTERNAL_RAY=1 python scripts/run_qwen3_4b_opsd_study.py --num-rollout 2
@@ -47,6 +49,8 @@ class ScriptArgs(U.ExecuteTrainConfig):
     capture_full_update: bool = False
     evaluation_queue: str | None = None
     save_checkpoints: bool = False
+    snapshot_interval: int = 1
+    retain_final_snapshot: bool = False
     seed: int = 17
     rollout_seed: int = 17
     megatron_path: str = "/root/Megatron-LM"
@@ -62,6 +66,10 @@ class ScriptArgs(U.ExecuteTrainConfig):
             raise ValueError("Unknown study context")
         if self.target not in {"frozen", "current", "transported"}:
             raise ValueError("Unknown study target")
+        if not 1 <= self.snapshot_interval <= self.num_rollout:
+            raise ValueError("Snapshot interval must fit the planned updates")
+        if self.retain_final_snapshot and self.evaluation_queue is None:
+            raise ValueError("Retaining a paired source requires its evaluation queue")
 
 
 def execute(args: ScriptArgs):
@@ -81,7 +89,7 @@ def execute(args: ScriptArgs):
     if args.save_checkpoints or args.evaluation_queue is not None:
         snapshot_dir = "hf" if args.save_checkpoints else "eval-snapshots"
         checkpoint += (
-            "--save-interval 1 "
+            f"--save-interval {args.snapshot_interval} "
             f"--save-hf {shlex.quote(f'{args.output_dir}/{args.run_id}/{snapshot_dir}/step_{{rollout_id}}')} "
         )
     if args.evaluation_queue is not None:
@@ -89,6 +97,8 @@ def execute(args: ScriptArgs):
             "--custom-megatron-post-save-hook-path miles.utils.opsd_study.enqueue_evaluation "
             f"--opsd-eval-queue {shlex.quote(args.evaluation_queue)} "
         )
+        if args.retain_final_snapshot:
+            checkpoint += "--opsd-retain-final-eval-snapshot "
     rollout = (
         f"--prompt-data {shlex.quote(f'{args.data_dir}/{args.dataset_name}')} --input-key problem --metadata-key metadata "
         "--custom-generate-function-path miles.rollout.generate_hub.opsd.generate "

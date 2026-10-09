@@ -61,7 +61,9 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
         "checkpoint_sha256": digest,
         "checkpoint_kind": "full_model",
         "planned_updates": args.num_rollout,
-        "temporary_snapshot": args.save is None,
+        "temporary_snapshot": args.save is None and not (
+            step == final_step and getattr(args, "opsd_retain_final_eval_snapshot", False)
+        ),
     }
     if getattr(args, "wandb_opsd_profile", False) and getattr(args, "use_wandb", False):
         if not args.wandb_run_id:

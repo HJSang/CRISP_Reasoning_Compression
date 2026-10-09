@@ -179,3 +179,46 @@ def test_full_update_capture_cannot_run_on_live_study(monkeypatch):
     monkeypatch.setenv("RAY_ADDRESS", "http://127.0.0.1:8265")
     with pytest.raises(ValueError, match="correctness replay"):
         execute(ScriptArgs(capture_full_update=True))
+
+
+def test_paired_warmup_retains_only_final_source(tmp_path, monkeypatch):
+    import miles.utils.opsd_study as study
+
+    queue = tmp_path / 'queue'
+    queue.mkdir()
+    (queue / 'heartbeat.json').write_text('{}')
+    checkpoint = tmp_path / 'warm' / 'eval-snapshots' / 'step_6'
+    checkpoint.mkdir(parents=True)
+    (checkpoint / '.complete').touch()
+    (checkpoint / 'config.json').write_text('{}')
+    (checkpoint / 'model.safetensors').write_bytes(b'warm-source')
+    args = Namespace(opsd_eval_queue=queue, num_rollout=7, save=None, opsd_retain_final_eval_snapshot=True)
+
+    def finish(_):
+        for job in (queue / 'pending').glob('*.json'):
+            record = json.loads(job.read_text())
+            assert record['temporary_snapshot'] is False
+            retire_evaluation_snapshot(record)
+            job.replace(queue / 'done' / job.name)
+
+    monkeypatch.setattr(study.time, 'sleep', finish)
+    enqueue_evaluation(args, 6, None, checkpoint)
+    assert checkpoint.exists()
+
+
+def test_replication_warmup_exports_only_final_and_resets_adam(monkeypatch):
+    from scripts.run_qwen3_4b_opsd_study import ScriptArgs, execute
+
+    monkeypatch.setenv('MILES_SCRIPT_EXTERNAL_RAY', '1')
+    monkeypatch.setenv('RAY_ADDRESS', 'http://127.0.0.1:8265')
+    monkeypatch.delenv('WANDB_PROJECT', raising=False)
+    calls = []
+    monkeypatch.setattr(ScriptArgs, 'create_backend', lambda _: SimpleNamespace(execute_train=lambda **kw: calls.append(kw)))
+    execute(ScriptArgs(num_rollout=7, snapshot_interval=7, retain_final_snapshot=True,
+                       evaluation_queue='/queue', seed=29, rollout_seed=29))
+    argv = shlex.split(calls[0]['train_args'])
+    assert argv[argv.index('--num-rollout') + 1] == '7'
+    assert argv[argv.index('--save-interval') + 1] == '7'
+    assert '--opsd-retain-final-eval-snapshot' in argv
+    assert '--no-load-optim' in argv and '--no-load-rng' in argv and '--save' not in argv
+    assert argv[argv.index('--seed') + 1] == argv[argv.index('--rollout-seed') + 1] == '29'

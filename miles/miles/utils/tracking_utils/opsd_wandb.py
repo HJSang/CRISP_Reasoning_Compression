@@ -43,6 +43,16 @@ EVAL_DATASETS = {"AIME 2024": "AIME_2024", "AIME 2025": "AIME_2025", "AMC23": "A
 
 def run_name(*, target: str, context: str, seed: int, group: str) -> str:
     """Describe the recipe without exposing arbitrary group names or local paths."""
+    replicate = re.fullmatch(r"replication-s([0-9]+)-(warmup|opd|pi)", group)
+    if replicate:
+        if int(replicate[1]) != seed or target != "frozen":
+            raise ValueError("Replication name disagrees with the seed or teacher")
+        phase = replicate[2]
+        expected_context = "none" if phase == "opd" else "worked"
+        if context != expected_context:
+            raise ValueError("Replication name disagrees with the PI context")
+        label = {"warmup": "PI warm-up 7", "opd": "PI7 → original-teacher OPD4", "pi": "PI7 → continued PI4"}[phase]
+        return f"Qwen3-4B | {label} | replicate {seed} | non-thinking"
     teacher = "current teacher" if target == "current" else "frozen teacher"
     information = {
         "none": "no PI", "answer": "answer PI", "worked": "worked-solution PI",

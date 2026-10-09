@@ -72,8 +72,16 @@ async def _server_configuration(session, url, model, context_length, needs_adapt
     }
 
 
-async def _sample(session, url, semaphore, row, prefix, draw, adapter_name, sink, sampling, weight_version=None):
-    seed = int.from_bytes(hashlib.sha256(f"opsd-eval-17:{row['id']}:{draw}".encode()).digest()[:4], "big") % (2**31)
+def evaluation_seed(namespace: str, question_id: str, draw: int) -> int:
+    """Pair methods within a replicate without coupling independent replicates."""
+    return int.from_bytes(hashlib.sha256(f"{namespace}:{question_id}:{draw}".encode()).digest()[:4], "big") % (2**31)
+
+
+async def _sample(
+    session, url, semaphore, row, prefix, draw, adapter_name, sink, sampling,
+    weight_version=None, seed_namespace="opsd-eval-17",
+):
+    seed = evaluation_seed(seed_namespace, row["id"], draw)
     payload = {
         "input_ids": list(prefix),
         "sampling_params": {
@@ -145,6 +153,7 @@ async def _generate_rows(session, args, prompts, prefixes, adapter_name, sink, s
                     sink,
                     sampling,
                     checkpoint_hash,
+                    args.seed_namespace,
                 )
             )
     return await asyncio.gather(*requests)
@@ -204,6 +213,7 @@ def _provenance(args, tokenizer):
     return {
         "model": plan["model"],
         "datasets": plan["benchmark_evaluation"]["datasets"],
+        "seed_namespace": args.seed_namespace,
         "sampling": {
             key: plan["evaluation"][key]
             for key in [
@@ -350,6 +360,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--concurrency", type=int, default=32)
     parser.add_argument("--responses", type=int, default=8)
+    parser.add_argument("--seed-namespace", default="opsd-eval-17", help="Paired evaluation seed bank; never a method name.")
     parser.add_argument("--limit-questions", type=int)
     args = parser.parse_args()
     if args.concurrency <= 0 or args.responses != 8 or args.output.exists():

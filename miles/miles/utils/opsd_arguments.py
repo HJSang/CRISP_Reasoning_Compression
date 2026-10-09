@@ -19,6 +19,10 @@ def add_opsd_arguments(parser):
         help="Private checkpoint evaluation queue for the study save hook.",
     )
     group.add_argument(
+        "--opsd-retain-final-eval-snapshot", action="store_true",
+        help="Retain the evaluated final HF source until paired branches consume it; no optimizer save.",
+    )
+    group.add_argument(
         "--opsd-aggregate-staging-gib",
         type=float,
         default=24.0,

@@ -5,6 +5,7 @@ training job; no evaluation point is silently skipped. All outputs are private.
 """
 
 import argparse
+import hashlib
 import json
 import subprocess
 import sys
@@ -29,6 +30,18 @@ def _heartbeat(queue, stop):
         stop.wait(5)
 
 
+def _pin_protocol(args):
+    """Refuse queue reuse with a different seed bank, recipe, or benchmark tape."""
+    protocol = {"seed_namespace": args.seed_namespace}
+    for name in ("plan", "prompts", "labels"):
+        protocol[name + "_sha256"] = hashlib.sha256(getattr(args, name).read_bytes()).hexdigest()
+    path = args.queue / "protocol.json"
+    if path.exists() and json.loads(path.read_text()) != protocol:
+        raise ValueError("Evaluation queue protocol changed; use a fresh queue")
+    _write(path, protocol)
+    return protocol
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--queue", type=Path, required=True)
@@ -39,9 +52,11 @@ def main():
     parser.add_argument("--urls", nargs="+", required=True)
     parser.add_argument("--concurrency", type=int, required=True)
     parser.add_argument("--deadline-unix", type=float, required=True)
+    parser.add_argument("--seed-namespace", default="opsd-eval-17")
     args = parser.parse_args()
     for name in ["pending", "running", "done", "failed", "results", "logs"]:
         (args.queue / name).mkdir(parents=True, exist_ok=True)
+    protocol = _pin_protocol(args)
     if list((args.queue / "running").glob("*.json")):
         raise RuntimeError("Unresolved running jobs need inspection before restarting the evaluator")
     stop = threading.Event()
@@ -83,6 +98,8 @@ def main():
                     str(result),
                     "--concurrency",
                     str(args.concurrency),
+                    "--seed-namespace",
+                    args.seed_namespace,
                     "--urls",
                     *args.urls,
                 ]
@@ -97,12 +114,14 @@ def main():
                 if code != 0:
                     raise RuntimeError(f"Evaluation process exited {code}")
                 record = json.loads(result.read_text())
+                if record["provenance"]["seed_namespace"] != args.seed_namespace:
+                    raise ValueError("Evaluation seed bank mismatch")
                 if record["checkpoint_sha256"] != job["checkpoint_sha256"] or record["completions"] != 800:
                     raise ValueError("Evaluation hash or completion-count mismatch")
                 if identity := job.get("wandb"):
                     log_evaluation(identity, record, completed_updates=job["completed_updates"])
                 retire_evaluation_snapshot(job)
-                _write(args.queue / "done" / active.name, job | {"result": str(result), "exit_code": code})
+                _write(args.queue / "done" / active.name, job | {"result": str(result), "exit_code": code, "protocol": protocol})
                 active.unlink()
             except Exception as error:
                 _write(args.queue / "failed" / active.name, job | {"exit_code": code, "error": str(error)})
