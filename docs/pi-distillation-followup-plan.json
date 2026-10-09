@@ -2478,7 +2478,7 @@
     "total_readiness_plus_study_gpu_hours": 115.3183150408003
   },
   "proposed_composition_study": {
-    "status": "design_only_not_authorized_not_launched",
+    "status": "deferred_in_favor_of_generality_ema_screen",
     "updates_per_arm": 40,
     "arms": [
       {
@@ -2547,5 +2547,163 @@
       "KL_matched_interpolation"
     ],
     "later_teacher_refresh": "fixed original versus lagged/EMA; same teacher checkpoint for both context views"
+  },
+  "proposed_generality_ema_study": {
+    "status": "design_ready_budget_and_plan_review_pending",
+    "user_requested_all_four_workers": true,
+    "user_requested_ema_comparison": true,
+    "launch_authorized": false,
+    "new_jobs_launched": 0,
+    "cells": [
+      {
+        "worker": "worker-a",
+        "model": "Qwen/Qwen3-8B",
+        "task": "math",
+        "model_revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      },
+      {
+        "worker": "worker-b",
+        "model": "zai-org/GLM-4-9B-0414",
+        "task": "math",
+        "model_revision": "645b8482494e31b6b752272bf7f7f273ef0f3caf"
+      },
+      {
+        "worker": "worker-c",
+        "model": "Qwen/Qwen3-8B",
+        "task": "code",
+        "model_revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      },
+      {
+        "worker": "worker-d",
+        "model": "zai-org/GLM-4-9B-0414",
+        "task": "code",
+        "model_revision": "645b8482494e31b6b752272bf7f7f273ef0f3caf"
+      }
+    ],
+    "per_cell": {
+      "initial_screen_training_seeds": [
+        101
+      ],
+      "warmups": [
+        {
+          "teacher": "frozen_original",
+          "updates": 7
+        },
+        {
+          "teacher": "ema",
+          "updates": 7
+        }
+      ],
+      "branches_per_warmup": [
+        {
+          "teacher": "retain_warmup_teacher_policy",
+          "context": "worked_PI",
+          "updates": 4
+        },
+        {
+          "teacher": "frozen_original",
+          "context": "none",
+          "updates": 4
+        }
+      ],
+      "fresh_Adam_per_branch": true,
+      "same_28_warmup_questions_and_16_adaptation_questions_across_teacher_policies": true,
+      "original_baseline_reused_within_cell": true,
+      "warmup_eval_steps": [
+        0,
+        7
+      ],
+      "branch_eval_steps": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "optimizer_updates": 30,
+      "unique_evaluations": 19
+    },
+    "ema": {
+      "decay": 0.9,
+      "half_life_updates": 6.578813478960585,
+      "initialization": "pinned_original_model",
+      "update_timing": "once after each successful optimizer update; next step uses updated teacher",
+      "formula": "phi[t+1] = 0.9*phi[t] + 0.1*stop_gradient(theta[t+1])",
+      "accumulation_dtype": "float32",
+      "continuation": "clone the exact warmed EMA state for the continued-PI branch; reset Adam only",
+      "no_pi_teacher": "always frozen original, never current-student-initialized EMA",
+      "base_weight_fraction_after_seven_updates": 0.4782969000000001
+    },
+    "totals": {
+      "optimizer_updates": 120,
+      "evaluations": 76,
+      "math_responses": 30400,
+      "code_responses": 49856,
+      "responses": 80256
+    },
+    "evaluation": {
+      "math": [
+        "AIME 2024",
+        "AIME 2025",
+        "AMC23"
+      ],
+      "code": {
+        "name": "HumanEval+",
+        "release": "v0.1.10",
+        "questions": 164,
+        "evaluator_commit": "26d6d00bb1fd0fa37f39c99d5290da67891d1c5e",
+        "dataset_url": "https://github.com/evalplus/humanevalplus_release/releases/download/v0.1.10/HumanEvalPlus.jsonl.gz",
+        "dataset_gzip_sha256": "272720b90ac375502c8ed23cd791c2a93dfb22a911641a494da74a426c09f101",
+        "full_suite": true,
+        "avg_at_8": "mean complete-test-pass fraction across eight candidates per problem; not pass@8",
+        "secondary": [
+          "pass@8",
+          "syntax_or_extraction_failure",
+          "test_failure",
+          "timeout",
+          "tokens",
+          "truncation"
+        ]
+      },
+      "responses_per_question": 8,
+      "max_response_tokens": 16384,
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "thinking": false,
+      "PI_at_evaluation": false,
+      "seed_banks": "unique per cell/replicate, paired across all conditions",
+      "scope": "task-specific generalization; not math-to-code zero-shot transfer"
+    },
+    "code_training": {
+      "dataset": "google-research-datasets/mbpp",
+      "revision": "4bb6404fdc6cacfda99d4ac4205087b89d32030c",
+      "config": "full",
+      "split": "train",
+      "selection": "44 reviewed train-only problems: 28 warmup and 16 adaptation, disjoint groups; pin exact IDs after review",
+      "PI": "verified reference implementation with explanation; training-problem tests only; no evaluation reference/test leakage",
+      "ready": false
+    },
+    "readiness": {
+      "all_four_workers_idle_verified": true,
+      "native_tokenizer_cpu_checks_passed": true,
+      "model_revisions_pinned": true,
+      "GLM_exact_checkpoint_Miles_GPU_validation": false,
+      "EMA_implementation_and_validation": false,
+      "sandboxed_code_evaluator": false,
+      "full_model_weights_cached": false,
+      "known_HF_Megatron_update_parity": "existing failed exploratory status retained; no renewed open-ended parity requirement"
+    },
+    "budget_proposal": {
+      "new_readiness_gpu_hour_cap": 16,
+      "new_study_gpu_hour_cap": 96,
+      "new_scientific_window_hours": 6,
+      "readiness_total_cap": 64,
+      "study_total_cap": 176,
+      "overall_total_cap": 240,
+      "existing_study_remaining_gpu_hours": 19.807691973580262,
+      "forecast_status": "allowance proposal, not measured new-model cost; admission requires all four balanced cells fit conservative measurements",
+      "stop_boundary": "one complete matched screen per cell, no automatic seeds/epochs/model substitutions"
+    },
+    "later_stage": "replicate promising cells with at least three independent warmups and fresh sealed tasks before schedule optimization; no claim of significance or frontier generality from one seed per cell"
   }
 }
