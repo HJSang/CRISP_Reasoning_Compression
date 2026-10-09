@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 5,
   "status": "PROPOSED_FOR_REVIEW",
   "executable": false,
   "new_gpu_work_authorized": false,
@@ -31,11 +31,13 @@
   "model": {
     "id": "Qwen/Qwen3-4B",
     "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
-    "student_thinking": true,
-    "teacher_thinking": true,
+    "student_thinking": false,
+    "teacher_thinking": false,
     "lora_rank": 64,
     "lora_alpha": 128,
-    "lora_dropout": 0
+    "lora_dropout": 0,
+    "teacher_mode_status": "PROVISIONAL_MATCHED_OFF_PENDING_USER_PREFERENCE",
+    "original_compatibility_teacher_thinking": true
   },
   "dataset": {
     "id": "siyanzhao/Openthoughts_math_30k_opsd",
@@ -84,7 +86,8 @@
     "response_cap": 8192,
     "total_sequence_cap": 12288,
     "teacher_prefix_cap": 4096,
-    "student_prefix_cap": 2048
+    "student_prefix_cap": 2048,
+    "thinking": false
   },
   "evaluation": {
     "pi": false,
@@ -93,10 +96,16 @@
     "top_p": 0.95,
     "top_k": 20,
     "min_p": 0,
-    "response_cap": 8192,
+    "response_cap": 30000,
     "samples_per_question": 1,
     "endpoint_update": 4,
-    "grader_pin_status": "required_before_launch"
+    "grader_pin_status": "required_before_launch",
+    "total_context_cap": 32768,
+    "templated_prefix_cap": 2768,
+    "response_budget_includes": "thinking_and_final_answer",
+    "external_samples_per_question": "dataset_specific_in_external_evaluation",
+    "max_position_embeddings_at_pinned_revision": 40960,
+    "rope_scaling": null
   },
   "arms": {
     "A": {
@@ -129,7 +138,7 @@
     "branch_eval_completions": 4096,
     "shared_baseline_eval_completions": 512,
     "primary_eval_completions_total": 4608,
-    "primary_eval_response_token_ceiling": 37748736,
+    "primary_eval_response_token_ceiling": 138240000,
     "readiness_work": "additional, separately counted within cap"
   },
   "capacity_proposal": {
@@ -147,13 +156,18 @@
     "reference_update_check": "pending",
     "runtime_isolation": "must_pass",
     "data_and_grader_audit": "must_pass",
-    "cost_projection": "must_fit_reviewed_cap"
+    "cost_projection": "must_fit_reviewed_cap",
+    "eval_profile_questions": 64,
+    "eval_profile_responses_per_question": 2,
+    "eval_cap_hit_fraction_max": 0.05,
+    "teacher_mode_choice": "resolve_before_launch_if_original_off_on_is_selected_revise_factorization_to_include_mode_effect"
   },
   "gpu_hour_caps": {
     "readiness": 32,
     "paired_study_including_warmup": 96,
     "total": 128,
-    "basis": "all_assigned_gpus_times_job_wall_hours_including_idle_slots"
+    "basis": "all_assigned_gpus_times_job_wall_hours_including_idle_slots",
+    "long_eval_feasibility": "requires_new_throughput_projection_with_30000_output_tokens"
   },
   "automatic_reservation_extension": false,
   "confirmation_authorized": false,
@@ -169,5 +183,93 @@
     "MOPD",
     "RL_PI_generator",
     "frontier_models"
-  ]
+  ],
+  "external_evaluation": {
+    "status": "PROPOSED_CONFIRMATION_STAGE_NOT_AUTHORIZED",
+    "when": "prespecified_longer_run_endpoints_and_unchanged_starting_checkpoints",
+    "response_cap": 30000,
+    "benchmark_entries_before_overlap_audit": 902,
+    "completions_per_checkpoint": 4848,
+    "response_token_ceiling_per_checkpoint": 145440000,
+    "preparation_status": "source_revisions_pinned_content_hashes_and_audits_pending",
+    "primary_dataset": "MATH-500",
+    "metric": "mean_per_question_sample_correctness_Avg_at_k_not_pass_at_k",
+    "training_overlap_policy": "exclude_matching_problem_groups_from_all_training_PI_donor_development_and_internal_utility_pools",
+    "datasets": [
+      {
+        "name": "MATH-500",
+        "id": "HuggingFaceH4/MATH-500",
+        "revision": "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be",
+        "config": "default",
+        "split": "test",
+        "questions": 500,
+        "samples_per_question": 4,
+        "role": "Broad math accuracy; primary external benchmark."
+      },
+      {
+        "name": "AIME 2024",
+        "id": "HuggingFaceH4/aime_2024",
+        "revision": "2fe88a2f1091d5048c0f36abc874fb997b3dd99a",
+        "config": "default",
+        "split": "train",
+        "questions": 30,
+        "samples_per_question": 16,
+        "role": "Competition reasoning; report separately by year."
+      },
+      {
+        "name": "AIME 2025",
+        "id": "yentinglin/aime_2025",
+        "revision": "6f71d77b0b89b9dabe07ab466c51df33f514df7f",
+        "config": "default",
+        "split": "train",
+        "questions": 30,
+        "samples_per_question": 16,
+        "role": "Competition reasoning; use default config, not duplicated part1/part2."
+      },
+      {
+        "name": "AMC23",
+        "id": "math-ai/amc23",
+        "revision": "80815d37005feb82cd7f8fbc6901d5d3eff43057",
+        "config": "default",
+        "split": "test",
+        "questions": 40,
+        "samples_per_question": 8,
+        "role": "Medium-difficulty contest problems; preserve this 40-question variant."
+      },
+      {
+        "name": "Minerva Math",
+        "id": "math-ai/minervamath",
+        "revision": "ee46ddc498933b1977577953250ca5c66be64f96",
+        "config": "default",
+        "split": "test",
+        "questions": 272,
+        "samples_per_question": 4,
+        "role": "STEM quantitative reasoning beyond competition math."
+      },
+      {
+        "name": "HMMT February 2025",
+        "id": "MathArena/hmmt_feb_2025",
+        "revision": "6fdc4277120810ff75aa22d2d5489b91f7a262a1",
+        "config": "default",
+        "split": "train",
+        "questions": 30,
+        "samples_per_question": 16,
+        "role": "Harder competition reasoning; secondary stress test."
+      }
+    ]
+  },
+  "original_sampling_comparison": {
+    "reference_revision": "ae7d2519e94920c4eb6206c0c26de46d9c50abae",
+    "matched_training": {
+      "temperature": 1.1,
+      "top_p": 0.95,
+      "top_k": 20
+    },
+    "original_response_cap": 1024,
+    "original_student_thinking": false,
+    "original_teacher_thinking": true,
+    "original_loss_contribution_clip": 0.05,
+    "original_eval_response_cap": 38912,
+    "entire_protocol_identical": false
+  }
 }
