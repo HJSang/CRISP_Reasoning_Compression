@@ -1,6 +1,6 @@
 {
   "schema_version": 15,
-  "status": "recovering_reached_evaluations_before_fresh_balanced_retry",
+  "status": "r5_block_zero_training_and_evaluation",
   "executable": false,
   "new_gpu_work_authorized": true,
   "review_required_before_launch": false,
@@ -990,7 +990,7 @@
     "source_commit": "268f58f",
     "recovery_checkpoints": false,
     "temporary_eval_snapshots": "local storage; delete after successful verified evaluation and upload",
-    "current_status": "all four stopped after three finite updates; two completed evaluations recovered; drain all twelve reached evaluations before fresh two-block retry",
+    "current_status": "all twelve interrupted evaluations drained; all four r5 branches restarted; see timestamped API snapshot",
     "matrix_and_budget_unchanged": true,
     "speedup_claim": "saving overhead reduced from about 38\u201341 seconds to 14.36\u201314.56 seconds on first unblocked calls; no overall multiplier established",
     "validation": {
@@ -1056,17 +1056,847 @@
     }
   },
   "latest_monitor": {
-    "time_utc": "2026-10-09T20:21:00+00:00",
-    "phase": "all four workers evaluating; fresh training not yet started",
-    "completed_recovery_evaluations": 5,
-    "required_recovery_evaluations": 12,
-    "completed_per_worker": {
-      "worker-a": 1,
-      "worker-b": 1,
-      "worker-c": 1,
-      "worker-d": 2
+    "time_utc": "2026-10-09T20:36:43.987981+00:00",
+    "completed_recovery_evaluations": 12,
+    "current_block_training_updates": 15,
+    "current_block_completed_evaluations": 5,
+    "fresh_training_started": true,
+    "new_failures": false
+  },
+  "wandb_api_snapshot": {
+    "as_of_utc": "2026-10-09T20:36:43.987981+00:00",
+    "source": "W&B API scan_history(use_cache=False); warmed baseline from verified local evaluation",
+    "crosschecked_completed_evaluations": 17,
+    "current_runs": {
+      "B01": {
+        "branch": "B01-r5-block-00",
+        "observed_training_updates": 3,
+        "losses": [
+          0.02219287119805813,
+          0.014792506583034992,
+          0.008447937667369843
+        ],
+        "gradient_norms": [
+          1.5786281824111938,
+          1.157332420349121,
+          0.8190632462501526
+        ],
+        "evaluations": {},
+        "timing": {
+          "perf/longest_sample_tokens_per_sec": {
+            "mean": 110.0140495033453,
+            "min": 87.49719284926591,
+            "max": 145.80844418840343,
+            "n": 3
+          },
+          "perf/effective_tokens_per_gpu_per_sec": {
+            "mean": 127.59136799777669,
+            "min": 113.26025518821643,
+            "max": 150.37205323260602,
+            "n": 3
+          },
+          "perf/tokens_per_gpu_per_sec": {
+            "mean": 127.59136799777669,
+            "min": 113.26025518821643,
+            "max": 150.37205323260602,
+            "n": 3
+          },
+          "perf/rollout_time": {
+            "mean": 18.620648701985676,
+            "min": 15.42906641960144,
+            "max": 22.02204418182373,
+            "n": 3
+          },
+          "perf/actor_train_time": {
+            "mean": 1.3936716715494792,
+            "min": 1.1371378898620605,
+            "max": 1.5629615783691406,
+            "n": 3
+          },
+          "perf/update_weights_time": {
+            "mean": 0.7634588877360026,
+            "min": 0.754765510559082,
+            "max": 0.7680590152740479,
+            "n": 3
+          },
+          "perf/step_time": {
+            "mean": 48.21901686986288,
+            "min": 41.72245764732361,
+            "max": 53.94847130775452,
+            "n": 3
+          },
+          "perf/actor_train_tok_per_s": {
+            "mean": 3848.6807022593807,
+            "min": 2526.6136126778956,
+            "max": 4804.460333483058,
+            "n": 3
+          },
+          "perf/train_wait_time": {
+            "mean": 45.063807010650635,
+            "min": 38.44429421424866,
+            "max": 50.46858787536621,
+            "n": 3
+          },
+          "perf/train_time": {
+            "mean": 3.1552098592122397,
+            "min": 2.707582712173462,
+            "max": 3.4798834323883057,
+            "n": 3
+          },
+          "perf/save_model_time": {
+            "mean": 14.18857228755951,
+            "min": 13.765985012054443,
+            "max": 14.611159563064575,
+            "n": 2
+          }
+        }
+      },
+      "B10": {
+        "branch": "B10-r5-block-00",
+        "observed_training_updates": 4,
+        "losses": [
+          0.1004326269030571,
+          0.12798865139484406,
+          0.2006058394908905,
+          0.10364636033773422
+        ],
+        "gradient_norms": [
+          3.089456796646118,
+          3.470210552215576,
+          4.202138423919678,
+          2.2151923179626465
+        ],
+        "evaluations": {
+          "1": {
+            "eval/mean_response_tokens": 2150.215,
+            "eval/AIME_2025/grader_timeouts": 0,
+            "eval/AIME_2024/avg_at_8": 0.17916666666666667,
+            "eval/AIME_2024/parse_failure_fraction": 0.04583333333333333,
+            "eval/AIME_2025/completions": 240,
+            "eval/AIME_2024/grader_timeouts": 0,
+            "eval/AIME_2025/avg_at_8": 0.1625,
+            "eval/AIME_2024/cap_hit_fraction": 0.058333333333333334,
+            "eval/AIME_2025/parse_failure_fraction": 0.025,
+            "eval/AMC23/grader_timeouts": 0,
+            "eval/AMC23/avg_at_8": 0.6375,
+            "eval/AMC23/cap_hit_fraction": 0.015625,
+            "eval/AMC23/completions": 320,
+            "eval/AIME_2024/completions": 240,
+            "eval/completions": 800,
+            "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+            "eval/AMC23/unexpected_thinking_delimiters": 0,
+            "eval/step": 1,
+            "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+            "eval/output_tokens_per_second": 8014.832299088681,
+            "eval/AIME_2025/cap_hit_fraction": 0.04583333333333333,
+            "eval/AMC23/parse_failure_fraction": 0.0125,
+            "eval/responses_per_second": 3.7274562306972467
+          }
+        },
+        "timing": {
+          "perf/rollout_time": {
+            "mean": 12.97385436296463,
+            "min": 9.05002236366272,
+            "max": 15.419297456741333,
+            "n": 4
+          },
+          "perf/longest_sample_tokens_per_sec": {
+            "mean": 124.26698488956056,
+            "min": 87.55262707574128,
+            "max": 174.6957009021289,
+            "n": 4
+          },
+          "perf/effective_tokens_per_gpu_per_sec": {
+            "mean": 170.1627571102001,
+            "min": 113.33201171470955,
+            "max": 283.3142170228074,
+            "n": 4
+          },
+          "perf/tokens_per_gpu_per_sec": {
+            "mean": 170.1627571102001,
+            "min": 113.33201171470955,
+            "max": 283.3142170228074,
+            "n": 4
+          },
+          "perf/actor_train_tok_per_s": {
+            "mean": 3656.9204057896377,
+            "min": 2494.7616691925605,
+            "max": 4578.9153627211035,
+            "n": 4
+          },
+          "perf/train_wait_time": {
+            "mean": 75.72616863250732,
+            "min": 35.54026770591736,
+            "max": 183.7589075565338,
+            "n": 4
+          },
+          "perf/train_time": {
+            "mean": 6.600810945034027,
+            "min": 5.897385120391846,
+            "max": 7.294528245925903,
+            "n": 4
+          },
+          "perf/step_time": {
+            "mean": 82.32697957754135,
+            "min": 42.245330810546875,
+            "max": 191.05343580245972,
+            "n": 4
+          },
+          "perf/actor_train_time": {
+            "mean": 1.2679551839828491,
+            "min": 1.131420612335205,
+            "max": 1.5829167366027832,
+            "n": 4
+          },
+          "perf/update_weights_time": {
+            "mean": 0.7719873189926147,
+            "min": 0.7324378490447998,
+            "max": 0.8040363788604736,
+            "n": 4
+          },
+          "perf/save_model_time": {
+            "mean": 62.94426488876343,
+            "min": 13.692365646362305,
+            "max": 160.742981672287,
+            "n": 3
+          }
+        }
+      },
+      "B11": {
+        "branch": "B11-r5-block-00",
+        "observed_training_updates": 4,
+        "losses": [
+          0.05484228581190109,
+          0.049263693392276764,
+          0.05829953774809837,
+          0.03868476673960686
+        ],
+        "gradient_norms": [
+          1.7954572439193726,
+          1.536960482597351,
+          1.9704960584640503,
+          1.0121303796768188
+        ],
+        "evaluations": {
+          "1": {
+            "eval/mean_response_tokens": 2486.44875,
+            "eval/AIME_2024/grader_timeouts": 0,
+            "eval/AIME_2025/cap_hit_fraction": 0.075,
+            "eval/AMC23/cap_hit_fraction": 0.0125,
+            "eval/output_tokens_per_second": 9154.36725969541,
+            "eval/AIME_2025/grader_timeouts": 0,
+            "eval/AIME_2024/cap_hit_fraction": 0.09583333333333334,
+            "eval/step": 1,
+            "eval/AIME_2024/parse_failure_fraction": 0.07916666666666666,
+            "eval/completions": 800,
+            "eval/AIME_2025/completions": 240,
+            "eval/AMC23/unexpected_thinking_delimiters": 0,
+            "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+            "eval/AIME_2024/completions": 240,
+            "eval/AIME_2024/avg_at_8": 0.1625,
+            "eval/AIME_2025/avg_at_8": 0.1875,
+            "eval/AMC23/grader_timeouts": 0,
+            "eval/AMC23/completions": 320,
+            "eval/AMC23/avg_at_8": 0.61875,
+            "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+            "eval/AMC23/parse_failure_fraction": 0.009375,
+            "eval/AIME_2025/parse_failure_fraction": 0.05,
+            "eval/responses_per_second": 3.681703578123382
+          },
+          "2": {
+            "eval/AIME_2024/avg_at_8": 0.21666666666666667,
+            "eval/completions": 800,
+            "eval/AIME_2025/avg_at_8": 0.1625,
+            "eval/AMC23/unexpected_thinking_delimiters": 0,
+            "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+            "eval/AMC23/cap_hit_fraction": 0.009375,
+            "eval/AIME_2024/parse_failure_fraction": 0.05,
+            "eval/AIME_2025/cap_hit_fraction": 0.05,
+            "eval/AIME_2025/parse_failure_fraction": 0.03333333333333333,
+            "eval/mean_response_tokens": 2303.0525,
+            "eval/AMC23/grader_timeouts": 0,
+            "eval/AIME_2025/grader_timeouts": 0,
+            "eval/AIME_2024/completions": 240,
+            "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+            "eval/AIME_2024/cap_hit_fraction": 0.058333333333333334,
+            "eval/output_tokens_per_second": 7807.248907867325,
+            "eval/AIME_2025/completions": 240,
+            "eval/AIME_2024/grader_timeouts": 0,
+            "eval/step": 2,
+            "eval/AMC23/parse_failure_fraction": 0.009375,
+            "eval/responses_per_second": 3.389956984422772,
+            "eval/AMC23/completions": 320,
+            "eval/AMC23/avg_at_8": 0.65
+          }
+        },
+        "timing": {
+          "perf/tokens_per_gpu_per_sec": {
+            "mean": 162.3576243739605,
+            "min": 94.51099344372884,
+            "max": 216.21140459319113,
+            "n": 4
+          },
+          "perf/rollout_time": {
+            "mean": 15.629511058330536,
+            "min": 13.72130799293518,
+            "max": 18.489912509918213,
+            "n": 4
+          },
+          "perf/longest_sample_tokens_per_sec": {
+            "mean": 133.5103550716824,
+            "min": 73.0127846346403,
+            "max": 175.0295624132331,
+            "n": 4
+          },
+          "perf/effective_tokens_per_gpu_per_sec": {
+            "mean": 162.3576243739605,
+            "min": 94.51099344372884,
+            "max": 216.21140459319113,
+            "n": 4
+          },
+          "perf/actor_train_tok_per_s": {
+            "mean": 3878.391981442096,
+            "min": 2412.4059274497235,
+            "max": 4835.816394459431,
+            "n": 4
+          },
+          "perf/train_time": {
+            "mean": 3.205188572406769,
+            "min": 2.5825517177581787,
+            "max": 3.439901828765869,
+            "n": 4
+          },
+          "perf/update_weights_time": {
+            "mean": 1.276053786277771,
+            "min": 0.7517898082733154,
+            "max": 2.781923294067383,
+            "n": 4
+          },
+          "perf/train_wait_time": {
+            "mean": 80.62876009941101,
+            "min": 39.298500061035156,
+            "max": 193.87411522865295,
+            "n": 4
+          },
+          "perf/step_time": {
+            "mean": 83.83394867181778,
+            "min": 42.738401889801025,
+            "max": 197.29032564163208,
+            "n": 4
+          },
+          "perf/actor_train_time": {
+            "mean": 1.40874183177948,
+            "min": 1.1621649265289307,
+            "max": 1.6369550228118896,
+            "n": 4
+          },
+          "perf/save_model_time": {
+            "mean": 64.83942047754924,
+            "min": 14.28939414024353,
+            "max": 165.33150339126587,
+            "n": 3
+          }
+        }
+      },
+      "BS": {
+        "branch": "BS-r5-block-00",
+        "observed_training_updates": 4,
+        "losses": [
+          0.04886435717344284,
+          0.04941541329026222,
+          0.06271830201148987,
+          0.05290791764855385
+        ],
+        "gradient_norms": [
+          1.853973150253296,
+          1.7227346897125244,
+          2.267345905303955,
+          1.420246958732605
+        ],
+        "evaluations": {
+          "1": {
+            "eval/AIME_2025/parse_failure_fraction": 0.025,
+            "eval/mean_response_tokens": 2263.22625,
+            "eval/AIME_2025/grader_timeouts": 0,
+            "eval/AMC23/avg_at_8": 0.6375,
+            "eval/AIME_2024/avg_at_8": 0.18333333333333332,
+            "eval/step": 1,
+            "eval/AIME_2025/cap_hit_fraction": 0.04583333333333333,
+            "eval/responses_per_second": 3.808109378926306,
+            "eval/AIME_2025/completions": 240,
+            "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+            "eval/AIME_2024/cap_hit_fraction": 0.09583333333333334,
+            "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+            "eval/AMC23/cap_hit_fraction": 0.00625,
+            "eval/AMC23/parse_failure_fraction": 0.003125,
+            "eval/AIME_2024/parse_failure_fraction": 0.0875,
+            "eval/AIME_2024/grader_timeouts": 0,
+            "eval/AMC23/unexpected_thinking_delimiters": 0,
+            "eval/output_tokens_per_second": 8618.613109257212,
+            "eval/AMC23/grader_timeouts": 0,
+            "eval/AMC23/completions": 320,
+            "eval/AIME_2024/completions": 240,
+            "eval/completions": 800,
+            "eval/AIME_2025/avg_at_8": 0.14166666666666666
+          },
+          "2": {
+            "eval/AMC23/unexpected_thinking_delimiters": 0,
+            "eval/output_tokens_per_second": 7258.413963943042,
+            "eval/AMC23/grader_timeouts": 0,
+            "eval/AIME_2024/completions": 240,
+            "eval/AIME_2024/parse_failure_fraction": 0.0375,
+            "eval/completions": 800,
+            "eval/AIME_2025/completions": 240,
+            "eval/AIME_2025/avg_at_8": 0.125,
+            "eval/AIME_2025/cap_hit_fraction": 0.016666666666666666,
+            "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+            "eval/AIME_2024/grader_timeouts": 0,
+            "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+            "eval/AIME_2024/cap_hit_fraction": 0.041666666666666664,
+            "eval/AMC23/cap_hit_fraction": 0.00625,
+            "eval/AMC23/parse_failure_fraction": 0.003125,
+            "eval/mean_response_tokens": 1754.18375,
+            "eval/AIME_2025/grader_timeouts": 0,
+            "eval/AIME_2024/avg_at_8": 0.16666666666666666,
+            "eval/step": 2,
+            "eval/AIME_2025/parse_failure_fraction": 0.004166666666666667,
+            "eval/responses_per_second": 4.13777288949521,
+            "eval/AMC23/completions": 320,
+            "eval/AMC23/avg_at_8": 0.6
+          }
+        },
+        "timing": {
+          "perf/longest_sample_tokens_per_sec": {
+            "mean": 128.30848370362588,
+            "min": 88.12621883808977,
+            "max": 178.59233078239131,
+            "n": 4
+          },
+          "perf/effective_tokens_per_gpu_per_sec": {
+            "mean": 164.11201341632588,
+            "min": 114.07449438486066,
+            "max": 273.4834940051155,
+            "n": 4
+          },
+          "perf/tokens_per_gpu_per_sec": {
+            "mean": 164.11201341632588,
+            "min": 114.07449438486066,
+            "max": 273.4834940051155,
+            "n": 4
+          },
+          "perf/rollout_time": {
+            "mean": 14.374655723571777,
+            "min": 8.936553955078125,
+            "max": 21.542815446853638,
+            "n": 4
+          },
+          "perf/actor_train_tok_per_s": {
+            "mean": 3567.722366089605,
+            "min": 2428.8328336107993,
+            "max": 4467.624731941759,
+            "n": 4
+          },
+          "perf/train_wait_time": {
+            "mean": 76.20896804332733,
+            "min": 33.967817544937134,
+            "max": 181.21456503868103,
+            "n": 4
+          },
+          "perf/train_time": {
+            "mean": 3.0114479064941406,
+            "min": 2.4495880603790283,
+            "max": 3.386943817138672,
+            "n": 4
+          },
+          "perf/step_time": {
+            "mean": 79.22041594982147,
+            "min": 37.30857753753662,
+            "max": 184.0830647945404,
+            "n": 4
+          },
+          "perf/actor_train_time": {
+            "mean": 1.3538166284561157,
+            "min": 1.1117985248565674,
+            "max": 1.6258838176727295,
+            "n": 4
+          },
+          "perf/update_weights_time": {
+            "mean": 0.7763564586639404,
+            "min": 0.7604687213897705,
+            "max": 0.7996535301208496,
+            "n": 4
+          },
+          "perf/save_model_time": {
+            "mean": 62.06096649169922,
+            "min": 13.750751256942749,
+            "max": 157.79119539260864,
+            "n": 3
+          }
+        }
+      }
     },
-    "new_failures": false,
-    "fresh_training_started": false
+    "interrupted_diagnostic_runs": {
+      "B01": {
+        "1": {
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2024/cap_hit_fraction": 0.125,
+          "eval/AMC23/cap_hit_fraction": 0.00625,
+          "eval/AIME_2024/completions": 240,
+          "eval/AIME_2024/parse_failure_fraction": 0.10833333333333334,
+          "eval/AIME_2025/avg_at_8": 0.17916666666666667,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/completions": 240,
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/step": 1,
+          "eval/AMC23/grader_timeouts": 0,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/parse_failure_fraction": 0.029166666666666667,
+          "eval/mean_response_tokens": 2599.68,
+          "eval/AIME_2025/cap_hit_fraction": 0.07083333333333333,
+          "eval/completions": 800,
+          "eval/AIME_2024/avg_at_8": 0.20416666666666666,
+          "eval/responses_per_second": 3.577174176498138,
+          "eval/AMC23/parse_failure_fraction": 0.003125,
+          "eval/output_tokens_per_second": 9299.50816315868,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AMC23/avg_at_8": 0.628125
+        },
+        "2": {
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2024/cap_hit_fraction": 0.15416666666666667,
+          "eval/AMC23/cap_hit_fraction": 0.015625,
+          "eval/AIME_2024/completions": 240,
+          "eval/AIME_2024/parse_failure_fraction": 0.1125,
+          "eval/AIME_2025/avg_at_8": 0.21666666666666667,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/completions": 240,
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/step": 2,
+          "eval/AMC23/grader_timeouts": 0,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/parse_failure_fraction": 0.07916666666666666,
+          "eval/mean_response_tokens": 3346.66625,
+          "eval/AIME_2025/cap_hit_fraction": 0.10833333333333334,
+          "eval/completions": 800,
+          "eval/AIME_2024/avg_at_8": 0.23333333333333334,
+          "eval/responses_per_second": 3.0654232988037324,
+          "eval/AMC23/parse_failure_fraction": 0.00625,
+          "eval/output_tokens_per_second": 10258.948696070116,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AMC23/avg_at_8": 0.665625
+        },
+        "3": {
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2024/cap_hit_fraction": 0.24166666666666667,
+          "eval/AMC23/cap_hit_fraction": 0.021875,
+          "eval/AIME_2024/completions": 240,
+          "eval/AIME_2024/parse_failure_fraction": 0.1875,
+          "eval/AIME_2025/avg_at_8": 0.17083333333333334,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/completions": 240,
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/step": 3,
+          "eval/AMC23/grader_timeouts": 0,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/parse_failure_fraction": 0.11666666666666667,
+          "eval/mean_response_tokens": 4061.0025,
+          "eval/AIME_2025/cap_hit_fraction": 0.15,
+          "eval/completions": 800,
+          "eval/AIME_2024/avg_at_8": 0.22916666666666666,
+          "eval/responses_per_second": 2.442069699926519,
+          "eval/AMC23/parse_failure_fraction": 0.0125,
+          "eval/output_tokens_per_second": 9917.251156575843,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AMC23/avg_at_8": 0.678125
+        }
+      },
+      "B10": {
+        "1": {
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/avg_at_8": 0.1625,
+          "eval/AMC23/cap_hit_fraction": 0.015625,
+          "eval/responses_per_second": 3.7025354136670545,
+          "eval/AIME_2025/cap_hit_fraction": 0.04583333333333333,
+          "eval/AIME_2025/parse_failure_fraction": 0.025,
+          "eval/mean_response_tokens": 2150.215,
+          "eval/output_tokens_per_second": 7961.247184498106,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AIME_2024/parse_failure_fraction": 0.04583333333333333,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2024/avg_at_8": 0.17916666666666667,
+          "eval/completions": 800,
+          "eval/AIME_2024/cap_hit_fraction": 0.058333333333333334,
+          "eval/AIME_2025/completions": 240,
+          "eval/AMC23/grader_timeouts": 0,
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/step": 1,
+          "eval/AMC23/parse_failure_fraction": 0.0125,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2024/completions": 240,
+          "eval/AMC23/avg_at_8": 0.6375
+        },
+        "2": {
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/avg_at_8": 0.12916666666666668,
+          "eval/AMC23/cap_hit_fraction": 0.00625,
+          "eval/responses_per_second": 4.101813975613527,
+          "eval/AIME_2025/cap_hit_fraction": 0.03333333333333333,
+          "eval/AIME_2025/parse_failure_fraction": 0.008333333333333333,
+          "eval/mean_response_tokens": 1782.9625,
+          "eval/output_tokens_per_second": 7313.380500494833,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AIME_2024/parse_failure_fraction": 0.03333333333333333,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2024/avg_at_8": 0.17083333333333334,
+          "eval/completions": 800,
+          "eval/AIME_2024/cap_hit_fraction": 0.041666666666666664,
+          "eval/AIME_2025/completions": 240,
+          "eval/AMC23/grader_timeouts": 0,
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/step": 2,
+          "eval/AMC23/parse_failure_fraction": 0.00625,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2024/completions": 240,
+          "eval/AMC23/avg_at_8": 0.60625
+        },
+        "3": {
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/avg_at_8": 0.10833333333333334,
+          "eval/AMC23/cap_hit_fraction": 0.0125,
+          "eval/responses_per_second": 3.8981351714624113,
+          "eval/AIME_2025/cap_hit_fraction": 0.020833333333333332,
+          "eval/AIME_2025/parse_failure_fraction": 0.016666666666666666,
+          "eval/mean_response_tokens": 1663.455,
+          "eval/output_tokens_per_second": 6484.372441645006,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AIME_2024/parse_failure_fraction": 0.03333333333333333,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2024/avg_at_8": 0.19166666666666668,
+          "eval/completions": 800,
+          "eval/AIME_2024/cap_hit_fraction": 0.0375,
+          "eval/AIME_2025/completions": 240,
+          "eval/AMC23/grader_timeouts": 0,
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/step": 3,
+          "eval/AMC23/parse_failure_fraction": 0.009375,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2024/completions": 240,
+          "eval/AMC23/avg_at_8": 0.58125
+        }
+      },
+      "B11": {
+        "1": {
+          "eval/AIME_2025/parse_failure_fraction": 0.041666666666666664,
+          "eval/AIME_2024/cap_hit_fraction": 0.0625,
+          "eval/AMC23/parse_failure_fraction": 0,
+          "eval/AIME_2024/completions": 240,
+          "eval/AIME_2024/parse_failure_fraction": 0.05,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/avg_at_8": 0.15,
+          "eval/completions": 800,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AMC23/avg_at_8": 0.634375,
+          "eval/output_tokens_per_second": 9114.137850353385,
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2025/cap_hit_fraction": 0.06666666666666667,
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2024/avg_at_8": 0.19166666666666668,
+          "eval/mean_response_tokens": 2287.57,
+          "eval/responses_per_second": 3.984200636637736,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/completions": 240,
+          "eval/AMC23/cap_hit_fraction": 0.015625,
+          "eval/step": 1,
+          "eval/AMC23/grader_timeouts": 0
+        },
+        "2": {
+          "eval/AIME_2025/parse_failure_fraction": 0.05,
+          "eval/AIME_2024/cap_hit_fraction": 0.12083333333333333,
+          "eval/AMC23/parse_failure_fraction": 0.003125,
+          "eval/AIME_2024/completions": 240,
+          "eval/AIME_2024/parse_failure_fraction": 0.10833333333333334,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/avg_at_8": 0.17916666666666667,
+          "eval/completions": 800,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AMC23/avg_at_8": 0.65,
+          "eval/output_tokens_per_second": 8813.190980660576,
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2025/cap_hit_fraction": 0.07083333333333333,
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2024/avg_at_8": 0.18333333333333332,
+          "eval/mean_response_tokens": 2599.60875,
+          "eval/responses_per_second": 3.3901989984687413,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/completions": 240,
+          "eval/AMC23/cap_hit_fraction": 0.00625,
+          "eval/step": 2,
+          "eval/AMC23/grader_timeouts": 0
+        },
+        "3": {
+          "eval/AIME_2025/parse_failure_fraction": 0.041666666666666664,
+          "eval/AIME_2024/cap_hit_fraction": 0.1125,
+          "eval/AMC23/parse_failure_fraction": 0.00625,
+          "eval/AIME_2024/completions": 240,
+          "eval/AIME_2024/parse_failure_fraction": 0.0875,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/avg_at_8": 0.17916666666666667,
+          "eval/completions": 800,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AMC23/avg_at_8": 0.63125,
+          "eval/output_tokens_per_second": 9110.212244784085,
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2025/cap_hit_fraction": 0.05,
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2024/avg_at_8": 0.22083333333333333,
+          "eval/mean_response_tokens": 2605.01125,
+          "eval/responses_per_second": 3.497187294213829,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/completions": 240,
+          "eval/AMC23/cap_hit_fraction": 0.015625,
+          "eval/step": 3,
+          "eval/AMC23/grader_timeouts": 0
+        }
+      },
+      "BS": {
+        "1": {
+          "eval/AIME_2025/avg_at_8": 0.15,
+          "eval/AMC23/avg_at_8": 0.615625,
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/AMC23/grader_timeouts": 0,
+          "eval/AMC23/cap_hit_fraction": 0.00625,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2025/cap_hit_fraction": 0.0625,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2024/avg_at_8": 0.17916666666666667,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/output_tokens_per_second": 8519.61413568014,
+          "eval/completions": 800,
+          "eval/AIME_2025/completions": 240,
+          "eval/AIME_2025/parse_failure_fraction": 0.05,
+          "eval/responses_per_second": 3.835573464769265,
+          "eval/step": 1,
+          "eval/AMC23/parse_failure_fraction": 0.00625,
+          "eval/mean_response_tokens": 2221.21,
+          "eval/AIME_2024/completions": 240,
+          "eval/AIME_2024/cap_hit_fraction": 0.075,
+          "eval/AIME_2024/parse_failure_fraction": 0.058333333333333334
+        },
+        "2": {
+          "eval/AIME_2025/avg_at_8": 0.14583333333333334,
+          "eval/AMC23/avg_at_8": 0.5625,
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/AMC23/grader_timeouts": 0,
+          "eval/AMC23/cap_hit_fraction": 0,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2025/cap_hit_fraction": 0.020833333333333332,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2024/avg_at_8": 0.175,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/output_tokens_per_second": 7782.559284159545,
+          "eval/completions": 800,
+          "eval/AIME_2025/completions": 240,
+          "eval/AIME_2025/parse_failure_fraction": 0.0125,
+          "eval/responses_per_second": 4.508596702599728,
+          "eval/step": 2,
+          "eval/AMC23/parse_failure_fraction": 0,
+          "eval/mean_response_tokens": 1726.16,
+          "eval/AIME_2024/completions": 240,
+          "eval/AIME_2024/cap_hit_fraction": 0.04583333333333333,
+          "eval/AIME_2024/parse_failure_fraction": 0.041666666666666664
+        },
+        "3": {
+          "eval/AIME_2025/avg_at_8": 0.14583333333333334,
+          "eval/AMC23/avg_at_8": 0.559375,
+          "eval/AMC23/unexpected_thinking_delimiters": 0,
+          "eval/AMC23/grader_timeouts": 0,
+          "eval/AMC23/cap_hit_fraction": 0.00625,
+          "eval/AIME_2025/unexpected_thinking_delimiters": 0,
+          "eval/AIME_2025/grader_timeouts": 0,
+          "eval/AIME_2025/cap_hit_fraction": 0.041666666666666664,
+          "eval/AIME_2024/grader_timeouts": 0,
+          "eval/AMC23/completions": 320,
+          "eval/AIME_2024/avg_at_8": 0.15833333333333333,
+          "eval/AIME_2024/unexpected_thinking_delimiters": 0,
+          "eval/output_tokens_per_second": 7451.355687329273,
+          "eval/completions": 800,
+          "eval/AIME_2025/completions": 240,
+          "eval/AIME_2025/parse_failure_fraction": 0.03333333333333333,
+          "eval/responses_per_second": 4.101912994617851,
+          "eval/step": 3,
+          "eval/AMC23/parse_failure_fraction": 0.00625,
+          "eval/mean_response_tokens": 1816.55625,
+          "eval/AIME_2024/completions": 240,
+          "eval/AIME_2024/cap_hit_fraction": 0.05416666666666667,
+          "eval/AIME_2024/parse_failure_fraction": 0.0375
+        }
+      }
+    },
+    "warmed_baseline": {
+      "AIME 2024": {
+        "avg_at_8": 0.18333333333333332,
+        "completions": 240,
+        "cap_hit_fraction": 0.0625,
+        "parse_failure_fraction": 0.05,
+        "grader_timeouts": 0,
+        "unexpected_thinking_delimiters": 0
+      },
+      "AIME 2025": {
+        "avg_at_8": 0.1375,
+        "completions": 240,
+        "cap_hit_fraction": 0.0625,
+        "parse_failure_fraction": 0.05416666666666667,
+        "grader_timeouts": 0,
+        "unexpected_thinking_delimiters": 0
+      },
+      "AMC23": {
+        "avg_at_8": 0.621875,
+        "completions": 320,
+        "cap_hit_fraction": 0.00625,
+        "parse_failure_fraction": 0.00625,
+        "grader_timeouts": 0,
+        "unexpected_thinking_delimiters": 0
+      }
+    },
+    "base_baseline": {
+      "AIME 2024": {
+        "avg_at_8": 0.2125,
+        "completions": 240,
+        "cap_hit_fraction": 0.12916666666666668,
+        "parse_failure_fraction": 0.11666666666666667,
+        "grader_timeouts": 0,
+        "unexpected_thinking_delimiters": 0
+      },
+      "AIME 2025": {
+        "avg_at_8": 0.20416666666666666,
+        "completions": 240,
+        "cap_hit_fraction": 0.09166666666666666,
+        "parse_failure_fraction": 0.07916666666666666,
+        "grader_timeouts": 0,
+        "unexpected_thinking_delimiters": 0
+      },
+      "AMC23": {
+        "avg_at_8": 0.671875,
+        "completions": 320,
+        "cap_hit_fraction": 0.0375,
+        "parse_failure_fraction": 0.028125,
+        "grader_timeouts": 0,
+        "unexpected_thinking_delimiters": 0
+      }
+    },
+    "interpretation": "Early diagnostic checkpoint-reversion signal; no established PI-only gain. The predefined two-block step-four comparison and shared PI feature pass remain incomplete."
   }
 }
