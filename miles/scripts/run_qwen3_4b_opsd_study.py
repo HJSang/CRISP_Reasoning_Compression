@@ -12,6 +12,7 @@ Args:
   --num-rollout: Completed optimizer updates, bounded at 64 per study job.
   --micro-batch-size: One, two, or four; sample-mean loss preserves weighting.
   --initial-checkpoint: Optional starting full HF or native checkpoint; Adam resets.
+  --stop-after-rollout: Stop this job early while retaining the planned eval cadence.
 
 Example:
   MILES_SCRIPT_EXTERNAL_RAY=1 python scripts/run_qwen3_4b_opsd_study.py --num-rollout 2
@@ -34,6 +35,7 @@ class ScriptArgs(U.ExecuteTrainConfig):
     dataset_name: str = "warmup.jsonl"
     num_gpus_per_node: int = 2
     num_rollout: int = 2
+    stop_after_rollout: int | None = None
     micro_batch_size: int = 1
     context: str = "worked"
     target: str = "frozen"
@@ -50,6 +52,8 @@ class ScriptArgs(U.ExecuteTrainConfig):
             raise ValueError("Study training requires one TP2/DP1 actor per node")
         if not 1 <= self.num_rollout <= 64 or self.micro_batch_size not in (1, 2, 4):
             raise ValueError("Use 1–64 updates and microbatch 1, 2 or 4 with effective batch four")
+        if self.stop_after_rollout is not None and not 1 <= self.stop_after_rollout <= self.num_rollout:
+            raise ValueError("Early stopping must be within the planned optimizer updates")
         if self.context not in {"none", "answer", "worked", "unrelated", "empty"}:
             raise ValueError("Unknown study context")
         if self.target not in {"frozen", "current", "transported"}:
@@ -114,6 +118,8 @@ def execute(args: ScriptArgs):
         f"--seed {args.seed} --attention-dropout 0 --hidden-dropout 0 "
         "--accumulate-allreduce-grads-in-fp32 --attention-softmax-in-fp32 "
     )
+    if args.stop_after_rollout is not None:
+        misc += f"--debug-exit-after-rollout {args.stop_after_rollout} "
     args.create_backend().execute_train(
         train_args=(
             checkpoint

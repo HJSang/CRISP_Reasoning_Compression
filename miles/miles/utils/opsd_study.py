@@ -37,7 +37,11 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
     """
     queue = args.opsd_eval_queue
     step = rollout_id + 1
-    if step not in evaluation_steps(args.num_rollout):
+    stop_after = getattr(args, "debug_exit_after_rollout", None)
+    final_step = args.num_rollout
+    if stop_after is not None:
+        final_step = min(final_step, args.start_rollout_id + stop_after)
+    if step not in evaluation_steps(args.num_rollout) and step != final_step:
         return
     if queue is None:
         raise ValueError("Study save hook requires --opsd-eval-queue")
@@ -71,7 +75,7 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
             _write_json(queue / "pending" / job_name, job)
             break
         time.sleep(1)
-    if step == args.num_rollout:
+    if step == final_step:
         while not (queue / "done" / job_name).exists():
             _check_worker(queue)
             if time.monotonic() > deadline:

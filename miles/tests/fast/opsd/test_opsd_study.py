@@ -31,6 +31,45 @@ def test_percentage_cadence_deduplicates_and_includes_final_once():
         evaluation_steps(0)
 
 
+@pytest.mark.parametrize("stop", [0, 8])
+def test_study_early_stop_must_fit_planned_updates(stop):
+    from scripts.run_qwen3_4b_opsd_study import ScriptArgs
+
+    with pytest.raises(ValueError, match="Early stopping"):
+        ScriptArgs(num_rollout=7, stop_after_rollout=stop)
+
+
+@pytest.mark.parametrize("stop", [5, 7])
+def test_early_final_checkpoint_is_evaluated_and_drained(tmp_path, monkeypatch, stop):
+    import miles.utils.opsd_study as study
+
+    queue = tmp_path / "queue"
+    queue.mkdir()
+    (queue / "heartbeat.json").write_text("{}")
+    checkpoint = tmp_path / "checkpoint"
+    checkpoint.mkdir()
+    (checkpoint / ".complete").touch()
+    (checkpoint / "config.json").write_text("{}")
+    (checkpoint / "model.safetensors").write_bytes(b"immutable-model")
+    args = Namespace(
+        opsd_eval_queue=queue, num_rollout=64, save=str(tmp_path / "run/checkpoints"),
+        debug_exit_after_rollout=stop, start_rollout_id=0,
+    )
+    completed = []
+
+    def finish_pending(_):
+        pending = list((queue / "pending").glob("*.json"))
+        assert len(pending) == 1
+        job = pending[0]
+        completed.append(json.loads(job.read_text())["completed_updates"])
+        job.replace(queue / "done" / job.name)
+
+    monkeypatch.setattr(study.time, "sleep", finish_pending)
+    enqueue_evaluation(args, stop - 1, checkpoint, checkpoint)
+    assert completed == [stop]
+    assert not list((queue / "pending").glob("*.json"))
+
+
 def test_queue_uses_completed_updates_and_refuses_changed_checkpoint(tmp_path):
     queue = tmp_path / "queue"
     queue.mkdir()
