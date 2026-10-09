@@ -111,14 +111,16 @@ def execute(args: ScriptArgs):
         "--accumulate-allreduce-grads-in-fp32 --attention-softmax-in-fp32 "
     )
     args.create_backend().execute_train(
-        train_args=checkpoint
-        + rollout
-        + algorithm
-        + optimizer
-        + parallel
-        + inference
-        + misc
-        + U.get_default_wandb_args(__file__, run_id=args.run_id),
+        train_args=(
+            checkpoint
+            + rollout
+            + algorithm
+            + optimizer
+            + parallel
+            + inference
+            + misc
+            + U.get_default_wandb_args(__file__, run_id=args.run_id)
+        ).strip(),
         megatron_model_type="qwen3-4B",
         megatron_path=args.megatron_path,
         num_gpus_per_node=2,
