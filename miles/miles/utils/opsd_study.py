@@ -1,0 +1,78 @@
+"""Study checkpoint evaluation cadence and bounded queue, outside the trainer."""
+
+import hashlib
+import json
+import time
+from pathlib import Path
+
+
+def evaluation_steps(updates: int) -> tuple[int, ...]:
+    if updates <= 0:
+        raise ValueError("Planned updates must be positive")
+    return tuple(sorted({(k * updates + 9) // 10 for k in range(1, 11)}))
+
+
+def _write_json(path: Path, value: dict) -> None:
+    temporary = path.with_suffix(".tmp")
+    temporary.write_text(json.dumps(value, indent=2))
+    temporary.replace(path)
+
+
+def _check_worker(queue: Path) -> None:
+    failures = list((queue / "failed").glob("*.json"))
+    if failures:
+        raise RuntimeError(f"Evaluation failed; inspect {failures[0]}")
+    heartbeat = queue / "heartbeat.json"
+    if not heartbeat.exists() or time.time() - heartbeat.stat().st_mtime > 120:
+        raise RuntimeError("Evaluation worker heartbeat is absent or stale; training must pause")
+
+
+def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
+    """Run after the existing synchronous save; final update drains this run.
+
+    Miles checkpoint directory indices are zero-based rollout IDs. Jobs expose
+    the completed optimizer update (ID + 1) so plots and percentage milestones
+    cannot shift by one. This callback never launches processes or modifies data.
+    """
+    queue = args.opsd_eval_queue
+    step = rollout_id + 1
+    if step not in evaluation_steps(args.num_rollout):
+        return
+    if queue is None:
+        raise ValueError("Study save hook requires --opsd-eval-queue")
+    for name in ("pending", "running", "done", "failed"):
+        (queue / name).mkdir(parents=True, exist_ok=True)
+    checkpoint = Path(checkpoint_dir) / "adapter"
+    weights = checkpoint / "adapter_model.safetensors"
+    if not weights.is_file():
+        raise RuntimeError("Completed study checkpoint has no HF adapter export")
+    digest = hashlib.sha256(weights.read_bytes()).hexdigest()
+    job_name = f"{Path(args.save).parent.name}-step-{step:04d}.json"
+    job = {
+        "completed_updates": step,
+        "rollout_id": rollout_id,
+        "adapter": str(checkpoint),
+        "adapter_sha256": digest,
+        "planned_updates": args.num_rollout,
+    }
+    deadline = time.monotonic() + 3600
+    while True:
+        _check_worker(queue)
+        if time.monotonic() > deadline:
+            raise TimeoutError("Evaluation queue exceeded its one-hour progress deadline")
+        existing = [queue / name / job_name for name in ("pending", "running", "done")]
+        if any(path.exists() for path in existing):
+            for path in existing:
+                if path.exists() and json.loads(path.read_text())["adapter_sha256"] != digest:
+                    raise ValueError("Evaluation job identity collides with a different checkpoint")
+            break
+        if sum(len(list((queue / name).glob("*.json"))) for name in ("pending", "running")) < 2:
+            _write_json(queue / "pending" / job_name, job)
+            break
+        time.sleep(1)
+    if step == args.num_rollout:
+        while not (queue / "done" / job_name).exists():
+            _check_worker(queue)
+            if time.monotonic() > deadline:
+                raise TimeoutError("Final checkpoint evaluation did not complete")
+            time.sleep(1)

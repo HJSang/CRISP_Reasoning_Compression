@@ -97,6 +97,9 @@ _CASES = [(script.rel, entrypoint) for script in _SCRIPTS for entrypoint in scri
 def recorded(request, monkeypatch, tmp_path):
     rel, entrypoint = request.param
     freeze_environment(monkeypatch, hardware=_HARDWARE_A_RECORDING_REPRESENTS.get(rel, FROZEN_HARDWARE))
+    if rel == "scripts/run_qwen3_4b_opsd_study.py":
+        monkeypatch.setenv("MILES_SCRIPT_EXTERNAL_RAY", "1")
+        monkeypatch.setenv("RAY_ADDRESS", "http://127.0.0.1:8265")
     recording = install_command_recorder(monkeypatch)
     module = import_launch_script(REPO_ROOT / rel)
     call_entrypoint(
