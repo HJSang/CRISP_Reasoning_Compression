@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "running_remaining_warmups",
+  "status": "running_remaining_pairs",
   "launch_authorized": true,
   "executable": true,
-  "new_gpu_jobs_launched": 5,
+  "new_gpu_jobs_launched": 9,
   "scope": "Independent replication first; causal mechanisms and cross-model/domain validation conditional",
   "current_evidence": {
     "independent_warmup_checkpoints": 1,
@@ -402,12 +402,12 @@
   "execution": {
     "start_utc": "2026-10-09 22:12 UTC",
     "deadline_utc": "2026-10-10 01:12 UTC",
-    "as_of_utc": "2026-10-09 22:52 UTC",
-    "phase": "remaining_warmups",
+    "as_of_utc": "2026-10-09 23:06 UTC",
+    "phase": "remaining_pairs",
     "replicate_seed": 29,
     "code_commit": "28f3bb6",
     "additional_replicates": "admitted_after_complete_first_pair_cost_check",
-    "stage_gpu_hours_at_ledger_snapshot": 8.051859997113546,
+    "stage_gpu_hours_at_ledger_snapshot": 11.9084536435869,
     "stage_gpu_hour_cap": 32,
     "warmup": {
       "verified_optimizer_updates": 7,
@@ -849,8 +849,9 @@
       }
     ],
     "limitations": [
-      "Only one new independent warm-up replicate has completed; no three-seed generality or statistical significance claim.",
-      "AIME 2025 gain is below the provisional two-point practical threshold in seed 29.",
+      "Only seed 29 has completed both continuation branches; the four remaining branches have no verified endpoint results yet.",
+      "All three fixed-dose PI warm-ups lowered accuracy in this model and recipe; this is not a universal claim about PI or published OPSD settings.",
+      "AIME 2025 seed-29 return-OPD gain is below the provisional two-point practical threshold.",
       "Independent HF/Megatron update parity remains failed and accepted for exploration.",
       "Legacy 64 immutable-source PI features remain pending."
     ],
@@ -887,30 +888,410 @@
       {
         "replicate_seed": 43,
         "worker": "worker-c",
-        "controller_launched": true,
-        "verified_optimizer_updates": 0,
-        "exact_original_source_loaded": false,
-        "status": "baseline_evaluation_running_trainer_initializing",
-        "queue_counts": {
-          "done": 0,
-          "running": 1,
-          "pending": 0,
-          "failed": 0
-        }
+        "status": "complete",
+        "verified_optimizer_updates": 7,
+        "exact_original_source_loaded": true,
+        "required_evaluations_completed": 2,
+        "exit_code": 0,
+        "owned_cleanup_completed": true
       },
       {
         "replicate_seed": 71,
         "worker": "worker-d",
+        "status": "complete",
+        "verified_optimizer_updates": 7,
+        "exact_original_source_loaded": true,
+        "required_evaluations_completed": 2,
+        "exit_code": 0,
+        "owned_cleanup_completed": true
+      }
+    ],
+    "completed_controllers": 5,
+    "confirmed_completed_updates": 29,
+    "confirmed_completed_evaluations": 14,
+    "confirmed_evaluation_responses": 11200,
+    "warmup_replicates": {
+      "29": {
+        "verified_optimizer_updates": 7,
+        "finite_losses": [
+          0.05619274079799652,
+          0.039145566523075104,
+          0.05619224160909653,
+          0.038629185408353806,
+          0.07179437577724457,
+          0.06259166449308395,
+          0.052704859524965286
+        ],
+        "exact_original_source_loaded": true,
+        "exit_code": 0,
+        "owned_cleanup_completed": true,
+        "elapsed_seconds": 700.0612814426422,
+        "evaluations": {
+          "baseline": {
+            "completions": 800,
+            "checkpoint_sha256": "b0016d6c2daf51fb81e19915884e8c24e1f819fe71f6ac9fda3d59e02e0209c8",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.20833333333333334,
+                "completions": 240,
+                "cap_hit_fraction": 0.18333333333333332,
+                "parse_failure_fraction": 0.16666666666666666,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.19166666666666668,
+                "completions": 240,
+                "cap_hit_fraction": 0.07916666666666666,
+                "parse_failure_fraction": 0.06666666666666667,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.7125,
+                "completions": 320,
+                "cap_hit_fraction": 0.025,
+                "parse_failure_fraction": 0.015625,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 2.7919588378070133,
+            "output_tokens_per_second": 9721.698391803344
+          },
+          "warmup_step_7": {
+            "completions": 800,
+            "checkpoint_sha256": "9b88e6c79399a2142a4ae6594209eb5764f6c2bfa02e312990f9b6a9d83b1d8c",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.18333333333333332,
+                "completions": 240,
+                "cap_hit_fraction": 0.08333333333333333,
+                "parse_failure_fraction": 0.0625,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.15416666666666667,
+                "completions": 240,
+                "cap_hit_fraction": 0.0375,
+                "parse_failure_fraction": 0.016666666666666666,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.61875,
+                "completions": 320,
+                "cap_hit_fraction": 0.009375,
+                "parse_failure_fraction": 0.009375,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 3.6192247574497993,
+            "output_tokens_per_second": 7818.3081334453655
+          }
+        },
+        "hosted_training_and_evaluations_verified": true,
+        "temporary_source_retired": true
+      },
+      "43": {
+        "verified_optimizer_updates": 7,
+        "finite_losses": [
+          0.06480091065168381,
+          0.049946028739213943,
+          0.04423483461141586,
+          0.040638893842697144,
+          0.0550016388297081,
+          0.03635863587260246,
+          0.07825792580842972
+        ],
+        "exact_original_source_loaded": true,
+        "exit_code": 0,
+        "owned_cleanup_completed": true,
+        "elapsed_seconds": 716.4362683296204,
+        "evaluations": {
+          "baseline": {
+            "completions": 800,
+            "checkpoint_sha256": "b0016d6c2daf51fb81e19915884e8c24e1f819fe71f6ac9fda3d59e02e0209c8",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.20833333333333334,
+                "completions": 240,
+                "cap_hit_fraction": 0.16666666666666666,
+                "parse_failure_fraction": 0.15833333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.19583333333333333,
+                "completions": 240,
+                "cap_hit_fraction": 0.10416666666666667,
+                "parse_failure_fraction": 0.07916666666666666,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.68125,
+                "completions": 320,
+                "cap_hit_fraction": 0.04375,
+                "parse_failure_fraction": 0.040625,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 2.3560175406226844,
+            "output_tokens_per_second": 8742.368267199266
+          },
+          "warmup_step_7": {
+            "completions": 800,
+            "checkpoint_sha256": "51a9e81bab86d5d9ee349009479375161f8ffc7450e6f6440d1fe5ce6f11e454",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.18333333333333332,
+                "completions": 240,
+                "cap_hit_fraction": 0.0875,
+                "parse_failure_fraction": 0.075,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.16666666666666666,
+                "completions": 240,
+                "cap_hit_fraction": 0.0375,
+                "parse_failure_fraction": 0.03333333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.628125,
+                "completions": 320,
+                "cap_hit_fraction": 0.00625,
+                "parse_failure_fraction": 0.00625,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 3.8733627686197796,
+            "output_tokens_per_second": 8291.170249700215
+          }
+        },
+        "hosted_training_and_evaluations_verified": true,
+        "temporary_source_retired": false,
+        "gpu_measurements": {
+          "training_rollout": {
+            "peak_memory_mib": 62771.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 15.670812603648425
+          },
+          "evaluation": {
+            "peak_memory_mib": 116808.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 74.28164731896075
+          }
+        },
+        "native_checkpoints_exist": false,
+        "wandb_reported_state": "running",
+        "timing_means": {
+          "perf/rollout_time": 17.002424512590682,
+          "perf/actor_train_time": 1.3908642019544328,
+          "perf/step_time": 34.849061829703196
+        }
+      },
+      "71": {
+        "verified_optimizer_updates": 7,
+        "finite_losses": [
+          0.06877804547548294,
+          0.06117101013660431,
+          0.05247516185045242,
+          0.02329811081290245,
+          0.06297945231199265,
+          0.0599576011300087,
+          0.13063335418701172
+        ],
+        "exact_original_source_loaded": true,
+        "exit_code": 0,
+        "owned_cleanup_completed": true,
+        "elapsed_seconds": 667.663863658905,
+        "evaluations": {
+          "baseline": {
+            "completions": 800,
+            "checkpoint_sha256": "b0016d6c2daf51fb81e19915884e8c24e1f819fe71f6ac9fda3d59e02e0209c8",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.2375,
+                "completions": 240,
+                "cap_hit_fraction": 0.17083333333333334,
+                "parse_failure_fraction": 0.15416666666666667,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.18333333333333332,
+                "completions": 240,
+                "cap_hit_fraction": 0.11666666666666667,
+                "parse_failure_fraction": 0.0875,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.653125,
+                "completions": 320,
+                "cap_hit_fraction": 0.015625,
+                "parse_failure_fraction": 0.0125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 2.7249490164493997,
+            "output_tokens_per_second": 9617.152345196055
+          },
+          "warmup_step_7": {
+            "completions": 800,
+            "checkpoint_sha256": "f84d88ca3b4eef6af6866fef0d8f18fbc37f2d5d05cc5f2e3f6ac034ecd597fc",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.19166666666666668,
+                "completions": 240,
+                "cap_hit_fraction": 0.07916666666666666,
+                "parse_failure_fraction": 0.07083333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.14166666666666666,
+                "completions": 240,
+                "cap_hit_fraction": 0.008333333333333333,
+                "parse_failure_fraction": 0.004166666666666667,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.63125,
+                "completions": 320,
+                "cap_hit_fraction": 0.009375,
+                "parse_failure_fraction": 0.003125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 4.001485732205414,
+            "output_tokens_per_second": 8176.070735328869
+          }
+        },
+        "hosted_training_and_evaluations_verified": true,
+        "temporary_source_retired": false,
+        "gpu_measurements": {
+          "training_rollout": {
+            "peak_memory_mib": 59909.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 10.846994535519126
+          },
+          "evaluation": {
+            "peak_memory_mib": 116848.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 77.96174863387978
+          }
+        },
+        "native_checkpoints_exist": false,
+        "wandb_reported_state": "running",
+        "timing_means": {
+          "perf/rollout_time": 10.286397729601179,
+          "perf/actor_train_time": 1.309140341622489,
+          "perf/step_time": 28.095000437327794
+        }
+      }
+    },
+    "warmup_accuracy_delta_pp": {
+      "29": {
+        "AIME 2024": -2.500000000000002,
+        "AIME 2025": -3.7500000000000004,
+        "AMC23": -9.375
+      },
+      "43": {
+        "AIME 2024": -2.500000000000002,
+        "AIME 2025": -2.9166666666666674,
+        "AMC23": -5.312499999999998
+      },
+      "71": {
+        "AIME 2024": -4.583333333333331,
+        "AIME 2025": -4.166666666666666,
+        "AMC23": -2.187499999999998
+      }
+    },
+    "warmup_mean_accuracy_delta_pp": {
+      "AIME 2024": -3.194444444444445,
+      "AIME 2025": -3.611111111111111,
+      "AMC23": -5.624999999999998
+    },
+    "remaining_branches": [
+      {
+        "run_id": "replication-s43-opd",
+        "seed": 43,
+        "worker": "worker-c",
+        "context": "none",
         "controller_launched": true,
+        "source_sha256": "51a9e81bab86d5d9ee349009479375161f8ffc7450e6f6440d1fe5ce6f11e454",
+        "source_load_confirmed": true,
         "verified_optimizer_updates": 0,
-        "exact_original_source_loaded": false,
-        "status": "baseline_evaluation_running_trainer_initializing",
         "queue_counts": {
           "done": 0,
-          "running": 1,
+          "running": 0,
           "pending": 0,
           "failed": 0
-        }
+        },
+        "status": "correct_source_loaded_first_update_pending"
+      },
+      {
+        "run_id": "replication-s43-pi",
+        "seed": 43,
+        "worker": "worker-a",
+        "context": "worked",
+        "controller_launched": true,
+        "source_sha256": "51a9e81bab86d5d9ee349009479375161f8ffc7450e6f6440d1fe5ce6f11e454",
+        "source_load_confirmed": true,
+        "verified_optimizer_updates": 0,
+        "queue_counts": {
+          "done": 0,
+          "running": 0,
+          "pending": 0,
+          "failed": 0
+        },
+        "status": "correct_source_loaded_first_update_pending"
+      },
+      {
+        "run_id": "replication-s71-opd",
+        "seed": 71,
+        "worker": "worker-b",
+        "context": "none",
+        "controller_launched": true,
+        "source_sha256": "f84d88ca3b4eef6af6866fef0d8f18fbc37f2d5d05cc5f2e3f6ac034ecd597fc",
+        "source_load_confirmed": true,
+        "verified_optimizer_updates": 0,
+        "queue_counts": {
+          "done": 0,
+          "running": 0,
+          "pending": 0,
+          "failed": 0
+        },
+        "status": "correct_source_loaded_first_update_pending"
+      },
+      {
+        "run_id": "replication-s71-pi",
+        "seed": 71,
+        "worker": "worker-d",
+        "context": "worked",
+        "controller_launched": true,
+        "source_sha256": "f84d88ca3b4eef6af6866fef0d8f18fbc37f2d5d05cc5f2e3f6ac034ecd597fc",
+        "source_load_confirmed": true,
+        "verified_optimizer_updates": 0,
+        "queue_counts": {
+          "done": 0,
+          "running": 0,
+          "pending": 0,
+          "failed": 0
+        },
+        "status": "correct_source_loaded_first_update_pending"
       }
     ]
   }
