@@ -2846,6 +2846,41 @@
         "4": 0.0495707131922245
       }
     },
-    "known_controller_study_gpu_hours": 53.08183865388234
+    "known_controller_study_gpu_hours": 53.08183865388234,
+    "no_pi_versus_original_base": {
+      "AIME 2024": {
+        "mean_gain_pp": 5.208333333333334,
+        "block_gain_pp": [
+          6.25,
+          4.166666666666666
+        ],
+        "descriptive_paired_block_question_95_pp": [
+          0.8333333333333334,
+          10.0
+        ]
+      },
+      "AIME 2025": {
+        "mean_gain_pp": 3.958333333333333,
+        "block_gain_pp": [
+          4.166666666666666,
+          3.75
+        ],
+        "descriptive_paired_block_question_95_pp": [
+          -0.4166666666666667,
+          8.958333333333334
+        ]
+      },
+      "AMC23": {
+        "mean_gain_pp": 2.65625,
+        "block_gain_pp": [
+          4.0625,
+          1.25
+        ],
+        "descriptive_paired_block_question_95_pp": [
+          -2.1875,
+          7.8125
+        ]
+      }
+    }
   }
 }
