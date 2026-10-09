@@ -394,6 +394,19 @@ def _write_megatron_checkpoint(tmp_path) -> str:
 
 
 class TestResolveArgsCheckpointLoad:
+    def test_explicit_warmed_hf_source_is_not_replaced_by_base(self, tmp_path):
+        warmed = tmp_path / "warmed"
+        warmed.mkdir()
+        (warmed / "config.json").write_text("{}")
+        args = _make_checkpoint_args(
+            tmp_path, megatron_to_hf_mode="bridge", load=str(warmed), finetune=True,
+            no_load_optim=True, no_load_rng=True, start_rollout_id=0,
+        )
+        resolve_args_checkpoint_load(args)
+        assert args.load == str(warmed)
+        assert args.requested_load == str(warmed)
+        assert (args.no_load_optim, args.no_load_rng, args.start_rollout_id) == (True, True, 0)
+
     def test_a_fresh_bridge_run_falls_back_to_the_reference_weights(self, tmp_path):
         """--load points at a directory the first run has not written yet, which load_checkpoint asserts on."""
         args = _make_checkpoint_args(tmp_path, megatron_to_hf_mode="bridge")

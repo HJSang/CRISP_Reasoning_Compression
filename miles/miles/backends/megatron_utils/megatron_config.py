@@ -362,7 +362,10 @@ def resolve_args_checkpoint_load(args: Namespace) -> None:
         # Fresh runs pass a not-yet-created `--load` dir; fall back to the reference
         # weights (loaded via the HF bridge) instead of asserting in load_checkpoint.
         # Mirrors the non-bridge branch below.
-        if not _has_megatron_checkpoint(args.load):
+        # An explicit HF source is also loadable by the bridge. Do not replace a
+        # warmed student with the base model merely because it has no native tracker.
+        has_hf_source = args.load is not None and (Path(args.load) / "config.json").is_file()
+        if not _has_megatron_checkpoint(args.load) and not has_hf_source:
             args.load = args.ref_load or args.hf_checkpoint
             args.start_rollout_id = 0
     else:
