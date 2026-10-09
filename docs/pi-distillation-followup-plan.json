@@ -2563,9 +2563,9 @@
       },
       {
         "worker": "worker-b",
-        "model": "zai-org/GLM-4-9B-0414",
+        "model": "Qwen/Qwen3-1.7B",
         "task": "math",
-        "model_revision": "645b8482494e31b6b752272bf7f7f273ef0f3caf"
+        "model_revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
       },
       {
         "worker": "worker-c",
@@ -2575,9 +2575,9 @@
       },
       {
         "worker": "worker-d",
-        "model": "zai-org/GLM-4-9B-0414",
+        "model": "Qwen/Qwen3-1.7B",
         "task": "code",
-        "model_revision": "645b8482494e31b6b752272bf7f7f273ef0f3caf"
+        "model_revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
       }
     ],
     "per_cell": {
@@ -2672,7 +2672,21 @@
       "thinking": false,
       "PI_at_evaluation": false,
       "seed_banks": "unique per cell/replicate, paired across all conditions",
-      "scope": "task-specific generalization; not math-to-code zero-shot transfer"
+      "scope": "task-specific generalization; not math-to-code zero-shot transfer",
+      "sampling_provenance": {
+        "Qwen3-1.7B": {
+          "mode": "non-thinking",
+          "source": "https://huggingface.co/Qwen/Qwen3-1.7B#best-practices"
+        },
+        "Qwen3-8B": {
+          "mode": "non-thinking",
+          "source": "https://huggingface.co/Qwen/Qwen3-8B#best-practices"
+        }
+      },
+      "min_p": 0.0,
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
     },
     "code_training": {
       "dataset": "google-research-datasets/mbpp",
@@ -2685,13 +2699,20 @@
     },
     "readiness": {
       "all_four_workers_idle_verified": true,
-      "native_tokenizer_cpu_checks_passed": true,
+      "native_tokenizer_cpu_checks_passed": false,
       "model_revisions_pinned": true,
-      "GLM_exact_checkpoint_Miles_GPU_validation": false,
       "EMA_implementation_and_validation": false,
       "sandboxed_code_evaluator": false,
       "full_model_weights_cached": false,
-      "known_HF_Megatron_update_parity": "existing failed exploratory status retained; no renewed open-ended parity requirement"
+      "known_HF_Megatron_update_parity": "existing failed exploratory status retained; no renewed open-ended parity requirement",
+      "native_tokenizer_cpu_checks_by_model": {
+        "Qwen3-8B": true,
+        "Qwen3-1.7B": false
+      },
+      "selected_models_Miles_GPU_validation": {
+        "Qwen3-8B": false,
+        "Qwen3-1.7B": false
+      }
     },
     "budget_proposal": {
       "new_readiness_gpu_hour_cap": 16,
@@ -2704,6 +2725,50 @@
       "forecast_status": "allowance proposal, not measured new-model cost; admission requires all four balanced cells fit conservative measurements",
       "stop_boundary": "one complete matched screen per cell, no automatic seeds/epochs/model substitutions"
     },
-    "later_stage": "replicate promising cells with at least three independent warmups and fresh sealed tasks before schedule optimization; no claim of significance or frontier generality from one seed per cell"
+    "later_stage": "replicate promising cells with at least three independent warmups and fresh sealed tasks before schedule optimization; no claim of significance or frontier generality from one seed per cell",
+    "model_selection": {
+      "user_selected": "Qwen3-1.7B replaces GLM alongside Qwen3-8B",
+      "scope": "within-family scale and task generality; cross-family generality deferred",
+      "original_opsd_paper_models": [
+        "Qwen3-1.7B",
+        "Qwen3-4B",
+        "Qwen3-8B"
+      ],
+      "paper_source": "https://arxiv.org/html/2601.18734v3#S4.SS1",
+      "repository_revision": "ae7d2519e94920c4eb6206c0c26de46d9c50abae",
+      "dedicated_nonthinking_repo_results": [
+        "Qwen3-4B",
+        "Qwen3-8B"
+      ],
+      "no_launch_or_budget_approval_inferred": true
+    },
+    "deferred_glm_sampling_audit": {
+      "GLM-4-9B-0414": {
+        "status": "deferred_not_in_current_matrix",
+        "hf_recommended_sampling": null,
+        "hf_generation_config": "https://huggingface.co/zai-org/GLM-4-9B-0414/blob/645b8482494e31b6b752272bf7f7f273ef0f3caf/generation_config.json",
+        "native_template": "https://huggingface.co/zai-org/GLM-4-9B-0414/blob/645b8482494e31b6b752272bf7f7f273ef0f3caf/chat_template.jinja",
+        "enable_thinking_supported": false,
+        "official_demo": {
+          "url": "https://github.com/zai-org/GLM-4/blob/024d8fd48e62cf53785b68d657f1e018f87b5674/inference/trans_cli_demo.py",
+          "temperature": 0.6,
+          "top_p": 0.8,
+          "top_k_explicit": null,
+          "do_sample": true,
+          "repetition_penalty": 1.2,
+          "max_new_tokens": 8192
+        },
+        "finalize_before_launch": true
+      },
+      "GLM-Z1-9B-0414_context_only": {
+        "included_in_study": false,
+        "source": "https://huggingface.co/zai-org/GLM-Z1-9B-0414#model-usage-guidelines",
+        "temperature": 0.6,
+        "top_p": 0.95,
+        "top_k": 40,
+        "max_new_tokens": 30000,
+        "thinking": true
+      }
+    }
   }
 }
