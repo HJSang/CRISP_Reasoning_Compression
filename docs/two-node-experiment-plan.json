@@ -1,5 +1,5 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "status": "PROPOSED_FOR_REVIEW",
   "executable": false,
   "new_gpu_work_authorized": false,
@@ -56,13 +56,13 @@
   "loss": {
     "name": "full_vocabulary_forward_kl",
     "beta": 0,
-    "temperature": 1.1,
+    "temperature": 1.0,
     "contribution_clip": null,
     "extra_temperature_squared_factor": false,
     "reduction": "mean_valid_response_tokens_then_mean_samples",
     "all_targets_detached": true,
     "target_refresh": "once_before_each_optimizer_update",
-    "temperature_note": "scoring_temperature_1.1_is_distinct_from_rollout_temperature_1.0"
+    "temperature_note": "all_student_and_teacher_scoring_distributions_match_rollout_temperature_1.0"
   },
   "optimizer": {
     "name": "Adam",
@@ -283,6 +283,8 @@
       "top_p": 1.0,
       "top_k": -1
     },
-    "sampling_matches_original": false
+    "sampling_matches_original": false,
+    "original_loss_temperature": 1.1,
+    "selected_loss_temperature": 1.0
   }
 }
