@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "running_remaining_pairs",
+  "status": "stage_1_complete_review_required",
   "launch_authorized": true,
   "executable": true,
   "new_gpu_jobs_launched": 9,
@@ -402,12 +402,12 @@
   "execution": {
     "start_utc": "2026-10-09 22:12 UTC",
     "deadline_utc": "2026-10-10 01:12 UTC",
-    "as_of_utc": "2026-10-09 23:06 UTC",
-    "phase": "remaining_pairs",
+    "as_of_utc": "2026-10-09 23:34 UTC",
+    "phase": "complete",
     "replicate_seed": 29,
     "code_commit": "28f3bb6",
     "additional_replicates": "admitted_after_complete_first_pair_cost_check",
-    "stage_gpu_hours_at_ledger_snapshot": 11.9084536435869,
+    "stage_gpu_hours_at_ledger_snapshot": 23.110469372537402,
     "stage_gpu_hour_cap": 32,
     "warmup": {
       "verified_optimizer_updates": 7,
@@ -849,11 +849,13 @@
       }
     ],
     "limitations": [
-      "Only seed 29 has completed both continuation branches; the four remaining branches have no verified endpoint results yet.",
-      "All three fixed-dose PI warm-ups lowered accuracy in this model and recipe; this is not a universal claim about PI or published OPSD settings.",
-      "AIME 2025 seed-29 return-OPD gain is below the provisional two-point practical threshold.",
+      "Three independent warm-ups on one model and fixed recipe; no generality or mechanism claim.",
+      "AIME 2025 crossed bootstrap interval includes zero; the provisional practical screen is not a significance test.",
+      "OPD final AIME 2024 cap hits reach 25% in seeds 43 and 71; seed-71 AIME 2025 reaches 15.83%.",
+      "One retained wrong seed-43 OPD response emits a stray closing thinking tag despite confirmed non-thinking settings.",
+      "W&B labels all three successful warm-ups crashed; two branches have identical duplicate evaluation rows. Verified explicit steps and controller exits determine completion.",
       "Independent HF/Megatron update parity remains failed and accepted for exploration.",
-      "Legacy 64 immutable-source PI features remain pending."
+      "Legacy 64 immutable-source PI features remain pending; no causal PI-retention features were collected in this stage."
     ],
     "admission": {
       "admitted": true,
@@ -906,10 +908,10 @@
         "owned_cleanup_completed": true
       }
     ],
-    "completed_controllers": 5,
-    "confirmed_completed_updates": 29,
-    "confirmed_completed_evaluations": 14,
-    "confirmed_evaluation_responses": 11200,
+    "completed_controllers": 9,
+    "confirmed_completed_updates": 45,
+    "confirmed_completed_evaluations": 30,
+    "confirmed_evaluation_responses": 24000,
     "warmup_replicates": {
       "29": {
         "verified_optimizer_updates": 7,
@@ -1077,7 +1079,7 @@
           }
         },
         "hosted_training_and_evaluations_verified": true,
-        "temporary_source_retired": false,
+        "temporary_source_retired": true,
         "gpu_measurements": {
           "training_rollout": {
             "peak_memory_mib": 62771.0,
@@ -1180,7 +1182,7 @@
           }
         },
         "hosted_training_and_evaluations_verified": true,
-        "temporary_source_retired": false,
+        "temporary_source_retired": true,
         "gpu_measurements": {
           "training_rollout": {
             "peak_memory_mib": 59909.0,
@@ -1233,14 +1235,179 @@
         "controller_launched": true,
         "source_sha256": "51a9e81bab86d5d9ee349009479375161f8ffc7450e6f6440d1fe5ce6f11e454",
         "source_load_confirmed": true,
-        "verified_optimizer_updates": 0,
+        "verified_optimizer_updates": 4,
         "queue_counts": {
-          "done": 0,
+          "done": 4,
           "running": 0,
           "pending": 0,
           "failed": 0
         },
-        "status": "correct_source_loaded_first_update_pending"
+        "status": "complete",
+        "losses": [
+          0.026113038882613182,
+          0.014776217751204967,
+          0.007459709886461496,
+          0.0064301872625947
+        ],
+        "evaluations": {
+          "step_2": {
+            "completions": 800,
+            "checkpoint_sha256": "6bd4931acd1ca44fdfbfa1c93b171fc80aef2befd1858be285ddcb86a1d965ff",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.2125,
+                "completions": 240,
+                "cap_hit_fraction": 0.09583333333333334,
+                "parse_failure_fraction": 0.08333333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.18333333333333332,
+                "completions": 240,
+                "cap_hit_fraction": 0.041666666666666664,
+                "parse_failure_fraction": 0.041666666666666664,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.684375,
+                "completions": 320,
+                "cap_hit_fraction": 0.0125,
+                "parse_failure_fraction": 0.00625,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 3.6580514751057978,
+            "output_tokens_per_second": 9766.846543909132
+          },
+          "step_3": {
+            "completions": 800,
+            "checkpoint_sha256": "1b4846a55bc71f7bd334afab85e983a520fd394aeefe3e34337f72672d8d0de0",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.20833333333333334,
+                "completions": 240,
+                "cap_hit_fraction": 0.1375,
+                "parse_failure_fraction": 0.1,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.2125,
+                "completions": 240,
+                "cap_hit_fraction": 0.07083333333333333,
+                "parse_failure_fraction": 0.04583333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.6625,
+                "completions": 320,
+                "cap_hit_fraction": 0.015625,
+                "parse_failure_fraction": 0.0125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 3.0652365011120484,
+            "output_tokens_per_second": 9447.307946893048
+          },
+          "step_1": {
+            "completions": 800,
+            "checkpoint_sha256": "228a5c82f01041ee35a6873e413644e4c835b29407c62365316dcfdb7cf74b25",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.17083333333333334,
+                "completions": 240,
+                "cap_hit_fraction": 0.0625,
+                "parse_failure_fraction": 0.058333333333333334,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.17916666666666667,
+                "completions": 240,
+                "cap_hit_fraction": 0.041666666666666664,
+                "parse_failure_fraction": 0.03333333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.634375,
+                "completions": 320,
+                "cap_hit_fraction": 0.009375,
+                "parse_failure_fraction": 0.009375,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 3.7494039815446194,
+            "output_tokens_per_second": 8173.850655926532
+          },
+          "step_4": {
+            "completions": 800,
+            "checkpoint_sha256": "6da7ad4a5d08a5b5d9a08b8cab6ea932786f6f2cce26fec005baa086ae22866a",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.2875,
+                "completions": 240,
+                "cap_hit_fraction": 0.25,
+                "parse_failure_fraction": 0.2125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 1
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.23333333333333334,
+                "completions": 240,
+                "cap_hit_fraction": 0.09166666666666666,
+                "parse_failure_fraction": 0.075,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.771875,
+                "completions": 320,
+                "cap_hit_fraction": 0.015625,
+                "parse_failure_fraction": 0.009375,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 2.0648833157648694,
+            "output_tokens_per_second": 9784.101142692298
+          }
+        },
+        "hosted_verified_updates": 4,
+        "hosted_verified_evaluation_steps": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "gpu_measurements": {
+          "training_rollout": {
+            "peak_memory_mib": 59889.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 3.604948805460751
+          },
+          "evaluation": {
+            "peak_memory_mib": 116852.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 73.34641638225256
+          }
+        },
+        "native_checkpoints_exist": false,
+        "remaining_temporary_snapshots": [],
+        "timing_means": {
+          "perf/rollout_time": 10.242502450942993,
+          "perf/actor_train_time": 1.2714871764183044,
+          "perf/save_model_time": 68.94401216506958
+        },
+        "exit_code": 0,
+        "owned_cleanup_completed": true,
+        "elapsed_seconds": 1441.9168536663055
       },
       {
         "run_id": "replication-s43-pi",
@@ -1250,14 +1417,179 @@
         "controller_launched": true,
         "source_sha256": "51a9e81bab86d5d9ee349009479375161f8ffc7450e6f6440d1fe5ce6f11e454",
         "source_load_confirmed": true,
-        "verified_optimizer_updates": 0,
+        "verified_optimizer_updates": 4,
         "queue_counts": {
-          "done": 0,
+          "done": 4,
           "running": 0,
           "pending": 0,
           "failed": 0
         },
-        "status": "correct_source_loaded_first_update_pending"
+        "status": "complete",
+        "losses": [
+          0.07844552397727966,
+          0.052532292902469635,
+          0.05285067856311798,
+          0.050954584032297134
+        ],
+        "evaluations": {
+          "step_1": {
+            "completions": 800,
+            "checkpoint_sha256": "bfe525d212c3ad44063d1c3561d11f5614162da3482bcf879e29d5eafabe211d",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.18333333333333332,
+                "completions": 240,
+                "cap_hit_fraction": 0.0625,
+                "parse_failure_fraction": 0.0625,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.16666666666666666,
+                "completions": 240,
+                "cap_hit_fraction": 0.016666666666666666,
+                "parse_failure_fraction": 0.004166666666666667,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.628125,
+                "completions": 320,
+                "cap_hit_fraction": 0.00625,
+                "parse_failure_fraction": 0.00625,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 3.92229065517303,
+            "output_tokens_per_second": 7768.469260182427
+          },
+          "step_2": {
+            "completions": 800,
+            "checkpoint_sha256": "643aad89d5506a6882eaf8267616acf263698673d8bf456b907beb9ec12ed6ab",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.20833333333333334,
+                "completions": 240,
+                "cap_hit_fraction": 0.09583333333333334,
+                "parse_failure_fraction": 0.075,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.16666666666666666,
+                "completions": 240,
+                "cap_hit_fraction": 0.041666666666666664,
+                "parse_failure_fraction": 0.03333333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.659375,
+                "completions": 320,
+                "cap_hit_fraction": 0.00625,
+                "parse_failure_fraction": 0.003125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 3.7855316660456984,
+            "output_tokens_per_second": 9126.703910679964
+          },
+          "step_4": {
+            "completions": 800,
+            "checkpoint_sha256": "5022b15b7b0b0da312cb4549cb9679aa6b711777a477c99a71b4070e4f6435dc",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.20833333333333334,
+                "completions": 240,
+                "cap_hit_fraction": 0.15416666666666667,
+                "parse_failure_fraction": 0.15,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.20416666666666666,
+                "completions": 240,
+                "cap_hit_fraction": 0.075,
+                "parse_failure_fraction": 0.05,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.671875,
+                "completions": 320,
+                "cap_hit_fraction": 0.021875,
+                "parse_failure_fraction": 0.021875,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 2.9056754896085444,
+            "output_tokens_per_second": 8965.650592093987
+          },
+          "step_3": {
+            "completions": 800,
+            "checkpoint_sha256": "96ebffdc5e0dae95472158296468dd0b00ce414be3e83960ecbeb0be47d547d7",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.2,
+                "completions": 240,
+                "cap_hit_fraction": 0.08333333333333333,
+                "parse_failure_fraction": 0.06666666666666667,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.1875,
+                "completions": 240,
+                "cap_hit_fraction": 0.041666666666666664,
+                "parse_failure_fraction": 0.025,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.6625,
+                "completions": 320,
+                "cap_hit_fraction": 0.00625,
+                "parse_failure_fraction": 0.00625,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 3.6127817903532398,
+            "output_tokens_per_second": 8470.175939437648
+          }
+        },
+        "hosted_verified_updates": 4,
+        "hosted_verified_evaluation_steps": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "gpu_measurements": {
+          "training_rollout": {
+            "peak_memory_mib": 59889.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 4.251715265866209
+          },
+          "evaluation": {
+            "peak_memory_mib": 116824.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 66.0080045740423
+          }
+        },
+        "native_checkpoints_exist": false,
+        "remaining_temporary_snapshots": [],
+        "timing_means": {
+          "perf/rollout_time": 11.681663036346436,
+          "perf/actor_train_time": 1.373673141002655,
+          "perf/save_model_time": 65.05757117271423
+        },
+        "exit_code": 0,
+        "owned_cleanup_completed": true,
+        "elapsed_seconds": 1283.4415884017944
       },
       {
         "run_id": "replication-s71-opd",
@@ -1267,14 +1599,179 @@
         "controller_launched": true,
         "source_sha256": "f84d88ca3b4eef6af6866fef0d8f18fbc37f2d5d05cc5f2e3f6ac034ecd597fc",
         "source_load_confirmed": true,
-        "verified_optimizer_updates": 0,
+        "verified_optimizer_updates": 4,
         "queue_counts": {
-          "done": 0,
+          "done": 4,
           "running": 0,
           "pending": 0,
           "failed": 0
         },
-        "status": "correct_source_loaded_first_update_pending"
+        "status": "complete",
+        "losses": [
+          0.02529379352927208,
+          0.01990317739546299,
+          0.014104332774877548,
+          0.006286476738750935
+        ],
+        "evaluations": {
+          "step_3": {
+            "completions": 800,
+            "checkpoint_sha256": "c952db2e8c59d8051d65ec4cf6c85ce8f5257eb0d5e9f4f366b6f8bb6c6307a9",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.24583333333333332,
+                "completions": 240,
+                "cap_hit_fraction": 0.14583333333333334,
+                "parse_failure_fraction": 0.1375,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.2,
+                "completions": 240,
+                "cap_hit_fraction": 0.1125,
+                "parse_failure_fraction": 0.09583333333333334,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.7,
+                "completions": 320,
+                "cap_hit_fraction": 0.01875,
+                "parse_failure_fraction": 0.0125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 2.6732435459388135,
+            "output_tokens_per_second": 9495.107117037802
+          },
+          "step_2": {
+            "completions": 800,
+            "checkpoint_sha256": "5cda7466f2fd60c91b269f3c3e426a6fc3da19dd2e9926e2d3e0390126632e06",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.225,
+                "completions": 240,
+                "cap_hit_fraction": 0.20416666666666666,
+                "parse_failure_fraction": 0.19166666666666668,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.17916666666666667,
+                "completions": 240,
+                "cap_hit_fraction": 0.12083333333333333,
+                "parse_failure_fraction": 0.10416666666666667,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.646875,
+                "completions": 320,
+                "cap_hit_fraction": 0.03125,
+                "parse_failure_fraction": 0.03125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 2.4585258289597878,
+            "output_tokens_per_second": 9293.215340838853
+          },
+          "step_4": {
+            "completions": 800,
+            "checkpoint_sha256": "a411f966987109e931900419bbc38e6578cfe832a2d46e4f859d11ccb011a2b6",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.2916666666666667,
+                "completions": 240,
+                "cap_hit_fraction": 0.25,
+                "parse_failure_fraction": 0.225,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.25416666666666665,
+                "completions": 240,
+                "cap_hit_fraction": 0.15833333333333333,
+                "parse_failure_fraction": 0.1375,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.75625,
+                "completions": 320,
+                "cap_hit_fraction": 0.0125,
+                "parse_failure_fraction": 0.009375,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 2.013659049056118,
+            "output_tokens_per_second": 10440.087183803067
+          },
+          "step_1": {
+            "completions": 800,
+            "checkpoint_sha256": "8f686ba5eb656a0b19882a0c3e65f8ce8df74ffa650ad75971fe295af99a4705",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.19166666666666668,
+                "completions": 240,
+                "cap_hit_fraction": 0.1,
+                "parse_failure_fraction": 0.09166666666666666,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.15,
+                "completions": 240,
+                "cap_hit_fraction": 0.04583333333333333,
+                "parse_failure_fraction": 0.041666666666666664,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.6375,
+                "completions": 320,
+                "cap_hit_fraction": 0.00625,
+                "parse_failure_fraction": 0.003125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 3.571911985401752,
+            "output_tokens_per_second": 8871.138098484045
+          }
+        },
+        "hosted_verified_updates": 4,
+        "hosted_verified_evaluation_steps": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "gpu_measurements": {
+          "training_rollout": {
+            "peak_memory_mib": 59889.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 4.939055793991416
+          },
+          "evaluation": {
+            "peak_memory_mib": 116818.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 68.2379113018598
+          }
+        },
+        "native_checkpoints_exist": false,
+        "remaining_temporary_snapshots": [],
+        "timing_means": {
+          "perf/rollout_time": 18.294502794742584,
+          "perf/actor_train_time": 1.4048113226890564,
+          "perf/save_model_time": 64.91937398910522
+        },
+        "exit_code": 0,
+        "owned_cleanup_completed": true,
+        "elapsed_seconds": 1623.7740650177002
       },
       {
         "run_id": "replication-s71-pi",
@@ -1284,15 +1781,771 @@
         "controller_launched": true,
         "source_sha256": "f84d88ca3b4eef6af6866fef0d8f18fbc37f2d5d05cc5f2e3f6ac034ecd597fc",
         "source_load_confirmed": true,
-        "verified_optimizer_updates": 0,
+        "verified_optimizer_updates": 4,
         "queue_counts": {
-          "done": 0,
+          "done": 4,
           "running": 0,
           "pending": 0,
           "failed": 0
         },
-        "status": "correct_source_loaded_first_update_pending"
+        "status": "complete",
+        "losses": [
+          0.039767537266016006,
+          0.06977473944425583,
+          0.07461848109960556,
+          0.03625155985355377
+        ],
+        "evaluations": {
+          "step_1": {
+            "completions": 800,
+            "checkpoint_sha256": "367540560d5c5c391c4e3c136c00da3cfd0606087b6bf7e43ebe5f459b957659",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.225,
+                "completions": 240,
+                "cap_hit_fraction": 0.0875,
+                "parse_failure_fraction": 0.07083333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.14166666666666666,
+                "completions": 240,
+                "cap_hit_fraction": 0.0375,
+                "parse_failure_fraction": 0.029166666666666667,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.66875,
+                "completions": 320,
+                "cap_hit_fraction": 0.0,
+                "parse_failure_fraction": 0.0,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 4.2936233364395235,
+            "output_tokens_per_second": 9638.636953331335
+          },
+          "step_3": {
+            "completions": 800,
+            "checkpoint_sha256": "d90e9b973f4559650043b9b07b53e599c326e42576216b6e3582447c58519697",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.21666666666666667,
+                "completions": 240,
+                "cap_hit_fraction": 0.12083333333333333,
+                "parse_failure_fraction": 0.12083333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.16666666666666666,
+                "completions": 240,
+                "cap_hit_fraction": 0.06666666666666667,
+                "parse_failure_fraction": 0.03333333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.671875,
+                "completions": 320,
+                "cap_hit_fraction": 0.01875,
+                "parse_failure_fraction": 0.0125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 2.914730175985315,
+            "output_tokens_per_second": 8745.480296058817
+          },
+          "step_2": {
+            "completions": 800,
+            "checkpoint_sha256": "4b528295350793b747bab41b548d8062ed56fd35a728a11b2b9000def86e6b45",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.175,
+                "completions": 240,
+                "cap_hit_fraction": 0.15833333333333333,
+                "parse_failure_fraction": 0.1375,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.15416666666666667,
+                "completions": 240,
+                "cap_hit_fraction": 0.075,
+                "parse_failure_fraction": 0.05416666666666667,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.65625,
+                "completions": 320,
+                "cap_hit_fraction": 0.015625,
+                "parse_failure_fraction": 0.015625,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 3.2762877054717774,
+            "output_tokens_per_second": 10127.095395525164
+          },
+          "step_4": {
+            "completions": 800,
+            "checkpoint_sha256": "5df30e593f5e47dea65d616f4fa341c39290151b4106295b7f9a7b19cb544422",
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.24583333333333332,
+                "completions": 240,
+                "cap_hit_fraction": 0.18333333333333332,
+                "parse_failure_fraction": 0.14166666666666666,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.17916666666666667,
+                "completions": 240,
+                "cap_hit_fraction": 0.12916666666666668,
+                "parse_failure_fraction": 0.07083333333333333,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.69375,
+                "completions": 320,
+                "cap_hit_fraction": 0.0125,
+                "parse_failure_fraction": 0.0125,
+                "grader_timeouts": 0,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "responses_per_second": 2.722022296867747,
+            "output_tokens_per_second": 9896.7116543124
+          }
+        },
+        "hosted_verified_updates": 4,
+        "hosted_verified_evaluation_steps": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "gpu_measurements": {
+          "training_rollout": {
+            "peak_memory_mib": 59887.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 4.380667236954662
+          },
+          "evaluation": {
+            "peak_memory_mib": 116826.0,
+            "total_memory_mib": 143771.0,
+            "mean_utilization_percent": 73.3018249215854
+          }
+        },
+        "native_checkpoints_exist": false,
+        "remaining_temporary_snapshots": [],
+        "timing_means": {
+          "perf/rollout_time": 15.831581056118011,
+          "perf/actor_train_time": 1.3844748139381409,
+          "perf/save_model_time": 52.72734967867533
+        },
+        "exit_code": 0,
+        "owned_cleanup_completed": true,
+        "elapsed_seconds": 1366.8544232845306
       }
-    ]
+    ],
+    "all_temporary_sources_retired": true,
+    "all_owned_processes_cleaned": true,
+    "all_worker_gpu_memory_mib": 0,
+    "coordinator_exited": true,
+    "replication_analysis": {
+      "method": {
+        "resamples": 20000,
+        "rng_seed": 20261009,
+        "replicate_seeds": [
+          29,
+          43,
+          71
+        ],
+        "crossed_clusters": "Resample three replicates and dataset question IDs independently with replacement; share sampled questions across all replicates and conditions. Average the eight generation draws within each question; pair seed banks across conditions.",
+        "interval_interpretation": "Descriptive percentile uncertainty with three training replicates; no significance or generality claim; no multiplicity adjustment.",
+        "validation": "Every endpoint question/draw set, paired generation seed, non-thinking/no-PI evaluation, data hash, and recomputed accuracy checked."
+      },
+      "scores_percent": {
+        "AIME 2024": {
+          "original": [
+            20.833333333333336,
+            20.833333333333336,
+            23.75
+          ],
+          "warm": [
+            18.333333333333332,
+            18.333333333333332,
+            19.166666666666668
+          ],
+          "opd": [
+            29.166666666666668,
+            28.749999999999996,
+            29.166666666666668
+          ],
+          "pi": [
+            17.916666666666668,
+            20.833333333333336,
+            24.583333333333332
+          ]
+        },
+        "AIME 2025": {
+          "original": [
+            19.166666666666668,
+            19.583333333333332,
+            18.333333333333332
+          ],
+          "warm": [
+            15.416666666666668,
+            16.666666666666664,
+            14.166666666666666
+          ],
+          "opd": [
+            20.416666666666668,
+            23.333333333333332,
+            25.416666666666664
+          ],
+          "pi": [
+            18.75,
+            20.416666666666668,
+            17.916666666666668
+          ]
+        },
+        "AMC23": {
+          "original": [
+            71.25,
+            68.125,
+            65.3125
+          ],
+          "warm": [
+            61.875,
+            62.81250000000001,
+            63.125
+          ],
+          "opd": [
+            74.375,
+            77.1875,
+            75.625
+          ],
+          "pi": [
+            62.5,
+            67.1875,
+            69.375
+          ]
+        }
+      },
+      "contrasts": {
+        "AIME 2024": {
+          "opd_minus_original": {
+            "per_seed_delta_pp": [
+              8.333333333333334,
+              7.916666666666667,
+              5.416666666666667
+            ],
+            "mean_delta_pp": 7.222222222222222,
+            "positive_seeds": 3,
+            "practical_screen_met": true,
+            "crossed_95_percentile_interval_pp": [
+              1.6666666666666667,
+              13.333333333333334
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              5.416666666666667,
+              8.333333333333334
+            ],
+            "question_only_95_percentile_interval_pp": [
+              2.5,
+              12.63888888888889
+            ]
+          },
+          "opd_minus_pi": {
+            "per_seed_delta_pp": [
+              11.25,
+              7.916666666666667,
+              4.583333333333333
+            ],
+            "mean_delta_pp": 7.916666666666667,
+            "positive_seeds": 3,
+            "practical_screen_met": true,
+            "crossed_95_percentile_interval_pp": [
+              1.9444444444444444,
+              15.416666666666666
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              4.583333333333333,
+              11.25
+            ],
+            "question_only_95_percentile_interval_pp": [
+              2.5,
+              14.305555555555555
+            ]
+          },
+          "opd_minus_warm": {
+            "per_seed_delta_pp": [
+              10.833333333333334,
+              10.416666666666666,
+              10.0
+            ],
+            "mean_delta_pp": 10.416666666666666,
+            "positive_seeds": 3,
+            "practical_screen_met": true,
+            "crossed_95_percentile_interval_pp": [
+              4.444444444444445,
+              17.22222222222222
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              10.0,
+              10.833333333333334
+            ],
+            "question_only_95_percentile_interval_pp": [
+              4.861111111111111,
+              16.805555555555557
+            ]
+          },
+          "warm_minus_original": {
+            "per_seed_delta_pp": [
+              -2.5,
+              -2.5,
+              -4.583333333333333
+            ],
+            "mean_delta_pp": -3.194444444444444,
+            "positive_seeds": 0,
+            "practical_screen_met": false,
+            "crossed_95_percentile_interval_pp": [
+              -7.225694444444441,
+              0.2777777777777778
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              -4.583333333333333,
+              -2.5
+            ],
+            "question_only_95_percentile_interval_pp": [
+              -5.694444444444445,
+              -0.6944444444444444
+            ]
+          }
+        },
+        "AIME 2025": {
+          "opd_minus_original": {
+            "per_seed_delta_pp": [
+              1.25,
+              3.75,
+              7.083333333333333
+            ],
+            "mean_delta_pp": 4.027777777777778,
+            "positive_seeds": 3,
+            "practical_screen_met": true,
+            "crossed_95_percentile_interval_pp": [
+              -0.1388888888888889,
+              8.88888888888889
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              1.25,
+              7.083333333333333
+            ],
+            "question_only_95_percentile_interval_pp": [
+              1.1111111111111112,
+              7.083333333333333
+            ]
+          },
+          "opd_minus_pi": {
+            "per_seed_delta_pp": [
+              1.6666666666666667,
+              2.9166666666666665,
+              7.5
+            ],
+            "mean_delta_pp": 4.027777777777778,
+            "positive_seeds": 3,
+            "practical_screen_met": true,
+            "crossed_95_percentile_interval_pp": [
+              -0.4166666666666667,
+              9.583333333333334
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              1.6666666666666667,
+              7.5
+            ],
+            "question_only_95_percentile_interval_pp": [
+              0.4166666666666667,
+              7.777777777777778
+            ]
+          },
+          "opd_minus_warm": {
+            "per_seed_delta_pp": [
+              5.0,
+              6.666666666666667,
+              11.25
+            ],
+            "mean_delta_pp": 7.638888888888889,
+            "positive_seeds": 3,
+            "practical_screen_met": true,
+            "crossed_95_percentile_interval_pp": [
+              2.5,
+              13.472222222222221
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              5.0,
+              11.25
+            ],
+            "question_only_95_percentile_interval_pp": [
+              3.888888888888889,
+              11.944444444444445
+            ]
+          },
+          "warm_minus_original": {
+            "per_seed_delta_pp": [
+              -3.75,
+              -2.9166666666666665,
+              -4.166666666666667
+            ],
+            "mean_delta_pp": -3.6111111111111107,
+            "positive_seeds": 0,
+            "practical_screen_met": false,
+            "crossed_95_percentile_interval_pp": [
+              -7.5,
+              0.0
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              -4.166666666666667,
+              -2.9166666666666665
+            ],
+            "question_only_95_percentile_interval_pp": [
+              -6.944444444444445,
+              -0.8333333333333334
+            ]
+          }
+        },
+        "AMC23": {
+          "opd_minus_original": {
+            "per_seed_delta_pp": [
+              3.125,
+              9.0625,
+              10.3125
+            ],
+            "mean_delta_pp": 7.5,
+            "positive_seeds": 3,
+            "practical_screen_met": true,
+            "crossed_95_percentile_interval_pp": [
+              1.1458333333333333,
+              14.0625
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              3.125,
+              10.3125
+            ],
+            "question_only_95_percentile_interval_pp": [
+              2.8125,
+              12.916666666666666
+            ]
+          },
+          "opd_minus_pi": {
+            "per_seed_delta_pp": [
+              11.875,
+              10.0,
+              6.25
+            ],
+            "mean_delta_pp": 9.375,
+            "positive_seeds": 3,
+            "practical_screen_met": true,
+            "crossed_95_percentile_interval_pp": [
+              3.75,
+              15.729166666666666
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              6.25,
+              11.875
+            ],
+            "question_only_95_percentile_interval_pp": [
+              4.791666666666667,
+              14.270833333333334
+            ]
+          },
+          "opd_minus_warm": {
+            "per_seed_delta_pp": [
+              12.5,
+              14.375,
+              12.5
+            ],
+            "mean_delta_pp": 13.125,
+            "positive_seeds": 3,
+            "practical_screen_met": true,
+            "crossed_95_percentile_interval_pp": [
+              7.291666666666667,
+              19.375
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              12.5,
+              14.375
+            ],
+            "question_only_95_percentile_interval_pp": [
+              8.020833333333334,
+              18.75
+            ]
+          },
+          "warm_minus_original": {
+            "per_seed_delta_pp": [
+              -9.375,
+              -5.3125,
+              -2.1875
+            ],
+            "mean_delta_pp": -5.625,
+            "positive_seeds": 0,
+            "practical_screen_met": false,
+            "crossed_95_percentile_interval_pp": [
+              -10.9375,
+              -0.20833333333333334
+            ],
+            "seed_only_95_percentile_interval_pp": [
+              -9.375,
+              -2.1875
+            ],
+            "question_only_95_percentile_interval_pp": [
+              -8.958333333333334,
+              -2.497395833333561
+            ]
+          }
+        }
+      },
+      "hosted_validation": {
+        "replication-s29-warmup": {
+          "hosted_state": "crashed",
+          "verified_training_steps": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "verified_eval_steps": [
+            0,
+            7
+          ],
+          "identical_duplicate_eval_rows": 0,
+          "metrics_match": true
+        },
+        "replication-s29-opd": {
+          "hosted_state": "finished",
+          "verified_training_steps": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "verified_eval_steps": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "identical_duplicate_eval_rows": 0,
+          "metrics_match": true
+        },
+        "replication-s29-pi": {
+          "hosted_state": "finished",
+          "verified_training_steps": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "verified_eval_steps": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "identical_duplicate_eval_rows": 0,
+          "metrics_match": true
+        },
+        "replication-s43-warmup": {
+          "hosted_state": "crashed",
+          "verified_training_steps": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "verified_eval_steps": [
+            0,
+            7
+          ],
+          "identical_duplicate_eval_rows": 0,
+          "metrics_match": true
+        },
+        "replication-s71-warmup": {
+          "hosted_state": "crashed",
+          "verified_training_steps": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "verified_eval_steps": [
+            0,
+            7
+          ],
+          "identical_duplicate_eval_rows": 0,
+          "metrics_match": true
+        },
+        "replication-s43-opd": {
+          "hosted_state": "finished",
+          "verified_training_steps": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "verified_eval_steps": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "identical_duplicate_eval_rows": 3,
+          "metrics_match": true
+        },
+        "replication-s43-pi": {
+          "hosted_state": "finished",
+          "verified_training_steps": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "verified_eval_steps": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "identical_duplicate_eval_rows": 0,
+          "metrics_match": true
+        },
+        "replication-s71-opd": {
+          "hosted_state": "finished",
+          "verified_training_steps": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "verified_eval_steps": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "identical_duplicate_eval_rows": 0,
+          "metrics_match": true
+        },
+        "replication-s71-pi": {
+          "hosted_state": "finished",
+          "verified_training_steps": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "verified_eval_steps": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "identical_duplicate_eval_rows": 3,
+          "metrics_match": true
+        }
+      },
+      "stage_gpu_hours": 23.110469372537402,
+      "unexpected_thinking_delimiters": 1
+    },
+    "total_study_gpu_hours": 76.19230802641974,
+    "total_readiness_plus_study_gpu_hours": 115.3183150408003
+  },
+  "proposed_composition_study": {
+    "status": "design_only_not_authorized_not_launched",
+    "updates_per_arm": 40,
+    "arms": [
+      {
+        "worker": "worker-a",
+        "name": "pi_only",
+        "schedule": "PI40",
+        "pi_weight_sum": 40
+      },
+      {
+        "worker": "worker-b",
+        "name": "single_stage",
+        "schedule": "PI20_then_no_PI20",
+        "pi_weight_sum": 20
+      },
+      {
+        "worker": "worker-c",
+        "name": "cyclic",
+        "schedule": "PI4_then_no_PI4_repeated_5",
+        "pi_weight_sum": 20
+      },
+      {
+        "worker": "worker-d",
+        "name": "probability_mixture",
+        "schedule": "lambda_0.5_for_40",
+        "pi_weight_sum": 20
+      }
+    ],
+    "teacher": "pinned_original_for_both_views",
+    "optimizer": "fresh_Adam_at_zero_continuous_across_all_switches; separately test matched reset schedules",
+    "train_questions": 160,
+    "all_arms_same_question_order": true,
+    "eval_steps": [
+      0,
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32,
+      36,
+      40
+    ],
+    "explicit_common_original_baseline_reuse": true,
+    "benchmark_evaluations": 41,
+    "benchmark_responses": 32800,
+    "development_questions": 128,
+    "development_draws_per_question": 8,
+    "development_evaluations": 5,
+    "development_responses": 5120,
+    "total_screen_responses": 37920,
+    "primary_screen_endpoint": 40,
+    "selection": "fresh disjoint development questions only; existing AIME/AMC are monitored exploratory benchmarks",
+    "confirmation": "separate authorization; at least three fresh seeds with selected composition, PI-only, strongest distinct composition comparator and sealed questions; power analysis and multiplicity rule first",
+    "estimated_screen_gpu_hours_range": [
+      32,
+      50
+    ],
+    "existing_study_remaining_gpu_hours": 19.807691973580262,
+    "admission": "requires revised budget and bounded cost validation; no extension authorized",
+    "additional_controls": [
+      "matched optimizer reset ablation",
+      "4K/8K/16K inference-cost comparison",
+      "shuffled_PI_and_matched_perturbation",
+      "KL_matched_interpolation"
+    ],
+    "later_teacher_refresh": "fixed original versus lagged/EMA; same teacher checkpoint for both context views"
   }
 }
