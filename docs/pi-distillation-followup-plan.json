@@ -3196,92 +3196,18 @@
       "deadline_unix": 1791632473.72556,
       "active_cells": [
         {
-          "worker": "worker-a",
-          "model": "Qwen3-8B",
-          "task": "math",
-          "reserved_gpu_hours": 34.30767914719052,
-          "verified_initial_updates": 1,
-          "verified_hosted_updates": 2,
-          "first_loss": 0.05361873283982277,
-          "completed_evaluations": 0,
-          "snapshot_checked_unix": 1791611130.9095657,
-          "max_gpu_memory_mib": 117216,
-          "gpu_utilization_percent_range": [
-            0,
-            100
-          ],
-          "early_timing_medians": {
-            "median_step_seconds": 40.49190092086792,
-            "median_training_seconds": 3.2712485790252686,
-            "median_rollout_seconds": 16.22625231742859,
-            "median_rollout_tokens_per_gpu_second": 76.0804143711007
-          }
-        },
-        {
-          "worker": "worker-b",
-          "model": "Qwen3-1.7B",
-          "task": "math",
-          "reserved_gpu_hours": 16.161098956399492,
-          "verified_initial_updates": 4,
-          "verified_hosted_updates": 6,
-          "first_loss": 0.07545453310012817,
-          "completed_evaluations": 1,
-          "snapshot_checked_unix": 1791611130.9117818,
-          "max_gpu_memory_mib": 116448,
-          "gpu_utilization_percent_range": [
-            0,
-            100
-          ],
-          "early_timing_medians": {
-            "median_step_seconds": 23.098472237586975,
-            "median_training_seconds": 2.697843909263611,
-            "median_rollout_seconds": 12.431700944900513,
-            "median_rollout_tokens_per_gpu_second": 220.28486763320416
-          }
-        },
-        {
           "worker": "worker-c",
           "model": "Qwen3-8B",
           "task": "code",
-          "reserved_gpu_hours": 43.71905934148364,
-          "verified_initial_updates": 1,
-          "verified_hosted_updates": 2,
-          "first_loss": 0.624954342842102,
-          "completed_evaluations": 0,
-          "snapshot_checked_unix": 1791611130.9822097,
-          "max_gpu_memory_mib": 117214,
-          "gpu_utilization_percent_range": [
-            0,
-            85
-          ],
-          "early_timing_medians": {
-            "median_step_seconds": 38.236329555511475,
-            "median_training_seconds": 2.655850887298584,
-            "median_rollout_seconds": 7.671231627464294,
-            "median_rollout_tokens_per_gpu_second": 97.02161089567544
-          }
+          "completed_updates": 25,
+          "completed_evaluations": 11
         },
         {
           "worker": "worker-d",
           "model": "Qwen3-1.7B",
           "task": "code",
-          "reserved_gpu_hours": 41.72944840656386,
-          "verified_initial_updates": 7,
-          "verified_hosted_updates": 7,
-          "first_loss": 0.28443798422813416,
-          "completed_evaluations": 0,
-          "snapshot_checked_unix": 1791611130.96022,
-          "max_gpu_memory_mib": 116446,
-          "gpu_utilization_percent_range": [
-            0,
-            100
-          ],
-          "early_timing_medians": {
-            "median_step_seconds": 11.001589298248291,
-            "median_training_seconds": 1.7641608715057373,
-            "median_rollout_seconds": 1.7183468341827393,
-            "median_rollout_tokens_per_gpu_second": 284.8474581787819
-          }
+          "completed_updates": 26,
+          "completed_evaluations": 14
         }
       ],
       "reserved_gpu_hours": 135.91728585163753,
@@ -3297,7 +3223,7 @@
       "full_stage_hosted_audit_complete": false,
       "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation.",
       "latest_audit": {
-        "checked_unix": 1791618645.773632,
+        "checked_unix": 1791620669.913551,
         "matrix_matches": true,
         "complete": false,
         "cells": [
@@ -3305,16 +3231,11 @@
             "worker": "worker-a",
             "model": "Qwen3-8B",
             "task": "math",
-            "complete": false,
+            "complete": true,
             "errors": [],
-            "pending": [
-              "Controller exit and cleanup",
-              "4 required evaluations",
-              "generality-qwen3-8b-math-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-math-ema-opd-s101-r1: not started"
-            ],
-            "completed_evaluations": 15,
-            "completed_updates": 26,
+            "pending": [],
+            "completed_evaluations": 19,
+            "completed_updates": 30,
             "scores": {
               "original": {
                 "AIME 2024": {
@@ -3471,6 +3392,32 @@
                   "grader_timeouts": 0,
                   "unexpected_thinking_delimiters": 0
                 }
+              },
+              "ema_opd": {
+                "AIME 2024": {
+                  "avg_at_8": 0.3125,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.1625,
+                  "parse_failure_fraction": 0.14166666666666666,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.2625,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.11666666666666667,
+                  "parse_failure_fraction": 0.10416666666666667,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.740625,
+                  "completions": 320,
+                  "cap_hit_fraction": 0.021875,
+                  "parse_failure_fraction": 0.015625,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {
@@ -3483,6 +3430,16 @@
                 "AIME 2024": 3.7500000000000036,
                 "AIME 2025": 2.4999999999999996,
                 "AMC23": 8.124999999999993
+              },
+              "ema_opd_minus_original": {
+                "AIME 2024": 6.666666666666668,
+                "AIME 2025": 6.666666666666668,
+                "AMC23": 5.625000000000002
+              },
+              "ema_opd_minus_ema_pi": {
+                "AIME 2024": 7.500000000000001,
+                "AIME 2025": 9.166666666666668,
+                "AMC23": 9.375
               }
             }
           },
@@ -3710,16 +3667,15 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "9 required evaluations",
+              "8 required evaluations",
               "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-code-ema-warmup-s101-r1: final source/loss validation",
-              "generality-qwen3-8b-code-ema-warmup-s101-r1: training process exit",
-              "generality-qwen3-8b-code-ema-warmup-s101-r1: all hosted training steps",
-              "generality-qwen3-8b-code-ema-pi-s101-r1: not started",
+              "generality-qwen3-8b-code-ema-pi-s101-r1: final source/loss validation",
+              "generality-qwen3-8b-code-ema-pi-s101-r1: training process exit",
+              "generality-qwen3-8b-code-ema-pi-s101-r1: all hosted training steps",
               "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 10,
-            "completed_updates": 15,
+            "completed_evaluations": 11,
+            "completed_updates": 25,
             "scores": {
               "original": {
                 "HumanEval+": {
@@ -3768,6 +3724,18 @@
                   "pass_at_8": 0.9207317073170732,
                   "test_failure_fraction": 0.19054878048780488
                 }
+              },
+              "ema_warmup": {
+                "HumanEval+": {
+                  "avg_at_8": 0.7195121951219512,
+                  "completions": 1312,
+                  "cap_hit_fraction": 0.0007621951219512195,
+                  "parse_failure_fraction": 0.001524390243902439,
+                  "grader_timeouts": 16,
+                  "unexpected_thinking_delimiters": 0,
+                  "pass_at_8": 0.8963414634146342,
+                  "test_failure_fraction": 0.27515243902439024
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {
@@ -3787,15 +3755,14 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "8 required evaluations",
+              "5 required evaluations",
               "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
               "generality-qwen3-1p7b-code-ema-pi-s101-r1: final source/loss validation",
               "generality-qwen3-1p7b-code-ema-pi-s101-r1: training process exit",
-              "generality-qwen3-1p7b-code-ema-pi-s101-r1: all hosted training steps",
               "generality-qwen3-1p7b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 11,
-            "completed_updates": 25,
+            "completed_evaluations": 14,
+            "completed_updates": 26,
             "scores": {
               "original": {
                 "HumanEval+": {
@@ -3869,11 +3836,11 @@
           }
         ],
         "limitation": "One training seed per cell; fixed endpoint comparisons do not establish cross-seed generality.",
-        "checked_utc": "2026-10-10 07:50 UTC",
-        "completed_updates": 96,
-        "completed_evaluations": 55,
-        "assigned_gpu_hours": 62.46267830689748,
-        "cost_checked_unix": 1791618768.0429251,
+        "checked_utc": "2026-10-10 08:24 UTC",
+        "completed_updates": 111,
+        "completed_evaluations": 63,
+        "assigned_gpu_hours": 75.31970106972588,
+        "cost_checked_unix": 1791620744.557806,
         "audit_validation": "Five focused CPU tests passed: complete math/code cells, nine negative mutations, delayed baseline publication, hosted-score disagreement and result-before-done publication boundaries.",
         "length_profiles": [
           {
@@ -3941,6 +3908,17 @@
             "generation_seconds": 309.73982053098734,
             "output_tokens_per_second": 8628.616092752665,
             "p95_response_latency_seconds": 200.76427139914009
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "stage": "ema_opd",
+            "completions": 800,
+            "mean_response_tokens": 4701.44125,
+            "generation_seconds": 426.07315353199374,
+            "output_tokens_per_second": 8827.481780584836,
+            "p95_response_latency_seconds": 216.86209118048424
           },
           {
             "worker": "worker-b",
@@ -4064,6 +4042,17 @@
             "p95_response_latency_seconds": 4.419629272824387
           },
           {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "stage": "ema_warmup",
+            "completions": 1312,
+            "mean_response_tokens": 99.26295731707317,
+            "generation_seconds": 155.76564041001257,
+            "output_tokens_per_second": 836.0829747638534,
+            "p95_response_latency_seconds": 2.398874982065172
+          },
+          {
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
@@ -4138,11 +4127,29 @@
           "original_model_preserved": true,
           "assigned_gpu_hours": 9.847855876816643,
           "cleanup_checked_unix": 1791615357.7093868
+        },
+        "worker-a": {
+          "model": "Qwen3-8B",
+          "task": "math",
+          "updates": 30,
+          "evaluations": 19,
+          "responses": 15200,
+          "training_runs": 6,
+          "exit_code": 0,
+          "hosted_audit_passed": true,
+          "owned_cleanup_verified": true,
+          "gpu_memory_and_utilization_zero": true,
+          "gpu_compute_processes": 0,
+          "temporary_snapshots_remaining": 0,
+          "native_recovery_checkpoints": 0,
+          "original_model_preserved": true,
+          "assigned_gpu_hours": 21.61262004799313,
+          "cleanup_checked_unix": 1791620663.1595397
         }
       },
       "question_uncertainty": {
-        "checked_unix": 1791618665.8307378,
-        "audit_sha256": "818c86e81b257b99b59b92afd108a9eee179bd60fa5d098612cdaee0bdfa20de",
+        "checked_unix": 1791620687.499456,
+        "audit_sha256": "122951f8c9e044c08458e6b93ac52f44c2900ef2fc6c6422e5dc0db1f75de135",
         "comparisons": [
           {
             "worker": "worker-a",
@@ -4444,6 +4451,159 @@
             "question_resampling_interval_95_pp": [
               -9.0625,
               1.5625
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "ema_opd",
+            "right": "original",
+            "delta_percentage_points": 6.666666666666667,
+            "question_resampling_interval_95_pp": [
+              1.25,
+              12.5
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "ema_opd",
+            "right": "original",
+            "delta_percentage_points": 6.666666666666667,
+            "question_resampling_interval_95_pp": [
+              1.6666666666666667,
+              12.5
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "ema_opd",
+            "right": "original",
+            "delta_percentage_points": 5.625,
+            "question_resampling_interval_95_pp": [
+              0.3125,
+              11.25
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "ema_opd",
+            "right": "ema_pi",
+            "delta_percentage_points": 7.5,
+            "question_resampling_interval_95_pp": [
+              2.5,
+              12.916666666666668
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "ema_opd",
+            "right": "ema_pi",
+            "delta_percentage_points": 9.166666666666668,
+            "question_resampling_interval_95_pp": [
+              2.5,
+              16.666666666666668
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "ema_opd",
+            "right": "ema_pi",
+            "delta_percentage_points": 9.375,
+            "question_resampling_interval_95_pp": [
+              3.75,
+              15.625
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "ema_opd",
+            "right": "frozen_opd",
+            "delta_percentage_points": 0.4166666666666667,
+            "question_resampling_interval_95_pp": [
+              -4.583333333333334,
+              5.416666666666667
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "ema_opd",
+            "right": "frozen_opd",
+            "delta_percentage_points": 2.5,
+            "question_resampling_interval_95_pp": [
+              -2.5,
+              7.5
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "ema_opd",
+            "right": "frozen_opd",
+            "delta_percentage_points": -2.1875,
+            "question_resampling_interval_95_pp": [
+              -6.25,
+              1.875
             ],
             "questions": 40,
             "responses_per_question": 8,
@@ -4978,6 +5138,23 @@
             "bootstrap_seed": 20261010
           },
           {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "ema_warmup",
+            "right": "original",
+            "delta_percentage_points": -9.75609756097561,
+            "question_resampling_interval_95_pp": [
+              -14.405487804878048,
+              -5.335365853658536
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
@@ -5064,26 +5241,6 @@
           }
         ],
         "pending": [
-          {
-            "worker": "worker-a",
-            "left": "ema_opd",
-            "right": "original"
-          },
-          {
-            "worker": "worker-a",
-            "left": "ema_opd",
-            "right": "ema_pi"
-          },
-          {
-            "worker": "worker-a",
-            "left": "ema_opd",
-            "right": "frozen_opd"
-          },
-          {
-            "worker": "worker-c",
-            "left": "ema_warmup",
-            "right": "original"
-          },
           {
             "worker": "worker-c",
             "left": "ema_pi",
@@ -5204,7 +5361,97 @@
           }
         ],
         "limitation": "Descriptive correct-candidate counts from fixed endpoints and eight responses per question, conditional on one training seed. Not pass@8, training replication, or a significance test."
-      }
+      },
+      "startup_cells": [
+        {
+          "worker": "worker-a",
+          "model": "Qwen3-8B",
+          "task": "math",
+          "reserved_gpu_hours": 34.30767914719052,
+          "verified_initial_updates": 1,
+          "verified_hosted_updates": 2,
+          "first_loss": 0.05361873283982277,
+          "completed_evaluations": 0,
+          "snapshot_checked_unix": 1791611130.9095657,
+          "max_gpu_memory_mib": 117216,
+          "gpu_utilization_percent_range": [
+            0,
+            100
+          ],
+          "early_timing_medians": {
+            "median_step_seconds": 40.49190092086792,
+            "median_training_seconds": 3.2712485790252686,
+            "median_rollout_seconds": 16.22625231742859,
+            "median_rollout_tokens_per_gpu_second": 76.0804143711007
+          }
+        },
+        {
+          "worker": "worker-b",
+          "model": "Qwen3-1.7B",
+          "task": "math",
+          "reserved_gpu_hours": 16.161098956399492,
+          "verified_initial_updates": 4,
+          "verified_hosted_updates": 6,
+          "first_loss": 0.07545453310012817,
+          "completed_evaluations": 1,
+          "snapshot_checked_unix": 1791611130.9117818,
+          "max_gpu_memory_mib": 116448,
+          "gpu_utilization_percent_range": [
+            0,
+            100
+          ],
+          "early_timing_medians": {
+            "median_step_seconds": 23.098472237586975,
+            "median_training_seconds": 2.697843909263611,
+            "median_rollout_seconds": 12.431700944900513,
+            "median_rollout_tokens_per_gpu_second": 220.28486763320416
+          }
+        },
+        {
+          "worker": "worker-c",
+          "model": "Qwen3-8B",
+          "task": "code",
+          "reserved_gpu_hours": 43.71905934148364,
+          "verified_initial_updates": 1,
+          "verified_hosted_updates": 2,
+          "first_loss": 0.624954342842102,
+          "completed_evaluations": 0,
+          "snapshot_checked_unix": 1791611130.9822097,
+          "max_gpu_memory_mib": 117214,
+          "gpu_utilization_percent_range": [
+            0,
+            85
+          ],
+          "early_timing_medians": {
+            "median_step_seconds": 38.236329555511475,
+            "median_training_seconds": 2.655850887298584,
+            "median_rollout_seconds": 7.671231627464294,
+            "median_rollout_tokens_per_gpu_second": 97.02161089567544
+          }
+        },
+        {
+          "worker": "worker-d",
+          "model": "Qwen3-1.7B",
+          "task": "code",
+          "reserved_gpu_hours": 41.72944840656386,
+          "verified_initial_updates": 7,
+          "verified_hosted_updates": 7,
+          "first_loss": 0.28443798422813416,
+          "completed_evaluations": 0,
+          "snapshot_checked_unix": 1791611130.96022,
+          "max_gpu_memory_mib": 116446,
+          "gpu_utilization_percent_range": [
+            0,
+            100
+          ],
+          "early_timing_medians": {
+            "median_step_seconds": 11.001589298248291,
+            "median_training_seconds": 1.7641608715057373,
+            "median_rollout_seconds": 1.7183468341827393,
+            "median_rollout_tokens_per_gpu_second": 284.8474581787819
+          }
+        }
+      ]
     }
   }
 }
