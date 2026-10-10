@@ -2549,7 +2549,7 @@
     "later_teacher_refresh": "fixed original versus lagged/EMA; same teacher checkpoint for both context views"
   },
   "proposed_generality_ema_study": {
-    "status": "readiness_passed_scientific_budget_approval_pending",
+    "status": "scientific_running",
     "user_requested_all_four_workers": true,
     "user_requested_ema_comparison": true,
     "launch_authorized": true,
@@ -2724,7 +2724,7 @@
       "failed_attempts": [
         "HF completion-marker ordering race; fixed with synchronization",
         "GPU-to-sandbox DNS connectivity; fixed with private queue transport",
-        "Full code response handoff timed out carrying repeated tests; code controllers stopped; compressed response-only transport under validation",
+        "Full code response handoff timed out carrying repeated tests; failed controllers preserved; compressed response-only transport subsequently validated.",
         "Qwen3-8B math reached the bounded 15-minute readiness deadline before drain/fork completion"
       ],
       "private_code_bridge_control_passed": true,
@@ -2796,13 +2796,13 @@
     },
     "budget_proposal": {
       "new_readiness_gpu_hour_cap": 24,
-      "new_study_gpu_hour_cap": 96,
+      "new_study_gpu_hour_cap": 144,
       "new_scientific_window_hours": 6,
       "readiness_total_cap": 64,
-      "study_total_cap": 176,
-      "overall_total_cap": 240,
+      "study_total_cap": 224,
+      "overall_total_cap": 288,
       "existing_study_remaining_gpu_hours": 19.807691973580262,
-      "forecast_status": "allowance proposal, not measured new-model cost; admission requires all four balanced cells fit conservative measurements",
+      "forecast_status": "Measured complete-matrix reservation 135.91728585163753 GPU-hours admitted under approved 144 cap.",
       "stop_boundary": "one complete matched screen per cell, no automatic seeds/epochs/model substitutions"
     },
     "later_stage": "replicate promising cells with at least three independent warmups and fresh sealed tasks before schedule optimization; no claim of significance or frontier generality from one seed per cell",
@@ -2850,9 +2850,9 @@
         "thinking": true
       }
     },
-    "authorization": "User approved the complete proposed matrix and budget with LGTM; scientific launch remains gated on readiness and measured admission.",
+    "authorization": "User approved the matrix with LGTM and explicitly approved all runs after measured budget proposal; all readiness and complete-matrix admission checks passed.",
     "readiness_recovery_proposal": {
-      "status": "not_admitted_pending_readiness_budget",
+      "status": "approved_recovery_completed",
       "used_gpu_hours": 11.304555404451158,
       "remaining_current_cap": 4.695444595548842,
       "new_gpu_hours_required": 12.476226238671936,
@@ -2905,7 +2905,8 @@
           "reserved_seconds": 2098.8854482298484,
           "reserved_gpu_hours": 4.664189884955219
         }
-      ]
+      ],
+      "historical_pre_recovery_estimate": true
     },
     "readiness_resume": {
       "approved": true,
@@ -2915,15 +2916,15 @@
       "projected_total_gpu_hours": 23.89878905455006,
       "active_recovery_workers": [],
       "already_passed_worker": "worker-b",
-      "scientific_started": false,
-      "scientific_admission": "All four complete cells must fit measured reservations within 96 GPU-hours and six hours.",
+      "scientific_started": true,
+      "scientific_admission": "All four complete cells admitted: 135.92 GPU-hours reserved under approved 144 and six-hour window.",
       "readiness_complete": true,
       "actual_readiness_gpu_hours": 21.56927062034607,
       "sources_retired": true,
       "hosted_verified": true
     },
     "scientific_budget_proposal": {
-      "status": "pending_user_approval",
+      "status": "approved",
       "reason": "Measured complete four-cell reserve exceeds the approved scientific-stage cap",
       "measured_reservation_gpu_hours": 135.91728585163753,
       "stage_cap_current": 96,
@@ -2940,7 +2941,12 @@
         "updates": 120,
         "evaluations": 76,
         "responses": 80256
-      }
+      },
+      "user_instruction": "I approve all runs",
+      "approved_unix": 1791610819.141258,
+      "approved_stage_cap": 144,
+      "approved_cumulative_study_cap": 224,
+      "approved_overall_cap": 288
     },
     "measured_scientific_reservations": [
       {
@@ -3181,6 +3187,115 @@
         "continuation_loss": 0.24313917756080627,
         "inherited_EMA_counter": 3
       }
-    ]
+    ],
+    "scientific_controllers_launched": 4,
+    "scientific_execution": {
+      "status": "all_four_training_first_finite_updates_and_hosted_metrics_verified",
+      "started_utc": "2026-10-10 05:41 UTC",
+      "start_unix": 1791610873.72556,
+      "deadline_unix": 1791632473.72556,
+      "active_cells": [
+        {
+          "worker": "worker-a",
+          "model": "Qwen3-8B",
+          "task": "math",
+          "reserved_gpu_hours": 34.30767914719052,
+          "verified_initial_updates": 1,
+          "verified_hosted_updates": 2,
+          "first_loss": 0.05361873283982277,
+          "completed_evaluations": 0,
+          "snapshot_checked_unix": 1791611130.9095657,
+          "max_gpu_memory_mib": 117216,
+          "gpu_utilization_percent_range": [
+            0,
+            100
+          ],
+          "early_timing_medians": {
+            "median_step_seconds": 40.49190092086792,
+            "median_training_seconds": 3.2712485790252686,
+            "median_rollout_seconds": 16.22625231742859,
+            "median_rollout_tokens_per_gpu_second": 76.0804143711007
+          }
+        },
+        {
+          "worker": "worker-b",
+          "model": "Qwen3-1.7B",
+          "task": "math",
+          "reserved_gpu_hours": 16.161098956399492,
+          "verified_initial_updates": 4,
+          "verified_hosted_updates": 6,
+          "first_loss": 0.07545453310012817,
+          "completed_evaluations": 1,
+          "snapshot_checked_unix": 1791611130.9117818,
+          "max_gpu_memory_mib": 116448,
+          "gpu_utilization_percent_range": [
+            0,
+            100
+          ],
+          "early_timing_medians": {
+            "median_step_seconds": 23.098472237586975,
+            "median_training_seconds": 2.697843909263611,
+            "median_rollout_seconds": 12.431700944900513,
+            "median_rollout_tokens_per_gpu_second": 220.28486763320416
+          }
+        },
+        {
+          "worker": "worker-c",
+          "model": "Qwen3-8B",
+          "task": "code",
+          "reserved_gpu_hours": 43.71905934148364,
+          "verified_initial_updates": 1,
+          "verified_hosted_updates": 2,
+          "first_loss": 0.624954342842102,
+          "completed_evaluations": 0,
+          "snapshot_checked_unix": 1791611130.9822097,
+          "max_gpu_memory_mib": 117214,
+          "gpu_utilization_percent_range": [
+            0,
+            85
+          ],
+          "early_timing_medians": {
+            "median_step_seconds": 38.236329555511475,
+            "median_training_seconds": 2.655850887298584,
+            "median_rollout_seconds": 7.671231627464294,
+            "median_rollout_tokens_per_gpu_second": 97.02161089567544
+          }
+        },
+        {
+          "worker": "worker-d",
+          "model": "Qwen3-1.7B",
+          "task": "code",
+          "reserved_gpu_hours": 41.72944840656386,
+          "verified_initial_updates": 7,
+          "verified_hosted_updates": 7,
+          "first_loss": 0.28443798422813416,
+          "completed_evaluations": 0,
+          "snapshot_checked_unix": 1791611130.96022,
+          "max_gpu_memory_mib": 116446,
+          "gpu_utilization_percent_range": [
+            0,
+            100
+          ],
+          "early_timing_medians": {
+            "median_step_seconds": 11.001589298248291,
+            "median_training_seconds": 1.7641608715057373,
+            "median_rollout_seconds": 1.7183468341827393,
+            "median_rollout_tokens_per_gpu_second": 284.8474581787819
+          }
+        }
+      ],
+      "reserved_gpu_hours": 135.91728585163753,
+      "stage_cap_gpu_hours": 144,
+      "verified_readiness": true,
+      "verified_admission": true,
+      "verified_deployed_hashes": true,
+      "non_thinking": true,
+      "startup_verified_unix": 1791611169.918928,
+      "startup_verified_utc": "2026-10-10 05:46 UTC",
+      "initial_source_load_verified_all_cells": true,
+      "hosted_training_verified_all_cells": true,
+      "full_stage_hosted_audit_complete": false,
+      "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation."
+    }
   }
 }
