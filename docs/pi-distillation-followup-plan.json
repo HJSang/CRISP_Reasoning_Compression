@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "math_cycle_teacher_screen_complete_phase_readiness_passed_science_pending",
+  "status": "math_cycle_teacher_screen_complete_phase_wave1_producers_running",
   "launch_authorized": true,
   "executable": true,
   "new_gpu_jobs_launched": 9,
@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "teacher_screen_complete_phase_ratio_runtime_and_admission_pending",
+    "status": "teacher_screen_complete_phase_ratio_wave1_producers_running",
     "launch_authorized": true,
     "executable": true,
     "new_gpu_jobs_launched": true,
@@ -6789,11 +6789,10 @@
       "bounded numerical-floor and optimizer controls"
     ],
     "pending": [
-      "Preserve the completed teacher-screen receipt and all prior evidence while implementing the new phase-study runtime",
-      "Implement, test, independently review and document the exact eight-fresh-arm phase protocol/runtime/verifier",
-      "Pin the new evaluation namespace and generate two fresh original baselines for phase-study imports",
-      "Recompute and pass full phase-matrix cost/admission under remaining caps and original clock before any dispatch",
-      "Longer cycle-period, full-stream, confirmation validation and extra-seed work remain separate scope decisions"
+      "Verify both newly generated model-matched baseline payloads, then bind and dispatch the two unassigned wave-one consumers without mutating their admitted templates.",
+      "Complete all scheduled wave-one updates, evaluations, hosted attachments, cleanup and exact whole-wave accounting audit.",
+      "Raise wave-two reservations from all newly observed full-panel timing and response tails if necessary, and require fresh admission within the original caps and clock before wave-two dispatch.",
+      "Longer cycle-period, full-stream, confirmation validation and extra-seed work remain separate scope decisions."
     ],
     "interpretation_limit": "Repeated-cycle partial results fluctuate; no 88-update trajectory completed before operational termination. They do not establish a winning teacher policy, guaranteed accumulation, or that PI degradation is necessary.",
     "data_split": {
@@ -16356,17 +16355,17 @@
     "next_priority": {
       "user_instruction": "Let\u2019s focus on tuning 7 and 4.",
       "decision_authority": "Supervising agent design choice under the latest user steering; the user did not explicitly specify this exact eight-arm grid.",
-      "status": "phase_ratio_design_pending_runtime_review_and_fresh_admission",
+      "status": "phase_ratio_wave1_started_with_controlled_baseline_stagger",
       "current_teacher_runs_preserved": true,
       "optimizer_additional_arms_deferred": 6,
-      "new_phase_jobs_launched": false,
-      "latest_public_evidence_cutoff_utc": "2026-10-10T21:48:54.300275+00:00"
+      "new_phase_jobs_launched": true,
+      "latest_public_evidence_cutoff_utc": "2026-10-10T23:32:42.783236+00:00"
     },
     "phase_ratio_screen": {
       "version": "math-phases-v1",
-      "status": "strict_wrapper_readiness_passed_scientific_phase_admission_pending",
-      "admitted": false,
-      "dispatch": false,
+      "status": "wave1_producers_running_consumers_pending_verified_fresh_baselines",
+      "admitted": true,
+      "dispatch": true,
       "models": [
         "Qwen3-4B",
         "Qwen3-8B"
@@ -16681,8 +16680,8 @@
         "Fresh 7/4 controls avoid wrapper-equivalence assumptions, but different wave timing and execution variation remain.",
         "Locked confirmation on reserved validation, fresh seeds and longer training would be needed before claiming reproducible sustained improvement. Any extra execution requires an explicit bounded scope and admission."
       ],
-      "cost_gate": "Conditional only: reserve every new arm and baseline plus preparation/evaluation/cleanup/operational costs against actual spent cost and the original deadline; the old optimizer admission does not authorize the phase matrix.",
-      "runtime_status": "One source-bound 8B wrapper readiness controller launched2026-10-10T22:52:15.216030Z and was observed alive in training startup with evaluation running and no queue failure. Exact2940asset/source staging and corrected effective-private-tracking preflight passed. Readiness completion and whole scientific matrix admission remain pending.",
+      "cost_gate": "Actual wave-one admission independently passed while reserving all eight phase arms, fresh baselines and remaining handoff/evaluation/cleanup/operational costs. Wave two still requires a fresh bound-only-raised reassessment from completed full-panel wave-one evidence, within the unchanged caps and original deadline.",
+      "runtime_status": "Verified startup at 2026-10-10T23:32:42.783236 UTC: wave-one 8B/4B PI3\u2192OPD8 producers are dispatched and owned-alive, each with one original-baseline queue job running and zero failed jobs. The 8B/4B PI7\u2192OPD4 consumers remain pending-baseline and unassigned. Training records were not collected at this cutoff; no phase update count, evaluation score or completion is claimed.",
       "implementation": {
         "public_source": "miles/tools/opsd/math_phase_protocol.py",
         "tests": "miles/tests/fast/opsd/test_math_phase_protocol.py",
@@ -16716,11 +16715,12 @@
             "whole_wave_completion": 37,
             "corrected_preflight": 22
           },
-          "test_count_note": "The retained542 CPU cases certify earlier helper capability. Actual strict wrapper readiness now independently passes all22updates/16suites/1024responses; scientific results and full-matrix admission remain separate.",
+          "test_count_note": "The retained 542 earlier CPU cases cover helper capability. Source reviews and exact-line tables also cover 70 admission, 46 coordinator, 39 entry and 30 science-preparation cases; these tests are not scientific results. Actual strict wrapper readiness passed, and the separately reviewed full matrix admission permits wave-one startup.",
           "exact_new_walkthrough_rows": 5208,
           "prior_attributed_rows_preserved": 7619,
           "per_arm_audit_is_whole_wave_completion": false,
-          "remote_source_verification_scope": "worker-a staged runtime and original8B source only; remaining scientific workers are not yet staged"
+          "remote_source_verification_scope": "All four scientific preparation/reuse receipts verified the exact 2940-asset bundle and original model aliases. Worker-a reuses its verified smoke-staged root; the other three received fresh staging. Immediate dispatch preflight passed for producers A/B; pending consumers C/D still require their own fresh preflight after baseline binding.",
+          "current_total_attributed_walkthrough_rows": 15413
         },
         "actual_runtime_asset_bytes_verified_by_readiness": true
       },
@@ -17036,7 +17036,113 @@
         "strict_output_errors": 0,
         "grader_timeouts": 0,
         "cleanup_verified": true,
-        "hosted_badge_limitation": "Lifecycle badge disagrees with verified local exit; exact complete metrics are authoritative."
+        "hosted_badge_limitation": "Lifecycle badge disagrees with verified local exit; exact complete metrics are authoritative.",
+        "scientific_admission_note": "Readiness alone grants no scientific admission. A subsequent independent actual full-matrix wave-one admission is recorded separately."
+      },
+      "admitted_wave": 1,
+      "startup_observation": {
+        "checked_utc": "2026-10-10T23:32:42.783236+00:00",
+        "wave": 1,
+        "phase": "running",
+        "coordinator_launch_attempts": 1,
+        "source_and_input_bindings_passed": true,
+        "limits_passed": true,
+        "dispatched_trajectories": 2,
+        "pending_unassigned_trajectories": 2,
+        "jobs": [
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "dispatched": true,
+            "status_fresh": true,
+            "owned_pid_alive": true,
+            "queue": {
+              "done": 0,
+              "pending": 0,
+              "running": 1,
+              "failed": 0
+            },
+            "preflight_verified": true,
+            "asset_count": 2940,
+            "baseline_state": "generate"
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-4B",
+            "dispatched": true,
+            "status_fresh": true,
+            "owned_pid_alive": true,
+            "queue": {
+              "done": 0,
+              "pending": 0,
+              "running": 1,
+              "failed": 0
+            },
+            "preflight_verified": true,
+            "asset_count": 2940,
+            "baseline_state": "generate"
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "dispatched": false,
+            "status_fresh": null,
+            "owned_pid_alive": null,
+            "queue": null,
+            "preflight_verified": false,
+            "asset_count": 2940,
+            "baseline_state": "pending"
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-4B",
+            "dispatched": false,
+            "status_fresh": null,
+            "owned_pid_alive": null,
+            "queue": null,
+            "preflight_verified": false,
+            "asset_count": 2940,
+            "baseline_state": "pending"
+          }
+        ],
+        "operational_intervals_count": 12,
+        "unresolved_intervals": [],
+        "training_records_not_collected": true,
+        "finite_training_update_count": null,
+        "phase_evaluation_results_claimed": false,
+        "complete": false,
+        "scientific_completion_certified": false,
+        "stage_science_gpu_hours": 130.1216474225786,
+        "cumulative_study_gpu_hours": 301.7559940534168,
+        "overall_gpu_hours": 384.4200612168842,
+        "accounting": "Producer assignment starts at actual dispatch intent. Consumers remain unassigned while waiting for audited fresh baselines; their staging/read/binding operations are charged separately. All 12 retained operations are complete at this cutoff."
+      },
+      "actual_matrix_admission": {
+        "checked_utc": "2026-10-10T23:27:50.317387+00:00",
+        "independent_review": "clear",
+        "wave": 1,
+        "admitted": true,
+        "all_eight_trajectories_reserved": true,
+        "prospective_stage_scientific_gpu_hours": 1277.3310177621204,
+        "stage_scientific_cap_gpu_hours": 1300,
+        "prospective_cumulative_study_gpu_hours": 1448.9653643929585,
+        "cumulative_study_cap_gpu_hours": 1500,
+        "prospective_overall_gpu_hours": 1531.629431556426,
+        "overall_cap_gpu_hours": 1604,
+        "future_reserved_gpu_hours": 1147.8524449961342,
+        "future_reserved_wall_hours": 38.94295118761112,
+        "original_start_utc": "2026-10-10T16:43:07.672134+00:00",
+        "original_deadline_utc": "2026-10-12T22:43:07.672134+00:00",
+        "completed_preparation_gpu_hours": 0.15300657590229028,
+        "completed_preparation_worker_receipts": 4,
+        "unused_preparation_reserve_released": true,
+        "remaining_two_handoff_reserve_gpu_hours": 16,
+        "later_wave_requires_fresh_admission": true,
+        "limits": [
+          "Forecast retains25 percent margin and all eight fixed recipes; it is conditional on observed full-panel rates, not a worst-case16K response-tail guarantee.",
+          "The full 16K output-length stress case remains above the limits and grants no automatic extension.",
+          "Wave-two measurements may raise reservations but never lower the admitted bounds; a non-fitting matrix must not dispatch."
+        ]
       }
     },
     "cycle_count_interpretation": {
