@@ -14942,9 +14942,9 @@
         "definitions": {
           "validation": "Unprivileged Math validation average answer correctness over the same128questions and8draws; percentage points reported.",
           "cycle_endpoint": "Only completed OPD endpoints11,22,...88 enter trend analysis. PI endpoints analyzed separately.",
-          "matched_horizons": "8B cycles1–7 for both teacher arms;4Bcycles1–8. Fixed8Bcycle8 is retained in all_completed_cycles, not compared with refreshcycle7.",
+          "matched_horizons": "8B cycles1\u20137 for both teacher arms;4Bcycles1\u20138. Fixed8Bcycle8 is retained in all_completed_cycles, not compared with refreshcycle7.",
           "slope": "Ordinary least-squares descriptive slope of cycle-end percent against cycle number, with an intercept; no standard errors or independent-replication claim.",
-          "late_window": "Fixed cycles6–8 compared with cycles1–3, only when all are captured. Also report explicitly labelled last-three-observed diagnostic for incomplete8B.",
+          "late_window": "Fixed cycles6\u20138 compared with cycles1\u20133, only when all are captured. Also report explicitly labelled last-three-observed diagnostic for incomplete8B.",
           "phase_changes": "PIend minus preceding OPDend (or original forcycle1); OPDend minus that same cycle PIend. Seven PI versus four OPD updates: phase deltas are not equal-compute causal effects.",
           "warnings": "Retain the flagged Dcycle6 validation score and unchanged denominator; defaultstrictfailure remains separate."
         },
@@ -15692,15 +15692,15 @@
         ],
         "matrix_identification": {
           "unique_trajectories": 10,
-          "per_model": "Five unique arms: four fixed-original reset/carry × constant/global_linear variants, plus cycle_refresh/reset/constant. Original teacher-screen reset/constant arm is the shared factorial control.",
+          "per_model": "Five unique arms: four fixed-original reset/carry \u00d7 constant/global_linear variants, plus cycle_refresh/reset/constant. Original teacher-screen reset/constant arm is the shared factorial control.",
           "identified_exploratory_contrasts": [
             "Teacher refresh versus fixed-original with reset_each_phase and constant5e-6 only.",
             "Adam carry versus reset with fixed-original teacher at each LR schedule.",
             "Global-linear decay versus constant with fixed-original teacher at each optimizer policy.",
-            "Reset/carry × constant/decay interaction under fixed-original teacher only."
+            "Reset/carry \u00d7 constant/decay interaction under fixed-original teacher only."
           ],
           "not_identified": [
-            "Refresh × Adam-carry interaction, refresh × LR-decay interaction, or their three-way interaction: three refresh optimizer/LR cells per model are absent.",
+            "Refresh \u00d7 Adam-carry interaction, refresh \u00d7 LR-decay interaction, or their three-way interaction: three refresh optimizer/LR cells per model are absent.",
             "Best LR or whether5e-6 is too large: only one constant rate and one changing schedule.",
             "Pure schedule-order effect: linear mean LR2.75e-6 differs from constant5e-6; no constant2.75e-6 control.",
             "Generalization across training seeds, model families, full24809trainingquestions or longer horizons than88updates.",
@@ -15713,8 +15713,8 @@
         "decision_criteria_proposal": {
           "status": "Proposed diagnostic interpretation for the user goal, formulated after observing trajectories; not a new preregistered primary endpoint, hard gate or launch authorization.",
           "primary": "Retain update88 validation Avg@8 for every required arm; no maximum-over-checkpoints, no benchmark selection, no dropping failed or weak arms.",
-          "durable_gain": "Describe gain as retained only when finalcycle8 exceeds original and fixedlatecycles6–8 remain above original on average; report all three individual late endpoints and uncertainty, not merely the mean. This is distinct from continued growth.",
-          "continued_growth": "For support of accumulating gain, require concordant positive late-vs-early change and no material late decline: report cycles6–8 minus1–3 and slope over fixedcycles5–8, together with cycle8 minuscycle7. Do not invent an effect-size threshold from these outcomes; select a practical tolerance before new confirmation evidence.",
+          "durable_gain": "Describe gain as retained only when finalcycle8 exceeds original and fixedlatecycles6\u20138 remain above original on average; report all three individual late endpoints and uncertainty, not merely the mean. This is distinct from continued growth.",
+          "continued_growth": "For support of accumulating gain, require concordant positive late-vs-early change and no material late decline: report cycles6\u20138 minus1\u20133 and slope over fixedcycles5\u20138, together with cycle8 minuscycle7. Do not invent an effect-size threshold from these outcomes; select a practical tolerance before new confirmation evidence.",
           "confirmation": "After candidate selection solely on the fixed primary endpoint, evaluate a locked recipe on held-out3462validationgroups and freshtrainingseeds before claiming robust sustained improvement; these require separately bounded authorization if outside current executable scope. The groups are withheld from this selection, not guaranteed historically untouched.",
           "uncertainty": "Use question-level paired differences/cluster bootstrap for repeated draws and arm comparisons when raw records are available; aggregate summary alone cannot provide this. One trainingseed cannot quantify training-seed uncertainty. Repeated phase points are not independent replications.",
           "cost": "Report actual tokens, cap-hit/parse-failure rates and generation/totalwall alongside validation; do not exclude capped/flagged outcomes. A more accurate longer-output recipe is not established to be more compute-efficient. Any equal-token-budget experiment is a separate proposed scope.",
@@ -15739,7 +15739,7 @@
           "pi_positive": 7,
           "pi_negative": 24
         },
-        "interpretation": "Above-original retention differs from continued upward growth. All three complete arms have negative cycle5–8 slopes; cycle-refresh4B retains its gain but does not establish ongoing accumulation. Fixed late6–8 diagnostics for8Brefresh remain pending. Finish exact currentmatrix before any conditional newscope.",
+        "interpretation": "Above-original retention differs from continued upward growth. All three complete arms have negative cycle5\u20138 slopes; cycle-refresh4B retains its gain but does not establish ongoing accumulation. Fixed late6\u20138 diagnostics for8Brefresh remain pending. Finish exact currentmatrix before any conditional newscope.",
         "current_priority_notice": "The numeric 21:31 analysis is preserved. Subsequent user steering prioritizes a fresh eight-arm ratio screen; the six optimizer variants discussed in that historical matrix analysis are deferred."
       },
       "terminal_evidence": {
@@ -16344,7 +16344,7 @@
         },
         "interpretation": {
           "primary": "Fixed cycle-eight no-hint validation, same 128 questions and eight draws; no maximum-checkpoint or benchmark selection.",
-          "trend": "Late-versus-early means and cycles 5–8 slopes describe this observed one-seed screen. 8B refresh has a positive late mean difference and slope; 4B refresh retains a final gain but has a negative late slope. Neither establishes monotonic or replicated growth.",
+          "trend": "Late-versus-early means and cycles 5\u20138 slopes describe this observed one-seed screen. 8B refresh has a positive late mean difference and slope; 4B refresh retains a final gain but has a negative late slope. Neither establishes monotonic or replicated growth.",
           "phase_changes": "OPD improves 27 of 32 preceding PI endpoints; PI improves over the preceding cycle/original in 7 of 32. Repeated phase pairs are correlated, not independent replications.",
           "cost": "Final benchmark accuracy must be read alongside cap hits, tokens and generation time. Refresh has no established superiority at matched inference cost; all outcomes remain in the denominators.",
           "next_scope": "Six unlaunched optimizer arms are deferred. The fresh eight-arm phase-ratio screen remains conditional on reviewed runtime, bounded readiness and fresh whole-matrix admission; no phase dispatch has occurred."
@@ -16354,7 +16354,7 @@
       "original_full_study_complete": false
     },
     "next_priority": {
-      "user_instruction": "Let’s focus on tuning 7 and 4.",
+      "user_instruction": "Let\u2019s focus on tuning 7 and 4.",
       "decision_authority": "Supervising agent design choice under the latest user steering; the user did not explicitly specify this exact eight-arm grid.",
       "status": "phase_ratio_design_pending_runtime_review_and_fresh_admission",
       "current_teacher_runs_preserved": true,
@@ -16364,7 +16364,7 @@
     },
     "phase_ratio_screen": {
       "version": "math-phases-v1",
-      "status": "design_pending_runtime_review_and_fresh_admission",
+      "status": "one_wrapper_readiness_running_scientific_phase_admission_pending",
       "admitted": false,
       "dispatch": false,
       "models": [
@@ -16656,13 +16656,14 @@
       "baseline_policy": "Wave 1 worker-a generates the fresh 8B original baseline and worker-b the fresh 4B original baseline, each with one validation and one benchmark suite in the new namespace. The other six arms import the matching fresh, verified two-suite payload. Four generated suites contain 3,648 responses; imported attachments do not add generated suites or responses.",
       "evaluation_namespace": {
         "requirement": "A new phase-study evaluation seed namespace, shared across all eight cells and pinned in the plan manifest. Do not reuse the old math-cycle namespace.",
-        "value_status": "Caller must explicitly set and freeze the literal namespace before admission; the pure phase protocol does not select it.",
-        "historical_comparability": "Old baseline and evaluator results remain references. Do not demand identical sampled responses or baseline scores across the old and new namespace/version."
+        "value_status": "Explicitly frozen in newly prepared full16K plans; all other plan fields match the completed source plans.",
+        "historical_comparability": "Old baseline and evaluator results remain references. Do not demand identical sampled responses or baseline scores across the old and new namespace/version.",
+        "value": "math-phases-v1:s137"
       },
       "readout": {
-        "primary": "Fixed cycle 8 / update 88 unprivileged Math validation Avg@8: 128 questions × 8 draws. Compare each candidate against the fresh 7/4 control separately within each model.",
+        "primary": "Fixed cycle 8 / update 88 unprivileged Math validation Avg@8: 128 questions \u00d7 8 draws. Compare each candidate against the fresh 7/4 control separately within each model.",
         "selection": "No benchmark-based ranking, no best-intermediate-checkpoint selection and no dropping weak arms after viewing earlier results. All prespecified cells are retained unless an operational or budget gate prevents completion.",
-        "diagnostics": "Prespecify cycles 6–8 minus cycles 1–3 mean validation and the OLS slope through cycles 5–8 as descriptive diagnostics for this new screen. Cycle-eight validation remains primary. A highest final score with a flat or falling late trend does not establish sustained growth. These diagnostics are chosen after the earlier 7/4 evidence, not retroactively called predeclared for that old screen.",
+        "diagnostics": "Prespecify cycles 6\u20138 minus cycles 1\u20133 mean validation and the OLS slope through cycles 5\u20138 as descriptive diagnostics for this new screen. Cycle-eight validation remains primary. A highest final score with a flat or falling late trend does not establish sustained growth. These diagnostics are chosen after the earlier 7/4 evidence, not retroactively called predeclared for that old screen.",
         "uncertainty": "Use question-group paired differences or a cluster bootstrap for repeated draws and the three candidate contrasts. One training seed cannot establish training-seed robustness.",
         "cost": "Retain every capped and flagged response with original scores and denominators. Report per-dataset lengths, cap-hit and parse-failure rates, generation and total wall time. The same update/evaluation counts do not imply equal GPU-hours.",
         "phase_alignment": "Common OPD endpoints at updates 11, 22, ..., 88 are matched. PI ends occur at different global updates across ratios and must be labelled rather than treated as equal-horizon comparisons."
@@ -16674,14 +16675,14 @@
       },
       "design_limits": [
         "One seed, a 352-question training stream and a repeatedly inspected 128-question validation panel cannot establish robust sustained growth. Multiple candidate comparisons can overfit this panel.",
-        "Teacher refresh is fixed here; the screen does not identify teacher-policy × phase-ratio interactions.",
+        "Teacher refresh is fixed here; the screen does not identify teacher-policy \u00d7 phase-ratio interactions.",
         "Moving the phase boundary also moves the fresh-Adam boundary. These are whole-recipe effects, not isolated loss-ratio effects.",
         "Constant LR 5e-6 and Adam reset remain fixed; carry and decay effects remain unanswered.",
         "Fresh 7/4 controls avoid wrapper-equivalence assumptions, but different wave timing and execution variation remain.",
         "Locked confirmation on reserved validation, fresh seeds and longer training would be needed before claiming reproducible sustained improvement. Any extra execution requires an explicit bounded scope and admission."
       ],
       "cost_gate": "Conditional only: reserve every new arm and baseline plus preparation/evaluation/cleanup/operational costs against actual spent cost and the original deadline; the old optimizer admission does not authorize the phase matrix.",
-      "runtime_status": "Pure phase protocol and tests implemented and independently reviewed: 56 focused CPU tests pass and all343addedlines documented. Actual trainer/tracking adapters, baseline dependency, separate verifier/output contract, readiness and admission remain pending.",
+      "runtime_status": "One source-bound 8B wrapper readiness controller launched2026-10-10T22:52:15.216030Z and was observed alive in training startup with evaluation running and no queue failure. Exact2940asset/source staging and corrected effective-private-tracking preflight passed. Readiness completion and whole scientific matrix admission remain pending.",
       "implementation": {
         "public_source": "miles/tools/opsd/math_phase_protocol.py",
         "tests": "miles/tests/fast/opsd/test_math_phase_protocol.py",
@@ -16693,146 +16694,336 @@
         "independent_source_review": "clear",
         "actual_line_walkthrough_rows": 343,
         "actual_source_file_bytes_verified_by_manifest_helper": false,
-        "gpu_readiness_proven": false
+        "gpu_readiness_proven": false,
+        "phase_adapters": {
+          "runtime_asset_count": 2940,
+          "runtime_source_count": 2919,
+          "numerical_core_changed": false,
+          "reviewed_tracking_label_additions": 20,
+          "runtime_bundle_sha256": "d11d73bd06f61b284d6012bad1f32c98c36509225d660f62cabc961556f72fbf",
+          "phase_manifest_sha256": "04e0aeb1d57a5c9365f8a96a27698ecafe4867d49ce1074543618a103d8e44fb",
+          "local_archive_byte_verification": true,
+          "remote_source_verification": true,
+          "cpu_test_groups": {
+            "trainer_tracking_and_existing_regressions": 165,
+            "config_and_readiness_schema": 58,
+            "production_evidence": 74,
+            "production_output_contract": 22,
+            "strict_readiness_evidence": 61,
+            "readiness_controller": 39,
+            "readiness_preparation": 21,
+            "readiness_completion": 43,
+            "whole_wave_completion": 37,
+            "corrected_preflight": 22
+          },
+          "test_count_note": "Reviewed groups contain542 CPU cases including predecessor regressions. They certify helper capability; actual strict readiness is running and not yet passed.",
+          "exact_new_walkthrough_rows": 5208,
+          "prior_attributed_rows_preserved": 7619,
+          "per_arm_audit_is_whole_wave_completion": false,
+          "remote_source_verification_scope": "worker-a staged runtime and original8B source only; remaining scientific workers are not yet staged"
+        }
       },
       "prospective_feasibility": {
-        "source_cutoff_utc": "2026-10-10T21:31:32.311651+00:00",
+        "kind": "phase_length_terminal_cost_and_readiness_planning_only",
+        "checked_utc": "2026-10-10T22:11:18.913983+00:00",
+        "source_cutoff_utc": "2026-10-10T21:48:54.300275+00:00",
+        "source_suite_count": 108,
         "admitted": false,
-        "dispatch_authorized_by_this_receipt": false,
-        "whole_current_wave_complete_at_source_cutoff": false,
+        "dispatch": false,
+        "actual_origin": {
+          "stage_science_gpu_hours": 129.32556619008383,
+          "stage_readiness_gpu_hours": 18.303872906896807,
+          "cumulative_readiness_gpu_hours": 78.99915054162344,
+          "cumulative_study_gpu_hours": 300.959912820922,
+          "overall_gpu_hours": 379.9590633625454,
+          "shared_start_unix": 1791650587.672134,
+          "shared_deadline_unix": 1791844987.672134,
+          "remaining_clock_hours_at_terminal": 48.90371440529823,
+          "remaining_clock_hours_at_analysis": 48.53021059751511
+        },
+        "approved_caps": {
+          "stage_science_gpu_hours": 1300,
+          "stage_readiness_gpu_hours": 40,
+          "cumulative_readiness_gpu_hours": 104,
+          "cumulative_study_gpu_hours": 1500,
+          "overall_gpu_hours": 1604,
+          "original_window_hours": 54
+        },
         "allowances": {
           "science_preparation": {
             "gpu_hours": 8,
-            "wall_hours": 0.9,
-            "scope": "New scientific runtime/configuration staging, source verification and operational preparation. All actual intervals must be recorded; no zero-cost assumption."
+            "wall_hours": 0.9
           },
-          "readiness": {
+          "two_handoffs": {
             "gpu_hours": 16,
-            "wall_hours": 1,
-            "scope": "Separate readiness-stage allowance, including setup, assigned waiting, collection and cleanup. A concrete bounded two-model plan must still be frozen and passed. An incomplete deadline is failure, not a pass."
+            "wall_hours": 1.8
           },
-          "handoffs": {
-            "gpu_hours": 16,
-            "wall_hours": 1.8,
-            "scope": "Two8-GPU-hour/0.9-hour envelopes: current screen to phase wave1, then phase wave1 to wave2. Released workers charge subsequent actual operations, not silent unrecorded assignment."
+          "new_readiness_total": {
+            "gpu_hours": 18.0,
+            "wall_hours": 2.25,
+            "worker_gpu_hours": 16,
+            "preparation_and_evidence_gpu_hours": 2
           }
-        },
-        "readiness_caps": {
-          "approved_new_study_readiness_cap": 40,
-          "existing_new_study_readiness_spent": 18.303870023546946,
-          "prospective_new_readiness": 16,
-          "prospective_stage_readiness": 34.30387002354694,
-          "approved_cumulative_readiness_cap": 104,
-          "prospective_cumulative_readiness": 94.99915054162344
         },
         "scenarios": {
-          "existing_method_with_all_observed_maxima": {
-            "new_training_gpu_hours": 994.5039411535381,
-            "new_training_wall_hours": 31.97663405954749,
-            "future_science_gpu_hours_including_preparation_and_handoffs": 1018.5039411535381,
-            "future_readiness_gpu_hours": 16,
-            "future_total_gpu_hours": 1034.503941153538,
-            "future_serial_wall_hours": 35.67663405954749,
-            "cumulative_at_2132_origin": {
-              "science_gpu_hours": 1145.4997754940575,
-              "study_gpu_hours": 1317.1341221248956,
-              "readiness_gpu_hours": 94.99915054162344,
-              "overall_gpu_hours": 1412.1332726665191
-            },
-            "headroom_at_2132_origin": {
-              "science_gpu_hours": 154.50022450594247,
-              "study_gpu_hours": 182.8658778751044,
-              "readiness_gpu_hours": 9.000849458376564,
-              "overall_gpu_hours": 191.86672733348087,
-              "wall_hours": 13.516521630155601
-            },
-            "fits_numbers_at_2132_origin": true,
-            "not_fresh_admission": true
+          "prior_rate_raised_only": {
+            "future_trajectory_gpu_hours": 994.74497259415,
+            "future_trajectory_wall_hours": 31.992065950562278,
+            "prospective_stage_science_gpu_hours": 1148.0705387842338,
+            "science_cap_headroom_gpu_hours": 151.9294612157662,
+            "prospective_cumulative_study_gpu_hours": 1319.704885415072,
+            "prospective_cumulative_readiness_gpu_hours": 96.99915054162344,
+            "prospective_overall_gpu_hours": 1416.7040359566954,
+            "future_wall_with_science_prep_handoffs": 34.69206595056228,
+            "future_wall_with_all_allowances": 36.94206595056228,
+            "remaining_clock_at_analysis_hours": 48.53021059751511,
+            "remaining_clock_after_forecast_hours": 11.588144646952827,
+            "fits_caps_and_original_clock": true,
+            "admitted": false
           },
-          "existing_method_with_all_observed_maxima_16384_stress": {
-            "new_training_gpu_hours": 1467.1749235260318,
-            "new_training_wall_hours": 46.562844161427115,
-            "future_science_gpu_hours_including_preparation_and_handoffs": 1491.1749235260318,
-            "future_readiness_gpu_hours": 16,
-            "future_total_gpu_hours": 1507.1749235260318,
-            "future_serial_wall_hours": 50.26284416142712,
-            "cumulative_at_2132_origin": {
-              "science_gpu_hours": 1618.1707578665512,
-              "study_gpu_hours": 1789.8051044973893,
-              "readiness_gpu_hours": 94.99915054162344,
-              "overall_gpu_hours": 1884.8042550390128
-            },
-            "headroom_at_2132_origin": {
-              "science_gpu_hours": -318.1707578665512,
-              "study_gpu_hours": -289.80510449738927,
-              "readiness_gpu_hours": 9.000849458376564,
-              "overall_gpu_hours": -280.8042550390128,
-              "wall_hours": -1.069688471724028
-            },
-            "fits_numbers_at_2132_origin": false,
-            "not_fresh_admission": true
+          "prior_rate_raised_only_16384_stress": {
+            "future_trajectory_gpu_hours": 1467.1749235260318,
+            "future_trajectory_wall_hours": 46.562844161427115,
+            "prospective_stage_science_gpu_hours": 1620.5004897161157,
+            "science_cap_headroom_gpu_hours": -320.5004897161157,
+            "prospective_cumulative_study_gpu_hours": 1792.1348363469538,
+            "prospective_cumulative_readiness_gpu_hours": 96.99915054162344,
+            "prospective_overall_gpu_hours": 1889.133986888577,
+            "future_wall_with_science_prep_handoffs": 49.26284416142712,
+            "future_wall_with_all_allowances": 51.51284416142712,
+            "remaining_clock_at_analysis_hours": 48.53021059751511,
+            "remaining_clock_after_forecast_hours": -2.9826335639120103,
+            "fits_caps_and_original_clock": false,
+            "admitted": false
           },
-          "minimum_observed_full_panel_rate": {
-            "new_training_gpu_hours": 1131.3631712323786,
-            "new_training_wall_hours": 37.12706994486824,
-            "future_science_gpu_hours_including_preparation_and_handoffs": 1155.3631712323786,
-            "future_readiness_gpu_hours": 16,
-            "future_total_gpu_hours": 1171.3631712323786,
-            "future_serial_wall_hours": 40.82706994486824,
-            "cumulative_at_2132_origin": {
-              "science_gpu_hours": 1282.359005572898,
-              "study_gpu_hours": 1453.993352203736,
-              "readiness_gpu_hours": 94.99915054162344,
-              "overall_gpu_hours": 1548.9925027453596
-            },
-            "headroom_at_2132_origin": {
-              "science_gpu_hours": 17.640994427101987,
-              "study_gpu_hours": 46.006647796263906,
-              "readiness_gpu_hours": 9.000849458376564,
-              "overall_gpu_hours": 55.007497254640384,
-              "wall_hours": 8.366085744834848
-            },
-            "fits_numbers_at_2132_origin": true,
-            "not_fresh_admission": true
+          "minimum_observed_full_suite_rate": {
+            "future_trajectory_gpu_hours": 1131.6042026729904,
+            "future_trajectory_wall_hours": 37.142501835883024,
+            "prospective_stage_science_gpu_hours": 1284.9297688630743,
+            "science_cap_headroom_gpu_hours": 15.070231136925713,
+            "prospective_cumulative_study_gpu_hours": 1456.5641154939124,
+            "prospective_cumulative_readiness_gpu_hours": 96.99915054162344,
+            "prospective_overall_gpu_hours": 1553.563266035536,
+            "future_wall_with_science_prep_handoffs": 39.84250183588303,
+            "future_wall_with_all_allowances": 42.09250183588303,
+            "remaining_clock_at_analysis_hours": 48.53021059751511,
+            "remaining_clock_after_forecast_hours": 6.437708761632081,
+            "fits_caps_and_original_clock": true,
+            "admitted": false
           },
-          "minimum_observed_full_panel_rate_16384_stress": {
-            "new_training_gpu_hours": 1906.6349364575308,
-            "new_training_wall_hours": 63.921233592105175,
-            "future_science_gpu_hours_including_preparation_and_handoffs": 1930.6349364575308,
-            "future_readiness_gpu_hours": 16,
-            "future_total_gpu_hours": 1946.6349364575308,
-            "future_serial_wall_hours": 67.62123359210517,
-            "cumulative_at_2132_origin": {
-              "science_gpu_hours": 2057.63077079805,
-              "study_gpu_hours": 2229.2651174288885,
-              "readiness_gpu_hours": 94.99915054162344,
-              "overall_gpu_hours": 2324.264267970512
-            },
-            "headroom_at_2132_origin": {
-              "science_gpu_hours": -757.63077079805,
-              "study_gpu_hours": -729.2651174288885,
-              "readiness_gpu_hours": 9.000849458376564,
-              "overall_gpu_hours": -720.2642679705118,
-              "wall_hours": -18.42807790240208
-            },
-            "fits_numbers_at_2132_origin": false,
-            "not_fresh_admission": true
+          "minimum_observed_full_suite_rate_16384_stress": {
+            "future_trajectory_gpu_hours": 1906.6349364575308,
+            "future_trajectory_wall_hours": 63.921233592105175,
+            "prospective_stage_science_gpu_hours": 2059.9605026476147,
+            "science_cap_headroom_gpu_hours": -759.9605026476147,
+            "prospective_cumulative_study_gpu_hours": 2231.594849278453,
+            "prospective_cumulative_readiness_gpu_hours": 96.99915054162344,
+            "prospective_overall_gpu_hours": 2328.593999820076,
+            "future_wall_with_science_prep_handoffs": 66.62123359210517,
+            "future_wall_with_all_allowances": 68.87123359210517,
+            "remaining_clock_at_analysis_hours": 48.53021059751511,
+            "remaining_clock_after_forecast_hours": -20.341022994590062,
+            "fits_caps_and_original_clock": false,
+            "admitted": false
           }
         },
-        "limitations": [
-          "This is arithmetic feasibility, not an operational admission or final cost receipt.",
-          "The current C trajectory and future preparation/readiness outcomes are incomplete at the source cutoff.",
-          "Six-new-run estimates are counterfactual lower-work comparisons only; strict runtime/control equivalence has not been established."
-        ],
-        "operational_prerequisites": [
-          "Complete current worker-c and issue exact whole-wave evidence before new phase dispatch.",
-          "Pin new runtime/model/data/plan identities and evaluation namespace; pass CPU validation, independent review and concrete bounded readiness.",
-          "Fresh full-matrix admission must include all actual intervals and both new waves under original caps/deadline.",
-          "Remaining current work and later operations reduce the 17.6410 scientific GPU-hour headroom of the stronger non-stress scenario.",
-          "16K-mean stress does not fit; never silently drop arms, evaluations, floors, margins or reset the deadline."
+        "limits": [
+          "Conditional forecast based on completed full-panel observations, preserving25%margin and100/120-second training floors.",
+          "The full16K output-length stress scenario exceeds caps and original deadline.",
+          "Fresh baseline consumers wait for exact new payload audit/binding. The extra0.09046485h critical-path startup stagger fits inside the first0.9h/8GPUh phase handoff; it is not added twice.",
+          "Old six optimizer reservations are held/deferred and must be explicitly replaced at phase admission; no existing optimizer launcher is a phase launch path."
         ]
       },
-      "prior_teacher_wave_complete": true
+      "prior_teacher_wave_complete": true,
+      "output_contract": {
+        "version": "math-phase-nonthinking-output-v1",
+        "status": "final_independently_reviewed_and_production_loader_verified",
+        "artifact_sha256": "c8379a5386b7b3223cd8e7302c1db3a37c83bcc141cc950727ea41320c56ba6a",
+        "policy": "Nonthinking requests; generated delimiter counts retained uniformly as diagnostics, with unchanged response bytes, grading and denominators. No filtering, retry, stripping or rescoring. Grader timeouts/source/count failures remain fatal.",
+        "authority": "Root implementation decision under standing user authorization; not separately explicit approval of the exact grid.",
+        "readiness_policy": "Separate strict zero-delimiter smoke; production adjudication cannot relax readiness.",
+        "admitted": false,
+        "dispatch": false
+      },
+      "prospective_feasibility_history": [
+        {
+          "source_cutoff_utc": "2026-10-10T21:31:32.311651+00:00",
+          "admitted": false,
+          "dispatch_authorized_by_this_receipt": false,
+          "whole_current_wave_complete_at_source_cutoff": false,
+          "allowances": {
+            "science_preparation": {
+              "gpu_hours": 8,
+              "wall_hours": 0.9,
+              "scope": "New scientific runtime/configuration staging, source verification and operational preparation. All actual intervals must be recorded; no zero-cost assumption."
+            },
+            "readiness": {
+              "gpu_hours": 16,
+              "wall_hours": 1,
+              "scope": "Separate readiness-stage allowance, including setup, assigned waiting, collection and cleanup. A concrete bounded two-model plan must still be frozen and passed. An incomplete deadline is failure, not a pass."
+            },
+            "handoffs": {
+              "gpu_hours": 16,
+              "wall_hours": 1.8,
+              "scope": "Two8-GPU-hour/0.9-hour envelopes: current screen to phase wave1, then phase wave1 to wave2. Released workers charge subsequent actual operations, not silent unrecorded assignment."
+            }
+          },
+          "readiness_caps": {
+            "approved_new_study_readiness_cap": 40,
+            "existing_new_study_readiness_spent": 18.303870023546946,
+            "prospective_new_readiness": 16,
+            "prospective_stage_readiness": 34.30387002354694,
+            "approved_cumulative_readiness_cap": 104,
+            "prospective_cumulative_readiness": 94.99915054162344
+          },
+          "scenarios": {
+            "existing_method_with_all_observed_maxima": {
+              "new_training_gpu_hours": 994.5039411535381,
+              "new_training_wall_hours": 31.97663405954749,
+              "future_science_gpu_hours_including_preparation_and_handoffs": 1018.5039411535381,
+              "future_readiness_gpu_hours": 16,
+              "future_total_gpu_hours": 1034.503941153538,
+              "future_serial_wall_hours": 35.67663405954749,
+              "cumulative_at_2132_origin": {
+                "science_gpu_hours": 1145.4997754940575,
+                "study_gpu_hours": 1317.1341221248956,
+                "readiness_gpu_hours": 94.99915054162344,
+                "overall_gpu_hours": 1412.1332726665191
+              },
+              "headroom_at_2132_origin": {
+                "science_gpu_hours": 154.50022450594247,
+                "study_gpu_hours": 182.8658778751044,
+                "readiness_gpu_hours": 9.000849458376564,
+                "overall_gpu_hours": 191.86672733348087,
+                "wall_hours": 13.516521630155601
+              },
+              "fits_numbers_at_2132_origin": true,
+              "not_fresh_admission": true
+            },
+            "existing_method_with_all_observed_maxima_16384_stress": {
+              "new_training_gpu_hours": 1467.1749235260318,
+              "new_training_wall_hours": 46.562844161427115,
+              "future_science_gpu_hours_including_preparation_and_handoffs": 1491.1749235260318,
+              "future_readiness_gpu_hours": 16,
+              "future_total_gpu_hours": 1507.1749235260318,
+              "future_serial_wall_hours": 50.26284416142712,
+              "cumulative_at_2132_origin": {
+                "science_gpu_hours": 1618.1707578665512,
+                "study_gpu_hours": 1789.8051044973893,
+                "readiness_gpu_hours": 94.99915054162344,
+                "overall_gpu_hours": 1884.8042550390128
+              },
+              "headroom_at_2132_origin": {
+                "science_gpu_hours": -318.1707578665512,
+                "study_gpu_hours": -289.80510449738927,
+                "readiness_gpu_hours": 9.000849458376564,
+                "overall_gpu_hours": -280.8042550390128,
+                "wall_hours": -1.069688471724028
+              },
+              "fits_numbers_at_2132_origin": false,
+              "not_fresh_admission": true
+            },
+            "minimum_observed_full_panel_rate": {
+              "new_training_gpu_hours": 1131.3631712323786,
+              "new_training_wall_hours": 37.12706994486824,
+              "future_science_gpu_hours_including_preparation_and_handoffs": 1155.3631712323786,
+              "future_readiness_gpu_hours": 16,
+              "future_total_gpu_hours": 1171.3631712323786,
+              "future_serial_wall_hours": 40.82706994486824,
+              "cumulative_at_2132_origin": {
+                "science_gpu_hours": 1282.359005572898,
+                "study_gpu_hours": 1453.993352203736,
+                "readiness_gpu_hours": 94.99915054162344,
+                "overall_gpu_hours": 1548.9925027453596
+              },
+              "headroom_at_2132_origin": {
+                "science_gpu_hours": 17.640994427101987,
+                "study_gpu_hours": 46.006647796263906,
+                "readiness_gpu_hours": 9.000849458376564,
+                "overall_gpu_hours": 55.007497254640384,
+                "wall_hours": 8.366085744834848
+              },
+              "fits_numbers_at_2132_origin": true,
+              "not_fresh_admission": true
+            },
+            "minimum_observed_full_panel_rate_16384_stress": {
+              "new_training_gpu_hours": 1906.6349364575308,
+              "new_training_wall_hours": 63.921233592105175,
+              "future_science_gpu_hours_including_preparation_and_handoffs": 1930.6349364575308,
+              "future_readiness_gpu_hours": 16,
+              "future_total_gpu_hours": 1946.6349364575308,
+              "future_serial_wall_hours": 67.62123359210517,
+              "cumulative_at_2132_origin": {
+                "science_gpu_hours": 2057.63077079805,
+                "study_gpu_hours": 2229.2651174288885,
+                "readiness_gpu_hours": 94.99915054162344,
+                "overall_gpu_hours": 2324.264267970512
+              },
+              "headroom_at_2132_origin": {
+                "science_gpu_hours": -757.63077079805,
+                "study_gpu_hours": -729.2651174288885,
+                "readiness_gpu_hours": 9.000849458376564,
+                "overall_gpu_hours": -720.2642679705118,
+                "wall_hours": -18.42807790240208
+              },
+              "fits_numbers_at_2132_origin": false,
+              "not_fresh_admission": true
+            }
+          },
+          "limitations": [
+            "This is arithmetic feasibility, not an operational admission or final cost receipt.",
+            "The current C trajectory and future preparation/readiness outcomes are incomplete at the source cutoff.",
+            "Six-new-run estimates are counterfactual lower-work comparisons only; strict runtime/control equivalence has not been established."
+          ],
+          "operational_prerequisites": [
+            "Complete current worker-c and issue exact whole-wave evidence before new phase dispatch.",
+            "Pin new runtime/model/data/plan identities and evaluation namespace; pass CPU validation, independent review and concrete bounded readiness.",
+            "Fresh full-matrix admission must include all actual intervals and both new waves under original caps/deadline.",
+            "Remaining current work and later operations reduce the 17.6410 scientific GPU-hour headroom of the stronger non-stress scenario.",
+            "16K-mean stress does not fit; never silently drop arms, evaluations, floors, margins or reset the deadline."
+          ]
+        }
+      ],
+      "wrapper_readiness_proposal": {
+        "status": "running_pending_complete_source_suite_hosted_and_cost_audit",
+        "model": "Qwen3-8B",
+        "pi_updates": 9,
+        "opd_updates": 2,
+        "updates": 22,
+        "training_questions": 88,
+        "validation_questions": 8,
+        "benchmark_questions": 8,
+        "draws": 8,
+        "evaluation_output_token_cap": 1024,
+        "science_evaluation_cap_unchanged": 16384,
+        "training_output_cap_unchanged": 4096,
+        "suites": 16,
+        "responses": 1024,
+        "trained_exports": 10,
+        "reserved_worker_gpu_hours": 16,
+        "assigned_seconds_including_cleanup": 7200,
+        "cleanup_seconds": 120,
+        "reserved_preparation_evidence_gpu_hours": 2,
+        "total_readiness_reserve_gpu_hours": 18,
+        "purpose": "Verify new recipe wrappers, source and seed binding, phase resets, teacher promotion, evaluation queue, hosted metrics and cleanup. Reuse both completed original-model/numerical-core evidence after exact source verification.",
+        "not_proven": [
+          "readiness completion",
+          "full-panel saturated throughput",
+          "numerical parity",
+          "scientific matrix admission"
+        ],
+        "selection": "Exact first88 frozen training records and deterministic first8validation /2AIME24+2AIME25+4AMC23 questions selected in source order, without outcomes.",
+        "failure_policy": "Hard stop with no automatic retry; all22updates,10snapshots and16suites required. No inferred success from a smaller workload.",
+        "attempts_launched": 1,
+        "readiness_passed": false,
+        "scientific_admitted": false,
+        "started_utc": "2026-10-10T22:52:15.216030+00:00",
+        "assigned_deadline_utc": "2026-10-11T00:27:03.867121+00:00",
+        "preparation_actual_gpu_hours": 0.1154962534374661,
+        "available_assigned_seconds_at_admission": 5703.362483024597,
+        "startup_observation": "Owned controller alive; training startup and evaluation queue running; no queue failure. Finite update counts and exact completion are not yet audited.",
+        "preflight_correction": "First read-only check ended before SDK queries or training on an inherited environment assertion. The separately reviewed correction mirrors the worker effective entity/project and verifies the actual SDK endpoint. The original failed read remains unchanged and charged; there was no second training launch."
+      }
     }
   }
 }
