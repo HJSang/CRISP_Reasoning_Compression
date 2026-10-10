@@ -3297,7 +3297,7 @@
       "full_stage_hosted_audit_complete": false,
       "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation.",
       "latest_audit": {
-        "checked_unix": 1791613676.43761,
+        "checked_unix": 1791614395.594899,
         "matrix_matches": true,
         "complete": false,
         "cells": [
@@ -3309,15 +3309,16 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "13 required evaluations",
+              "12 required evaluations",
               "generality-qwen3-8b-math-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-math-frozen-opd-s101-r1: not started",
+              "generality-qwen3-8b-math-frozen-opd-s101-r1: final source/loss validation",
+              "generality-qwen3-8b-math-frozen-opd-s101-r1: training process exit",
               "generality-qwen3-8b-math-ema-warmup-s101-r1: not started",
               "generality-qwen3-8b-math-ema-pi-s101-r1: not started",
               "generality-qwen3-8b-math-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 6,
-            "completed_updates": 11,
+            "completed_evaluations": 7,
+            "completed_updates": 15,
             "scores": {
               "original": {
                 "AIME 2024": {
@@ -3408,15 +3409,12 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "8 required evaluations",
+              "4 required evaluations",
               "generality-qwen3-1p7b-math-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-1p7b-math-ema-pi-s101-r1: final source/loss validation",
-              "generality-qwen3-1p7b-math-ema-pi-s101-r1: training process exit",
-              "generality-qwen3-1p7b-math-ema-pi-s101-r1: all hosted training steps",
               "generality-qwen3-1p7b-math-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 11,
-            "completed_updates": 22,
+            "completed_evaluations": 15,
+            "completed_updates": 26,
             "scores": {
               "original": {
                 "AIME 2024": {
@@ -3547,6 +3545,32 @@
                   "grader_timeouts": 0,
                   "unexpected_thinking_delimiters": 0
                 }
+              },
+              "ema_pi": {
+                "AIME 2024": {
+                  "avg_at_8": 0.10416666666666667,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.08333333333333333,
+                  "parse_failure_fraction": 0.07916666666666666,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.07083333333333333,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.025,
+                  "parse_failure_fraction": 0.016666666666666666,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.446875,
+                  "completions": 320,
+                  "cap_hit_fraction": 0.00625,
+                  "parse_failure_fraction": 0.00625,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {
@@ -3570,7 +3594,7 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "16 required evaluations",
+              "15 required evaluations",
               "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
               "generality-qwen3-8b-code-frozen-pi-s101-r1: final source/loss validation",
               "generality-qwen3-8b-code-frozen-pi-s101-r1: training process exit",
@@ -3579,7 +3603,7 @@
               "generality-qwen3-8b-code-ema-pi-s101-r1: not started",
               "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 3,
+            "completed_evaluations": 4,
             "completed_updates": 11,
             "scores": {
               "original": {
@@ -3617,7 +3641,7 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "15 required evaluations",
+              "14 required evaluations",
               "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
               "generality-qwen3-1p7b-code-frozen-pi-s101-r1: final source/loss validation",
               "generality-qwen3-1p7b-code-frozen-pi-s101-r1: training process exit",
@@ -3626,7 +3650,7 @@
               "generality-qwen3-1p7b-code-ema-pi-s101-r1: not started",
               "generality-qwen3-1p7b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 4,
+            "completed_evaluations": 5,
             "completed_updates": 11,
             "scores": {
               "original": {
@@ -3658,11 +3682,11 @@
           }
         ],
         "limitation": "One training seed per cell; fixed endpoint comparisons do not establish cross-seed generality.",
-        "checked_utc": "2026-10-10 06:27 UTC",
-        "completed_updates": 55,
-        "completed_evaluations": 24,
-        "assigned_gpu_hours": 25.78313651561737,
-        "cost_checked_unix": 1791613777.0291772,
+        "checked_utc": "2026-10-10 06:39 UTC",
+        "completed_updates": 63,
+        "completed_evaluations": 31,
+        "assigned_gpu_hours": 32.205766144858465,
+        "cost_checked_unix": 1791614504.184972,
         "audit_validation": "Five focused CPU tests passed: complete math/code cells, nine negative mutations, delayed baseline publication, hosted-score disagreement and result-before-done publication boundaries.",
         "first_no_pi_control": {
           "model": "Qwen3-1.7B",
@@ -3678,7 +3702,152 @@
           "required_evaluations_complete": true,
           "required_hosted_metrics_verified": true,
           "training_exit_code": 0
-        }
+        },
+        "length_profiles": [
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "stage": "original",
+            "completions": 800,
+            "mean_response_tokens": 3661.015,
+            "generation_seconds": 339.4430615369929,
+            "output_tokens_per_second": 8628.286543075545,
+            "p95_response_latency_seconds": 203.288516918075
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "stage": "frozen_warmup",
+            "completions": 800,
+            "mean_response_tokens": 3345.1875,
+            "generation_seconds": 318.7557992970105,
+            "output_tokens_per_second": 8395.611957184863,
+            "p95_response_latency_seconds": 200.5317525076709
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "stage": "frozen_pi",
+            "completions": 800,
+            "mean_response_tokens": 4558.22625,
+            "generation_seconds": 427.7478270449792,
+            "output_tokens_per_second": 8525.071945290207,
+            "p95_response_latency_seconds": 234.46279055485502
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "stage": "original",
+            "completions": 800,
+            "mean_response_tokens": 2677.225,
+            "generation_seconds": 170.74415649397997,
+            "output_tokens_per_second": 12543.79677746403,
+            "p95_response_latency_seconds": 46.37435891533955
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "stage": "frozen_warmup",
+            "completions": 800,
+            "mean_response_tokens": 1966.455,
+            "generation_seconds": 154.99181127001066,
+            "output_tokens_per_second": 10149.98139004516,
+            "p95_response_latency_seconds": 25.15554218869364
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "stage": "frozen_pi",
+            "completions": 800,
+            "mean_response_tokens": 2686.84,
+            "generation_seconds": 172.8497178889811,
+            "output_tokens_per_second": 12435.496142264896,
+            "p95_response_latency_seconds": 111.55125225186347
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "stage": "frozen_opd",
+            "completions": 800,
+            "mean_response_tokens": 3038.84875,
+            "generation_seconds": 176.71898445102852,
+            "output_tokens_per_second": 13756.750626154082,
+            "p95_response_latency_seconds": 69.68983238044304
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "stage": "ema_warmup",
+            "completions": 800,
+            "mean_response_tokens": 2057.56625,
+            "generation_seconds": 157.19009680201998,
+            "output_tokens_per_second": 10471.734756122672,
+            "p95_response_latency_seconds": 26.376957041918637
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "stage": "ema_pi",
+            "completions": 800,
+            "mean_response_tokens": 2438.895,
+            "generation_seconds": 159.76079776900588,
+            "output_tokens_per_second": 12212.73320643447,
+            "p95_response_latency_seconds": 38.15835400921635
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "stage": "original",
+            "completions": 1312,
+            "mean_response_tokens": 189.5564024390244,
+            "generation_seconds": 23.095533707994036,
+            "output_tokens_per_second": 10768.22917990929,
+            "p95_response_latency_seconds": 3.8312045969010806
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "stage": "frozen_warmup",
+            "completions": 1312,
+            "mean_response_tokens": 90.84756097560975,
+            "generation_seconds": 8.659622968989424,
+            "output_tokens_per_second": 13764.109641589821,
+            "p95_response_latency_seconds": 2.4886692898813636
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "stage": "original",
+            "completions": 1312,
+            "mean_response_tokens": 340.9557926829268,
+            "generation_seconds": 91.81730082101421,
+            "output_tokens_per_second": 4872.001202387979,
+            "p95_response_latency_seconds": 2.814942522274214
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "stage": "frozen_warmup",
+            "completions": 1312,
+            "mean_response_tokens": 250.890243902439,
+            "generation_seconds": 17.667583892995026,
+            "output_tokens_per_second": 18631.183640820913,
+            "p95_response_latency_seconds": 2.443529110617238
+          }
+        ]
       }
     }
   }
