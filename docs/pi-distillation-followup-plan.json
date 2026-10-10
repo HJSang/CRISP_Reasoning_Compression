@@ -3199,15 +3199,15 @@
           "worker": "worker-c",
           "model": "Qwen3-8B",
           "task": "code",
-          "completed_updates": 25,
-          "completed_evaluations": 11
+          "completed_updates": 26,
+          "completed_evaluations": 12
         },
         {
           "worker": "worker-d",
           "model": "Qwen3-1.7B",
           "task": "code",
           "completed_updates": 26,
-          "completed_evaluations": 14
+          "completed_evaluations": 15
         }
       ],
       "reserved_gpu_hours": 135.91728585163753,
@@ -3223,7 +3223,7 @@
       "full_stage_hosted_audit_complete": false,
       "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation.",
       "latest_audit": {
-        "checked_unix": 1791620669.913551,
+        "checked_unix": 1791621141.518899,
         "matrix_matches": true,
         "complete": false,
         "cells": [
@@ -3667,15 +3667,14 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "8 required evaluations",
+              "7 required evaluations",
               "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
               "generality-qwen3-8b-code-ema-pi-s101-r1: final source/loss validation",
               "generality-qwen3-8b-code-ema-pi-s101-r1: training process exit",
-              "generality-qwen3-8b-code-ema-pi-s101-r1: all hosted training steps",
               "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 11,
-            "completed_updates": 25,
+            "completed_evaluations": 12,
+            "completed_updates": 26,
             "scores": {
               "original": {
                 "HumanEval+": {
@@ -3755,13 +3754,11 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "5 required evaluations",
+              "4 required evaluations",
               "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-1p7b-code-ema-pi-s101-r1: final source/loss validation",
-              "generality-qwen3-1p7b-code-ema-pi-s101-r1: training process exit",
               "generality-qwen3-1p7b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 14,
+            "completed_evaluations": 15,
             "completed_updates": 26,
             "scores": {
               "original": {
@@ -3823,6 +3820,18 @@
                   "pass_at_8": 0.774390243902439,
                   "test_failure_fraction": 0.38414634146341464
                 }
+              },
+              "ema_pi": {
+                "HumanEval+": {
+                  "avg_at_8": 0.5975609756097561,
+                  "completions": 1312,
+                  "cap_hit_fraction": 0.0007621951219512195,
+                  "parse_failure_fraction": 0.004573170731707317,
+                  "grader_timeouts": 15,
+                  "unexpected_thinking_delimiters": 0,
+                  "pass_at_8": 0.7926829268292683,
+                  "test_failure_fraction": 0.3932926829268293
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {
@@ -3836,11 +3845,11 @@
           }
         ],
         "limitation": "One training seed per cell; fixed endpoint comparisons do not establish cross-seed generality.",
-        "checked_utc": "2026-10-10 08:24 UTC",
-        "completed_updates": 111,
-        "completed_evaluations": 63,
-        "assigned_gpu_hours": 75.31970106972588,
-        "cost_checked_unix": 1791620744.557806,
+        "checked_utc": "2026-10-10 08:32 UTC",
+        "completed_updates": 112,
+        "completed_evaluations": 65,
+        "assigned_gpu_hours": 77.41298400243123,
+        "cost_checked_unix": 1791621215.546463,
         "audit_validation": "Five focused CPU tests passed: complete math/code cells, nine negative mutations, delayed baseline publication, hosted-score disagreement and result-before-done publication boundaries.",
         "length_profiles": [
           {
@@ -4106,6 +4115,17 @@
             "generation_seconds": 17.18812969501596,
             "output_tokens_per_second": 18281.91929987111,
             "p95_response_latency_seconds": 2.44907275660662
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "stage": "ema_pi",
+            "completions": 1312,
+            "mean_response_tokens": 227.78125,
+            "generation_seconds": 94.3267793689738,
+            "output_tokens_per_second": 3168.230718776116,
+            "p95_response_latency_seconds": 2.27052592317923
           }
         ]
       },
@@ -4148,8 +4168,8 @@
         }
       },
       "question_uncertainty": {
-        "checked_unix": 1791620687.499456,
-        "audit_sha256": "122951f8c9e044c08458e6b93ac52f44c2900ef2fc6c6422e5dc0db1f75de135",
+        "checked_unix": 1791621160.4039822,
+        "audit_sha256": "846e6e7d9fbc2d5b45509e8ed9f1d891ba45646083403aaa705765f0b0decd17",
         "comparisons": [
           {
             "worker": "worker-a",
@@ -5238,6 +5258,23 @@
             "responses_per_question": 8,
             "repetitions": 20000,
             "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "ema_pi",
+            "right": "original",
+            "delta_percentage_points": -0.9146341463414633,
+            "question_resampling_interval_95_pp": [
+              -4.420731707317073,
+              2.4390243902439024
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
           }
         ],
         "pending": [
@@ -5260,11 +5297,6 @@
             "worker": "worker-c",
             "left": "ema_opd",
             "right": "frozen_opd"
-          },
-          {
-            "worker": "worker-d",
-            "left": "ema_pi",
-            "right": "original"
           },
           {
             "worker": "worker-d",
@@ -5451,7 +5483,297 @@
             "median_rollout_tokens_per_gpu_second": 284.8474581787819
           }
         }
-      ]
+      ],
+      "code_timing_observations": {
+        "checked_unix": 1791621060.028309,
+        "scope": "Read-only timing evidence from existing scientific runs; no new experiments. Training medians use the compact latest-20 timing rows and are not complete-run wall time. Grading durations are sandbox-worker elapsed time and exclude transport. Timers overlap; do not sum them to estimate assigned cost.",
+        "cells": [
+          {
+            "worker": "worker-c",
+            "evidence_checked_unix": 1791620901.1357448,
+            "runs": [
+              {
+                "run_id": "generality-qwen3-8b-code-frozen-warmup-s101-r1",
+                "timings": {
+                  "perf/train_time": {
+                    "observations": 7,
+                    "median_seconds": 2.1128687858581543,
+                    "min_seconds": 2.0161914825439453,
+                    "max_seconds": 2.655850887298584
+                  },
+                  "perf/rollout_time": {
+                    "observations": 7,
+                    "median_seconds": 2.0477774143218994,
+                    "min_seconds": 0.6463847160339355,
+                    "max_seconds": 12.15439224243164
+                  },
+                  "perf/step_time": {
+                    "observations": 7,
+                    "median_seconds": 29.032889366149902,
+                    "min_seconds": 27.668586015701294,
+                    "max_seconds": 38.236329555511475
+                  }
+                }
+              },
+              {
+                "run_id": "generality-qwen3-8b-code-frozen-pi-s101-r1",
+                "timings": {
+                  "perf/train_time": {
+                    "observations": 4,
+                    "median_seconds": 2.136309862136841,
+                    "min_seconds": 1.9948296546936035,
+                    "max_seconds": 2.6323132514953613
+                  },
+                  "perf/rollout_time": {
+                    "observations": 4,
+                    "median_seconds": 1.445656180381775,
+                    "min_seconds": 0.6072959899902344,
+                    "max_seconds": 11.79126238822937
+                  },
+                  "perf/save_model_time": {
+                    "observations": 3,
+                    "median_seconds": 29.016451358795166,
+                    "min_seconds": 28.82674741744995,
+                    "max_seconds": 710.3139972686768
+                  },
+                  "perf/step_time": {
+                    "observations": 4,
+                    "median_seconds": 57.74008667469025,
+                    "min_seconds": 38.686917304992676,
+                    "max_seconds": 737.9244091510773
+                  }
+                }
+              },
+              {
+                "run_id": "generality-qwen3-8b-code-frozen-opd-s101-r1",
+                "timings": {
+                  "perf/train_time": {
+                    "observations": 4,
+                    "median_seconds": 2.124268651008606,
+                    "min_seconds": 2.0668299198150635,
+                    "max_seconds": 2.6652016639709473
+                  },
+                  "perf/rollout_time": {
+                    "observations": 4,
+                    "median_seconds": 1.542176604270935,
+                    "min_seconds": 1.4013147354125977,
+                    "max_seconds": 11.876858949661255
+                  },
+                  "perf/save_model_time": {
+                    "observations": 3,
+                    "median_seconds": 29.16540503501892,
+                    "min_seconds": 28.917586088180542,
+                    "max_seconds": 706.4515345096588
+                  },
+                  "perf/step_time": {
+                    "observations": 4,
+                    "median_seconds": 58.08110284805298,
+                    "min_seconds": 37.46609020233154,
+                    "max_seconds": 734.9382336139679
+                  }
+                }
+              },
+              {
+                "run_id": "generality-qwen3-8b-code-ema-warmup-s101-r1",
+                "timings": {
+                  "perf/train_time": {
+                    "observations": 7,
+                    "median_seconds": 2.031012773513794,
+                    "min_seconds": 1.978419542312622,
+                    "max_seconds": 3.5129570960998535
+                  },
+                  "perf/rollout_time": {
+                    "observations": 7,
+                    "median_seconds": 1.1434125900268555,
+                    "min_seconds": 0.5828831195831299,
+                    "max_seconds": 12.30913758277893
+                  },
+                  "perf/step_time": {
+                    "observations": 7,
+                    "median_seconds": 81.54455804824829,
+                    "min_seconds": 40.58474040031433,
+                    "max_seconds": 86.68603086471558
+                  }
+                }
+              },
+              {
+                "run_id": "generality-qwen3-8b-code-ema-pi-s101-r1",
+                "timings": {
+                  "perf/train_time": {
+                    "observations": 3,
+                    "median_seconds": 2.0584144592285156,
+                    "min_seconds": 2.0160179138183594,
+                    "max_seconds": 2.666858196258545
+                  },
+                  "perf/rollout_time": {
+                    "observations": 3,
+                    "median_seconds": 6.786622524261475,
+                    "min_seconds": 1.1639585494995117,
+                    "max_seconds": 10.09753155708313
+                  },
+                  "perf/save_model_time": {
+                    "observations": 2,
+                    "median_seconds": 28.51288414001465,
+                    "min_seconds": 28.222654819488525,
+                    "max_seconds": 28.80311346054077
+                  },
+                  "perf/step_time": {
+                    "observations": 3,
+                    "median_seconds": 109.15553641319275,
+                    "min_seconds": 33.25720477104187,
+                    "max_seconds": 119.61394166946411
+                  }
+                }
+              }
+            ],
+            "completed_sandbox_batches": 12,
+            "sandbox_grading_median_seconds": 574.180279437569,
+            "sandbox_grading_max_seconds": 586.400556499837
+          },
+          {
+            "worker": "worker-d",
+            "evidence_checked_unix": 1791620901.115139,
+            "runs": [
+              {
+                "run_id": "generality-qwen3-1p7b-code-frozen-warmup-s101-r1",
+                "timings": {
+                  "perf/train_time": {
+                    "observations": 7,
+                    "median_seconds": 1.7641608715057373,
+                    "min_seconds": 1.5694103240966797,
+                    "max_seconds": 2.5286757946014404
+                  },
+                  "perf/rollout_time": {
+                    "observations": 7,
+                    "median_seconds": 1.7183468341827393,
+                    "min_seconds": 0.9599535465240479,
+                    "max_seconds": 8.92394495010376
+                  },
+                  "perf/step_time": {
+                    "observations": 7,
+                    "median_seconds": 11.001589298248291,
+                    "min_seconds": 10.065049886703491,
+                    "max_seconds": 35.79773306846619
+                  }
+                }
+              },
+              {
+                "run_id": "generality-qwen3-1p7b-code-frozen-pi-s101-r1",
+                "timings": {
+                  "perf/train_time": {
+                    "observations": 4,
+                    "median_seconds": 1.655027985572815,
+                    "min_seconds": 1.5655138492584229,
+                    "max_seconds": 2.2639315128326416
+                  },
+                  "perf/rollout_time": {
+                    "observations": 4,
+                    "median_seconds": 3.4050477743148804,
+                    "min_seconds": 1.1560680866241455,
+                    "max_seconds": 10.583043813705444
+                  },
+                  "perf/save_model_time": {
+                    "observations": 3,
+                    "median_seconds": 8.40137791633606,
+                    "min_seconds": 6.536589860916138,
+                    "max_seconds": 524.7148444652557
+                  },
+                  "perf/step_time": {
+                    "observations": 4,
+                    "median_seconds": 30.65643346309662,
+                    "min_seconds": 17.05108070373535,
+                    "max_seconds": 535.119077205658
+                  }
+                }
+              },
+              {
+                "run_id": "generality-qwen3-1p7b-code-frozen-opd-s101-r1",
+                "timings": {
+                  "perf/train_time": {
+                    "observations": 4,
+                    "median_seconds": 1.6916851997375488,
+                    "min_seconds": 1.6157262325286865,
+                    "max_seconds": 2.3014044761657715
+                  },
+                  "perf/rollout_time": {
+                    "observations": 4,
+                    "median_seconds": 3.366865873336792,
+                    "min_seconds": 1.1887762546539307,
+                    "max_seconds": 7.216593027114868
+                  },
+                  "perf/save_model_time": {
+                    "observations": 3,
+                    "median_seconds": 7.667145013809204,
+                    "min_seconds": 6.821633577346802,
+                    "max_seconds": 595.9598460197449
+                  },
+                  "perf/step_time": {
+                    "observations": 4,
+                    "median_seconds": 28.762205719947815,
+                    "min_seconds": 17.064536333084106,
+                    "max_seconds": 606.5310347080231
+                  }
+                }
+              },
+              {
+                "run_id": "generality-qwen3-1p7b-code-ema-warmup-s101-r1",
+                "timings": {
+                  "perf/train_time": {
+                    "observations": 7,
+                    "median_seconds": 1.63834547996521,
+                    "min_seconds": 1.5882859230041504,
+                    "max_seconds": 2.7606616020202637
+                  },
+                  "perf/rollout_time": {
+                    "observations": 7,
+                    "median_seconds": 1.4975392818450928,
+                    "min_seconds": 1.0366826057434082,
+                    "max_seconds": 10.578165769577026
+                  },
+                  "perf/step_time": {
+                    "observations": 7,
+                    "median_seconds": 20.018797397613525,
+                    "min_seconds": 18.237617015838623,
+                    "max_seconds": 35.0926730632782
+                  }
+                }
+              },
+              {
+                "run_id": "generality-qwen3-1p7b-code-ema-pi-s101-r1",
+                "timings": {
+                  "perf/train_time": {
+                    "observations": 4,
+                    "median_seconds": 1.6176167726516724,
+                    "min_seconds": 1.4690101146697998,
+                    "max_seconds": 1.9935085773468018
+                  },
+                  "perf/rollout_time": {
+                    "observations": 4,
+                    "median_seconds": 3.448965072631836,
+                    "min_seconds": 1.409548044204712,
+                    "max_seconds": 10.705023050308228
+                  },
+                  "perf/save_model_time": {
+                    "observations": 3,
+                    "median_seconds": 7.125690698623657,
+                    "min_seconds": 5.962556600570679,
+                    "max_seconds": 583.8193621635437
+                  },
+                  "perf/step_time": {
+                    "observations": 4,
+                    "median_seconds": 28.563958168029785,
+                    "min_seconds": 23.26360011100769,
+                    "max_seconds": 598.9641220569611
+                  }
+                }
+              }
+            ],
+            "completed_sandbox_batches": 14,
+            "sandbox_grading_median_seconds": 570.5922463744646,
+            "sandbox_grading_max_seconds": 586.8275196249597
+          }
+        ]
+      }
     }
   }
 }
