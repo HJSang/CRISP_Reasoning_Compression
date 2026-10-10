@@ -13,25 +13,31 @@ import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
-from evalplus.eval import untrusted_check
-from evalplus.gen.util import trusted_exec
-
 
 def extract_program(text: str, entry_point: str) -> str | None:
     blocks = re.findall(r"```(?:python|py)?\s*\n(.*?)```", text, flags=re.DOTALL)
-    if "```" in text and len(blocks) != 1:
+    if "```" in text and text.count("```") != 2 * len(blocks):
         return None
-    code = blocks[0] if blocks else text
-    try:
-        tree = ast.parse(code)
-    except (SyntaxError, ValueError):
-        return None
-    if not any(isinstance(node, ast.FunctionDef) and node.name == entry_point for node in tree.body):
-        return None
-    return code
+    implementations = []
+    for code in blocks or [text]:
+        try:
+            tree = ast.parse(code)
+        except (SyntaxError, ValueError):
+            return None
+        definitions = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == entry_point]
+        if len(definitions) > 1:
+            return None
+        if definitions:
+            implementations.append(code)
+    # Ignore standalone usage examples, but never choose between competing answers.
+    return implementations[0] if len(implementations) == 1 else None
 
 
 def grade_problem(item: dict) -> list[dict]:
+    # Keep parsing tests independent of the optional sandbox-only execution package.
+    from evalplus.eval import untrusted_check
+    from evalplus.gen.util import trusted_exec
+
     problem, candidates = item["problem"], item["candidates"]
     reference = problem["prompt"] + problem["canonical_solution"]
     oracle = {suite: trusted_exec(reference, problem[suite + "_input"], problem["entry_point"], record_time=True) for suite in ("base", "plus")}
@@ -63,7 +69,7 @@ def main():
     if importlib.metadata.version("evalplus") != "0.0.0+26d6d00":
         raise ValueError("The grader requires the approved pinned EvalPlus sandbox image")
     payload = json.loads(Path(sys.argv[1]).read_text())
-    with ProcessPoolExecutor(max_workers=2, mp_context=multiprocessing.get_context("spawn")) as pool:
+    with ProcessPoolExecutor(max_workers=8, mp_context=multiprocessing.get_context("spawn")) as pool:
         results = [row for group in pool.map(grade_problem, payload) for row in group]
     Path(sys.argv[2]).write_text(json.dumps(results))
 
