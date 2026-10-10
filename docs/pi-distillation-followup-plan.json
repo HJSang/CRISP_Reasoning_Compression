@@ -3297,7 +3297,7 @@
       "full_stage_hosted_audit_complete": false,
       "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation.",
       "latest_audit": {
-        "checked_unix": 1791614395.594899,
+        "checked_unix": 1791615612.16933,
         "matrix_matches": true,
         "complete": false,
         "cells": [
@@ -3309,15 +3309,13 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "12 required evaluations",
+              "9 required evaluations",
               "generality-qwen3-8b-math-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-math-frozen-opd-s101-r1: final source/loss validation",
-              "generality-qwen3-8b-math-frozen-opd-s101-r1: training process exit",
               "generality-qwen3-8b-math-ema-warmup-s101-r1: not started",
               "generality-qwen3-8b-math-ema-pi-s101-r1: not started",
               "generality-qwen3-8b-math-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 7,
+            "completed_evaluations": 10,
             "completed_updates": 15,
             "scores": {
               "original": {
@@ -3397,24 +3395,56 @@
                   "grader_timeouts": 0,
                   "unexpected_thinking_delimiters": 0
                 }
+              },
+              "frozen_opd": {
+                "AIME 2024": {
+                  "avg_at_8": 0.30833333333333335,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.17916666666666667,
+                  "parse_failure_fraction": 0.16666666666666666,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.2375,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.125,
+                  "parse_failure_fraction": 0.1125,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.7625,
+                  "completions": 320,
+                  "cap_hit_fraction": 0.01875,
+                  "parse_failure_fraction": 0.01875,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
               }
             },
-            "fixed_endpoint_deltas_percentage_points": {}
+            "fixed_endpoint_deltas_percentage_points": {
+              "frozen_opd_minus_original": {
+                "AIME 2024": 6.250000000000003,
+                "AIME 2025": 4.166666666666666,
+                "AMC23": 7.8125
+              },
+              "frozen_opd_minus_frozen_pi": {
+                "AIME 2024": 3.7500000000000036,
+                "AIME 2025": 2.4999999999999996,
+                "AMC23": 8.124999999999993
+              }
+            }
           },
           {
             "worker": "worker-b",
             "model": "Qwen3-1.7B",
             "task": "math",
-            "complete": false,
+            "complete": true,
             "errors": [],
-            "pending": [
-              "Controller exit and cleanup",
-              "4 required evaluations",
-              "generality-qwen3-1p7b-math-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-1p7b-math-ema-opd-s101-r1: not started"
-            ],
-            "completed_evaluations": 15,
-            "completed_updates": 26,
+            "pending": [],
+            "completed_evaluations": 19,
+            "completed_updates": 30,
             "scores": {
               "original": {
                 "AIME 2024": {
@@ -3571,6 +3601,32 @@
                   "grader_timeouts": 0,
                   "unexpected_thinking_delimiters": 0
                 }
+              },
+              "ema_opd": {
+                "AIME 2024": {
+                  "avg_at_8": 0.14166666666666666,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.1,
+                  "parse_failure_fraction": 0.09583333333333334,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.10416666666666667,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.041666666666666664,
+                  "parse_failure_fraction": 0.03333333333333333,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.5,
+                  "completions": 320,
+                  "cap_hit_fraction": 0.015625,
+                  "parse_failure_fraction": 0.015625,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {
@@ -3583,6 +3639,16 @@
                 "AIME 2024": 3.749999999999999,
                 "AIME 2025": -1.250000000000001,
                 "AMC23": 2.8124999999999956
+              },
+              "ema_opd_minus_original": {
+                "AIME 2024": 0.0,
+                "AIME 2025": 2.500000000000001,
+                "AMC23": 0.6249999999999978
+              },
+              "ema_opd_minus_ema_pi": {
+                "AIME 2024": 3.749999999999999,
+                "AIME 2025": 3.333333333333334,
+                "AMC23": 5.312499999999998
               }
             }
           },
@@ -3594,17 +3660,17 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "15 required evaluations",
+              "13 required evaluations",
               "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-code-frozen-pi-s101-r1: final source/loss validation",
-              "generality-qwen3-8b-code-frozen-pi-s101-r1: training process exit",
-              "generality-qwen3-8b-code-frozen-opd-s101-r1: not started",
+              "generality-qwen3-8b-code-frozen-opd-s101-r1: final source/loss validation",
+              "generality-qwen3-8b-code-frozen-opd-s101-r1: training process exit",
+              "generality-qwen3-8b-code-frozen-opd-s101-r1: all hosted training steps",
               "generality-qwen3-8b-code-ema-warmup-s101-r1: not started",
               "generality-qwen3-8b-code-ema-pi-s101-r1: not started",
               "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 4,
-            "completed_updates": 11,
+            "completed_evaluations": 6,
+            "completed_updates": 14,
             "scores": {
               "original": {
                 "HumanEval+": {
@@ -3629,6 +3695,18 @@
                   "pass_at_8": 0.8719512195121951,
                   "test_failure_fraction": 0.2583841463414634
                 }
+              },
+              "frozen_pi": {
+                "HumanEval+": {
+                  "avg_at_8": 0.7721036585365854,
+                  "completions": 1312,
+                  "cap_hit_fraction": 0.003048780487804878,
+                  "parse_failure_fraction": 0.003048780487804878,
+                  "grader_timeouts": 15,
+                  "unexpected_thinking_delimiters": 0,
+                  "pass_at_8": 0.9024390243902439,
+                  "test_failure_fraction": 0.22103658536585366
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {}
@@ -3641,17 +3719,17 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "14 required evaluations",
+              "12 required evaluations",
               "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-1p7b-code-frozen-pi-s101-r1: final source/loss validation",
-              "generality-qwen3-1p7b-code-frozen-pi-s101-r1: training process exit",
-              "generality-qwen3-1p7b-code-frozen-opd-s101-r1: not started",
+              "generality-qwen3-1p7b-code-frozen-opd-s101-r1: final source/loss validation",
+              "generality-qwen3-1p7b-code-frozen-opd-s101-r1: training process exit",
+              "generality-qwen3-1p7b-code-frozen-opd-s101-r1: all hosted training steps",
               "generality-qwen3-1p7b-code-ema-warmup-s101-r1: not started",
               "generality-qwen3-1p7b-code-ema-pi-s101-r1: not started",
               "generality-qwen3-1p7b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 5,
-            "completed_updates": 11,
+            "completed_evaluations": 7,
+            "completed_updates": 14,
             "scores": {
               "original": {
                 "HumanEval+": {
@@ -3676,33 +3754,30 @@
                   "pass_at_8": 0.7804878048780488,
                   "test_failure_fraction": 0.3978658536585366
                 }
+              },
+              "frozen_pi": {
+                "HumanEval+": {
+                  "avg_at_8": 0.5990853658536586,
+                  "completions": 1312,
+                  "cap_hit_fraction": 0.003048780487804878,
+                  "parse_failure_fraction": 0.03201219512195122,
+                  "grader_timeouts": 18,
+                  "unexpected_thinking_delimiters": 0,
+                  "pass_at_8": 0.774390243902439,
+                  "test_failure_fraction": 0.3643292682926829
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {}
           }
         ],
         "limitation": "One training seed per cell; fixed endpoint comparisons do not establish cross-seed generality.",
-        "checked_utc": "2026-10-10 06:39 UTC",
-        "completed_updates": 63,
-        "completed_evaluations": 31,
-        "assigned_gpu_hours": 32.205766144858465,
-        "cost_checked_unix": 1791614504.184972,
+        "checked_utc": "2026-10-10 07:00 UTC",
+        "completed_updates": 73,
+        "completed_evaluations": 42,
+        "assigned_gpu_hours": 43.20055773682064,
+        "cost_checked_unix": 1791615891.7571251,
         "audit_validation": "Five focused CPU tests passed: complete math/code cells, nine negative mutations, delayed baseline publication, hosted-score disagreement and result-before-done publication boundaries.",
-        "first_no_pi_control": {
-          "model": "Qwen3-1.7B",
-          "task": "math",
-          "exact_warmed_source_load": true,
-          "same_source_as_continued_pi": true,
-          "finite_losses": [
-            0.01932509057223797,
-            0.012035522609949112,
-            0.004480333067476749,
-            0.003411207115277648
-          ],
-          "required_evaluations_complete": true,
-          "required_hosted_metrics_verified": true,
-          "training_exit_code": 0
-        },
         "length_profiles": [
           {
             "worker": "worker-a",
@@ -3736,6 +3811,17 @@
             "generation_seconds": 427.7478270449792,
             "output_tokens_per_second": 8525.071945290207,
             "p95_response_latency_seconds": 234.46279055485502
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "stage": "frozen_opd",
+            "completions": 800,
+            "mean_response_tokens": 4830.39875,
+            "generation_seconds": 415.59829366899794,
+            "output_tokens_per_second": 9298.207088111209,
+            "p95_response_latency_seconds": 221.7793360982614
           },
           {
             "worker": "worker-b",
@@ -3804,6 +3890,17 @@
             "p95_response_latency_seconds": 38.15835400921635
           },
           {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "stage": "ema_opd",
+            "completions": 800,
+            "mean_response_tokens": 3164.1675,
+            "generation_seconds": 195.65821957797743,
+            "output_tokens_per_second": 12937.529562826083,
+            "p95_response_latency_seconds": 83.13696503367875
+          },
+          {
             "worker": "worker-c",
             "model": "Qwen3-8B",
             "task": "code",
@@ -3826,6 +3923,17 @@
             "p95_response_latency_seconds": 2.4886692898813636
           },
           {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "stage": "frozen_pi",
+            "completions": 1312,
+            "mean_response_tokens": 189.75685975609755,
+            "generation_seconds": 168.38844412000617,
+            "output_tokens_per_second": 1478.4921928643264,
+            "p95_response_latency_seconds": 3.240393861892518
+          },
+          {
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
@@ -3846,8 +3954,39 @@
             "generation_seconds": 17.667583892995026,
             "output_tokens_per_second": 18631.183640820913,
             "p95_response_latency_seconds": 2.443529110617238
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "stage": "frozen_pi",
+            "completions": 1312,
+            "mean_response_tokens": 387.4428353658537,
+            "generation_seconds": 103.76478941203095,
+            "output_tokens_per_second": 4898.819752638196,
+            "p95_response_latency_seconds": 2.96850384741847
           }
         ]
+      },
+      "completed_cells": {
+        "worker-b": {
+          "model": "Qwen3-1.7B",
+          "task": "math",
+          "updates": 30,
+          "evaluations": 19,
+          "responses": 15200,
+          "training_runs": 6,
+          "exit_code": 0,
+          "hosted_audit_passed": true,
+          "owned_cleanup_verified": true,
+          "gpu_memory_and_utilization_zero": true,
+          "gpu_compute_processes": 0,
+          "temporary_snapshots_remaining": 0,
+          "native_recovery_checkpoints": 0,
+          "original_model_preserved": true,
+          "assigned_gpu_hours": 9.847855876816643,
+          "cleanup_checked_unix": 1791615357.7093868
+        }
       }
     }
   }
