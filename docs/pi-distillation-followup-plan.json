@@ -2662,7 +2662,9 @@
           "timeout",
           "tokens",
           "truncation"
-        ]
+        ],
+        "extraction": "Exactly one complete Python block defining the public entry-point function; separate valid usage blocks ignored; ambiguous definitions or malformed blocks rejected",
+        "sandbox_cpu_workers": 8
       },
       "responses_per_question": 8,
       "max_response_tokens": 16384,
@@ -2740,7 +2742,32 @@
         "Qwen3-8B math",
         "Qwen3-8B code",
         "Qwen3-1.7B code"
-      ]
+      ],
+      "code_extraction_audit": {
+        "old_failures_of_1312": {
+          "Qwen3-8B": 10,
+          "Qwen3-1.7B": 1196
+        },
+        "new_failures_of_1312": {
+          "Qwen3-8B": 3,
+          "Qwen3-1.7B": 26
+        },
+        "accuracy_regrading": "in progress on identical retained responses; no scientific outcomes claimed",
+        "canonical_controls_passed": 164,
+        "parser_and_transport_tests_passed": 13
+      },
+      "hosted_verification": {
+        "fresh_history": true,
+        "all_five_started_runs_have_finite_training": true,
+        "completed_1p7b_math_evaluations": 3,
+        "sdk_state_discrepancy": "Warm-up labelled crashed despite controller exit0 and complete metrics; other finished labels do not imply complete evaluations"
+      },
+      "math_8b_baseline_cap_hit_fraction": {
+        "AIME 2024": 0.175,
+        "AIME 2025": 0.1125,
+        "AMC23": 0.021875
+      },
+      "math_8b_interrupted_warm_evaluation_responses": 799
     },
     "budget_proposal": {
       "new_readiness_gpu_hour_cap": 16,
