@@ -17024,6 +17024,89 @@
         "startup_observation": "Owned controller alive; training startup and evaluation queue running; no queue failure. Finite update counts and exact completion are not yet audited.",
         "preflight_correction": "First read-only check ended before SDK queries or training on an inherited environment assertion. The separately reviewed correction mirrors the worker effective entity/project and verifies the actual SDK endpoint. The original failed read remains unchanged and charged; there was no second training launch."
       }
+    },
+    "cycle_count_interpretation": {
+      "scope": "completed PI7\u2192OPD4 teacher comparison; retrospective validation description",
+      "source_collection_sha256": "b5fac08d09272d23e9ae18aaebb468e3e33b1cd7d2a205c36ea8dd971013add9",
+      "source_complete": true,
+      "cycles": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "validation_avg_at_8_percent": {
+        "Qwen3-8B|fixed_original": [
+          67.48046875,
+          72.8515625,
+          70.99609375,
+          72.55859375,
+          69.43359375,
+          75.09765625,
+          69.53125,
+          70.21484375,
+          71.97265625
+        ],
+        "Qwen3-4B|fixed_original": [
+          72.65625,
+          73.046875,
+          71.77734375,
+          69.43359375,
+          75.29296875,
+          74.12109375,
+          71.484375,
+          73.14453125,
+          73.046875
+        ],
+        "Qwen3-8B|cycle_refresh": [
+          67.48046875,
+          71.97265625,
+          77.83203125,
+          76.85546875,
+          78.125,
+          76.953125,
+          73.92578125,
+          76.953125,
+          77.83203125
+        ],
+        "Qwen3-4B|cycle_refresh": [
+          72.65625,
+          74.21875,
+          76.46484375,
+          77.05078125,
+          77.05078125,
+          79.58984375,
+          79.1015625,
+          80.17578125,
+          77.5390625
+        ]
+      },
+      "provisional_refresh_useful_cycle_ranges": {
+        "Qwen3-8B": [
+          2,
+          4
+        ],
+        "Qwen3-4B": [
+          5,
+          7
+        ]
+      },
+      "cycle_updates": 11,
+      "fresh_training_questions_per_cycle": 44,
+      "proven_optimal_stopping_rule": false,
+      "benchmark_based_selection": false,
+      "changes_current_eight_cycle_horizon": false,
+      "caveats": [
+        "One training seed and a reused128-question panel with eight correlated draws.",
+        "Cycle number also changes total updates and fresh training data.",
+        "Descriptive ranges apply only to this recipe and cannot transfer directly to full-data training.",
+        "Retrospective peaks do not replace fixed cycle-eight primary outcomes."
+      ]
     }
   }
 }
