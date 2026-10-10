@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "authorized_math_cycle_readiness_running",
+  "status": "math_cycle_teacher_screen_running",
   "launch_authorized": true,
   "executable": true,
   "new_gpu_jobs_launched": 9,
@@ -6548,10 +6548,10 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "authorized_four_worker_gpu_readiness_running",
+    "status": "math_cycle_teacher_screen_running",
     "launch_authorized": true,
-    "executable": false,
-    "new_gpu_jobs_launched": false,
+    "executable": true,
+    "new_gpu_jobs_launched": true,
     "user_scope": {
       "task": "math",
       "models": [
@@ -6789,8 +6789,9 @@
       "bounded numerical-floor and optimizer controls"
     ],
     "pending": [
-      "Complete four-worker GPU readiness and uncached hosted verification",
-      "Measured admission reserving all ten complete trajectories",
+      "Complete first-wave scientific trajectories and required evaluations",
+      "Finish and test science-wave completion verifier before next-wave transition",
+      "Verify and reuse exact control/baseline receipts before remaining optimizer waves",
       "Later full-pass leftover-group policy and validation confirmation remain separate"
     ],
     "interpretation_limit": "Observed worsening is not proof PI contributes useful information or that worsening is necessary. No repeated-cycle results exist.",
@@ -6826,7 +6827,7 @@
       "all_16384_stress_gpu_hours": 741.4588928379882
     },
     "optimizer_lr_ablation": {
-      "status": "implemented_gpu_readiness_running",
+      "status": "readiness_passed_factorial_controls_running",
       "implemented": true,
       "new_gpu_jobs_launched": true,
       "included_in_existing_budget_proposal": true,
@@ -6922,13 +6923,14 @@
         "assigned GPU-hour cost"
       ],
       "implementation_needed": [
-        "Complete bounded distributed readiness",
-        "Verify uncached hosted appliedLR and phase metrics",
-        "Measured admission and exact control/baseline reuse"
+        "Complete and test science-wave completion verifier",
+        "Verify exact control and baseline reuse before later waves"
       ],
       "conditional_followup": "Constant LR2.75e-6 if needed to distinguish schedule ordering from average LR; no automatic launch",
       "source": "https://arxiv.org/pdf/1412.6980",
-      "scientific_jobs_launched": false
+      "scientific_jobs_launched": true,
+      "factorial_control_A_launched": true,
+      "additional_optimizer_variants_launched": false
     },
     "authorized_execution": {
       "waves": [
@@ -6948,8 +6950,6 @@
       "validation_responses": 165888,
       "benchmark_suites": 102,
       "benchmark_responses": 81600,
-      "planning_gpu_hours": 1008.8,
-      "planning_wall_hours": 40.25,
       "all_cap_stress_gpu_hours_approx": 1822,
       "baselines_generated": 2,
       "reuse_A_unconditional_on_outcomes": true,
@@ -6961,71 +6961,146 @@
       "trajectory_planning_gpu_hours": 992.8,
       "trajectory_wave_wall_hours": 38.25,
       "interwave_reserved_gpu_hours": 16,
-      "interwave_reserved_wall_hours": 2
+      "interwave_reserved_wall_hours": 1.8,
+      "historical_planning_gpu_hours": 1008.8,
+      "historical_planning_wall_hours": 40.25,
+      "measured_admission_passed": true,
+      "measured_reserved_gpu_hours": 1071.798721741026,
+      "measured_reserved_wall_hours": 41.88490988071374,
+      "trajectory_reserved_gpu_hours": 1055.798721741026,
+      "trajectory_reserved_wall_hours": 40.08490988071374,
+      "interwave_reserved_minutes_each": 54,
+      "scientific_start_utc": "2026-10-10T16:43:07.672134+00:00",
+      "scientific_deadline_utc": "2026-10-12T10:43:07.672134+00:00",
+      "current_wave": "teacher_screen",
+      "scientific_trajectories_launched": 4,
+      "whole_matrix_completion_guaranteed": false,
+      "wave_reservations": [
+        {
+          "wave": "teacher_screen",
+          "gpu_hours": 428.67488442383694,
+          "wall_hours": 13.824552158213645
+        },
+        {
+          "wave": "optimizer_carry_constant_reset_linear",
+          "gpu_hours": 418.0825582114594,
+          "wall_hours": 13.130178861250045
+        },
+        {
+          "wave": "optimizer_carry_linear",
+          "gpu_hours": 209.04127910572967,
+          "wall_hours": 13.130178861250045
+        }
+      ],
+      "transition_review": "Initial60-minute buffers exceeded42hours by5minutes; independent review prospectively changed only operational buffers to54minutes each. All scientific work,25percenttrajectory margin,1100GPUh and42hour hardcaps preserved; initial rejected admission retained."
     },
-    "scientific_executable": false,
+    "scientific_executable": true,
     "readiness_launched": true,
     "live_execution": {
-      "phase": "four_worker_readiness_running",
-      "scientific_launched": false,
-      "checked_unix": 1791649316.823338,
-      "readiness_reservation_gpu_hours": 37.156152671178184,
+      "phase": "teacher_screen_running",
+      "scientific_launched": true,
+      "checked_unix": 1791650865.526761,
       "workers": [
         {
           "worker": "worker-a",
           "source_loaded": true,
-          "optimizer_updates": 4,
-          "finite_losses": [
-            0.053221240639686584,
-            0.000439869036199525,
-            0.040072035044431686,
-            0.0010133900213986635
-          ],
-          "completed_snapshot_jobs": 2,
+          "local_optimizer_updates_at_probe": 0,
+          "hosted_optimizer_updates_at_later_probe": 1,
+          "hosted_first_finite_loss": 0.053221240639686584,
+          "uncached_hosted_verified": true,
+          "completed_snapshot_jobs": 0,
           "running_snapshot_jobs": 1,
           "failed_snapshot_jobs": 0
         },
         {
           "worker": "worker-b",
           "source_loaded": true,
-          "optimizer_updates": 4,
-          "finite_losses": [
-            0.03747817501425743,
-            0.0008782109944149852,
-            0.04058341681957245,
-            0.0011380845680832863
-          ],
-          "completed_snapshot_jobs": 3,
+          "local_optimizer_updates_at_probe": 1,
+          "hosted_optimizer_updates_at_later_probe": 2,
+          "hosted_first_finite_loss": 0.03747817501425743,
+          "uncached_hosted_verified": true,
+          "completed_snapshot_jobs": 0,
           "running_snapshot_jobs": 1,
           "failed_snapshot_jobs": 0
         },
         {
           "worker": "worker-c",
           "source_loaded": true,
-          "optimizer_updates": 4,
-          "finite_losses": [
-            0.053221240639686584,
-            0.00048648822121322155,
-            0.04271390289068222,
-            0.00036517909029498696
-          ],
-          "completed_snapshot_jobs": 2,
-          "running_snapshot_jobs": 1,
+          "local_optimizer_updates_at_probe": 1,
+          "hosted_optimizer_updates_at_later_probe": 1,
+          "hosted_first_finite_loss": 0.053221240639686584,
+          "uncached_hosted_verified": true,
+          "completed_snapshot_jobs": 0,
+          "running_snapshot_jobs": 0,
           "failed_snapshot_jobs": 0
         },
         {
           "worker": "worker-d",
           "source_loaded": true,
-          "optimizer_updates": 4,
-          "finite_losses": [
-            0.03747817501425743,
-            0.0008834180189296603,
-            0.0398888997733593,
-            0.00037273444468155503
-          ],
-          "completed_snapshot_jobs": 3,
-          "running_snapshot_jobs": 1,
+          "local_optimizer_updates_at_probe": 2,
+          "hosted_optimizer_updates_at_later_probe": 2,
+          "hosted_first_finite_loss": 0.03747817501425743,
+          "uncached_hosted_verified": true,
+          "completed_snapshot_jobs": 0,
+          "running_snapshot_jobs": 0,
           "failed_snapshot_jobs": 0
+        }
+      ],
+      "all_original_sources_loaded": true,
+      "all_first_updates_finite_in_hosted_history": true
+    },
+    "scientific_launched": true,
+    "readiness_passed": true,
+    "readiness_gpu_hours": 18.303872906896807,
+    "readiness_result": {
+      "passed": true,
+      "hosted_verified": true,
+      "gpu_hours": 18.303872906896807,
+      "optimizer_updates": 16,
+      "suite_evaluations": 40,
+      "responses": 6400,
+      "all_exit_zero": true,
+      "all_owned_cleanup_verified": true,
+      "checks": [
+        {
+          "worker": "worker-a",
+          "model": "Qwen3-8B",
+          "complete": true,
+          "errors": [],
+          "pending": [],
+          "warnings": [
+            "Hosted lifecycle badge is running; local exit and exact fresh metrics determine completion"
+          ]
+        },
+        {
+          "worker": "worker-b",
+          "model": "Qwen3-4B",
+          "complete": true,
+          "errors": [],
+          "pending": [],
+          "warnings": [
+            "Hosted lifecycle badge is crashed; local exit and exact fresh metrics determine completion"
+          ]
+        },
+        {
+          "worker": "worker-c",
+          "model": "Qwen3-8B",
+          "complete": true,
+          "errors": [],
+          "pending": [],
+          "warnings": [
+            "Hosted lifecycle badge is running; local exit and exact fresh metrics determine completion"
+          ]
+        },
+        {
+          "worker": "worker-d",
+          "model": "Qwen3-4B",
+          "complete": true,
+          "errors": [],
+          "pending": [],
+          "warnings": [
+            "Hosted lifecycle badge is crashed; local exit and exact fresh metrics determine completion"
+          ]
         }
       ]
     }
