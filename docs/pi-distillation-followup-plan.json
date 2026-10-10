@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "recovery_startup_prefix_verified_one_hosted_update_pending",
+    "status": "recovery_running_verified_progress_no_complete_trajectory",
     "launch_authorized": true,
     "executable": true,
     "new_gpu_jobs_launched": true,
@@ -8781,7 +8781,7 @@
         "workers": "All four worker failure receipts report received termination, exit code1, owned cleanup completed and no remaining GPU processes.",
         "transport_diagnosis": "The status payload was about 479 KB including 2,936 asset digests. Truncation is strongly suspected, but the exact failing stdout/stderr payload was not retained, so the exact transport failure is not proven.",
         "separate_from_output_adjudication": true,
-        "monitor_successor_cpu_fix_status": "reviewed successor preserved; separate approved recovery launched at 18:54:27 UTC; 18:59:59 startup audit verifies 14 finite local updates and 13 matching hosted updates with one newer worker-c upload pending, no completed evaluation or trajectory",
+        "monitor_successor_cpu_fix_status": "original failed-attempt source preserved; approved recovery launched18:54:27UTC;19:13:29progress verifies72matching finiteupdates and10strictsuites/9568responses, no fullcompletion",
         "restart_or_relaunch_authorized_at_failure": false,
         "subsequent_user_approved_one_fresh_retry": true,
         "additional_automatic_retries_authorized": false
@@ -10537,7 +10537,7 @@
       }
     },
     "recovery_execution": {
-      "status": "startup_prefix_verified_one_hosted_update_pending",
+      "status": "running_verified_progress_no_complete_trajectory",
       "user_approved": true,
       "launched": true,
       "launch_receipt_verified": true,
@@ -10581,7 +10581,7 @@
         "preparation_intervals_uncertain": 0,
         "preparation_assigned_gpu_hours": 0.2278175157970852
       },
-      "later_wave_completion_adapter_status": "pending",
+      "later_wave_completion_adapter_status": "reviewed_ready_for_exact_evidence_checks_no_actual_completion",
       "admission": {
         "passed": true,
         "scientific_completion_certified": false,
@@ -10610,11 +10610,11 @@
       "remote_asset_count_verified": 2936,
       "dispatch_errors_observed": 0,
       "failed_queues_observed": 0,
-      "training_updates_verified": 14,
+      "training_updates_verified": 72,
       "scientific_completion_certified": false,
-      "hosted_updates_verified": 13,
-      "pending_hosted_updates": 1,
-      "completed_evaluation_suites": 0,
+      "hosted_updates_verified": 72,
+      "pending_hosted_updates": 0,
+      "completed_evaluation_suites": 10,
       "completed_trajectories": 0,
       "startup_evidence": {
         "checked_unix": 1791658799.5650508,
@@ -10681,6 +10681,506 @@
             "failed_queue_jobs": 0
           }
         ]
+      },
+      "unique_completed_responses": 9568,
+      "progress_evidence": {
+        "checked_unix": 1791659609.587043,
+        "checked_utc": "2026-10-10T19:13:29.587043+00:00",
+        "progress_only": true,
+        "complete": false,
+        "scientific_completion_certified": false,
+        "observed_checks_passed": true,
+        "errors": [],
+        "pending": [],
+        "local_updates": 72,
+        "completed_suite_evaluations": 10,
+        "unique_completed_responses": 9568,
+        "remote_read_intervals_complete": 25,
+        "expected_deferred_hosted_baseline_suite_rows": 8,
+        "hosted_newer_than_local_completed_queue": [
+          {
+            "worker": "worker-b",
+            "step": 9,
+            "suite": "benchmark"
+          }
+        ],
+        "hosted_interpretation": "Frozen worker code writes both original baseline suites to each hosted run after the trainer and snapshot queue complete. These eight writes are scheduled, not an upload failure. One hosted step-9 benchmark is newer than the local completed-queue snapshot; recheck on the next normal collection. All72 available training rows and all6 comparable trained suite rows match.",
+        "accounting_probe": {
+          "checked_unix": 1791659609.587043,
+          "method": "All four exact owned controllers alive; eight assigned GPUs per worker from durable dispatch intent through the19:13:29UTC collection cutoff. Recorded operational and audit intervals at or before that cutoff fall inside these active intervals and are not charged twice. Later durable operations remain chargeable in subsequent accounting. This is not a terminal cost receipt.",
+          "retry_gpu_hours": 10.15451364517212,
+          "prior_stage_gpu_hours": 52.27815742863549,
+          "stage_science_gpu_hours": 62.43267107380761,
+          "cumulative_readiness_gpu_hours": 78.99915054162344,
+          "cumulative_study_gpu_hours": 234.0670177046458,
+          "remaining_clock_hours": 51.49391252524323
+        },
+        "workers": [
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "teacher_policy": "fixed_original",
+            "updates": 13,
+            "hosted_updates": [
+              13,
+              13
+            ],
+            "all_finite": true,
+            "source_and_schedule_verified": true,
+            "evaluations": [
+              {
+                "step": 0,
+                "suite": "validation",
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.6748046875,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.03125,
+                    "parse_failure_fraction": 0.025390625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "completions": 1024,
+                "elapsed_seconds": 239.46564265794586,
+                "output_tokens_per_second": 6880.68643882065
+              },
+              {
+                "step": 0,
+                "suite": "benchmark",
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.2916666666666667,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.1375,
+                    "parse_failure_fraction": 0.125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.2,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.07916666666666666,
+                    "parse_failure_fraction": 0.06666666666666667,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.68125,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.05,
+                    "parse_failure_fraction": 0.0375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "completions": 800,
+                "elapsed_seconds": 319.2751879900461,
+                "output_tokens_per_second": 8646.94503002241
+              },
+              {
+                "step": 7,
+                "suite": "validation",
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.65234375,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.017578125,
+                    "parse_failure_fraction": 0.015625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "completions": 1024,
+                "elapsed_seconds": 215.24544372595847,
+                "output_tokens_per_second": 5479.702518124686
+              }
+            ],
+            "strict_evaluation_errors": [],
+            "hosted_evaluation_rows_verified": 1,
+            "pending": [],
+            "baseline_metrics": {
+              "validation": {
+                "Math validation": {
+                  "avg_at_8": 0.6748046875,
+                  "completions": 1024,
+                  "cap_hit_fraction": 0.03125,
+                  "parse_failure_fraction": 0.025390625,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
+              },
+              "benchmark": {
+                "AIME 2024": {
+                  "avg_at_8": 0.2916666666666667,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.1375,
+                  "parse_failure_fraction": 0.125,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.2,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.07916666666666666,
+                  "parse_failure_fraction": 0.06666666666666667,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.68125,
+                  "completions": 320,
+                  "cap_hit_fraction": 0.05,
+                  "parse_failure_fraction": 0.0375,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            }
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-4B",
+            "teacher_policy": "fixed_original",
+            "updates": 18,
+            "hosted_updates": [
+              18,
+              18
+            ],
+            "all_finite": true,
+            "source_and_schedule_verified": true,
+            "evaluations": [
+              {
+                "step": 0,
+                "suite": "validation",
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7265625,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0244140625,
+                    "parse_failure_fraction": 0.0205078125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "completions": 1024,
+                "elapsed_seconds": 197.6641507659806,
+                "output_tokens_per_second": 7803.9795988412825
+              },
+              {
+                "step": 0,
+                "suite": "benchmark",
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.22083333333333333,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.175,
+                    "parse_failure_fraction": 0.15,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.2,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.09166666666666666,
+                    "parse_failure_fraction": 0.06666666666666667,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.69375,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.028125,
+                    "parse_failure_fraction": 0.01875,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "completions": 800,
+                "elapsed_seconds": 279.2357057859772,
+                "output_tokens_per_second": 10055.726906759392
+              },
+              {
+                "step": 7,
+                "suite": "validation",
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.6904296875,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0078125,
+                    "parse_failure_fraction": 0.005859375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "completions": 1024,
+                "elapsed_seconds": 176.06712348596193,
+                "output_tokens_per_second": 6042.252403157036
+              }
+            ],
+            "strict_evaluation_errors": [],
+            "hosted_evaluation_rows_verified": 1,
+            "pending": [],
+            "baseline_metrics": {
+              "validation": {
+                "Math validation": {
+                  "avg_at_8": 0.7265625,
+                  "completions": 1024,
+                  "cap_hit_fraction": 0.0244140625,
+                  "parse_failure_fraction": 0.0205078125,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
+              },
+              "benchmark": {
+                "AIME 2024": {
+                  "avg_at_8": 0.22083333333333333,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.175,
+                  "parse_failure_fraction": 0.15,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.2,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.09166666666666666,
+                  "parse_failure_fraction": 0.06666666666666667,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.69375,
+                  "completions": 320,
+                  "cap_hit_fraction": 0.028125,
+                  "parse_failure_fraction": 0.01875,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            }
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "teacher_policy": "cycle_refresh",
+            "updates": 18,
+            "hosted_updates": [
+              18,
+              18
+            ],
+            "all_finite": true,
+            "source_and_schedule_verified": true,
+            "evaluations": [
+              {
+                "step": 7,
+                "suite": "validation",
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.6611328125,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.021484375,
+                    "parse_failure_fraction": 0.01953125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "completions": 1024,
+                "elapsed_seconds": 220.34354242007248,
+                "output_tokens_per_second": 6052.04938322041
+              }
+            ],
+            "strict_evaluation_errors": [],
+            "hosted_evaluation_rows_verified": 1,
+            "pending": [],
+            "baseline_metrics": {
+              "validation": {
+                "Math validation": {
+                  "avg_at_8": 0.6748046875,
+                  "completions": 1024,
+                  "cap_hit_fraction": 0.03125,
+                  "parse_failure_fraction": 0.025390625,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
+              },
+              "benchmark": {
+                "AIME 2024": {
+                  "avg_at_8": 0.2916666666666667,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.1375,
+                  "parse_failure_fraction": 0.125,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.2,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.07916666666666666,
+                  "parse_failure_fraction": 0.06666666666666667,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.68125,
+                  "completions": 320,
+                  "cap_hit_fraction": 0.05,
+                  "parse_failure_fraction": 0.0375,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            }
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-4B",
+            "teacher_policy": "cycle_refresh",
+            "updates": 23,
+            "hosted_updates": [
+              23,
+              23
+            ],
+            "all_finite": true,
+            "source_and_schedule_verified": true,
+            "evaluations": [
+              {
+                "step": 7,
+                "suite": "validation",
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.67578125,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0078125,
+                    "parse_failure_fraction": 0.0068359375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "completions": 1024,
+                "elapsed_seconds": 156.19319414696656,
+                "output_tokens_per_second": 6589.723743222326
+              },
+              {
+                "step": 9,
+                "suite": "benchmark",
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.24166666666666667,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.125,
+                    "parse_failure_fraction": 0.1,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.2125,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.1,
+                    "parse_failure_fraction": 0.06666666666666667,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.69375,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.00625,
+                    "parse_failure_fraction": 0.00625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "completions": 800,
+                "elapsed_seconds": 290.91190271498635,
+                "output_tokens_per_second": 9694.034426507918
+              },
+              {
+                "step": 11,
+                "suite": "validation",
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7421875,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0126953125,
+                    "parse_failure_fraction": 0.0087890625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "completions": 1024,
+                "elapsed_seconds": 179.72950054798275,
+                "output_tokens_per_second": 7851.693771458816
+              }
+            ],
+            "strict_evaluation_errors": [],
+            "hosted_evaluation_rows_verified": 3,
+            "pending": [],
+            "baseline_metrics": {
+              "validation": {
+                "Math validation": {
+                  "avg_at_8": 0.7265625,
+                  "completions": 1024,
+                  "cap_hit_fraction": 0.0244140625,
+                  "parse_failure_fraction": 0.0205078125,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
+              },
+              "benchmark": {
+                "AIME 2024": {
+                  "avg_at_8": 0.22083333333333333,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.175,
+                  "parse_failure_fraction": 0.15,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.2,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.09166666666666666,
+                  "parse_failure_fraction": 0.06666666666666667,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.69375,
+                  "completions": 320,
+                  "cap_hit_fraction": 0.028125,
+                  "parse_failure_fraction": 0.01875,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            }
+          }
+        ],
+        "interpretation": "Only the 4B refresh-labelled arm has a completed first OPD endpoint in this capture: validation72.65625→67.578125→74.21875%. This early PI-drop/OPD-rebound pattern is not a recipe winner or causal refresh effect; first-cycle teachers are identical and cycle8 remains primary."
+      },
+      "later_wave_operational_admission_dispatch_status": "separate_work_required_no_later_wave_admission",
+      "completion_verifier": {
+        "status": "reviewed_ready_for_evidence_checks",
+        "focused_cpu_tests_passed": 154,
+        "new_tests_passed": 70,
+        "frozen_predecessor_tests_passed": 84,
+        "documented_source_test_lines": 1329,
+        "actual_completion_receipts_issued": 0,
+        "remote_actions_performed_by_verifier_preparation": false,
+        "output_contract": {
+          "version": "math-nonthinking-recovery-output-v1",
+          "status": "finalized",
+          "production_loader_passed": true,
+          "uniform_optional_policy": true,
+          "strict_default_preserved": true,
+          "historical_failed_attempt_strict_passed": false,
+          "response_bytes_changed": false,
+          "grading_or_scores_changed": false,
+          "denominators_changed": false,
+          "output_filtering": false,
+          "authority": "supervising agent implementation decision; not explicit user approval of this output-policy amendment"
+        },
+        "prepare_next_admitted": false,
+        "later_wave_admitted": false
       }
     }
   }
