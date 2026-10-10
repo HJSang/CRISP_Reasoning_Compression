@@ -13948,7 +13948,117 @@
           "output_delimiter_count": 3,
           "stage_science_gpu_hours": 101.63392243438297
         }
-      ]
+      ],
+      "results_interpretation": {
+        "evidence_cutoff_utc": "2026-10-10T20:44:46.626542+00:00",
+        "interim_only": true,
+        "matched_validation_comparisons": [
+          {
+            "model": "Qwen3-8B",
+            "step": 55,
+            "baseline": 0.6748046875,
+            "fixed_original": 0.7509765625,
+            "cycle_refresh": 0.76953125,
+            "refresh_minus_fixed_pp": 1.85546875
+          },
+          {
+            "model": "Qwen3-4B",
+            "step": 77,
+            "baseline": 0.7265625,
+            "fixed_original": 0.7314453125,
+            "cycle_refresh": 0.8017578125,
+            "refresh_minus_fixed_pp": 7.03125
+          }
+        ],
+        "phase_pairs": {
+          "definition": "No-hint validation accuracy at the OPD cycle end minus the immediately preceding PI end, using the same 128 questions and eight draws each.",
+          "counts_by_arm": [
+            {
+              "worker": "worker-a",
+              "positive": 6,
+              "negative": 0,
+              "pairs": 6
+            },
+            {
+              "worker": "worker-b",
+              "positive": 5,
+              "negative": 2,
+              "pairs": 7
+            },
+            {
+              "worker": "worker-c",
+              "positive": 4,
+              "negative": 1,
+              "pairs": 5
+            },
+            {
+              "worker": "worker-d",
+              "positive": 6,
+              "negative": 1,
+              "pairs": 7
+            }
+          ],
+          "positive": 21,
+          "negative": 4,
+          "total": 25,
+          "descriptive_correlated_not_independent_replications": true,
+          "includes_retained_worker_d_validation66_diagnostic": true
+        },
+        "hypotheses_not_proven": [
+          "No-PI OPD may regularize departures induced by PI, but four of 25 completed phase pairs decline.",
+          "Cycle refresh may preserve prior post-OPD behavior relative to repeatedly matching the original teacher; first-cycle differences and one seed limit mechanism claims.",
+          "Refresh may also amplify long-response behavior; benchmark gains are not compared at matched inference cost."
+        ],
+        "benchmark_example": {
+          "model": "Qwen3-8B",
+          "teacher_policy": "cycle_refresh",
+          "step": 53,
+          "datasets": [
+            {
+              "dataset": "AIME 2024",
+              "responses": 240,
+              "original_correctness": 0.2916666666666667,
+              "refresh_correctness": 0.44583333333333336,
+              "original_cap_hit_fraction": 0.1375,
+              "refresh_cap_hit_fraction": 0.3625
+            },
+            {
+              "dataset": "AIME 2025",
+              "responses": 240,
+              "original_correctness": 0.2,
+              "refresh_correctness": 0.2875,
+              "original_cap_hit_fraction": 0.07916666666666666,
+              "refresh_cap_hit_fraction": 0.35833333333333334
+            },
+            {
+              "dataset": "AMC23",
+              "responses": 320,
+              "original_correctness": 0.68125,
+              "refresh_correctness": 0.8125,
+              "original_cap_hit_fraction": 0.05,
+              "refresh_cap_hit_fraction": 0.053125
+            }
+          ],
+          "denominators_unchanged": true,
+          "used_for_recipe_selection": false
+        },
+        "screen_scope": {
+          "shared_training_questions": 352,
+          "validation_questions": 128,
+          "draws_per_validation_question": 8,
+          "training_seeds": 1,
+          "primary_endpoint_update": 88,
+          "primary_endpoint_pending": true
+        },
+        "optimizer_question": {
+          "current_optimizer_policy": "reset_each_phase",
+          "current_lr_schedule": "constant",
+          "current_learning_rate": 5e-06,
+          "carry_vs_reset_effect_tested_by_current_arms": false,
+          "constant_vs_decay_effect_tested_by_current_arms": false
+        },
+        "conclusion": "Refresh is promising at the matched interim endpoints, while fixed-anchor gains fluctuate. No winner, guaranteed accumulation or proven mechanism; select only at fixed cycle-eight validation after complete audit."
+      }
     }
   }
 }
