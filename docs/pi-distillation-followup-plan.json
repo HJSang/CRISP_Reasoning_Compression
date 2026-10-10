@@ -3297,7 +3297,7 @@
       "full_stage_hosted_audit_complete": false,
       "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation.",
       "latest_audit": {
-        "checked_unix": 1791615612.16933,
+        "checked_unix": 1791616850.173267,
         "matrix_matches": true,
         "complete": false,
         "cells": [
@@ -3309,14 +3309,13 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "9 required evaluations",
+              "8 required evaluations",
               "generality-qwen3-8b-math-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-math-ema-warmup-s101-r1: not started",
               "generality-qwen3-8b-math-ema-pi-s101-r1: not started",
               "generality-qwen3-8b-math-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 10,
-            "completed_updates": 15,
+            "completed_evaluations": 11,
+            "completed_updates": 22,
             "scores": {
               "original": {
                 "AIME 2024": {
@@ -3418,6 +3417,32 @@
                   "completions": 320,
                   "cap_hit_fraction": 0.01875,
                   "parse_failure_fraction": 0.01875,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
+              },
+              "ema_warmup": {
+                "AIME 2024": {
+                  "avg_at_8": 0.25416666666666665,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.17916666666666667,
+                  "parse_failure_fraction": 0.16666666666666666,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.2,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.10416666666666667,
+                  "parse_failure_fraction": 0.09166666666666666,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.64375,
+                  "completions": 320,
+                  "cap_hit_fraction": 0.059375,
+                  "parse_failure_fraction": 0.05,
                   "grader_timeouts": 0,
                   "unexpected_thinking_delimiters": 0
                 }
@@ -3660,17 +3685,16 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "13 required evaluations",
+              "12 required evaluations",
               "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
               "generality-qwen3-8b-code-frozen-opd-s101-r1: final source/loss validation",
               "generality-qwen3-8b-code-frozen-opd-s101-r1: training process exit",
-              "generality-qwen3-8b-code-frozen-opd-s101-r1: all hosted training steps",
               "generality-qwen3-8b-code-ema-warmup-s101-r1: not started",
               "generality-qwen3-8b-code-ema-pi-s101-r1: not started",
               "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 6,
-            "completed_updates": 14,
+            "completed_evaluations": 7,
+            "completed_updates": 15,
             "scores": {
               "original": {
                 "HumanEval+": {
@@ -3719,17 +3743,16 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "12 required evaluations",
+              "11 required evaluations",
               "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
               "generality-qwen3-1p7b-code-frozen-opd-s101-r1: final source/loss validation",
               "generality-qwen3-1p7b-code-frozen-opd-s101-r1: training process exit",
-              "generality-qwen3-1p7b-code-frozen-opd-s101-r1: all hosted training steps",
               "generality-qwen3-1p7b-code-ema-warmup-s101-r1: not started",
               "generality-qwen3-1p7b-code-ema-pi-s101-r1: not started",
               "generality-qwen3-1p7b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 7,
-            "completed_updates": 14,
+            "completed_evaluations": 8,
+            "completed_updates": 15,
             "scores": {
               "original": {
                 "HumanEval+": {
@@ -3772,11 +3795,11 @@
           }
         ],
         "limitation": "One training seed per cell; fixed endpoint comparisons do not establish cross-seed generality.",
-        "checked_utc": "2026-10-10 07:00 UTC",
-        "completed_updates": 73,
-        "completed_evaluations": 42,
-        "assigned_gpu_hours": 43.20055773682064,
-        "cost_checked_unix": 1791615891.7571251,
+        "checked_utc": "2026-10-10 07:20 UTC",
+        "completed_updates": 82,
+        "completed_evaluations": 45,
+        "assigned_gpu_hours": 49.903960966534086,
+        "cost_checked_unix": 1791616884.2353148,
         "audit_validation": "Five focused CPU tests passed: complete math/code cells, nine negative mutations, delayed baseline publication, hosted-score disagreement and result-before-done publication boundaries.",
         "length_profiles": [
           {
@@ -3965,6 +3988,17 @@
             "generation_seconds": 103.76478941203095,
             "output_tokens_per_second": 4898.819752638196,
             "p95_response_latency_seconds": 2.96850384741847
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "stage": "ema_warmup",
+            "completions": 800,
+            "mean_response_tokens": 3321.15625,
+            "generation_seconds": 296.1957185129868,
+            "output_tokens_per_second": 8970.166798287148,
+            "p95_response_latency_seconds": 203.51823189138082
           }
         ]
       },
