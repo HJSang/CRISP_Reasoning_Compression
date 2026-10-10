@@ -380,7 +380,8 @@
     "evalplus": "https://github.com/evalplus/evalplus",
     "livecodebench": "https://livecodebench.github.io/",
     "original_opsd": "https://arxiv.org/abs/2601.18734",
-    "sdft_2026_revision": "https://arxiv.org/abs/2601.19897v2"
+    "sdft_2026_revision": "https://arxiv.org/abs/2601.19897v2",
+    "pi_reference_controls_2026": "https://arxiv.org/html/2608.18271"
   },
   "implementation_validation": {
     "focused_cpu_tests": 39,
@@ -6545,5 +6546,253 @@
         "basis": "Recorded outer launcher arguments plus matching deployed source hashes; EMA and stop flags verified."
       }
     }
+  },
+  "proposed_math_cyclic_study": {
+    "status": "analysis_before_full_run_user_review",
+    "launch_authorized": false,
+    "executable": false,
+    "new_gpu_jobs_launched": false,
+    "user_scope": {
+      "task": "math",
+      "models": [
+        "Qwen3-4B",
+        "Qwen3-8B"
+      ],
+      "use_all_eligible_train_split_in_eventual_full_pass": true,
+      "group_disjoint_train_validation": true,
+      "benchmark_datasets": [
+        "AIME 2024",
+        "AIME 2025",
+        "AMC23"
+      ]
+    },
+    "observations": {
+      "basis": "Offline reanalysis of previously verified complete hosted histories; no new sampling or GPU training",
+      "datasets": [
+        "AIME 2024",
+        "AIME 2025",
+        "AMC23"
+      ],
+      "metric": "Avg@8 percent",
+      "qwen3_4b_three_seed_mean": {
+        "original": [
+          21.805555555555557,
+          19.027777777777775,
+          68.22916666666667
+        ],
+        "PI7": [
+          18.61111111111111,
+          15.416666666666664,
+          62.604166666666664
+        ],
+        "OPD1": [
+          17.777777777777775,
+          15.972222222222223,
+          63.4375
+        ],
+        "OPD2": [
+          21.666666666666668,
+          17.916666666666668,
+          66.77083333333333
+        ],
+        "OPD3": [
+          21.805555555555557,
+          19.722222222222225,
+          67.91666666666667
+        ],
+        "OPD4": [
+          29.027777777777775,
+          23.055555555555554,
+          75.72916666666667
+        ],
+        "continued_PI4": [
+          21.11111111111111,
+          19.027777777777782,
+          66.35416666666667
+        ]
+      },
+      "qwen3_8b_seed101": {
+        "PI7": [
+          22.5,
+          17.5,
+          64.375
+        ],
+        "original": [
+          24.583333333333332,
+          19.583333333333332,
+          68.4375
+        ],
+        "continued_PI4": [
+          27.083333333333332,
+          21.25,
+          68.125
+        ],
+        "OPD1": [
+          26.666666666666668,
+          20.416666666666668,
+          68.125
+        ],
+        "OPD2": [
+          33.75,
+          19.583333333333332,
+          72.5
+        ],
+        "OPD3": [
+          30.833333333333336,
+          21.666666666666668,
+          71.875
+        ],
+        "OPD4": [
+          30.833333333333336,
+          23.75,
+          76.25
+        ]
+      },
+      "qwen3_8b_response_profile": {
+        "PI7": {
+          "mean_tokens": 3345.1875,
+          "cap_percent": [
+            15.833333333333332,
+            12.083333333333334,
+            4.6875
+          ]
+        },
+        "original": {
+          "mean_tokens": 3661.015,
+          "cap_percent": [
+            17.5,
+            11.25,
+            2.1875
+          ]
+        },
+        "continued_PI4": {
+          "mean_tokens": 4558.22625,
+          "cap_percent": [
+            28.333333333333332,
+            18.75,
+            5.625
+          ]
+        },
+        "OPD1": {
+          "mean_tokens": 3590.82,
+          "cap_percent": [
+            21.666666666666668,
+            10.416666666666668,
+            4.6875
+          ]
+        },
+        "OPD2": {
+          "mean_tokens": 3948.205,
+          "cap_percent": [
+            20.0,
+            10.416666666666668,
+            3.125
+          ]
+        },
+        "OPD3": {
+          "mean_tokens": 4378.8375,
+          "cap_percent": [
+            21.666666666666668,
+            13.750000000000002,
+            3.125
+          ]
+        },
+        "OPD4": {
+          "mean_tokens": 4830.39875,
+          "cap_percent": [
+            17.916666666666668,
+            12.5,
+            1.875
+          ]
+        }
+      },
+      "interpretation": "PI7 worsens measured unhinted accuracy and finite original-teacher OPD4 surpasses original in these math pilots. Four is a fixed tested endpoint, not an optimized dose. No repeated cycle has been tested."
+    },
+    "teacher_policies": {
+      "fixed_original": "Both PI and no-PI views use the immutable original teacher in every cycle. Carry the student forward.",
+      "cycle_refresh": "Both views use the detached cycle-entry student as a teacher fixed through PI and OPD; promote the post-OPD student only after the full cycle."
+    },
+    "candidate_screen": {
+      "cycles_per_arm": 8,
+      "pi_updates_per_cycle": 7,
+      "opd_updates_per_cycle": 4,
+      "updates_per_arm": 88,
+      "updates_all_arms": 352,
+      "effective_batch": 4,
+      "microbatch": 1,
+      "unique_training_questions_shared_across_arms": 352,
+      "question_uses_all_arms": 1408,
+      "optimizer": "Fresh Adam at each phase boundary; identical reset rule across teacher policies; LR 5e-6",
+      "arms": [
+        {
+          "worker": "worker-a",
+          "model": "Qwen3-8B",
+          "teacher_policy": "fixed_original"
+        },
+        {
+          "worker": "worker-b",
+          "model": "Qwen3-4B",
+          "teacher_policy": "fixed_original"
+        },
+        {
+          "worker": "worker-c",
+          "model": "Qwen3-8B",
+          "teacher_policy": "cycle_refresh"
+        },
+        {
+          "worker": "worker-d",
+          "model": "Qwen3-4B",
+          "teacher_policy": "cycle_refresh"
+        }
+      ],
+      "screening_seed": "To be fixed before execution; no best-seed selection",
+      "primary_selection": "Fixed cycle-eight validation endpoint, with inference cost reported; confirmation on remaining validation and fresh training seeds",
+      "validation_panel_questions": 128,
+      "validation_draws": 8,
+      "validation_phase_endpoints_per_arm": 16,
+      "shared_baselines_per_model": true,
+      "distinct_validation_evaluations": 66,
+      "validation_responses": 67584,
+      "benchmark_steps": [
+        0,
+        9,
+        18,
+        27,
+        36,
+        44,
+        53,
+        62,
+        71,
+        80,
+        88
+      ],
+      "benchmark_draws": 8,
+      "distinct_benchmark_suites": 42,
+      "benchmark_responses": 33600,
+      "total_responses": 101184,
+      "admitted": false,
+      "budget": "Pending complete measured reservation and review; no use of completed-stage authority to launch automatically"
+    },
+    "search_order": [
+      "fixed versus cycle-refreshed anchor accumulation",
+      "single-recovery OPD8/16 followed by cyclic b=2/4/8 dose comparison",
+      "PI a=3/7/14; ratio-matched 7/4 twice versus 14/8 once",
+      "PI-only and single-block controls with matched reset schedules",
+      "phase LR ratio, reset carry, refresh period, separate PI and OPD anchors, probability mixture"
+    ],
+    "mechanism_priorities": [
+      "correct versus length-matched shuffled PI before OPD",
+      "KL-matched parameter interpolation",
+      "current on-policy versus fixed warm-source prefixes",
+      "termination versus content and matched inference cost",
+      "bounded numerical-floor and optimizer controls"
+    ],
+    "pending": [
+      "Materialize and audit full-source group-disjoint train/validation manifests preserving existing heldouts",
+      "Implement and check cyclic phase changes and teacher promotion with exact source identities",
+      "Fix seed, confirmation rule and final partial-cycle handling",
+      "Measure and reserve complete GPU cost before any launch"
+    ],
+    "interpretation_limit": "Observed worsening is not proof PI contributes useful information or that worsening is necessary. No repeated-cycle results exist."
   }
 }
