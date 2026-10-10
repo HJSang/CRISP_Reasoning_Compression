@@ -3987,6 +3987,841 @@
           "assigned_gpu_hours": 9.847855876816643,
           "cleanup_checked_unix": 1791615357.7093868
         }
+      },
+      "question_uncertainty": {
+        "checked_unix": 1791616418.072103,
+        "audit_sha256": "869be5e7bcd022db03fef57401c272a43505d1cf296b74d63029e15ab97ef779",
+        "comparisons": [
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "frozen_warmup",
+            "right": "original",
+            "delta_percentage_points": -2.0833333333333335,
+            "question_resampling_interval_95_pp": [
+              -6.666666666666667,
+              1.6666666666666667
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "frozen_warmup",
+            "right": "original",
+            "delta_percentage_points": -2.0833333333333335,
+            "question_resampling_interval_95_pp": [
+              -5.0,
+              0.4166666666666667
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "frozen_warmup",
+            "right": "original",
+            "delta_percentage_points": -4.0625,
+            "question_resampling_interval_95_pp": [
+              -9.6875,
+              1.5625
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "frozen_pi",
+            "right": "original",
+            "delta_percentage_points": 2.5,
+            "question_resampling_interval_95_pp": [
+              -2.5,
+              7.916666666666667
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "frozen_pi",
+            "right": "original",
+            "delta_percentage_points": 1.6666666666666667,
+            "question_resampling_interval_95_pp": [
+              -1.6666666666666667,
+              5.0
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "frozen_pi",
+            "right": "original",
+            "delta_percentage_points": -0.3125,
+            "question_resampling_interval_95_pp": [
+              -4.6875,
+              4.0625
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "frozen_opd",
+            "right": "original",
+            "delta_percentage_points": 6.25,
+            "question_resampling_interval_95_pp": [
+              0.0,
+              12.5
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "frozen_opd",
+            "right": "original",
+            "delta_percentage_points": 4.166666666666667,
+            "question_resampling_interval_95_pp": [
+              -0.4166666666666667,
+              10.833333333333334
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "frozen_opd",
+            "right": "original",
+            "delta_percentage_points": 7.8125,
+            "question_resampling_interval_95_pp": [
+              1.25,
+              14.6875
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "frozen_opd",
+            "right": "frozen_pi",
+            "delta_percentage_points": 3.75,
+            "question_resampling_interval_95_pp": [
+              -1.25,
+              9.166666666666668
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "frozen_opd",
+            "right": "frozen_pi",
+            "delta_percentage_points": 2.5,
+            "question_resampling_interval_95_pp": [
+              -3.3333333333333335,
+              9.166666666666668
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "frozen_opd",
+            "right": "frozen_pi",
+            "delta_percentage_points": 8.125,
+            "question_resampling_interval_95_pp": [
+              2.8125,
+              13.75
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "frozen_warmup",
+            "right": "original",
+            "delta_percentage_points": -4.583333333333334,
+            "question_resampling_interval_95_pp": [
+              -10.416666666666668,
+              0.4166666666666667
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "frozen_warmup",
+            "right": "original",
+            "delta_percentage_points": 0.0,
+            "question_resampling_interval_95_pp": [
+              -5.0,
+              4.166666666666667
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "frozen_warmup",
+            "right": "original",
+            "delta_percentage_points": -9.375,
+            "question_resampling_interval_95_pp": [
+              -15.632812499999993,
+              -3.4375
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "frozen_pi",
+            "right": "original",
+            "delta_percentage_points": -4.583333333333334,
+            "question_resampling_interval_95_pp": [
+              -8.75,
+              -0.8333333333333334
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "frozen_pi",
+            "right": "original",
+            "delta_percentage_points": 2.5,
+            "question_resampling_interval_95_pp": [
+              -0.8333333333333334,
+              6.666666666666667
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "frozen_pi",
+            "right": "original",
+            "delta_percentage_points": -6.25,
+            "question_resampling_interval_95_pp": [
+              -12.1875,
+              -0.9375
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "frozen_opd",
+            "right": "original",
+            "delta_percentage_points": -0.8333333333333334,
+            "question_resampling_interval_95_pp": [
+              -4.166666666666667,
+              2.0833333333333335
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "frozen_opd",
+            "right": "original",
+            "delta_percentage_points": 1.25,
+            "question_resampling_interval_95_pp": [
+              -3.3333333333333335,
+              5.833333333333334
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "frozen_opd",
+            "right": "original",
+            "delta_percentage_points": -3.4375,
+            "question_resampling_interval_95_pp": [
+              -7.8125,
+              0.9375
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "frozen_opd",
+            "right": "frozen_pi",
+            "delta_percentage_points": 3.75,
+            "question_resampling_interval_95_pp": [
+              0.0,
+              7.916666666666667
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "frozen_opd",
+            "right": "frozen_pi",
+            "delta_percentage_points": -1.25,
+            "question_resampling_interval_95_pp": [
+              -3.75,
+              1.25
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "frozen_opd",
+            "right": "frozen_pi",
+            "delta_percentage_points": 2.8125,
+            "question_resampling_interval_95_pp": [
+              -2.5,
+              8.4375
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "ema_warmup",
+            "right": "original",
+            "delta_percentage_points": -5.0,
+            "question_resampling_interval_95_pp": [
+              -9.583333333333334,
+              -1.25
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "ema_warmup",
+            "right": "original",
+            "delta_percentage_points": -0.4166666666666667,
+            "question_resampling_interval_95_pp": [
+              -4.583333333333334,
+              4.166666666666667
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "ema_warmup",
+            "right": "original",
+            "delta_percentage_points": -9.6875,
+            "question_resampling_interval_95_pp": [
+              -15.3125,
+              -4.375
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "ema_pi",
+            "right": "original",
+            "delta_percentage_points": -3.75,
+            "question_resampling_interval_95_pp": [
+              -9.166666666666668,
+              0.8333333333333334
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "ema_pi",
+            "right": "original",
+            "delta_percentage_points": -0.8333333333333334,
+            "question_resampling_interval_95_pp": [
+              -2.916666666666667,
+              0.8333333333333334
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "ema_pi",
+            "right": "original",
+            "delta_percentage_points": -4.6875,
+            "question_resampling_interval_95_pp": [
+              -10.3125,
+              0.9375
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "ema_opd",
+            "right": "original",
+            "delta_percentage_points": 0.0,
+            "question_resampling_interval_95_pp": [
+              -4.583333333333334,
+              4.583333333333334
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "ema_opd",
+            "right": "original",
+            "delta_percentage_points": 2.5,
+            "question_resampling_interval_95_pp": [
+              -1.6666666666666667,
+              7.5
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "ema_opd",
+            "right": "original",
+            "delta_percentage_points": 0.625,
+            "question_resampling_interval_95_pp": [
+              -4.6875,
+              6.25
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "ema_opd",
+            "right": "ema_pi",
+            "delta_percentage_points": 3.75,
+            "question_resampling_interval_95_pp": [
+              -0.8333333333333334,
+              10.0
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "ema_opd",
+            "right": "ema_pi",
+            "delta_percentage_points": 3.3333333333333335,
+            "question_resampling_interval_95_pp": [
+              -0.8333333333333334,
+              8.75
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "ema_opd",
+            "right": "ema_pi",
+            "delta_percentage_points": 5.3125,
+            "question_resampling_interval_95_pp": [
+              -1.25,
+              12.1875
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "ema_opd",
+            "right": "frozen_opd",
+            "delta_percentage_points": 0.8333333333333334,
+            "question_resampling_interval_95_pp": [
+              -5.0,
+              7.5
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "ema_opd",
+            "right": "frozen_opd",
+            "delta_percentage_points": 1.25,
+            "question_resampling_interval_95_pp": [
+              -1.6666666666666667,
+              4.166666666666667
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "ema_opd",
+            "right": "frozen_opd",
+            "delta_percentage_points": 4.0625,
+            "question_resampling_interval_95_pp": [
+              -1.5625,
+              10.3125
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "frozen_warmup",
+            "right": "original",
+            "delta_percentage_points": -8.15548780487805,
+            "question_resampling_interval_95_pp": [
+              -12.11890243902439,
+              -4.344512195121951
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "frozen_pi",
+            "right": "original",
+            "delta_percentage_points": -4.496951219512195,
+            "question_resampling_interval_95_pp": [
+              -7.621951219512195,
+              -1.4481707317073171
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "frozen_warmup",
+            "right": "original",
+            "delta_percentage_points": -2.057926829268293,
+            "question_resampling_interval_95_pp": [
+              -6.021341463414634,
+              1.8292682926829267
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "frozen_pi",
+            "right": "original",
+            "delta_percentage_points": -0.7621951219512195,
+            "question_resampling_interval_95_pp": [
+              -3.4298780487804876,
+              1.8292682926829267
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          }
+        ],
+        "pending": [
+          {
+            "worker": "worker-a",
+            "left": "ema_warmup",
+            "right": "original"
+          },
+          {
+            "worker": "worker-a",
+            "left": "ema_pi",
+            "right": "original"
+          },
+          {
+            "worker": "worker-a",
+            "left": "ema_opd",
+            "right": "original"
+          },
+          {
+            "worker": "worker-a",
+            "left": "ema_opd",
+            "right": "ema_pi"
+          },
+          {
+            "worker": "worker-a",
+            "left": "ema_opd",
+            "right": "frozen_opd"
+          },
+          {
+            "worker": "worker-c",
+            "left": "frozen_opd",
+            "right": "original"
+          },
+          {
+            "worker": "worker-c",
+            "left": "frozen_opd",
+            "right": "frozen_pi"
+          },
+          {
+            "worker": "worker-c",
+            "left": "ema_warmup",
+            "right": "original"
+          },
+          {
+            "worker": "worker-c",
+            "left": "ema_pi",
+            "right": "original"
+          },
+          {
+            "worker": "worker-c",
+            "left": "ema_opd",
+            "right": "original"
+          },
+          {
+            "worker": "worker-c",
+            "left": "ema_opd",
+            "right": "ema_pi"
+          },
+          {
+            "worker": "worker-c",
+            "left": "ema_opd",
+            "right": "frozen_opd"
+          },
+          {
+            "worker": "worker-d",
+            "left": "frozen_opd",
+            "right": "original"
+          },
+          {
+            "worker": "worker-d",
+            "left": "frozen_opd",
+            "right": "frozen_pi"
+          },
+          {
+            "worker": "worker-d",
+            "left": "ema_warmup",
+            "right": "original"
+          },
+          {
+            "worker": "worker-d",
+            "left": "ema_pi",
+            "right": "original"
+          },
+          {
+            "worker": "worker-d",
+            "left": "ema_opd",
+            "right": "original"
+          },
+          {
+            "worker": "worker-d",
+            "left": "ema_opd",
+            "right": "ema_pi"
+          },
+          {
+            "worker": "worker-d",
+            "left": "ema_opd",
+            "right": "frozen_opd"
+          }
+        ],
+        "limitation": "Unadjusted descriptive question-resampling intervals, conditional on one training seed and the fixed eight responses per question. They do not measure training-seed variation, establish population coverage, or correct for screening multiple recipes."
       }
     }
   }
