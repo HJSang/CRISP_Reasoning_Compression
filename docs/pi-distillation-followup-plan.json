@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "stage_1_complete_review_required",
+  "status": "authorized_math_cycle_readiness_running",
   "launch_authorized": true,
   "executable": true,
   "new_gpu_jobs_launched": 9,
@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "authorized_implementation_ready_gpu_readiness_preparing",
+    "status": "authorized_four_worker_gpu_readiness_running",
     "launch_authorized": true,
     "executable": false,
     "new_gpu_jobs_launched": false,
@@ -6826,15 +6826,15 @@
       "all_16384_stress_gpu_hours": 741.4588928379882
     },
     "optimizer_lr_ablation": {
-      "status": "authorized_implemented_pending_gpu_readiness",
+      "status": "implemented_gpu_readiness_running",
       "implemented": true,
-      "new_gpu_jobs_launched": false,
+      "new_gpu_jobs_launched": true,
       "included_in_existing_budget_proposal": true,
       "priority": "Before full-data recipe selection; separate from the prepared teacher-policy screen",
       "current_implementation": {
-        "adam_state": "reset both moments and counters at each phase start",
+        "adam_state": "Explicit reset_each_phase or carry moments and counters",
         "lr": 5e-06,
-        "lr_schedule": "constant",
+        "lr_schedule": "Explicit constant or global_linear; default constant",
         "lr_scheduler_restart": false
       },
       "models": [
@@ -6927,7 +6927,8 @@
         "Measured admission and exact control/baseline reuse"
       ],
       "conditional_followup": "Constant LR2.75e-6 if needed to distinguish schedule ordering from average LR; no automatic launch",
-      "source": "https://arxiv.org/pdf/1412.6980"
+      "source": "https://arxiv.org/pdf/1412.6980",
+      "scientific_jobs_launched": false
     },
     "authorized_execution": {
       "waves": [
@@ -6947,8 +6948,8 @@
       "validation_responses": 165888,
       "benchmark_suites": 102,
       "benchmark_responses": 81600,
-      "planning_gpu_hours": 992.8,
-      "planning_wall_hours": 38.25,
+      "planning_gpu_hours": 1008.8,
+      "planning_wall_hours": 40.25,
       "all_cap_stress_gpu_hours_approx": 1822,
       "baselines_generated": 2,
       "reuse_A_unconditional_on_outcomes": true,
@@ -6956,7 +6957,77 @@
       "readiness_workers": 4,
       "scientific_global_deadline_not_reset_per_wave": true,
       "approval": "User approved all discussed runs without another permission request",
-      "full_data_pass_automatically_authorized_by_this_schedule": false
+      "full_data_pass_automatically_authorized_by_this_schedule": false,
+      "trajectory_planning_gpu_hours": 992.8,
+      "trajectory_wave_wall_hours": 38.25,
+      "interwave_reserved_gpu_hours": 16,
+      "interwave_reserved_wall_hours": 2
+    },
+    "scientific_executable": false,
+    "readiness_launched": true,
+    "live_execution": {
+      "phase": "four_worker_readiness_running",
+      "scientific_launched": false,
+      "checked_unix": 1791649316.823338,
+      "readiness_reservation_gpu_hours": 37.156152671178184,
+      "workers": [
+        {
+          "worker": "worker-a",
+          "source_loaded": true,
+          "optimizer_updates": 4,
+          "finite_losses": [
+            0.053221240639686584,
+            0.000439869036199525,
+            0.040072035044431686,
+            0.0010133900213986635
+          ],
+          "completed_snapshot_jobs": 2,
+          "running_snapshot_jobs": 1,
+          "failed_snapshot_jobs": 0
+        },
+        {
+          "worker": "worker-b",
+          "source_loaded": true,
+          "optimizer_updates": 4,
+          "finite_losses": [
+            0.03747817501425743,
+            0.0008782109944149852,
+            0.04058341681957245,
+            0.0011380845680832863
+          ],
+          "completed_snapshot_jobs": 3,
+          "running_snapshot_jobs": 1,
+          "failed_snapshot_jobs": 0
+        },
+        {
+          "worker": "worker-c",
+          "source_loaded": true,
+          "optimizer_updates": 4,
+          "finite_losses": [
+            0.053221240639686584,
+            0.00048648822121322155,
+            0.04271390289068222,
+            0.00036517909029498696
+          ],
+          "completed_snapshot_jobs": 2,
+          "running_snapshot_jobs": 1,
+          "failed_snapshot_jobs": 0
+        },
+        {
+          "worker": "worker-d",
+          "source_loaded": true,
+          "optimizer_updates": 4,
+          "finite_losses": [
+            0.03747817501425743,
+            0.0008834180189296603,
+            0.0398888997733593,
+            0.00037273444468155503
+          ],
+          "completed_snapshot_jobs": 3,
+          "running_snapshot_jobs": 1,
+          "failed_snapshot_jobs": 0
+        }
+      ]
     }
   }
 }
