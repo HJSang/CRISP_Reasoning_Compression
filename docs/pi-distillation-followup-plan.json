@@ -8781,7 +8781,7 @@
         "workers": "All four worker failure receipts report received termination, exit code1, owned cleanup completed and no remaining GPU processes.",
         "transport_diagnosis": "The status payload was about 479 KB including 2,936 asset digests. Truncation is strongly suspected, but the exact failing stdout/stderr payload was not retained, so the exact transport failure is not proven.",
         "separate_from_output_adjudication": true,
-        "monitor_successor_cpu_fix_status": "Original failed-attempt source preserved; approved recovery launched at 18:54:27 UTC. The 21:13:11 UTC snapshot verifies 347 matching finite local/hosted updates and 101 retained suites with 94,688 responses, versus 99 strict suites with 92,864 responses. The same four recovery diagnostics remain. Both 4B arms pass terminal audits; both 8B arms remain incomplete. No whole-wave completion or subsequent admission.",
+        "monitor_successor_cpu_fix_status": "Original failed source preserved. At 21:31:32 UTC the approved recovery has all 352 finite matching updates and 106 policy suites / 99,360 responses, versus 104 strict suites / 97,536 responses. The same four diagnostics remain. Workers a/b/d pass terminal audits; worker-c final suites and cleanup remain pending. No whole-wave completion or subsequent admission.",
         "restart_or_relaunch_authorized_at_failure": false,
         "subsequent_user_approved_one_fresh_retry": true,
         "additional_automatic_retries_authorized": false
@@ -10537,7 +10537,7 @@
       }
     },
     "recovery_execution": {
-      "status": "running_two_4b_trajectories_terminal_verified_whole_wave_incomplete",
+      "status": "running_three_trajectories_terminal_verified_8b_refresh_incomplete",
       "user_approved": true,
       "launched": true,
       "launch_receipt_verified": true,
@@ -10605,17 +10605,17 @@
         "live_completion_certified": false
       },
       "launch_utc": "2026-10-10T18:54:27.202017Z",
-      "remote_controllers_alive": 2,
+      "remote_controllers_alive": 1,
       "remote_status_fresh_count": 4,
       "remote_asset_count_verified": 2936,
       "dispatch_errors_observed": 0,
       "failed_queues_observed": 0,
-      "training_updates_verified": 347,
+      "training_updates_verified": 352,
       "scientific_completion_certified": false,
-      "hosted_updates_verified": 347,
+      "hosted_updates_verified": 352,
       "pending_hosted_updates": 0,
-      "completed_evaluation_suites": 101,
-      "completed_trajectories": 2,
+      "completed_evaluation_suites": 106,
+      "completed_trajectories": 3,
       "startup_evidence": {
         "checked_unix": 1791658799.5650508,
         "checked_utc": "2026-10-10T18:59:59.565051+00:00",
@@ -10682,94 +10682,92 @@
           }
         ]
       },
-      "unique_completed_responses": 94688,
+      "unique_completed_responses": 99360,
       "progress_evidence": {
-        "checked_unix": 1791666791.03214,
-        "checked_utc": "2026-10-10T21:13:11.032140+00:00",
+        "checked_unix": 1791667892.311651,
+        "checked_utc": "2026-10-10T21:31:32.311651+00:00",
         "progress_only": true,
         "complete": false,
         "scientific_completion_certified": false,
-        "observed_checks_passed": false,
+        "observed_checks_passed": true,
         "errors": [],
-        "pending": [
-          "worker-a: Hosted validation step88 leads local completed result capture; full result audit pending"
-        ],
-        "local_updates": 347,
-        "local_cyclic_updates": 347,
-        "completed_suite_evaluations": 101,
-        "strict_passing_suites": 99,
-        "unique_completed_responses": 94688,
+        "pending": [],
+        "local_updates": 352,
+        "local_cyclic_updates": 352,
+        "completed_suite_evaluations": 106,
+        "strict_passing_suites": 104,
+        "unique_completed_responses": 99360,
         "recovery_strict_zero_delimiter_passed": false,
         "output_evidence_coverage_complete": false,
         "output_delimiter_count": 4,
-        "remote_read_intervals_complete": 55,
-        "expected_deferred_hosted_baseline_suite_rows": 4,
+        "remote_read_intervals_complete": 60,
+        "expected_deferred_hosted_baseline_suite_rows": 2,
         "completed_suite_generation_throughput": {
-          "count": 101,
+          "count": 106,
           "minimum": 5189.173133383114,
-          "median": 7803.9795988412825,
+          "median": 7781.28024254582,
           "maximum": 10742.926923401477
         },
-        "strict_passing_responses": 92864,
-        "amended_passing_suites": 101,
-        "amended_passing_responses": 94688,
+        "strict_passing_responses": 97536,
+        "amended_passing_suites": 106,
+        "amended_passing_responses": 99360,
         "amended_execution_audit_errors": 0,
         "whole_wave_terminal": false,
         "accounting_probe": {
-          "checked_unix": 1791666791.03214,
-          "retry_gpu_hours": 70.86304079214732,
+          "checked_unix": 1791667892.311651,
+          "retry_gpu_hours": 74.71767691188388,
           "prior_stage_gpu_hours": 52.27815742863549,
-          "stage_science_gpu_hours": 123.14119822078281,
+          "stage_science_gpu_hours": 126.99583434051938,
           "cumulative_readiness_gpu_hours": 78.99915054162344,
-          "cumulative_study_gpu_hours": 294.77554485162096,
-          "overall_gpu_hours": 373.77469539324443,
-          "remaining_clock_hours": 49.499066664973896,
-          "operational_intervals_at_or_before_cutoff": 1124,
-          "operational_intervals_after_cutoff": 8,
+          "cumulative_study_gpu_hours": 298.63018097135756,
+          "overall_gpu_hours": 377.629331512981,
+          "remaining_clock_hours": 49.19315568970309,
+          "operational_intervals_at_or_before_cutoff": 1266,
+          "operational_intervals_after_cutoff": 4,
           "intervals_clipped_to_cutoff": [],
           "workers": [
             {
               "worker": "worker-a",
-              "assignment_released": false,
-              "controller_end_unix": 1791666791.03214,
-              "cleanup_first_verified_unix": null,
-              "assigned_union_gpu_hours": 18.497395293447706,
-              "controller_through_release_gpu_hours": 18.497395293447706,
-              "post_release_operations_union_gpu_hours": 0,
-              "operational_intervals": 301
+              "assignment_released": true,
+              "controller_end_unix": 1791667229.7328112,
+              "cleanup_first_verified_unix": 1791667238.361734,
+              "assigned_union_gpu_hours": 19.58589669280582,
+              "controller_through_release_gpu_hours": 19.491461057662963,
+              "post_release_operations_union_gpu_hours": 0.09443563514285813,
+              "operational_intervals": 338
             },
             {
               "worker": "worker-b",
               "assignment_released": true,
               "controller_end_unix": 1791665509.0728958,
               "cleanup_first_verified_unix": 1791665524.6924212,
-              "assigned_union_gpu_hours": 15.856066098213196,
+              "assigned_union_gpu_hours": 16.015899977684022,
               "controller_through_release_gpu_hours": 15.68330702940623,
-              "post_release_operations_union_gpu_hours": 0.17275906880696645,
-              "operational_intervals": 286
+              "post_release_operations_union_gpu_hours": 0.3325929482777923,
+              "operational_intervals": 321
             },
             {
               "worker": "worker-c",
               "assignment_released": false,
-              "controller_end_unix": 1791666791.03214,
+              "controller_end_unix": 1791667892.311651,
               "cleanup_first_verified_unix": null,
-              "assigned_union_gpu_hours": 18.497395293447706,
-              "controller_through_release_gpu_hours": 18.497395293447706,
+              "assigned_union_gpu_hours": 20.944683095614117,
+              "controller_through_release_gpu_hours": 20.944683095614117,
               "post_release_operations_union_gpu_hours": 0,
-              "operational_intervals": 268
+              "operational_intervals": 303
             },
             {
               "worker": "worker-d",
               "assignment_released": true,
               "controller_end_unix": 1791666537.2413383,
               "cleanup_first_verified_unix": 1791666557.0345569,
-              "assigned_union_gpu_hours": 18.01218410703871,
+              "assigned_union_gpu_hours": 18.171197145779928,
               "controller_through_release_gpu_hours": 17.977400664223566,
-              "post_release_operations_union_gpu_hours": 0.03478344281514367,
-              "operational_intervals": 269
+              "post_release_operations_union_gpu_hours": 0.19379648155636175,
+              "operational_intervals": 304
             }
           ],
-          "method": "Progress-only union at collection cutoff: active A/C dispatch intents through cutoff; released B/D intents through actual exit plus the unique cleanup-to-first-verified allowance and every subsequent recorded operational/read interval. All assigned intervals charge eight GPUs per worker. Overlaps are merged per worker. Failed/preparation origin is included once. Later intervals are excluded, and a completed operation crossing the cutoff is clipped transparently. This does not certify whole-wave completion or future admission."
+          "method": "Progress-only union at collection cutoff: active controller dispatch intents through cutoff; released controller intents through actual exit plus the unique cleanup-to-first-verified allowance and every subsequent recorded operational/read interval. All assigned intervals charge eight GPUs per worker. Overlaps are merged per worker. Failed/preparation origin is included once. Later intervals are excluded, and a completed operation crossing the cutoff is clipped transparently. This does not certify whole-wave completion or future admission."
         },
         "output_delimiter_warnings": [
           {
@@ -10885,8 +10883,8 @@
                 "whole_seconds_upper_bound": 356.5764973163605,
                 "dataset_mean_tokens": {
                   "AIME 2024": 4614.075,
-                  "AMC23": 2342.771875,
-                  "AIME 2025": 3765.375
+                  "AIME 2025": 3765.375,
+                  "AMC23": 2342.771875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -10951,8 +10949,8 @@
                 "whole_seconds_upper_bound": 379.0220091342926,
                 "dataset_mean_tokens": {
                   "AIME 2024": 5037.3375,
-                  "AMC23": 2163.23125,
-                  "AIME 2025": 4023.125
+                  "AIME 2025": 4023.125,
+                  "AMC23": 2163.23125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11041,8 +11039,8 @@
                 "whole_seconds_upper_bound": 284.6958885192871,
                 "dataset_mean_tokens": {
                   "AIME 2024": 2655.3166666666666,
-                  "AMC23": 1795.08125,
-                  "AIME 2025": 1974.0
+                  "AIME 2025": 1974.0,
+                  "AMC23": 1795.08125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11107,8 +11105,8 @@
                 "whole_seconds_upper_bound": 290.8880715370178,
                 "dataset_mean_tokens": {
                   "AIME 2024": 3461.075,
-                  "AMC23": 1403.0375,
-                  "AIME 2025": 2204.616666666667
+                  "AIME 2025": 2204.616666666667,
+                  "AMC23": 1403.0375
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11197,8 +11195,8 @@
                 "whole_seconds_upper_bound": 330.6354522705078,
                 "dataset_mean_tokens": {
                   "AIME 2024": 4499.716666666666,
-                  "AMC23": 1570.98125,
-                  "AIME 2025": 3696.695833333333
+                  "AIME 2025": 3696.695833333333,
+                  "AMC23": 1570.98125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11287,8 +11285,8 @@
                 "whole_seconds_upper_bound": 403.4522738456726,
                 "dataset_mean_tokens": {
                   "AIME 2024": 5467.2125,
-                  "AMC23": 2031.659375,
-                  "AIME 2025": 3962.75
+                  "AIME 2025": 3962.75,
+                  "AMC23": 2031.659375
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11353,8 +11351,8 @@
                 "whole_seconds_upper_bound": 363.3397889137268,
                 "dataset_mean_tokens": {
                   "AIME 2024": 5025.525,
-                  "AMC23": 2001.128125,
-                  "AIME 2025": 3950.875
+                  "AIME 2025": 3950.875,
+                  "AMC23": 2001.128125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11443,8 +11441,8 @@
                 "whole_seconds_upper_bound": 302.8819236755371,
                 "dataset_mean_tokens": {
                   "AIME 2024": 3757.4791666666665,
-                  "AMC23": 1786.64375,
-                  "AIME 2025": 2485.6208333333334
+                  "AIME 2025": 2485.6208333333334,
+                  "AMC23": 1786.64375
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11509,8 +11507,8 @@
                 "whole_seconds_upper_bound": 310.8051588535309,
                 "dataset_mean_tokens": {
                   "AIME 2024": 3021.929166666667,
-                  "AMC23": 1514.521875,
-                  "AIME 2025": 2268.429166666667
+                  "AIME 2025": 2268.429166666667,
+                  "AMC23": 1514.521875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11599,8 +11597,8 @@
                 "whole_seconds_upper_bound": 329.70843148231506,
                 "dataset_mean_tokens": {
                   "AIME 2024": 3887.025,
-                  "AMC23": 1728.234375,
-                  "AIME 2025": 2801.9333333333334
+                  "AIME 2025": 2801.9333333333334,
+                  "AMC23": 1728.234375
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11625,6 +11623,72 @@
                 "whole_seconds_upper_bound": 259.92331981658936,
                 "dataset_mean_tokens": {
                   "Math validation": 1223.15625
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 88,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7197265625,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.013671875,
+                    "parse_failure_fraction": 0.0107421875,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 232.3544568970101,
+                "output_tokens_per_second": 6398.642056859686,
+                "mean_response_tokens": 1451.9072265625,
+                "whole_seconds_upper_bound": 284.0,
+                "dataset_mean_tokens": {
+                  "Math validation": 1451.9072265625
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 88,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.30416666666666664,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.175,
+                    "parse_failure_fraction": 0.15833333333333333,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.22083333333333333,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.09583333333333334,
+                    "parse_failure_fraction": 0.08333333333333333,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.684375,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.021875,
+                    "parse_failure_fraction": 0.0125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 372.48650552297477,
+                "output_tokens_per_second": 8914.548448776462,
+                "mean_response_tokens": 4150.68625,
+                "whole_seconds_upper_bound": 412.18127036094666,
+                "dataset_mean_tokens": {
+                  "AIME 2024": 5949.670833333334,
+                  "AIME 2025": 4928.529166666666,
+                  "AMC23": 2218.065625
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11671,22 +11735,17 @@
             "source_config_assets_protocol_load_checks_passed": true,
             "training_command_flags_checks_passed": true,
             "hosted_evaluation_comparison": {
-              "matching_local_suites": 24,
-              "baseline_suites_deferred_until_exit": 2,
-              "hosted_endpoints_not_yet_in_local_capture": [
-                {
-                  "step": 88,
-                  "suite": "validation"
-                }
-              ]
+              "matching_local_suites": 28,
+              "baseline_suites_deferred_until_exit": 0,
+              "hosted_endpoints_not_yet_in_local_capture": []
             },
             "queue": {
-              "done": 22,
+              "done": 23,
               "pending": 0,
-              "running": 1,
+              "running": 0,
               "failed": 0
             },
-            "gpu_empty": false,
+            "gpu_empty": true,
             "timings": {
               "perf/train_time": {
                 "count": 88,
@@ -11714,26 +11773,37 @@
               }
             },
             "terminal_evidence": {
-              "controller_exit": null,
-              "trainer_exit": null,
+              "controller_exit": {
+                "exit_code": 0,
+                "start_unix": 1791658469.1463256,
+                "elapsed_seconds": 8760.586485624313,
+                "assigned_gpus": 8,
+                "owned_cleanup_completed": true
+              },
+              "trainer_exit": {
+                "exit_code": 0,
+                "start_unix": 1791658579.6850977,
+                "elapsed_seconds": 8637.781857728958,
+                "deadline_unix": 1791715453.3408673,
+                "assigned_gpus": 2,
+                "owned_cleanup_completed": true,
+                "cleanup_errors": []
+              },
               "all_updates_observed": true,
-              "remaining_local_suite_endpoints": [
-                {
-                  "step": 88,
-                  "suite": "benchmark"
-                },
-                {
-                  "step": 88,
-                  "suite": "validation"
-                }
-              ],
-              "owned_cleanup_verified": false
+              "remaining_local_suite_endpoints": [],
+              "owned_cleanup_verified": true
             },
-            "individual_terminal_contract_audit": null,
+            "individual_terminal_contract_audit": {
+              "worker": "worker-a",
+              "complete": true,
+              "errors": [],
+              "pending": [],
+              "warnings": [
+                "Hosted lifecycle badge differs; exact metrics and local exit are authoritative"
+              ]
+            },
             "errors": [],
-            "pending": [
-              "Hosted validation step88 leads local completed result capture; full result audit pending"
-            ]
+            "pending": []
           },
           {
             "worker": "worker-b",
@@ -11828,8 +11898,8 @@
                 "whole_seconds_upper_bound": 302.2749733924866,
                 "dataset_mean_tokens": {
                   "AMC23": 2010.04375,
-                  "AIME 2025": 3850.804166666667,
-                  "AIME 2024": 5168.795833333334
+                  "AIME 2024": 5168.795833333334,
+                  "AIME 2025": 3850.804166666667
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11894,8 +11964,8 @@
                 "whole_seconds_upper_bound": 326.24380230903625,
                 "dataset_mean_tokens": {
                   "AMC23": 1937.0,
-                  "AIME 2025": 4459.608333333334,
-                  "AIME 2024": 5442.6875
+                  "AIME 2024": 5442.6875,
+                  "AIME 2025": 4459.608333333334
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11984,8 +12054,8 @@
                 "whole_seconds_upper_bound": 216.7850387096405,
                 "dataset_mean_tokens": {
                   "AMC23": 1227.121875,
-                  "AIME 2025": 1903.4541666666667,
-                  "AIME 2024": 2924.929166666667
+                  "AIME 2024": 2924.929166666667,
+                  "AIME 2025": 1903.4541666666667
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12050,8 +12120,8 @@
                 "whole_seconds_upper_bound": 281.8637726306915,
                 "dataset_mean_tokens": {
                   "AMC23": 1986.521875,
-                  "AIME 2025": 3622.475,
-                  "AIME 2024": 4159.645833333333
+                  "AIME 2024": 4159.645833333333,
+                  "AIME 2025": 3622.475
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12140,8 +12210,8 @@
                 "whole_seconds_upper_bound": 287.4373381137848,
                 "dataset_mean_tokens": {
                   "AMC23": 1780.915625,
-                  "AIME 2025": 3499.5416666666665,
-                  "AIME 2024": 4480.366666666667
+                  "AIME 2024": 4480.366666666667,
+                  "AIME 2025": 3499.5416666666665
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12230,8 +12300,8 @@
                 "whole_seconds_upper_bound": 335.37002086639404,
                 "dataset_mean_tokens": {
                   "AMC23": 2124.78125,
-                  "AIME 2025": 5000.945833333333,
-                  "AIME 2024": 5844.808333333333
+                  "AIME 2024": 5844.808333333333,
+                  "AIME 2025": 5000.945833333333
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12296,8 +12366,8 @@
                 "whole_seconds_upper_bound": 321.0219407081604,
                 "dataset_mean_tokens": {
                   "AMC23": 1983.184375,
-                  "AIME 2025": 4670.104166666667,
-                  "AIME 2024": 5760.275
+                  "AIME 2024": 5760.275,
+                  "AIME 2025": 4670.104166666667
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12386,8 +12456,8 @@
                 "whole_seconds_upper_bound": 204.62217259407043,
                 "dataset_mean_tokens": {
                   "AMC23": 1413.459375,
-                  "AIME 2025": 2189.6666666666665,
-                  "AIME 2024": 2562.15
+                  "AIME 2024": 2562.15,
+                  "AIME 2025": 2189.6666666666665
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12452,8 +12522,8 @@
                 "whole_seconds_upper_bound": 293.0659954547882,
                 "dataset_mean_tokens": {
                   "AMC23": 1940.821875,
-                  "AIME 2025": 3610.2083333333335,
-                  "AIME 2024": 4649.1125
+                  "AIME 2024": 4649.1125,
+                  "AIME 2025": 3610.2083333333335
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12542,8 +12612,8 @@
                 "whole_seconds_upper_bound": 267.88343238830566,
                 "dataset_mean_tokens": {
                   "AMC23": 1603.659375,
-                  "AIME 2025": 2863.0416666666665,
-                  "AIME 2024": 4059.320833333333
+                  "AIME 2024": 4059.320833333333,
+                  "AIME 2025": 2863.0416666666665
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12632,8 +12702,8 @@
                 "whole_seconds_upper_bound": 314.0909614562988,
                 "dataset_mean_tokens": {
                   "AMC23": 1936.040625,
-                  "AIME 2025": 4600.525,
-                  "AIME 2024": 5554.529166666666
+                  "AIME 2024": 5554.529166666666,
+                  "AIME 2025": 4600.525
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12754,17 +12824,17 @@
             "worker": "worker-c",
             "model": "Qwen3-8B",
             "teacher_policy": "cycle_refresh",
-            "updates": 83,
+            "updates": 88,
             "training": {
-              "local_loss_updates": 83,
-              "local_cyclic_updates": 83,
+              "local_loss_updates": 88,
+              "local_cyclic_updates": 88,
               "hosted_updates": {
-                "loss": 83,
-                "cyclic": 83
+                "loss": 88,
+                "cyclic": 88
               },
               "matching_local_prefix_updates": {
-                "loss": 83,
-                "cyclic": 83
+                "loss": 88,
+                "cyclic": 88
               },
               "all_local_losses_finite": true,
               "first_no_pi_kl": 0.02285751886665821,
@@ -12775,17 +12845,18 @@
                 44,
                 55,
                 66,
-                77
+                77,
+                88
               ],
               "last_cyclic_record": {
-                "train/step": 82,
+                "train/step": 87,
                 "train/cyclic_cycle": 8,
-                "train/cyclic_pi_phase": 1,
+                "train/cyclic_pi_phase": 0,
                 "train/cyclic_optimizer_reset": 0,
                 "train/cyclic_teacher_source_update": 77,
-                "train/cyclic_teacher_refreshed": 0,
-                "train/cyclic_completed_updates": 83,
-                "train/cyclic_optimizer_updates": 6,
+                "train/cyclic_teacher_refreshed": 1,
+                "train/cyclic_completed_updates": 88,
+                "train/cyclic_optimizer_updates": 4,
                 "train/cyclic_applied_lr": 5e-06,
                 "train/cyclic_next_lr": 5e-06
               }
@@ -12850,9 +12921,9 @@
                 "mean_response_tokens": 3577.92375,
                 "whole_seconds_upper_bound": 377.849196434021,
                 "dataset_mean_tokens": {
-                  "AMC23": 2382.528125,
+                  "AIME 2025": 4102.383333333333,
                   "AIME 2024": 4647.325,
-                  "AIME 2025": 4102.383333333333
+                  "AMC23": 2382.528125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12940,9 +13011,9 @@
                 "mean_response_tokens": 2503.5375,
                 "whole_seconds_upper_bound": 292.952800989151,
                 "dataset_mean_tokens": {
-                  "AMC23": 1623.4125,
+                  "AIME 2025": 2353.9166666666665,
                   "AIME 2024": 3826.6583333333333,
-                  "AIME 2025": 2353.9166666666665
+                  "AMC23": 1623.4125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13006,9 +13077,9 @@
                 "mean_response_tokens": 4515.28375,
                 "whole_seconds_upper_bound": 458.0502247810364,
                 "dataset_mean_tokens": {
-                  "AMC23": 2208.371875,
+                  "AIME 2025": 5687.804166666667,
                   "AIME 2024": 6418.645833333333,
-                  "AIME 2025": 5687.804166666667
+                  "AMC23": 2208.371875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13096,9 +13167,9 @@
                 "mean_response_tokens": 5268.25,
                 "whole_seconds_upper_bound": 525.4853684902191,
                 "dataset_mean_tokens": {
-                  "AMC23": 2609.58125,
+                  "AIME 2025": 6541.5875,
                   "AIME 2024": 7539.804166666667,
-                  "AIME 2025": 6541.5875
+                  "AMC23": 2609.58125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13186,9 +13257,9 @@
                 "mean_response_tokens": 6086.82875,
                 "whole_seconds_upper_bound": 559.087568283081,
                 "dataset_mean_tokens": {
-                  "AMC23": 3122.696875,
+                  "AIME 2025": 8252.095833333333,
                   "AIME 2024": 7873.7375,
-                  "AIME 2025": 8252.095833333333
+                  "AMC23": 3122.696875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13252,9 +13323,9 @@
                 "mean_response_tokens": 6601.8075,
                 "whole_seconds_upper_bound": 598.7103025913239,
                 "dataset_mean_tokens": {
-                  "AMC23": 3282.571875,
+                  "AIME 2025": 9051.758333333333,
                   "AIME 2024": 8577.504166666668,
-                  "AIME 2025": 9051.758333333333
+                  "AMC23": 3282.571875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13342,9 +13413,9 @@
                 "mean_response_tokens": 5209.6375,
                 "whole_seconds_upper_bound": 513.8544185161591,
                 "dataset_mean_tokens": {
-                  "AMC23": 2617.6375,
+                  "AIME 2025": 7056.220833333334,
                   "AIME 2024": 6819.054166666667,
-                  "AIME 2025": 7056.220833333334
+                  "AMC23": 2617.6375
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13408,9 +13479,9 @@
                 "mean_response_tokens": 5390.45875,
                 "whole_seconds_upper_bound": 528.7661097049713,
                 "dataset_mean_tokens": {
-                  "AMC23": 2709.165625,
+                  "AIME 2025": 6980.45,
                   "AIME 2024": 7375.525,
-                  "AIME 2025": 6980.45
+                  "AMC23": 2709.165625
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13435,6 +13506,96 @@
                 "whole_seconds_upper_bound": 278.5536644458771,
                 "dataset_mean_tokens": {
                   "Math validation": 1707.16796875
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 77,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.76953125,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0224609375,
+                    "parse_failure_fraction": 0.0341796875,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 263.40833661402576,
+                "output_tokens_per_second": 7163.835527214372,
+                "mean_response_tokens": 1842.787109375,
+                "whole_seconds_upper_bound": 303.9002728462219,
+                "dataset_mean_tokens": {
+                  "Math validation": 1842.787109375
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 80,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.37916666666666665,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.30833333333333335,
+                    "parse_failure_fraction": 0.2833333333333333,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.24583333333333332,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.2625,
+                    "parse_failure_fraction": 0.24166666666666667,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.7875,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.034375,
+                    "parse_failure_fraction": 0.028125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 501.4778106469894,
+                "output_tokens_per_second": 9282.28308645294,
+                "mean_response_tokens": 5818.57375,
+                "whole_seconds_upper_bound": 540.9123413562775,
+                "dataset_mean_tokens": {
+                  "AIME 2025": 7583.1125,
+                  "AIME 2024": 8104.629166666667,
+                  "AMC23": 2780.628125
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 84,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7509765625,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.009765625,
+                    "parse_failure_fraction": 0.01171875,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 237.0417565050302,
+                "output_tokens_per_second": 6951.5600301630075,
+                "mean_response_tokens": 1609.189453125,
+                "whole_seconds_upper_bound": 278.0228981971741,
+                "dataset_mean_tokens": {
+                  "Math validation": 1609.189453125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13481,60 +13642,48 @@
             "source_config_assets_protocol_load_checks_passed": true,
             "training_command_flags_checks_passed": true,
             "hosted_evaluation_comparison": {
-              "matching_local_suites": 21,
+              "matching_local_suites": 24,
               "baseline_suites_deferred_until_exit": 2,
               "hosted_endpoints_not_yet_in_local_capture": []
             },
             "queue": {
-              "done": 18,
-              "pending": 1,
+              "done": 21,
+              "pending": 0,
               "running": 1,
               "failed": 0
             },
             "gpu_empty": false,
             "timings": {
               "perf/train_time": {
-                "count": 83,
+                "count": 88,
                 "minimum": 2.394930124282837,
-                "median": 3.1797962188720703,
+                "median": 3.200971484184265,
                 "maximum": 5.374680757522583
               },
               "perf/rollout_time": {
-                "count": 83,
+                "count": 88,
                 "minimum": 4.629371643066406,
-                "median": 17.454185485839844,
+                "median": 16.6842839717865,
                 "maximum": 31.277344226837158
               },
               "perf/step_time": {
-                "count": 83,
+                "count": 88,
                 "minimum": 32.21492624282837,
-                "median": 50.140661001205444,
+                "median": 49.78826832771301,
                 "maximum": 719.6930038928986
               },
               "perf/save_model_time": {
-                "count": 82,
+                "count": 87,
                 "minimum": 9.179115295410156e-05,
-                "median": 0.0001100301742553711,
+                "median": 0.00010991096496582031,
                 "maximum": 658.1645209789276
               }
             },
             "terminal_evidence": {
               "controller_exit": null,
               "trainer_exit": null,
-              "all_updates_observed": false,
+              "all_updates_observed": true,
               "remaining_local_suite_endpoints": [
-                {
-                  "step": 77,
-                  "suite": "validation"
-                },
-                {
-                  "step": 80,
-                  "suite": "benchmark"
-                },
-                {
-                  "step": 84,
-                  "suite": "validation"
-                },
                 {
                   "step": 88,
                   "suite": "benchmark"
@@ -13651,8 +13800,8 @@
                 "mean_response_tokens": 3525.1375,
                 "whole_seconds_upper_bound": 314.5669937133789,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 4427.183333333333,
                   "AIME 2024": 4811.15,
+                  "AIME 2025": 4427.183333333333,
                   "AMC23": 1884.09375
                 },
                 "strict_errors": [],
@@ -13741,8 +13890,8 @@
                 "mean_response_tokens": 3137.5925,
                 "whole_seconds_upper_bound": 290.1719992160797,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 3634.4333333333334,
                   "AIME 2024": 4413.991666666667,
+                  "AIME 2025": 3634.4333333333334,
                   "AMC23": 1807.6625
                 },
                 "strict_errors": [],
@@ -13807,8 +13956,8 @@
                 "mean_response_tokens": 3421.52125,
                 "whole_seconds_upper_bound": 317.8157494068146,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 4361.920833333334,
                   "AIME 2024": 4819.054166666667,
+                  "AIME 2025": 4361.920833333334,
                   "AMC23": 1668.071875
                 },
                 "strict_errors": [],
@@ -13897,8 +14046,8 @@
                 "mean_response_tokens": 3394.76,
                 "whole_seconds_upper_bound": 310.3321006298065,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 3905.0375,
                   "AIME 2024": 5269.670833333334,
+                  "AIME 2025": 3905.0375,
                   "AMC23": 1605.86875
                 },
                 "strict_errors": [],
@@ -13987,8 +14136,8 @@
                 "mean_response_tokens": 5109.58125,
                 "whole_seconds_upper_bound": 437.2102599143982,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 6666.4,
                   "AIME 2024": 7111.125,
+                  "AIME 2025": 6666.4,
                   "AMC23": 2440.809375
                 },
                 "strict_errors": [],
@@ -14053,8 +14202,8 @@
                 "mean_response_tokens": 5654.745,
                 "whole_seconds_upper_bound": 445.5448782444,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 7383.920833333334,
                   "AIME 2024": 7920.175,
+                  "AIME 2025": 7383.920833333334,
                   "AMC23": 2658.790625
                 },
                 "strict_errors": [
@@ -14146,8 +14295,8 @@
                 "mean_response_tokens": 5294.48125,
                 "whole_seconds_upper_bound": 452.4341883659363,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 6946.916666666667,
                   "AIME 2024": 7686.883333333333,
+                  "AIME 2025": 6946.916666666667,
                   "AMC23": 2260.853125
                 },
                 "strict_errors": [],
@@ -14214,8 +14363,8 @@
                 "mean_response_tokens": 5505.77,
                 "whole_seconds_upper_bound": 439.87091398239136,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 7296.170833333334,
                   "AIME 2024": 7820.1,
+                  "AIME 2025": 7296.170833333334,
                   "AMC23": 2427.221875
                 },
                 "strict_errors": [],
@@ -14304,8 +14453,8 @@
                 "mean_response_tokens": 5600.84,
                 "whole_seconds_upper_bound": 460.3861315250397,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 7006.15,
                   "AIME 2024": 8045.358333333334,
+                  "AIME 2025": 7006.15,
                   "AMC23": 2713.46875
                 },
                 "strict_errors": [],
@@ -14394,8 +14543,8 @@
                 "mean_response_tokens": 6618.81,
                 "whole_seconds_upper_bound": 524.2239079475403,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 8570.216666666667,
                   "AIME 2024": 8987.483333333334,
+                  "AIME 2025": 8570.216666666667,
                   "AMC23": 3378.75
                 },
                 "strict_errors": [],
@@ -14515,40 +14664,41 @@
           }
         ],
         "source_and_schedule_verified_all_workers": true,
-        "observed_checks_scope": "Progress-only whole-wave evidence under the finalized policy, with original strict failures retained. Workers b and d individually pass the frozen terminal contract; worker-a hosted validation 88 awaits full local result capture. Whole-wave completion and any subsequent admission remain pending.",
-        "hosted_interpretation": "All 347 hosted loss/cyclic records match local prefixes. Hosted evaluation comparisons match 97 trained suites plus four baseline attachments. Worker-a hosted validation 88 is ahead of local full-result capture and excluded from totals. Only four baseline attachments, for workers a and c, remain deferred.",
+        "observed_checks_scope": "All observed-prefix checks pass under the finalized policy; historical strict failures remain. Workers a, b and d pass individual terminal contracts. Worker-c lacks both final suites, baseline tracking and terminal cleanup. No observed mismatch is not whole-wave completion.",
+        "hosted_interpretation": "All 352 hosted loss/cyclic records match local records. Hosted comparisons match 102 trained suites plus six baseline attachments. No observed capture gap remains; two baseline attachments for worker-c are deferred.",
         "training_endpoint_status": {
           "workers_with_88_training_updates": [
             "worker-a",
             "worker-b",
+            "worker-c",
             "worker-d"
           ],
-          "completed_trajectories": 2,
+          "completed_trajectories": 3,
           "terminal_contract_verified_workers": [
+            "worker-a",
             "worker-b",
             "worker-d"
           ],
-          "worker_a_final_88_local_suites_captured": false,
-          "worker_a_successful_exit_and_cleanup_verified": false,
+          "worker_c_final_88_local_suites_captured": false,
+          "worker_c_successful_exit_and_cleanup_verified": false,
           "remaining_active_workers": [
-            "worker-a",
             "worker-c"
           ],
           "whole_wave_completion_receipt_issued": false
         },
         "recent_progress_comparison": {
-          "previous_cutoff_utc": "2026-10-10T20:44:46.626542+00:00",
-          "elapsed_minutes": 28.40675996541977,
-          "new_training_updates": 29,
+          "previous_cutoff_utc": "2026-10-10T21:13:11.032140+00:00",
+          "elapsed_minutes": 18.35465851624807,
+          "new_training_updates": 5,
           "new_worker_updates": [
-            14,
             0,
-            12,
-            3
+            0,
+            5,
+            0
           ],
-          "new_completed_suites": 16,
-          "new_completed_responses": 14816,
-          "interpretation": "Both 4B arms completed their terminal contracts. The 8B arms still require full scheduled evaluation and terminal evidence; elapsed snapshot-hook time includes queue backpressure."
+          "new_completed_suites": 5,
+          "new_completed_responses": 4672,
+          "interpretation": "Fixed-original 8B now passes its terminal contract. The 8B refresh arm still needs final suites and terminal evidence; whole-wave completion remains unissued."
         },
         "primary_4b_validation": {
           "step": 88,
@@ -14561,15 +14711,24 @@
           "model_8b_primary_pending": true,
           "recipe_selected": false
         },
-        "interpretation": "Both 4B arms pass their terminal contracts at update 88: fixed-original validation 73.046875%, cycle refresh 77.5390625%, original 72.65625%. This one-seed result does not establish robustness or answer optimizer carry/decay. Latest audited 8B cycle ends differ: worker-a 77 at 70.21484375% and worker-c 66 at 73.92578125%; their primary endpoints remain pending. No whole-wave completion or later-wave admission is issued.",
+        "primary_8b_validation": {
+          "step": 88,
+          "original_avg_at_8": 0.6748046875,
+          "fixed_original_avg_at_8": 0.7197265625,
+          "fixed_gain_percentage_points": 4.4921875,
+          "cycle_refresh_avg_at_8": null,
+          "cycle_refresh_pending": true,
+          "recipe_selected": false
+        },
+        "interpretation": "Fixed-original 8B final validation is 71.97265625%, 4.4921875 pp above original; 8B refresh final result remains pending. Completed 4B scores remain 73.046875% fixed-original and 77.5390625% refresh. These are not proof of sustained upward trends, robustness or optimizer interactions. No whole-wave completion or later-wave admission.",
         "output_diagnostic_interpretation": "The same four recovery diagnostics remain in two suites: worker-d benchmark 53 AIME 2024: 2 and AIME 2025: 1, plus validation 66 Math validation: 1. They are separate from the failed original attempt. The strict gate fails both suites; the finalized policy retains all 800 benchmark and 1,024 validation responses with mandatory warnings and unchanged scores/denominators. No new diagnostic, grader timeout, filtering or rescoring occurs.",
-        "operational_timing_scope": "All 55 science-collector reads are complete. The 1,124 at-or-before-cutoff operational intervals are unioned with active a/c assignments and released b/d assignments through first verified cleanup, plus separately charged subsequent operations. Eight later intervals are outside this cutoff and remain chargeable in subsequent accounting.",
+        "operational_timing_scope": "All 60 science-collector reads complete. The 1,266 at-or-before-cutoff intervals are unioned with active worker-c assignment and released a/b/d assignments through first verified cleanup, plus subsequent separately charged operations. Four later intervals remain outside this cutoff and chargeable later.",
         "limitations": [
-          "Workers b and d are individually terminal-verified; this is not a whole-wave completion receipt or permission to skip the remaining 8B results.",
-          "Worker-a has 88 training updates but its final local suite results and terminal cleanup are pending; hosted validation 88 remains ahead of full local capture.",
-          "Four baseline hosted attachments for a/c remain deferred; imported responses are not counted again.",
-          "Latest 8B endpoints differ; compare fixed update 88 after both complete, without selecting an interim maximum.",
-          "The finalized diagnostic policy preserves all outputs, scores and strict failures. Generation throughput excludes grading, reload and tracking overhead; snapshot-hook timing includes queue waits."
+          "Three individually terminal-verified arms do not certify the whole wave; both final worker-c suites, baseline tracking and terminal cleanup remain mandatory.",
+          "Observed checks passed means no current capture discrepancy, not that all required results exist.",
+          "Two worker-c baseline attachments are deferred; imported baseline responses are not counted again.",
+          "Phase and trend statistics are post-observation diagnostics on one training seed and the same repeatedly evaluated 128 questions, not independent replications or new selection gates.",
+          "Finalized output policy retains every result and strict failure. Generation rates omit grading, reload and tracking; export-hook timings include backpressure."
         ]
       },
       "later_wave_operational_admission_dispatch_status": "cpu_tested_independently_reviewed_documented_no_actual_preflight_admission_or_dispatch",
@@ -14644,6 +14803,24 @@
           "output_delimiter_count": 4,
           "stage_science_gpu_hours": 111.1174666208691,
           "completed_trajectories": 0
+        },
+        {
+          "checked_utc": "2026-10-10T21:13:11.032140+00:00",
+          "local_updates": 347,
+          "hosted_updates": 347,
+          "worker_updates": [
+            88,
+            88,
+            83,
+            88
+          ],
+          "policy_suites": 101,
+          "policy_responses": 94688,
+          "strict_suites": 99,
+          "strict_responses": 92864,
+          "output_delimiter_count": 4,
+          "stage_science_gpu_hours": 123.14119822078281,
+          "completed_trajectories": 2
         }
       ],
       "results_interpretation": {
@@ -14758,7 +14935,810 @@
         "historical_snapshot": true,
         "status_scope": "This interpretation preserves the audited 20:44 snapshot. Its then-pending primary endpoints are historical; progress_evidence reports the subsequently completed 4B endpoints."
       },
-      "remote_status_fresh_count_scope": "The value records the original four-controller launch verification; current terminal status is in progress_evidence."
+      "remote_status_fresh_count_scope": "The value records the original four-controller launch verification; current terminal status is in progress_evidence.",
+      "sustained_improvement_goal_analysis": {
+        "definitions": {
+          "validation": "Unprivileged Math validation average answer correctness over the same128questions and8draws; percentage points reported.",
+          "cycle_endpoint": "Only completed OPD endpoints11,22,...88 enter trend analysis. PI endpoints analyzed separately.",
+          "matched_horizons": "8B cycles1–7 for both teacher arms;4Bcycles1–8. Fixed8Bcycle8 is retained in all_completed_cycles, not compared with refreshcycle7.",
+          "slope": "Ordinary least-squares descriptive slope of cycle-end percent against cycle number, with an intercept; no standard errors or independent-replication claim.",
+          "late_window": "Fixed cycles6–8 compared with cycles1–3, only when all are captured. Also report explicitly labelled last-three-observed diagnostic for incomplete8B.",
+          "phase_changes": "PIend minus preceding OPDend (or original forcycle1); OPDend minus that same cycle PIend. Seven PI versus four OPD updates: phase deltas are not equal-compute causal effects.",
+          "warnings": "Retain the flagged Dcycle6 validation score and unchanged denominator; defaultstrictfailure remains separate."
+        },
+        "workers": [
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "teacher_policy": "fixed_original",
+            "all_completed_cycles": {
+              "horizon_cycles": 8,
+              "original_validation_percent": 67.48046875,
+              "cycle_end_validation_percent": {
+                "1": 72.8515625,
+                "2": 70.99609375,
+                "3": 72.55859375,
+                "4": 69.43359375,
+                "5": 75.09765625,
+                "6": 69.53125,
+                "7": 70.21484375,
+                "8": 71.97265625
+              },
+              "endpoint_gain_over_original_pp": 4.4921875,
+              "endpoints_above_original": 8,
+              "endpoints_below_original": 0,
+              "full_horizon_slope_pp_per_cycle": -0.16043526785714285,
+              "last_four_cycle_slope_pp_per_cycle": -0.869140625,
+              "mean_first_three_cycles_percent": 72.13541666666667,
+              "mean_last_three_observed_cycles_percent": 70.57291666666667,
+              "last_three_observed_minus_first_three_pp": -1.5625,
+              "fixed_late_cycles_6_to_8_mean_percent": 70.57291666666667,
+              "fixed_late_cycles_6_to_8_minus_early_1_to_3_pp": -1.5625,
+              "final_minus_previous_cycle_pp": 1.7578125,
+              "cycle_net_change": {
+                "positive": 5,
+                "zero": 0,
+                "negative": 3,
+                "mean_pp": 0.5615234375,
+                "deltas_pp": [
+                  5.37109375,
+                  -1.85546875,
+                  1.5625,
+                  -3.125,
+                  5.6640625,
+                  -5.56640625,
+                  0.68359375,
+                  1.7578125
+                ]
+              },
+              "pi_change_from_previous_cycle_or_original": {
+                "positive": 2,
+                "zero": 0,
+                "negative": 6,
+                "mean_pp": -2.40478515625,
+                "deltas_pp": [
+                  -2.24609375,
+                  -3.80859375,
+                  0.29296875,
+                  -5.46875,
+                  3.3203125,
+                  -7.91015625,
+                  -2.63671875,
+                  -0.78125
+                ]
+              },
+              "opd_change_from_same_cycle_pi": {
+                "positive": 8,
+                "zero": 0,
+                "negative": 0,
+                "mean_pp": 2.96630859375,
+                "deltas_pp": [
+                  7.6171875,
+                  1.953125,
+                  1.26953125,
+                  2.34375,
+                  2.34375,
+                  2.34375,
+                  3.3203125,
+                  2.5390625
+                ]
+              }
+            },
+            "matched_horizon": {
+              "horizon_cycles": 7,
+              "original_validation_percent": 67.48046875,
+              "cycle_end_validation_percent": {
+                "1": 72.8515625,
+                "2": 70.99609375,
+                "3": 72.55859375,
+                "4": 69.43359375,
+                "5": 75.09765625,
+                "6": 69.53125,
+                "7": 70.21484375
+              },
+              "endpoint_gain_over_original_pp": 2.734375,
+              "endpoints_above_original": 7,
+              "endpoints_below_original": 0,
+              "full_horizon_slope_pp_per_cycle": -0.2964564732142857,
+              "last_four_cycle_slope_pp_per_cycle": -0.322265625,
+              "mean_first_three_cycles_percent": 72.13541666666667,
+              "mean_last_three_observed_cycles_percent": 71.61458333333333,
+              "last_three_observed_minus_first_three_pp": -0.5208333333333428,
+              "fixed_late_cycles_6_to_8_mean_percent": null,
+              "fixed_late_cycles_6_to_8_minus_early_1_to_3_pp": null,
+              "final_minus_previous_cycle_pp": 0.68359375,
+              "cycle_net_change": {
+                "positive": 4,
+                "zero": 0,
+                "negative": 3,
+                "mean_pp": 0.390625,
+                "deltas_pp": [
+                  5.37109375,
+                  -1.85546875,
+                  1.5625,
+                  -3.125,
+                  5.6640625,
+                  -5.56640625,
+                  0.68359375
+                ]
+              },
+              "pi_change_from_previous_cycle_or_original": {
+                "positive": 2,
+                "zero": 0,
+                "negative": 5,
+                "mean_pp": -2.63671875,
+                "deltas_pp": [
+                  -2.24609375,
+                  -3.80859375,
+                  0.29296875,
+                  -5.46875,
+                  3.3203125,
+                  -7.91015625,
+                  -2.63671875
+                ]
+              },
+              "opd_change_from_same_cycle_pi": {
+                "positive": 7,
+                "zero": 0,
+                "negative": 0,
+                "mean_pp": 3.02734375,
+                "deltas_pp": [
+                  7.6171875,
+                  1.953125,
+                  1.26953125,
+                  2.34375,
+                  2.34375,
+                  2.34375,
+                  3.3203125
+                ]
+              }
+            },
+            "validation_diagnostics_retained": []
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-4B",
+            "teacher_policy": "fixed_original",
+            "all_completed_cycles": {
+              "horizon_cycles": 8,
+              "original_validation_percent": 72.65625,
+              "cycle_end_validation_percent": {
+                "1": 73.046875,
+                "2": 71.77734375,
+                "3": 69.43359375,
+                "4": 75.29296875,
+                "5": 74.12109375,
+                "6": 71.484375,
+                "7": 73.14453125,
+                "8": 73.046875
+              },
+              "endpoint_gain_over_original_pp": 0.390625,
+              "endpoints_above_original": 5,
+              "endpoints_below_original": 3,
+              "full_horizon_slope_pp_per_cycle": 0.14067150297619047,
+              "last_four_cycle_slope_pp_per_cycle": -0.15625,
+              "mean_first_three_cycles_percent": 71.41927083333333,
+              "mean_last_three_observed_cycles_percent": 72.55859375,
+              "last_three_observed_minus_first_three_pp": 1.1393229166666714,
+              "fixed_late_cycles_6_to_8_mean_percent": 72.55859375,
+              "fixed_late_cycles_6_to_8_minus_early_1_to_3_pp": 1.1393229166666714,
+              "final_minus_previous_cycle_pp": -0.09765625,
+              "cycle_net_change": {
+                "positive": 3,
+                "zero": 0,
+                "negative": 5,
+                "mean_pp": 0.048828125,
+                "deltas_pp": [
+                  0.390625,
+                  -1.26953125,
+                  -2.34375,
+                  5.859375,
+                  -1.171875,
+                  -2.63671875,
+                  1.66015625,
+                  -0.09765625
+                ]
+              },
+              "pi_change_from_previous_cycle_or_original": {
+                "positive": 1,
+                "zero": 0,
+                "negative": 7,
+                "mean_pp": -2.9052734375,
+                "deltas_pp": [
+                  -3.61328125,
+                  -0.5859375,
+                  1.26953125,
+                  -5.859375,
+                  -4.78515625,
+                  -5.46875,
+                  -1.7578125,
+                  -2.44140625
+                ]
+              },
+              "opd_change_from_same_cycle_pi": {
+                "positive": 6,
+                "zero": 0,
+                "negative": 2,
+                "mean_pp": 2.9541015625,
+                "deltas_pp": [
+                  4.00390625,
+                  -0.68359375,
+                  -3.61328125,
+                  11.71875,
+                  3.61328125,
+                  2.83203125,
+                  3.41796875,
+                  2.34375
+                ]
+              }
+            },
+            "matched_horizon": {
+              "horizon_cycles": 8,
+              "original_validation_percent": 72.65625,
+              "cycle_end_validation_percent": {
+                "1": 73.046875,
+                "2": 71.77734375,
+                "3": 69.43359375,
+                "4": 75.29296875,
+                "5": 74.12109375,
+                "6": 71.484375,
+                "7": 73.14453125,
+                "8": 73.046875
+              },
+              "endpoint_gain_over_original_pp": 0.390625,
+              "endpoints_above_original": 5,
+              "endpoints_below_original": 3,
+              "full_horizon_slope_pp_per_cycle": 0.14067150297619047,
+              "last_four_cycle_slope_pp_per_cycle": -0.15625,
+              "mean_first_three_cycles_percent": 71.41927083333333,
+              "mean_last_three_observed_cycles_percent": 72.55859375,
+              "last_three_observed_minus_first_three_pp": 1.1393229166666714,
+              "fixed_late_cycles_6_to_8_mean_percent": 72.55859375,
+              "fixed_late_cycles_6_to_8_minus_early_1_to_3_pp": 1.1393229166666714,
+              "final_minus_previous_cycle_pp": -0.09765625,
+              "cycle_net_change": {
+                "positive": 3,
+                "zero": 0,
+                "negative": 5,
+                "mean_pp": 0.048828125,
+                "deltas_pp": [
+                  0.390625,
+                  -1.26953125,
+                  -2.34375,
+                  5.859375,
+                  -1.171875,
+                  -2.63671875,
+                  1.66015625,
+                  -0.09765625
+                ]
+              },
+              "pi_change_from_previous_cycle_or_original": {
+                "positive": 1,
+                "zero": 0,
+                "negative": 7,
+                "mean_pp": -2.9052734375,
+                "deltas_pp": [
+                  -3.61328125,
+                  -0.5859375,
+                  1.26953125,
+                  -5.859375,
+                  -4.78515625,
+                  -5.46875,
+                  -1.7578125,
+                  -2.44140625
+                ]
+              },
+              "opd_change_from_same_cycle_pi": {
+                "positive": 6,
+                "zero": 0,
+                "negative": 2,
+                "mean_pp": 2.9541015625,
+                "deltas_pp": [
+                  4.00390625,
+                  -0.68359375,
+                  -3.61328125,
+                  11.71875,
+                  3.61328125,
+                  2.83203125,
+                  3.41796875,
+                  2.34375
+                ]
+              }
+            },
+            "validation_diagnostics_retained": []
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "teacher_policy": "cycle_refresh",
+            "all_completed_cycles": {
+              "horizon_cycles": 7,
+              "original_validation_percent": 67.48046875,
+              "cycle_end_validation_percent": {
+                "1": 71.97265625,
+                "2": 77.83203125,
+                "3": 76.85546875,
+                "4": 78.125,
+                "5": 76.953125,
+                "6": 73.92578125,
+                "7": 76.953125
+              },
+              "endpoint_gain_over_original_pp": 9.47265625,
+              "endpoints_above_original": 7,
+              "endpoints_below_original": 0,
+              "full_horizon_slope_pp_per_cycle": 0.25809151785714285,
+              "last_four_cycle_slope_pp_per_cycle": -0.654296875,
+              "mean_first_three_cycles_percent": 75.55338541666667,
+              "mean_last_three_observed_cycles_percent": 75.94401041666667,
+              "last_three_observed_minus_first_three_pp": 0.390625,
+              "fixed_late_cycles_6_to_8_mean_percent": null,
+              "fixed_late_cycles_6_to_8_minus_early_1_to_3_pp": null,
+              "final_minus_previous_cycle_pp": 3.02734375,
+              "cycle_net_change": {
+                "positive": 4,
+                "zero": 0,
+                "negative": 3,
+                "mean_pp": 1.3532366071428572,
+                "deltas_pp": [
+                  4.4921875,
+                  5.859375,
+                  -0.9765625,
+                  1.26953125,
+                  -1.171875,
+                  -3.02734375,
+                  3.02734375
+                ]
+              },
+              "pi_change_from_previous_cycle_or_original": {
+                "positive": 3,
+                "zero": 0,
+                "negative": 4,
+                "mean_pp": -0.15345982142857142,
+                "deltas_pp": [
+                  -1.3671875,
+                  2.5390625,
+                  0.68359375,
+                  -2.5390625,
+                  -1.26953125,
+                  -0.5859375,
+                  1.46484375
+                ]
+              },
+              "opd_change_from_same_cycle_pi": {
+                "positive": 5,
+                "zero": 0,
+                "negative": 2,
+                "mean_pp": 1.5066964285714286,
+                "deltas_pp": [
+                  5.859375,
+                  3.3203125,
+                  -1.66015625,
+                  3.80859375,
+                  0.09765625,
+                  -2.44140625,
+                  1.5625
+                ]
+              }
+            },
+            "matched_horizon": {
+              "horizon_cycles": 7,
+              "original_validation_percent": 67.48046875,
+              "cycle_end_validation_percent": {
+                "1": 71.97265625,
+                "2": 77.83203125,
+                "3": 76.85546875,
+                "4": 78.125,
+                "5": 76.953125,
+                "6": 73.92578125,
+                "7": 76.953125
+              },
+              "endpoint_gain_over_original_pp": 9.47265625,
+              "endpoints_above_original": 7,
+              "endpoints_below_original": 0,
+              "full_horizon_slope_pp_per_cycle": 0.25809151785714285,
+              "last_four_cycle_slope_pp_per_cycle": -0.654296875,
+              "mean_first_three_cycles_percent": 75.55338541666667,
+              "mean_last_three_observed_cycles_percent": 75.94401041666667,
+              "last_three_observed_minus_first_three_pp": 0.390625,
+              "fixed_late_cycles_6_to_8_mean_percent": null,
+              "fixed_late_cycles_6_to_8_minus_early_1_to_3_pp": null,
+              "final_minus_previous_cycle_pp": 3.02734375,
+              "cycle_net_change": {
+                "positive": 4,
+                "zero": 0,
+                "negative": 3,
+                "mean_pp": 1.3532366071428572,
+                "deltas_pp": [
+                  4.4921875,
+                  5.859375,
+                  -0.9765625,
+                  1.26953125,
+                  -1.171875,
+                  -3.02734375,
+                  3.02734375
+                ]
+              },
+              "pi_change_from_previous_cycle_or_original": {
+                "positive": 3,
+                "zero": 0,
+                "negative": 4,
+                "mean_pp": -0.15345982142857142,
+                "deltas_pp": [
+                  -1.3671875,
+                  2.5390625,
+                  0.68359375,
+                  -2.5390625,
+                  -1.26953125,
+                  -0.5859375,
+                  1.46484375
+                ]
+              },
+              "opd_change_from_same_cycle_pi": {
+                "positive": 5,
+                "zero": 0,
+                "negative": 2,
+                "mean_pp": 1.5066964285714286,
+                "deltas_pp": [
+                  5.859375,
+                  3.3203125,
+                  -1.66015625,
+                  3.80859375,
+                  0.09765625,
+                  -2.44140625,
+                  1.5625
+                ]
+              }
+            },
+            "validation_diagnostics_retained": []
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-4B",
+            "teacher_policy": "cycle_refresh",
+            "all_completed_cycles": {
+              "horizon_cycles": 8,
+              "original_validation_percent": 72.65625,
+              "cycle_end_validation_percent": {
+                "1": 74.21875,
+                "2": 76.46484375,
+                "3": 77.05078125,
+                "4": 77.05078125,
+                "5": 79.58984375,
+                "6": 79.1015625,
+                "7": 80.17578125,
+                "8": 77.5390625
+              },
+              "endpoint_gain_over_original_pp": 4.8828125,
+              "endpoints_above_original": 8,
+              "endpoints_below_original": 0,
+              "full_horizon_slope_pp_per_cycle": 0.6010509672619048,
+              "last_four_cycle_slope_pp_per_cycle": -0.5078125,
+              "mean_first_three_cycles_percent": 75.91145833333333,
+              "mean_last_three_observed_cycles_percent": 78.93880208333333,
+              "last_three_observed_minus_first_three_pp": 3.02734375,
+              "fixed_late_cycles_6_to_8_mean_percent": 78.93880208333333,
+              "fixed_late_cycles_6_to_8_minus_early_1_to_3_pp": 3.02734375,
+              "final_minus_previous_cycle_pp": -2.63671875,
+              "cycle_net_change": {
+                "positive": 5,
+                "zero": 1,
+                "negative": 2,
+                "mean_pp": 0.6103515625,
+                "deltas_pp": [
+                  1.5625,
+                  2.24609375,
+                  0.5859375,
+                  0.0,
+                  2.5390625,
+                  -0.48828125,
+                  1.07421875,
+                  -2.63671875
+                ]
+              },
+              "pi_change_from_previous_cycle_or_original": {
+                "positive": 1,
+                "zero": 0,
+                "negative": 7,
+                "mean_pp": -2.490234375,
+                "deltas_pp": [
+                  -5.078125,
+                  2.5390625,
+                  -2.9296875,
+                  -1.66015625,
+                  -0.87890625,
+                  -4.1015625,
+                  -3.125,
+                  -4.6875
+                ]
+              },
+              "opd_change_from_same_cycle_pi": {
+                "positive": 7,
+                "zero": 0,
+                "negative": 1,
+                "mean_pp": 3.1005859375,
+                "deltas_pp": [
+                  6.640625,
+                  -0.29296875,
+                  3.515625,
+                  1.66015625,
+                  3.41796875,
+                  3.61328125,
+                  4.19921875,
+                  2.05078125
+                ]
+              }
+            },
+            "matched_horizon": {
+              "horizon_cycles": 8,
+              "original_validation_percent": 72.65625,
+              "cycle_end_validation_percent": {
+                "1": 74.21875,
+                "2": 76.46484375,
+                "3": 77.05078125,
+                "4": 77.05078125,
+                "5": 79.58984375,
+                "6": 79.1015625,
+                "7": 80.17578125,
+                "8": 77.5390625
+              },
+              "endpoint_gain_over_original_pp": 4.8828125,
+              "endpoints_above_original": 8,
+              "endpoints_below_original": 0,
+              "full_horizon_slope_pp_per_cycle": 0.6010509672619048,
+              "last_four_cycle_slope_pp_per_cycle": -0.5078125,
+              "mean_first_three_cycles_percent": 75.91145833333333,
+              "mean_last_three_observed_cycles_percent": 78.93880208333333,
+              "last_three_observed_minus_first_three_pp": 3.02734375,
+              "fixed_late_cycles_6_to_8_mean_percent": 78.93880208333333,
+              "fixed_late_cycles_6_to_8_minus_early_1_to_3_pp": 3.02734375,
+              "final_minus_previous_cycle_pp": -2.63671875,
+              "cycle_net_change": {
+                "positive": 5,
+                "zero": 1,
+                "negative": 2,
+                "mean_pp": 0.6103515625,
+                "deltas_pp": [
+                  1.5625,
+                  2.24609375,
+                  0.5859375,
+                  0.0,
+                  2.5390625,
+                  -0.48828125,
+                  1.07421875,
+                  -2.63671875
+                ]
+              },
+              "pi_change_from_previous_cycle_or_original": {
+                "positive": 1,
+                "zero": 0,
+                "negative": 7,
+                "mean_pp": -2.490234375,
+                "deltas_pp": [
+                  -5.078125,
+                  2.5390625,
+                  -2.9296875,
+                  -1.66015625,
+                  -0.87890625,
+                  -4.1015625,
+                  -3.125,
+                  -4.6875
+                ]
+              },
+              "opd_change_from_same_cycle_pi": {
+                "positive": 7,
+                "zero": 0,
+                "negative": 1,
+                "mean_pp": 3.1005859375,
+                "deltas_pp": [
+                  6.640625,
+                  -0.29296875,
+                  3.515625,
+                  1.66015625,
+                  3.41796875,
+                  3.61328125,
+                  4.19921875,
+                  2.05078125
+                ]
+              }
+            },
+            "validation_diagnostics_retained": [
+              {
+                "step": 66,
+                "count": 1
+              }
+            ]
+          }
+        ],
+        "teacher_comparisons": [
+          {
+            "model": "Qwen3-8B",
+            "matched_cycles": 7,
+            "refresh_minus_fixed_by_cycle_pp": {
+              "1": -0.87890625,
+              "2": 6.8359375,
+              "3": 4.296875,
+              "4": 8.69140625,
+              "5": 1.85546875,
+              "6": 4.39453125,
+              "7": 6.73828125
+            },
+            "baseline_adjusted_endpoint_gap_pp": 6.73828125
+          },
+          {
+            "model": "Qwen3-4B",
+            "matched_cycles": 8,
+            "refresh_minus_fixed_by_cycle_pp": {
+              "1": 1.171875,
+              "2": 4.6875,
+              "3": 7.6171875,
+              "4": 1.7578125,
+              "5": 5.46875,
+              "6": 7.6171875,
+              "7": 7.03125,
+              "8": 4.4921875
+            },
+            "baseline_adjusted_endpoint_gap_pp": 4.4921875
+          }
+        ],
+        "matched_benchmark_cost": [
+          {
+            "model": "Qwen3-8B",
+            "matched_benchmark_update": 80,
+            "benchmark_training_phase": "PI",
+            "correctness_percent_fixed_refresh": {
+              "AIME 2024": [
+                21.666666666666668,
+                37.916666666666664
+              ],
+              "AIME 2025": [
+                19.583333333333332,
+                24.583333333333332
+              ],
+              "AMC23": [
+                65.0,
+                78.75
+              ]
+            },
+            "cap_hit_percent_fixed_refresh": {
+              "AIME 2024": [
+                10.833333333333334,
+                30.833333333333336
+              ],
+              "AIME 2025": [
+                4.583333333333333,
+                26.25
+              ],
+              "AMC23": [
+                2.5,
+                3.4375000000000004
+              ]
+            },
+            "mean_response_tokens_fixed_refresh": [
+              2697.98125,
+              5818.57375
+            ],
+            "refresh_to_fixed_token_ratio": 2.1566398024448836,
+            "generation_seconds_fixed_refresh": [
+              289.34707477595657,
+              501.4778106469894
+            ],
+            "refresh_to_fixed_generation_seconds_ratio": 1.7331359269323428,
+            "generation_tokens_per_second_fixed_refresh": [
+              7459.501713197731,
+              9282.28308645294
+            ],
+            "baseline_correctness_percent": {
+              "AIME 2024": 29.166666666666668,
+              "AIME 2025": 20.0,
+              "AMC23": 68.125
+            },
+            "interpretation": "Descriptive benchmark generalization/cost only, not recipe or checkpoint selection. Generation time excludes grading, reload and tracking; no matched-token-budget evaluation has been performed."
+          },
+          {
+            "model": "Qwen3-4B",
+            "matched_benchmark_update": 88,
+            "benchmark_training_phase": "OPD",
+            "correctness_percent_fixed_refresh": {
+              "AIME 2024": [
+                22.083333333333332,
+                30.833333333333336
+              ],
+              "AIME 2025": [
+                19.583333333333332,
+                25.416666666666664
+              ],
+              "AMC23": [
+                67.1875,
+                71.5625
+              ]
+            },
+            "cap_hit_percent_fixed_refresh": {
+              "AIME 2024": [
+                16.25,
+                38.75
+              ],
+              "AIME 2025": [
+                8.333333333333332,
+                33.33333333333333
+              ],
+              "AMC23": [
+                0.625,
+                8.4375
+              ]
+            },
+            "mean_response_tokens_fixed_refresh": [
+              3820.9325,
+              6618.81
+            ],
+            "refresh_to_fixed_token_ratio": 1.7322499154329474,
+            "generation_seconds_fixed_refresh": [
+              290.5898379900027,
+              500.8003369650105
+            ],
+            "refresh_to_fixed_generation_seconds_ratio": 1.7233924641997969,
+            "generation_tokens_per_second_fixed_refresh": [
+              10519.108380194502,
+              10573.171799542839
+            ],
+            "baseline_correctness_percent": {
+              "AIME 2024": 22.083333333333332,
+              "AIME 2025": 20.0,
+              "AMC23": 69.375
+            },
+            "interpretation": "Descriptive benchmark generalization/cost only, not recipe or checkpoint selection. Generation time excludes grading, reload and tracking; no matched-token-budget evaluation has been performed."
+          }
+        ],
+        "matrix_identification": {
+          "unique_trajectories": 10,
+          "per_model": "Five unique arms: four fixed-original reset/carry × constant/global_linear variants, plus cycle_refresh/reset/constant. Original teacher-screen reset/constant arm is the shared factorial control.",
+          "identified_exploratory_contrasts": [
+            "Teacher refresh versus fixed-original with reset_each_phase and constant5e-6 only.",
+            "Adam carry versus reset with fixed-original teacher at each LR schedule.",
+            "Global-linear decay versus constant with fixed-original teacher at each optimizer policy.",
+            "Reset/carry × constant/decay interaction under fixed-original teacher only."
+          ],
+          "not_identified": [
+            "Refresh × Adam-carry interaction, refresh × LR-decay interaction, or their three-way interaction: three refresh optimizer/LR cells per model are absent.",
+            "Best LR or whether5e-6 is too large: only one constant rate and one changing schedule.",
+            "Pure schedule-order effect: linear mean LR2.75e-6 differs from constant5e-6; no constant2.75e-6 control.",
+            "Generalization across training seeds, model families, full24809trainingquestions or longer horizons than88updates.",
+            "Causal reason for PI dip/OPD recovery: no continuedPI/noPI/shuffledPI alternatives in this matrix.",
+            "Equal-inference-budget superiority: same16Kcap permits different realized tokens and latency."
+          ],
+          "launch_status": "At this snapshot only teacher-screen arms run; six additional optimizer variants are unlaunched. Finish and certify the whole first wave before subsequent fresh admission.",
+          "no_scope_expansion": true
+        },
+        "decision_criteria_proposal": {
+          "status": "Proposed diagnostic interpretation for the user goal, formulated after observing trajectories; not a new preregistered primary endpoint, hard gate or launch authorization.",
+          "primary": "Retain update88 validation Avg@8 for every required arm; no maximum-over-checkpoints, no benchmark selection, no dropping failed or weak arms.",
+          "durable_gain": "Describe gain as retained only when finalcycle8 exceeds original and fixedlatecycles6–8 remain above original on average; report all three individual late endpoints and uncertainty, not merely the mean. This is distinct from continued growth.",
+          "continued_growth": "For support of accumulating gain, require concordant positive late-vs-early change and no material late decline: report cycles6–8 minus1–3 and slope over fixedcycles5–8, together with cycle8 minuscycle7. Do not invent an effect-size threshold from these outcomes; select a practical tolerance before new confirmation evidence.",
+          "confirmation": "After candidate selection solely on the fixed primary endpoint, evaluate a locked recipe on held-out3462validationgroups and freshtrainingseeds before claiming robust sustained improvement; these require separately bounded authorization if outside current executable scope. The groups are withheld from this selection, not guaranteed historically untouched.",
+          "uncertainty": "Use question-level paired differences/cluster bootstrap for repeated draws and arm comparisons when raw records are available; aggregate summary alone cannot provide this. One trainingseed cannot quantify training-seed uncertainty. Repeated phase points are not independent replications.",
+          "cost": "Report actual tokens, cap-hit/parse-failure rates and generation/totalwall alongside validation; do not exclude capped/flagged outcomes. A more accurate longer-output recipe is not established to be more compute-efficient. Any equal-token-budget experiment is a separate proposed scope.",
+          "mechanism": "Use phase deltas to diagnose sawtooth recovery versus accumulated cycle gain; an average positive OPD delta can coexist with flat/downward cycle endpoints.",
+          "admission": "Keep source/finite/counter/output-policy checks, fullsuite/hosted/cleanup requirements, all10plannedarms and remainingmatrixcost/deadline admission unchanged."
+        },
+        "key_limitations": [
+          "8Brefresh finalcycle8 result absent at this cutoff; fixed8B and both4B arms pass individual terminal audits.",
+          "A/B/Dterminal contracts pass but wholewave incomplete; no laterwaveadmission.",
+          "Same128validationquestions repeatedly inspected andoneseed perarm; posthoc trendmetrics are descriptive.",
+          "Higherrefreshscores can coexistwithgreatertruncation/length andnegative late slope. No monotonic or mechanism claim."
+        ],
+        "evidence_cutoff_utc": "2026-10-10T21:31:32.311651+00:00",
+        "objective": "Find a PI to no-PI OPD recipe whose improvement trend persists as training continues.",
+        "status": "active_not_proven",
+        "primary_endpoint_unchanged": true,
+        "new_scope_authorized": false,
+        "observed_phase_pairs": {
+          "count": 31,
+          "opd_positive": 26,
+          "opd_negative": 5,
+          "pi_positive": 7,
+          "pi_negative": 24
+        },
+        "interpretation": "Above-original retention differs from continued upward growth. All three complete arms have negative cycle5–8 slopes; cycle-refresh4B retains its gain but does not establish ongoing accumulation. Fixed late6–8 diagnostics for8Brefresh remain pending. Finish exact currentmatrix before any conditional newscope."
+      }
     }
   }
 }
