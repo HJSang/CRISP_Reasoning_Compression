@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "math_cycle_teacher_screen_running",
+  "status": "math_cycle_teacher_screen_complete_phase_readiness_passed_science_pending",
   "launch_authorized": true,
   "executable": true,
   "new_gpu_jobs_launched": 9,
@@ -16364,7 +16364,7 @@
     },
     "phase_ratio_screen": {
       "version": "math-phases-v1",
-      "status": "one_wrapper_readiness_running_scientific_phase_admission_pending",
+      "status": "strict_wrapper_readiness_passed_scientific_phase_admission_pending",
       "admitted": false,
       "dispatch": false,
       "models": [
@@ -16694,7 +16694,7 @@
         "independent_source_review": "clear",
         "actual_line_walkthrough_rows": 343,
         "actual_source_file_bytes_verified_by_manifest_helper": false,
-        "gpu_readiness_proven": false,
+        "gpu_readiness_proven": true,
         "phase_adapters": {
           "runtime_asset_count": 2940,
           "runtime_source_count": 2919,
@@ -16716,12 +16716,13 @@
             "whole_wave_completion": 37,
             "corrected_preflight": 22
           },
-          "test_count_note": "Reviewed groups contain542 CPU cases including predecessor regressions. They certify helper capability; actual strict readiness is running and not yet passed.",
+          "test_count_note": "The retained542 CPU cases certify earlier helper capability. Actual strict wrapper readiness now independently passes all22updates/16suites/1024responses; scientific results and full-matrix admission remain separate.",
           "exact_new_walkthrough_rows": 5208,
           "prior_attributed_rows_preserved": 7619,
           "per_arm_audit_is_whole_wave_completion": false,
           "remote_source_verification_scope": "worker-a staged runtime and original8B source only; remaining scientific workers are not yet staged"
-        }
+        },
+        "actual_runtime_asset_bytes_verified_by_readiness": true
       },
       "prospective_feasibility": {
         "kind": "phase_length_terminal_cost_and_readiness_planning_only",
@@ -16985,7 +16986,7 @@
         }
       ],
       "wrapper_readiness_proposal": {
-        "status": "running_pending_complete_source_suite_hosted_and_cost_audit",
+        "status": "complete_passed_exact_source_suite_hosted_and_cost_audit",
         "model": "Qwen3-8B",
         "pi_updates": 9,
         "opd_updates": 2,
@@ -17007,22 +17008,35 @@
         "total_readiness_reserve_gpu_hours": 18,
         "purpose": "Verify new recipe wrappers, source and seed binding, phase resets, teacher promotion, evaluation queue, hosted metrics and cleanup. Reuse both completed original-model/numerical-core evidence after exact source verification.",
         "not_proven": [
-          "readiness completion",
           "full-panel saturated throughput",
           "numerical parity",
-          "scientific matrix admission"
+          "scientific matrix admission",
+          "sustained scientific improvement"
         ],
         "selection": "Exact first88 frozen training records and deterministic first8validation /2AIME24+2AIME25+4AMC23 questions selected in source order, without outcomes.",
         "failure_policy": "Hard stop with no automatic retry; all22updates,10snapshots and16suites required. No inferred success from a smaller workload.",
         "attempts_launched": 1,
-        "readiness_passed": false,
+        "readiness_passed": true,
         "scientific_admitted": false,
         "started_utc": "2026-10-10T22:52:15.216030+00:00",
         "assigned_deadline_utc": "2026-10-11T00:27:03.867121+00:00",
         "preparation_actual_gpu_hours": 0.1154962534374661,
         "available_assigned_seconds_at_admission": 5703.362483024597,
-        "startup_observation": "Owned controller alive; training startup and evaluation queue running; no queue failure. Finite update counts and exact completion are not yet audited.",
-        "preflight_correction": "First read-only check ended before SDK queries or training on an inherited environment assertion. The separately reviewed correction mirrors the worker effective entity/project and verifies the actual SDK endpoint. The original failed read remains unchanged and charged; there was no second training launch."
+        "startup_observation": "Preserved startup: owned controller alive and queue active. Superseded by complete exact terminal readiness audit.",
+        "preflight_correction": "First read-only check ended before SDK queries or training on an inherited environment assertion. The separately reviewed correction mirrors the worker effective entity/project and verifies the actual SDK endpoint. The original failed read remains unchanged and charged; there was no second training launch.",
+        "checked_utc": "2026-10-10T23:20:48.709211+00:00",
+        "cleanup_first_verified_utc": "2026-10-10T23:18:47.450237+00:00",
+        "actual_gpu_hours": 3.664916621843974,
+        "assigned_worker_gpu_hours": 3.5382982381184895,
+        "preparation_and_audit_gpu_hours": 0.1266183837254844,
+        "complete_suites": 16,
+        "complete_responses": 1024,
+        "finite_updates": 22,
+        "exact_hosted_history_verified": true,
+        "strict_output_errors": 0,
+        "grader_timeouts": 0,
+        "cleanup_verified": true,
+        "hosted_badge_limitation": "Lifecycle badge disagrees with verified local exit; exact complete metrics are authoritative."
       }
     },
     "cycle_count_interpretation": {
