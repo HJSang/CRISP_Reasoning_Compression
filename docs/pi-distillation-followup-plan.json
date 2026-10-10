@@ -2549,11 +2549,11 @@
     "later_teacher_refresh": "fixed original versus lagged/EMA; same teacher checkpoint for both context views"
   },
   "proposed_generality_ema_study": {
-    "status": "design_ready_budget_and_plan_review_pending",
+    "status": "approved_readiness_in_progress",
     "user_requested_all_four_workers": true,
     "user_requested_ema_comparison": true,
-    "launch_authorized": false,
-    "new_jobs_launched": 0,
+    "launch_authorized": true,
+    "new_jobs_launched": 8,
     "cells": [
       {
         "worker": "worker-a",
@@ -2693,25 +2693,42 @@
       "revision": "4bb6404fdc6cacfda99d4ac4205087b89d32030c",
       "config": "full",
       "split": "train",
-      "selection": "44 reviewed train-only problems: 28 warmup and 16 adaptation, disjoint groups; pin exact IDs after review",
+      "selection": "44 manually reviewed MBPP full/train problems, 28 warmup and 16 adaptation; pinned IDs and corrected/clarified references in the private review manifest; all 132 provided training tests passed in the isolated sandbox.",
       "PI": "verified reference implementation with explanation; training-problem tests only; no evaluation reference/test leakage",
-      "ready": false
+      "ready": true
     },
     "readiness": {
       "all_four_workers_idle_verified": true,
-      "native_tokenizer_cpu_checks_passed": false,
+      "native_tokenizer_cpu_checks_passed": true,
       "model_revisions_pinned": true,
-      "EMA_implementation_and_validation": false,
-      "sandboxed_code_evaluator": false,
-      "full_model_weights_cached": false,
+      "EMA_implementation_and_validation": "Initial EMA exact scoring and two finite updates passed in all four cells; complete restored-teacher continuation passed in 1.7B math; remaining readiness incomplete",
+      "sandboxed_code_evaluator": true,
+      "full_model_weights_cached": true,
       "known_HF_Megatron_update_parity": "existing failed exploratory status retained; no renewed open-ended parity requirement",
       "native_tokenizer_cpu_checks_by_model": {
         "Qwen3-8B": true,
-        "Qwen3-1.7B": false
+        "Qwen3-1.7B": true
       },
       "selected_models_Miles_GPU_validation": {
         "Qwen3-8B": false,
         "Qwen3-1.7B": false
+      },
+      "code_grader_validation": {
+        "full_canonical_references_passed": 164,
+        "syntax_wrong_and_infinite_loop_controls_rejected": true,
+        "internet_disabled_verified": true,
+        "credentials_absent_in_sandbox_verified": true
+      },
+      "failed_attempts": [
+        "HF completion-marker ordering race; fixed with synchronization",
+        "GPU-to-sandbox DNS connectivity; fixed with private queue transport",
+        "Full code response handoff timed out carrying repeated tests; code controllers stopped; compressed response-only transport under validation"
+      ],
+      "private_code_bridge_control_passed": true,
+      "portable_cpu_tests": {
+        "passed": 112,
+        "skipped": 34,
+        "full_collection_blocker": "missing local inference encoding module"
       }
     },
     "budget_proposal": {
@@ -2740,7 +2757,7 @@
         "Qwen3-4B",
         "Qwen3-8B"
       ],
-      "no_launch_or_budget_approval_inferred": true
+      "no_launch_or_budget_approval_inferred": false
     },
     "deferred_glm_sampling_audit": {
       "GLM-4-9B-0414": {
@@ -2769,6 +2786,7 @@
         "max_new_tokens": 30000,
         "thinking": true
       }
-    }
+    },
+    "authorization": "User approved the complete proposed matrix and budget with LGTM; scientific launch remains gated on readiness and measured admission."
   }
 }
