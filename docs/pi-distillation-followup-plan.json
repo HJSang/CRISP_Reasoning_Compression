@@ -3199,29 +3199,16 @@
           "worker": "worker-c",
           "model": "Qwen3-8B",
           "task": "code",
-          "completed_updates": 26,
+          "completed_updates": 29,
           "completed_evaluations": 15,
           "errors": [],
           "pending": [
             "Controller exit and cleanup",
             "4 required evaluations",
             "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-            "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
-          ]
-        },
-        {
-          "worker": "worker-d",
-          "model": "Qwen3-1.7B",
-          "task": "code",
-          "completed_updates": 30,
-          "completed_evaluations": 18,
-          "errors": [],
-          "pending": [
-            "Controller exit and cleanup",
-            "1 required evaluations",
-            "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-            "generality-qwen3-1p7b-code-ema-opd-s101-r1: final source/loss validation",
-            "generality-qwen3-1p7b-code-ema-opd-s101-r1: training process exit"
+            "generality-qwen3-8b-code-ema-opd-s101-r1: final source/loss validation",
+            "generality-qwen3-8b-code-ema-opd-s101-r1: training process exit",
+            "generality-qwen3-8b-code-ema-opd-s101-r1: all hosted training steps"
           ]
         }
       ],
@@ -3238,7 +3225,7 @@
       "full_stage_hosted_audit_complete": false,
       "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation.",
       "latest_audit": {
-        "checked_unix": 1791623295.584241,
+        "checked_unix": 1791623930.8928661,
         "matrix_matches": true,
         "complete": false,
         "cells": [
@@ -3684,10 +3671,12 @@
               "Controller exit and cleanup",
               "4 required evaluations",
               "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
+              "generality-qwen3-8b-code-ema-opd-s101-r1: final source/loss validation",
+              "generality-qwen3-8b-code-ema-opd-s101-r1: training process exit",
+              "generality-qwen3-8b-code-ema-opd-s101-r1: all hosted training steps"
             ],
             "completed_evaluations": 15,
-            "completed_updates": 26,
+            "completed_updates": 29,
             "scores": {
               "original": {
                 "HumanEval+": {
@@ -3775,16 +3764,10 @@
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
-            "complete": false,
+            "complete": true,
             "errors": [],
-            "pending": [
-              "Controller exit and cleanup",
-              "1 required evaluations",
-              "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-1p7b-code-ema-opd-s101-r1: final source/loss validation",
-              "generality-qwen3-1p7b-code-ema-opd-s101-r1: training process exit"
-            ],
-            "completed_evaluations": 18,
+            "pending": [],
+            "completed_evaluations": 19,
             "completed_updates": 30,
             "scores": {
               "original": {
@@ -3858,6 +3841,18 @@
                   "pass_at_8": 0.7926829268292683,
                   "test_failure_fraction": 0.3932926829268293
                 }
+              },
+              "ema_opd": {
+                "HumanEval+": {
+                  "avg_at_8": 0.6272865853658537,
+                  "completions": 1312,
+                  "cap_hit_fraction": 0.0022865853658536584,
+                  "parse_failure_fraction": 0.03048780487804878,
+                  "grader_timeouts": 12,
+                  "unexpected_thinking_delimiters": 0,
+                  "pass_at_8": 0.7926829268292683,
+                  "test_failure_fraction": 0.34146341463414637
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {
@@ -3866,16 +3861,22 @@
               },
               "frozen_opd_minus_frozen_pi": {
                 "HumanEval+": 1.44817073170731
+              },
+              "ema_opd_minus_original": {
+                "HumanEval+": 2.0579268292682973
+              },
+              "ema_opd_minus_ema_pi": {
+                "HumanEval+": 2.9725609756097615
               }
             }
           }
         ],
         "limitation": "One training seed per cell; fixed endpoint comparisons do not establish cross-seed generality.",
-        "checked_utc": "2026-10-10T09:08:15.584241+00:00",
-        "completed_updates": 116,
-        "completed_evaluations": 71,
-        "assigned_gpu_hours": 87.03942847569783,
-        "cost_checked_unix": 1791623381.496468,
+        "checked_utc": "2026-10-10T09:18:50.892866+00:00",
+        "completed_updates": 119,
+        "completed_evaluations": 72,
+        "assigned_gpu_hours": 89.63567397329541,
+        "cost_checked_unix": 1791624072.561307,
         "audit_validation": "Five focused CPU tests passed: complete math/code cells, nine negative mutations, delayed baseline publication, hosted-score disagreement and result-before-done publication boundaries.",
         "length_profiles": [
           {
@@ -4163,6 +4164,17 @@
             "generation_seconds": 94.3267793689738,
             "output_tokens_per_second": 3168.230718776116,
             "p95_response_latency_seconds": 2.27052592317923
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "stage": "ema_opd",
+            "completions": 1312,
+            "mean_response_tokens": 418.5205792682927,
+            "generation_seconds": 98.4410230560461,
+            "output_tokens_per_second": 5577.948937887182,
+            "p95_response_latency_seconds": 3.243383527221158
           }
         ]
       },
@@ -4202,11 +4214,29 @@
           "original_model_preserved": true,
           "assigned_gpu_hours": 21.61262004799313,
           "cleanup_checked_unix": 1791620663.1595397
+        },
+        "worker-d": {
+          "model": "Qwen3-1.7B",
+          "task": "code",
+          "updates": 30,
+          "evaluations": 19,
+          "responses": 24928,
+          "training_runs": 6,
+          "exit_code": 0,
+          "hosted_audit_passed": true,
+          "owned_cleanup_verified": true,
+          "gpu_memory_and_utilization_zero": true,
+          "gpu_compute_processes": 0,
+          "temporary_snapshots_remaining": 0,
+          "native_recovery_checkpoints": 0,
+          "original_model_preserved": true,
+          "assigned_gpu_hours": 28.844461653497483,
+          "cleanup_checked_unix": 1791623920.730691
         }
       },
       "question_uncertainty": {
-        "checked_unix": 1791623313.569361,
-        "audit_sha256": "a64d7528043aacabba18fd5377135a750c7750eb73200123bbf89228a0178805",
+        "checked_unix": 1791623893.527012,
+        "audit_sha256": "f98587f8dac5376ea0025c204fb8de50161e4a4407afb900d17c6bbfe9732dfc",
         "comparisons": [
           {
             "worker": "worker-a",
@@ -5329,6 +5359,57 @@
             "responses_per_question": 8,
             "repetitions": 20000,
             "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "ema_opd",
+            "right": "original",
+            "delta_percentage_points": 2.057926829268293,
+            "question_resampling_interval_95_pp": [
+              -0.8384146341463414,
+              5.030487804878049
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "ema_opd",
+            "right": "ema_pi",
+            "delta_percentage_points": 2.972560975609756,
+            "question_resampling_interval_95_pp": [
+              -0.7621951219512195,
+              6.783536585365853
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "ema_opd",
+            "right": "frozen_opd",
+            "delta_percentage_points": 1.371951219512195,
+            "question_resampling_interval_95_pp": [
+              -0.7621951219512195,
+              3.5823170731707314
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
           }
         ],
         "pending": [
@@ -5344,21 +5425,6 @@
           },
           {
             "worker": "worker-c",
-            "left": "ema_opd",
-            "right": "frozen_opd"
-          },
-          {
-            "worker": "worker-d",
-            "left": "ema_opd",
-            "right": "original"
-          },
-          {
-            "worker": "worker-d",
-            "left": "ema_opd",
-            "right": "ema_pi"
-          },
-          {
-            "worker": "worker-d",
             "left": "ema_opd",
             "right": "frozen_opd"
           }
@@ -5895,6 +5961,194 @@
             "sandbox_grading_max_seconds": 586.8275196249597
           }
         ]
+      },
+      "code_reliability": {
+        "checked_unix": 1791623962.8447208,
+        "rows": [
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "stage": "original",
+            "questions": 164,
+            "correct_candidates": 1072,
+            "zero_of_8": 21,
+            "one_to_seven_of_8": 19,
+            "eight_of_8": 124,
+            "newly_any_correct": 0,
+            "lost_any_correct": 0,
+            "original_perfect_now_partial": 0,
+            "original_perfect_now_zero": 0
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "stage": "frozen_warmup",
+            "questions": 164,
+            "correct_candidates": 965,
+            "zero_of_8": 21,
+            "one_to_seven_of_8": 57,
+            "eight_of_8": 86,
+            "newly_any_correct": 6,
+            "lost_any_correct": 6,
+            "original_perfect_now_partial": 40,
+            "original_perfect_now_zero": 1
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "stage": "frozen_pi",
+            "questions": 164,
+            "correct_candidates": 1013,
+            "zero_of_8": 16,
+            "one_to_seven_of_8": 53,
+            "eight_of_8": 95,
+            "newly_any_correct": 10,
+            "lost_any_correct": 5,
+            "original_perfect_now_partial": 30,
+            "original_perfect_now_zero": 0
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "stage": "frozen_opd",
+            "questions": 164,
+            "correct_candidates": 1053,
+            "zero_of_8": 13,
+            "one_to_seven_of_8": 38,
+            "eight_of_8": 113,
+            "newly_any_correct": 8,
+            "lost_any_correct": 0,
+            "original_perfect_now_partial": 13,
+            "original_perfect_now_zero": 0
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "stage": "ema_warmup",
+            "questions": 164,
+            "correct_candidates": 944,
+            "zero_of_8": 17,
+            "one_to_seven_of_8": 70,
+            "eight_of_8": 77,
+            "newly_any_correct": 10,
+            "lost_any_correct": 6,
+            "original_perfect_now_partial": 47,
+            "original_perfect_now_zero": 2
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "stage": "ema_pi",
+            "questions": 164,
+            "correct_candidates": 1010,
+            "zero_of_8": 16,
+            "one_to_seven_of_8": 51,
+            "eight_of_8": 97,
+            "newly_any_correct": 9,
+            "lost_any_correct": 4,
+            "original_perfect_now_partial": 31,
+            "original_perfect_now_zero": 0
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "stage": "original",
+            "questions": 164,
+            "correct_candidates": 796,
+            "zero_of_8": 40,
+            "one_to_seven_of_8": 47,
+            "eight_of_8": 77,
+            "newly_any_correct": 0,
+            "lost_any_correct": 0,
+            "original_perfect_now_partial": 0,
+            "original_perfect_now_zero": 0
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "stage": "frozen_warmup",
+            "questions": 164,
+            "correct_candidates": 769,
+            "zero_of_8": 36,
+            "one_to_seven_of_8": 74,
+            "eight_of_8": 54,
+            "newly_any_correct": 11,
+            "lost_any_correct": 7,
+            "original_perfect_now_partial": 31,
+            "original_perfect_now_zero": 2
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "stage": "frozen_pi",
+            "questions": 164,
+            "correct_candidates": 786,
+            "zero_of_8": 37,
+            "one_to_seven_of_8": 69,
+            "eight_of_8": 58,
+            "newly_any_correct": 5,
+            "lost_any_correct": 2,
+            "original_perfect_now_partial": 27,
+            "original_perfect_now_zero": 0
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "stage": "frozen_opd",
+            "questions": 164,
+            "correct_candidates": 805,
+            "zero_of_8": 37,
+            "one_to_seven_of_8": 65,
+            "eight_of_8": 62,
+            "newly_any_correct": 6,
+            "lost_any_correct": 3,
+            "original_perfect_now_partial": 22,
+            "original_perfect_now_zero": 0
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "stage": "ema_warmup",
+            "questions": 164,
+            "correct_candidates": 788,
+            "zero_of_8": 37,
+            "one_to_seven_of_8": 63,
+            "eight_of_8": 64,
+            "newly_any_correct": 11,
+            "lost_any_correct": 8,
+            "original_perfect_now_partial": 24,
+            "original_perfect_now_zero": 2
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "stage": "ema_pi",
+            "questions": 164,
+            "correct_candidates": 784,
+            "zero_of_8": 34,
+            "one_to_seven_of_8": 67,
+            "eight_of_8": 63,
+            "newly_any_correct": 9,
+            "lost_any_correct": 3,
+            "original_perfect_now_partial": 25,
+            "original_perfect_now_zero": 0
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "stage": "ema_opd",
+            "questions": 164,
+            "correct_candidates": 823,
+            "zero_of_8": 34,
+            "one_to_seven_of_8": 68,
+            "eight_of_8": 62,
+            "newly_any_correct": 7,
+            "lost_any_correct": 1,
+            "original_perfect_now_partial": 25,
+            "original_perfect_now_zero": 0
+          }
+        ],
+        "limitation": "Descriptive fixed eight-draw counts on the same 164 questions, conditional on one training seed. Observed 8/8 is not a claim of population-perfect reliability. These counts explain the arithmetic gap between Avg@8 and pass@8, not a causal learning mechanism."
       }
     }
   }
