@@ -2722,14 +2722,25 @@
       "failed_attempts": [
         "HF completion-marker ordering race; fixed with synchronization",
         "GPU-to-sandbox DNS connectivity; fixed with private queue transport",
-        "Full code response handoff timed out carrying repeated tests; code controllers stopped; compressed response-only transport under validation"
+        "Full code response handoff timed out carrying repeated tests; code controllers stopped; compressed response-only transport under validation",
+        "Qwen3-8B math reached the bounded 15-minute readiness deadline before drain/fork completion"
       ],
       "private_code_bridge_control_passed": true,
       "portable_cpu_tests": {
         "passed": 112,
         "skipped": 34,
         "full_collection_blocker": "missing local inference encoding module"
-      }
+      },
+      "stage_gpu_hours": 11.305,
+      "owned_gpu_controllers_active": 0,
+      "completed_cells": [
+        "Qwen3-1.7B math"
+      ],
+      "remaining_cells": [
+        "Qwen3-8B math",
+        "Qwen3-8B code",
+        "Qwen3-1.7B code"
+      ]
     },
     "budget_proposal": {
       "new_readiness_gpu_hour_cap": 16,
