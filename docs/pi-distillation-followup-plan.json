@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "math_cycle_teacher_screen_complete_phase_wave1_producers_running",
+  "status": "math_cycle_teacher_screen_complete_phase_wave1_all_four_running",
   "launch_authorized": true,
   "executable": true,
   "new_gpu_jobs_launched": 9,
@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "teacher_screen_complete_phase_ratio_wave1_producers_running",
+    "status": "teacher_screen_complete_phase_ratio_wave1_all_four_running",
     "launch_authorized": true,
     "executable": true,
     "new_gpu_jobs_launched": true,
@@ -6789,7 +6789,6 @@
       "bounded numerical-floor and optimizer controls"
     ],
     "pending": [
-      "Verify both newly generated model-matched baseline payloads, then bind and dispatch the two unassigned wave-one consumers without mutating their admitted templates.",
       "Complete all scheduled wave-one updates, evaluations, hosted attachments, cleanup and exact whole-wave accounting audit.",
       "Raise wave-two reservations from all newly observed full-panel timing and response tails if necessary, and require fresh admission within the original caps and clock before wave-two dispatch.",
       "Longer cycle-period, full-stream, confirmation validation and extra-seed work remain separate scope decisions."
@@ -16355,15 +16354,15 @@
     "next_priority": {
       "user_instruction": "Let\u2019s focus on tuning 7 and 4.",
       "decision_authority": "Supervising agent design choice under the latest user steering; the user did not explicitly specify this exact eight-arm grid.",
-      "status": "phase_ratio_wave1_started_with_controlled_baseline_stagger",
+      "status": "phase_ratio_wave1_all_four_running_after_verified_baseline_binding",
       "current_teacher_runs_preserved": true,
       "optimizer_additional_arms_deferred": 6,
       "new_phase_jobs_launched": true,
-      "latest_public_evidence_cutoff_utc": "2026-10-10T23:32:42.783236+00:00"
+      "latest_public_evidence_cutoff_utc": "2026-10-10T23:45:07.836531+00:00"
     },
     "phase_ratio_screen": {
       "version": "math-phases-v1",
-      "status": "wave1_producers_running_consumers_pending_verified_fresh_baselines",
+      "status": "wave1_all_four_running_with_verified_fresh_baseline_imports",
       "admitted": true,
       "dispatch": true,
       "models": [
@@ -16681,7 +16680,7 @@
         "Locked confirmation on reserved validation, fresh seeds and longer training would be needed before claiming reproducible sustained improvement. Any extra execution requires an explicit bounded scope and admission."
       ],
       "cost_gate": "Actual wave-one admission independently passed while reserving all eight phase arms, fresh baselines and remaining handoff/evaluation/cleanup/operational costs. Wave two still requires a fresh bound-only-raised reassessment from completed full-panel wave-one evidence, within the unchanged caps and original deadline.",
-      "runtime_status": "Verified startup at 2026-10-10T23:32:42.783236 UTC: wave-one 8B/4B PI3\u2192OPD8 producers are dispatched and owned-alive, each with one original-baseline queue job running and zero failed jobs. The 8B/4B PI7\u2192OPD4 consumers remain pending-baseline and unassigned. Training records were not collected at this cutoff; no phase update count, evaluation score or completion is claimed.",
+      "runtime_status": "Verified at 2026-10-10T23:45:07.836531 UTC: all four wave-one controllers are owned-alive. The 8B/4B PI3\u2192OPD8 producers generated both fresh original-model baselines; the 8B/4B PI7\u2192OPD4 consumers started only after exact model-matched baseline audit, import binding and immediate preflight. No current training-prefix comparison, phase score comparison or complete scientific trajectory is claimed by this operational snapshot.",
       "implementation": {
         "public_source": "miles/tools/opsd/math_phase_protocol.py",
         "tests": "miles/tests/fast/opsd/test_math_phase_protocol.py",
@@ -16719,7 +16718,7 @@
           "exact_new_walkthrough_rows": 5208,
           "prior_attributed_rows_preserved": 7619,
           "per_arm_audit_is_whole_wave_completion": false,
-          "remote_source_verification_scope": "All four scientific preparation/reuse receipts verified the exact 2940-asset bundle and original model aliases. Worker-a reuses its verified smoke-staged root; the other three received fresh staging. Immediate dispatch preflight passed for producers A/B; pending consumers C/D still require their own fresh preflight after baseline binding.",
+          "remote_source_verification_scope": "All four scientific preparation/reuse receipts verified the exact 2940-asset bundle and original model aliases. Worker-a reuses its verified smoke-staged root. All four immediate dispatch preflights passed; consumers C/D received newly bound model-matched baseline configurations before dispatch.",
           "current_total_attributed_walkthrough_rows": 15413
         },
         "actual_runtime_asset_bytes_verified_by_readiness": true
@@ -17041,81 +17040,88 @@
       },
       "admitted_wave": 1,
       "startup_observation": {
-        "checked_utc": "2026-10-10T23:32:42.783236+00:00",
+        "checked_utc": "2026-10-10T23:45:07.836531+00:00",
         "wave": 1,
         "phase": "running",
         "coordinator_launch_attempts": 1,
         "source_and_input_bindings_passed": true,
-        "limits_passed": true,
-        "dispatched_trajectories": 2,
-        "pending_unassigned_trajectories": 2,
+        "dispatched_trajectories": 4,
+        "pending_unassigned_trajectories": 0,
         "jobs": [
           {
             "worker": "worker-a",
             "model": "Qwen3-8B",
+            "pi_updates": 3,
+            "opd_updates": 8,
             "dispatched": true,
-            "status_fresh": true,
             "owned_pid_alive": true,
-            "queue": {
-              "done": 0,
-              "pending": 0,
-              "running": 1,
-              "failed": 0
-            },
-            "preflight_verified": true,
+            "queue_failed": 0,
             "asset_count": 2940,
-            "baseline_state": "generate"
+            "baseline_state": "generate",
+            "baseline_import_bound": false
           },
           {
             "worker": "worker-b",
             "model": "Qwen3-4B",
+            "pi_updates": 3,
+            "opd_updates": 8,
             "dispatched": true,
-            "status_fresh": true,
             "owned_pid_alive": true,
-            "queue": {
-              "done": 0,
-              "pending": 0,
-              "running": 1,
-              "failed": 0
-            },
-            "preflight_verified": true,
+            "queue_failed": 0,
             "asset_count": 2940,
-            "baseline_state": "generate"
+            "baseline_state": "generate",
+            "baseline_import_bound": false
           },
           {
             "worker": "worker-c",
             "model": "Qwen3-8B",
-            "dispatched": false,
-            "status_fresh": null,
-            "owned_pid_alive": null,
-            "queue": null,
-            "preflight_verified": false,
+            "pi_updates": 7,
+            "opd_updates": 4,
+            "dispatched": true,
+            "owned_pid_alive": true,
+            "queue_failed": 0,
             "asset_count": 2940,
-            "baseline_state": "pending"
+            "baseline_state": "bound",
+            "baseline_import_bound": true
           },
           {
             "worker": "worker-d",
             "model": "Qwen3-4B",
-            "dispatched": false,
-            "status_fresh": null,
-            "owned_pid_alive": null,
-            "queue": null,
-            "preflight_verified": false,
+            "pi_updates": 7,
+            "opd_updates": 4,
+            "dispatched": true,
+            "owned_pid_alive": true,
+            "queue_failed": 0,
             "asset_count": 2940,
-            "baseline_state": "pending"
+            "baseline_state": "bound",
+            "baseline_import_bound": true
           }
         ],
-        "operational_intervals_count": 12,
-        "unresolved_intervals": [],
-        "training_records_not_collected": true,
+        "fresh_baselines": {
+          "models": [
+            "Qwen3-4B",
+            "Qwen3-8B"
+          ],
+          "generated_suites": 4,
+          "generated_responses": 3648,
+          "validation_responses_per_model": 1024,
+          "benchmark_responses_per_model": 800,
+          "consumer_imports_verified_before_dispatch": 2,
+          "imports_create_additional_generated_responses": false
+        },
+        "uncertain_intervals_count": 0,
+        "all_retained_operational_intervals_complete": true,
+        "training_prefix_included": false,
         "finite_training_update_count": null,
-        "phase_evaluation_results_claimed": false,
+        "comparative_phase_scores_claimed": false,
         "complete": false,
         "scientific_completion_certified": false,
-        "stage_science_gpu_hours": 130.1216474225786,
-        "cumulative_study_gpu_hours": 301.7559940534168,
-        "overall_gpu_hours": 384.4200612168842,
-        "accounting": "Producer assignment starts at actual dispatch intent. Consumers remain unassigned while waiting for audited fresh baselines; their staging/read/binding operations are charged separately. All 12 retained operations are complete at this cutoff."
+        "stage_science_gpu_hours": 134.14602568997276,
+        "cumulative_study_gpu_hours": 305.7803723208109,
+        "overall_gpu_hours": 388.4444394842783,
+        "accounting": "Each controller is assigned from its own dispatch intent; consumers were unassigned during the preceding fresh-baseline wait. Preparation, inspections, collection and binding operations remain separately retained and unioned. The same-cutoff snapshot has 65 complete coordinator calls and seven complete external collection calls, with no uncertainty.",
+        "coordinator_operational_intervals_count": 65,
+        "external_collection_intervals_count": 7
       },
       "actual_matrix_admission": {
         "checked_utc": "2026-10-10T23:27:50.317387+00:00",
@@ -17143,7 +17149,86 @@
           "The full 16K output-length stress case remains above the limits and grants no automatic extension.",
           "Wave-two measurements may raise reservations but never lower the admitted bounds; a non-fitting matrix must not dispatch."
         ]
-      }
+      },
+      "startup_history": [
+        {
+          "checked_utc": "2026-10-10T23:32:42.783236+00:00",
+          "wave": 1,
+          "phase": "running",
+          "coordinator_launch_attempts": 1,
+          "source_and_input_bindings_passed": true,
+          "limits_passed": true,
+          "dispatched_trajectories": 2,
+          "pending_unassigned_trajectories": 2,
+          "jobs": [
+            {
+              "worker": "worker-a",
+              "model": "Qwen3-8B",
+              "dispatched": true,
+              "status_fresh": true,
+              "owned_pid_alive": true,
+              "queue": {
+                "done": 0,
+                "pending": 0,
+                "running": 1,
+                "failed": 0
+              },
+              "preflight_verified": true,
+              "asset_count": 2940,
+              "baseline_state": "generate"
+            },
+            {
+              "worker": "worker-b",
+              "model": "Qwen3-4B",
+              "dispatched": true,
+              "status_fresh": true,
+              "owned_pid_alive": true,
+              "queue": {
+                "done": 0,
+                "pending": 0,
+                "running": 1,
+                "failed": 0
+              },
+              "preflight_verified": true,
+              "asset_count": 2940,
+              "baseline_state": "generate"
+            },
+            {
+              "worker": "worker-c",
+              "model": "Qwen3-8B",
+              "dispatched": false,
+              "status_fresh": null,
+              "owned_pid_alive": null,
+              "queue": null,
+              "preflight_verified": false,
+              "asset_count": 2940,
+              "baseline_state": "pending"
+            },
+            {
+              "worker": "worker-d",
+              "model": "Qwen3-4B",
+              "dispatched": false,
+              "status_fresh": null,
+              "owned_pid_alive": null,
+              "queue": null,
+              "preflight_verified": false,
+              "asset_count": 2940,
+              "baseline_state": "pending"
+            }
+          ],
+          "operational_intervals_count": 12,
+          "unresolved_intervals": [],
+          "training_records_not_collected": true,
+          "finite_training_update_count": null,
+          "phase_evaluation_results_claimed": false,
+          "complete": false,
+          "scientific_completion_certified": false,
+          "stage_science_gpu_hours": 130.1216474225786,
+          "cumulative_study_gpu_hours": 301.7559940534168,
+          "overall_gpu_hours": 384.4200612168842,
+          "accounting": "Producer assignment starts at actual dispatch intent. Consumers remain unassigned while waiting for audited fresh baselines; their staging/read/binding operations are charged separately. All 12 retained operations are complete at this cutoff."
+        }
+      ]
     },
     "cycle_count_interpretation": {
       "scope": "completed PI7\u2192OPD4 teacher comparison; retrospective validation description",
