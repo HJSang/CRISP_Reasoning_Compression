@@ -3200,14 +3200,14 @@
           "model": "Qwen3-8B",
           "task": "code",
           "completed_updates": 26,
-          "completed_evaluations": 12
+          "completed_evaluations": 14
         },
         {
           "worker": "worker-d",
           "model": "Qwen3-1.7B",
           "task": "code",
-          "completed_updates": 26,
-          "completed_evaluations": 15
+          "completed_updates": 30,
+          "completed_evaluations": 17
         }
       ],
       "reserved_gpu_hours": 135.91728585163753,
@@ -3223,7 +3223,7 @@
       "full_stage_hosted_audit_complete": false,
       "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation.",
       "latest_audit": {
-        "checked_unix": 1791621141.518899,
+        "checked_unix": 1791622614.707635,
         "matrix_matches": true,
         "complete": false,
         "cells": [
@@ -3667,13 +3667,13 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "7 required evaluations",
+              "5 required evaluations",
               "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
               "generality-qwen3-8b-code-ema-pi-s101-r1: final source/loss validation",
               "generality-qwen3-8b-code-ema-pi-s101-r1: training process exit",
               "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 12,
+            "completed_evaluations": 14,
             "completed_updates": 26,
             "scores": {
               "original": {
@@ -3754,12 +3754,13 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "4 required evaluations",
+              "2 required evaluations",
               "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-1p7b-code-ema-opd-s101-r1: not started"
+              "generality-qwen3-1p7b-code-ema-opd-s101-r1: final source/loss validation",
+              "generality-qwen3-1p7b-code-ema-opd-s101-r1: training process exit"
             ],
-            "completed_evaluations": 15,
-            "completed_updates": 26,
+            "completed_evaluations": 17,
+            "completed_updates": 30,
             "scores": {
               "original": {
                 "HumanEval+": {
@@ -3845,11 +3846,11 @@
           }
         ],
         "limitation": "One training seed per cell; fixed endpoint comparisons do not establish cross-seed generality.",
-        "checked_utc": "2026-10-10 08:32 UTC",
-        "completed_updates": 112,
-        "completed_evaluations": 65,
-        "assigned_gpu_hours": 77.41298400243123,
-        "cost_checked_unix": 1791621215.546463,
+        "checked_utc": "2026-10-10 08:56 UTC",
+        "completed_updates": 116,
+        "completed_evaluations": 69,
+        "assigned_gpu_hours": 83.83029728412627,
+        "cost_checked_unix": 1791622659.4419498,
         "audit_validation": "Five focused CPU tests passed: complete math/code cells, nine negative mutations, delayed baseline publication, hosted-score disagreement and result-before-done publication boundaries.",
         "length_profiles": [
           {
