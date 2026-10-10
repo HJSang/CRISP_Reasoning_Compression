@@ -2752,7 +2752,7 @@
           "Qwen3-8B": 3,
           "Qwen3-1.7B": 26
         },
-        "accuracy_regrading": "in progress on identical retained responses; no scientific outcomes claimed",
+        "accuracy_regrading": "Completed on both identical retained response tapes; full1312 outcomes each;1418 unchanged extracted programs retained identical correctness",
         "canonical_controls_passed": 164,
         "parser_and_transport_tests_passed": 13
       },
@@ -2767,7 +2767,31 @@
         "AIME 2025": 0.1125,
         "AMC23": 0.021875
       },
-      "math_8b_interrupted_warm_evaluation_responses": 799
+      "math_8b_interrupted_warm_evaluation_responses": 799,
+      "code_regrade_results": {
+        "worker-c": {
+          "completions": 1312,
+          "correct": 1072,
+          "avg_at_8": 0.8170731707317073,
+          "grading_seconds": 576.8420082090888,
+          "parse_failures": 3,
+          "grader_timeouts": 10,
+          "cap_hits": 0,
+          "unexpected_thinking_delimiters": 0,
+          "input_hash_verified": true
+        },
+        "worker-d": {
+          "completions": 1312,
+          "correct": 796,
+          "avg_at_8": 0.6067073170731707,
+          "grading_seconds": 575.5541792919394,
+          "parse_failures": 26,
+          "grader_timeouts": 15,
+          "cap_hits": 1,
+          "unexpected_thinking_delimiters": 0,
+          "input_hash_verified": true
+        }
+      }
     },
     "budget_proposal": {
       "new_readiness_gpu_hour_cap": 16,
@@ -2825,6 +2849,62 @@
         "thinking": true
       }
     },
-    "authorization": "User approved the complete proposed matrix and budget with LGTM; scientific launch remains gated on readiness and measured admission."
+    "authorization": "User approved the complete proposed matrix and budget with LGTM; scientific launch remains gated on readiness and measured admission.",
+    "readiness_recovery_proposal": {
+      "status": "not_admitted_pending_readiness_budget",
+      "used_gpu_hours": 11.304555404451158,
+      "remaining_current_cap": 4.695444595548842,
+      "new_gpu_hours_required": 12.476226238671936,
+      "proposed_stage_readiness_cap": 24,
+      "cumulative_readiness_cap": 64,
+      "scientific_stage_cap": 96,
+      "total_cap": 240,
+      "scientific_started": false,
+      "baseline_policy": "Reuse only complete original-baseline response tapes/results; preserve partial warm evaluation799/800 and regenerate all800 under a fresh evaluation identity; evaluate warmed source and one-update fork on each unfinished cell.",
+      "source_pairing": "Each new fork loads the exact retained student digest and its rank-local FP32 EMA state, with counter2 to3, fresh Adam.",
+      "study_matrix_changed": false,
+      "projected_stage_total": 23.780781643123092,
+      "reservations": [
+        {
+          "worker": "worker-a",
+          "required_evaluations": 2,
+          "updates": 1,
+          "source": "retained v2 two-update student and EMA source",
+          "evaluation_seconds_per_point": 421.3245354599203,
+          "evaluation_margin": 1.25,
+          "startup_seconds": 180,
+          "training_seconds": 120,
+          "cleanup_seconds": 60,
+          "reserved_seconds": 1413.3113386498007,
+          "reserved_gpu_hours": 3.1406918636662238
+        },
+        {
+          "worker": "worker-c",
+          "required_evaluations": 2,
+          "updates": 1,
+          "source": "retained v2 two-update student and EMA source",
+          "evaluation_seconds_per_point": 696.8420082090888,
+          "evaluation_margin": 1.25,
+          "startup_seconds": 180,
+          "training_seconds": 120,
+          "cleanup_seconds": 60,
+          "reserved_seconds": 2102.105020522722,
+          "reserved_gpu_hours": 4.671344490050493
+        },
+        {
+          "worker": "worker-d",
+          "required_evaluations": 2,
+          "updates": 1,
+          "source": "retained v2 two-update student and EMA source",
+          "evaluation_seconds_per_point": 695.5541792919394,
+          "evaluation_margin": 1.25,
+          "startup_seconds": 180,
+          "training_seconds": 120,
+          "cleanup_seconds": 60,
+          "reserved_seconds": 2098.8854482298484,
+          "reserved_gpu_hours": 4.664189884955219
+        }
+      ]
+    }
   }
 }
