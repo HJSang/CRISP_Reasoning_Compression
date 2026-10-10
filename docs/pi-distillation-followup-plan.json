@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "math_cycle_teacher_screen_failed_cleanup_verified",
+    "status": "recovery_running_model_and_baseline_startup",
     "launch_authorized": true,
     "executable": true,
     "new_gpu_jobs_launched": true,
@@ -8769,7 +8769,7 @@
           "saved_evidence_checked_utc": "2026-10-10 18:20 UTC",
           "whole_wave_operational_status": "failed; passing the amended result audit does not override nonzero worker exits or issue completion"
         },
-        "next_wave_gate": "The finalized output contract remains valid, but this failed wave has no 88-update completion receipt. No restart or relaunch is authorized; normal remaining-matrix admission is also required."
+        "next_wave_gate": "The finalized output contract does not certify the failed original wave. One fresh four-arm retry is now explicitly approved under the recovery envelope; fresh reviewed admission is being prepared, and subsequent waves still require ordinary complete 88-update evidence and remaining-matrix admission."
       },
       "completed_training_updates": 273,
       "all_worker_exit_codes": 1,
@@ -8781,8 +8781,10 @@
         "workers": "All four worker failure receipts report received termination, exit code1, owned cleanup completed and no remaining GPU processes.",
         "transport_diagnosis": "The status payload was about 479 KB including 2,936 asset digests. Truncation is strongly suspected, but the exact failing stdout/stderr payload was not retained, so the exact transport failure is not proven.",
         "separate_from_output_adjudication": true,
-        "monitor_successor_cpu_fix_status": "prepared_and_independently_reviewed_not_deployed; cost-only recovery proposal requires explicit approval; no relaunch authorized",
-        "restart_or_relaunch_authorized": false
+        "monitor_successor_cpu_fix_status": "reviewed successor preserved; separate approved recovery entrypoint and admission passed; four fresh controllers launched at 18:54:27 UTC with model/baseline startup and no training updates claimed",
+        "restart_or_relaunch_authorized_at_failure": false,
+        "subsequent_user_approved_one_fresh_retry": true,
+        "additional_automatic_retries_authorized": false
       },
       "failed_attempt_accounting": {
         "kind": "failed_attempt_accounting_only",
@@ -10447,12 +10449,12 @@
     },
     "recovery_budget_proposal": {
       "kind": "explicit_recovery_proposal",
-      "status": "PROPOSED_APPROVAL_REQUIRED",
-      "admitted": false,
+      "status": "USER_APPROVED_CONCRETE_RECOVERY_REQUEST",
+      "admitted": true,
       "complete": false,
-      "approval_required": true,
+      "approval_required": false,
       "automatic_relaunch_authorized": false,
-      "dispatch_identity_created": false,
+      "dispatch_identity_created": true,
       "proposed_caps": {
         "stage_readiness_gpu_hour_cap": 40,
         "stage_scientific_gpu_hour_cap": 1300,
@@ -10463,15 +10465,6 @@
         "math_cycle_start_unix": 1791650587.672134,
         "math_cycle_deadline_unix": 1791844987.672134,
         "deadline_utc": "2026-10-12T22:43:07.672134+00:00"
-      },
-      "old_caps_unchanged_until_approval": {
-        "stage_readiness_gpu_hour_cap": 40,
-        "stage_scientific_gpu_hour_cap": 1100,
-        "cumulative_readiness_gpu_hour_cap": 104,
-        "cumulative_study_gpu_hour_cap": 1280,
-        "overall_gpu_hour_cap": 1384,
-        "scientific_window_hours": 42,
-        "math_cycle_deadline_unix": 1791801787.672134
       },
       "future_work": {
         "fresh_wave1_trajectories": 4,
@@ -10528,7 +10521,97 @@
         "old_stage_shortfall_gpu_hours_including_new_setup": 182.3029710957003,
         "old_clock_shortfall_hours_at_analysis_including_new_setup": 8.340985722433949
       },
-      "implementation_limit": "Cost-only proposal. Existing no-relaunch constraint and original caps remain in force; the prepared successor rejects the interrupted first wave. A separately reviewed and explicitly authorized recovery path and fresh admission would be required."
+      "implementation_limit": "One fresh four-arm retry plus the six later trajectories is explicitly approved under the listed finite caps and original-start 54-hour deadline. Extra retries remain unauthorized. Reviewed recovery code, fresh evidence-bound admission and a launch receipt are still required before reporting jobs as running.",
+      "user_approval_recorded": true,
+      "approval_instruction": "Go",
+      "approved_first_wave_retry_count": 1,
+      "approved_later_trajectories": 6,
+      "prior_caps_before_recovery_approval": {
+        "stage_readiness_gpu_hour_cap": 40,
+        "stage_scientific_gpu_hour_cap": 1100,
+        "cumulative_readiness_gpu_hour_cap": 104,
+        "cumulative_study_gpu_hour_cap": 1280,
+        "overall_gpu_hour_cap": 1384,
+        "scientific_window_hours": 42,
+        "math_cycle_deadline_unix": 1791801787.672134
+      }
+    },
+    "recovery_execution": {
+      "status": "four_controllers_running_model_and_baseline_startup",
+      "user_approved": true,
+      "launched": true,
+      "launch_receipt_verified": true,
+      "admitted": true,
+      "first_wave_fresh_trajectories": 4,
+      "later_trajectories": 6,
+      "additional_automatic_retries_authorized": false,
+      "approved_caps": {
+        "stage_readiness_gpu_hour_cap": 40,
+        "stage_scientific_gpu_hour_cap": 1300,
+        "cumulative_readiness_gpu_hour_cap": 104,
+        "cumulative_study_gpu_hour_cap": 1500,
+        "overall_gpu_hour_cap": 1604,
+        "scientific_window_hours_from_original_start": 54,
+        "math_cycle_start_unix": 1791650587.672134,
+        "math_cycle_deadline_unix": 1791844987.672134,
+        "deadline_utc": "2026-10-12T22:43:07.672134+00:00"
+      },
+      "original_start_preserved": true,
+      "protocol_unchanged": true,
+      "failed_attempt_preserved": {
+        "updates": 273,
+        "responses": 65632,
+        "scientific_completion": false
+      },
+      "exact_line_review_status": "all_1334_recovery_source_rows_documented_and_hash_verified",
+      "runtime_preparation": {
+        "status": "staged_and_verified_all_four_workers",
+        "original_runtime_preserved": true,
+        "reason": "Original trainer accepts attempt 1 only; review caught the attempt-2 rejection before launch.",
+        "narrow_trainer_change": "Allow only the exact attempt-2 teacher-screen identity; training math and locked recipe remain unchanged.",
+        "other_runtime_and_data_bytes_pinned": true,
+        "model_aliases_require_exact_original_checkpoint": true,
+        "staging_receipt_verified": true,
+        "preflight_scope": "Read-only preflight checked the original retained runtime; the separate recovery tree requires its own staging receipt.",
+        "workers_verified": 4,
+        "assets_verified_per_worker": 2936,
+        "original_assets_verified_before_and_after": true,
+        "model_aliases_verified": true,
+        "preparation_intervals_complete": 8,
+        "preparation_intervals_uncertain": 0,
+        "preparation_assigned_gpu_hours": 0.2278175157970852
+      },
+      "later_wave_completion_adapter_status": "pending",
+      "admission": {
+        "passed": true,
+        "scientific_completion_certified": false,
+        "reserved_stage_scientific_gpu_hours": 1282.3029710957003,
+        "reserved_cumulative_study_gpu_hours": 1453.9373177265386,
+        "reserved_overall_gpu_hours": 1532.9364682681621,
+        "future_wall_hours": 48.5464010032264,
+        "failed_attempt_cost_retained": true,
+        "all_ten_future_trajectories_reserved": true,
+        "verified_utc": "2026-10-10T18:53:23Z",
+        "actual_stage_scientific_gpu_hours": 52.27815742863549,
+        "preparation_gpu_hours": 0.22781751579708498,
+        "remaining_preparation_gpu_hours": 7.772182484202915,
+        "remaining_clock_hours_at_admission": 51.829054
+      },
+      "focused_cpu_validation": {
+        "passed": 133,
+        "recovery_cases": 47,
+        "admission_cases": 35,
+        "existing_coordinator_cases": 51,
+        "live_completion_certified": false
+      },
+      "launch_utc": "2026-10-10T18:54:27.202017Z",
+      "remote_controllers_alive": 4,
+      "remote_status_fresh_count": 4,
+      "remote_asset_count_verified": 2936,
+      "dispatch_errors_observed": 0,
+      "failed_queues_observed": 0,
+      "training_updates_verified": 0,
+      "scientific_completion_certified": false
     }
   }
 }
