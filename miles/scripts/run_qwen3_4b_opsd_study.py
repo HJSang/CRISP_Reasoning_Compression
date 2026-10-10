@@ -1,4 +1,4 @@
-"""Full-parameter, non-thinking Qwen3-4B OPSD study and capacity smoke runs.
+"""Full-parameter, non-thinking dense Qwen3 OPSD study and capacity smoke runs.
 
 Requires a pinned local base checkpoint, filtered study JSONL, and an isolated
 Ray cluster. The effective batch remains four when tuning microbatch size.
@@ -18,6 +18,9 @@ Args:
   --save-checkpoints: Opt in to recovery saves; otherwise only temporary eval snapshots.
   --snapshot-interval: Export interval; seven for a seven-update warm-up, one for branches.
   --retain-final-snapshot: Keep the final HF snapshot until paired branches have consumed it.
+  --model-name: Qwen3-1.7B, Qwen3-4B, or Qwen3-8B; the legacy entrypoint name stays stable.
+  --task: Math or code prompt contract.
+  --teacher-ema-decay / --ema-source: Optional EMA policy and its matched FP32 warm-up state.
 
 Example:
   MILES_SCRIPT_EXTERNAL_RAY=1 python scripts/run_qwen3_4b_opsd_study.py --num-rollout 2
@@ -36,6 +39,10 @@ import miles.utils.external_utils.command_utils as U
 class ScriptArgs(U.ExecuteTrainConfig):
     run_id: str = field(default_factory=U.create_run_id)
     model_dir: str = "/root/models"
+    model_name: str = "Qwen3-4B"
+    task: str = "math"
+    teacher_ema_decay: float | None = None
+    ema_source: str | None = None
     data_dir: str = "/root/datasets"
     dataset_name: str = "warmup.jsonl"
     num_gpus_per_node: int = 2
@@ -56,6 +63,8 @@ class ScriptArgs(U.ExecuteTrainConfig):
     megatron_path: str = "/root/Megatron-LM"
 
     def __post_init__(self):
+        if self.model_name not in {"Qwen3-1.7B", "Qwen3-4B", "Qwen3-8B"} or self.task not in {"math", "code"}:
+            raise ValueError("Use a supported Qwen3 model and math/code task")
         if self.num_nodes != 1 or self.num_gpus_per_node != 2:
             raise ValueError("Study training requires one TP2/DP1 actor per node")
         if not 1 <= self.num_rollout <= 64 or self.micro_batch_size not in (1, 2, 4):
@@ -77,7 +86,7 @@ def execute(args: ScriptArgs):
         raise ValueError("Create an isolated Ray cluster and set MILES_SCRIPT_EXTERNAL_RAY=1 and RAY_ADDRESS")
     if args.capture_full_update and (args.replay_path is None or args.target != "frozen"):
         raise ValueError("Full-update capture is only for a frozen-teacher correctness replay")
-    model = shlex.quote(f"{args.model_dir}/Qwen3-4B")
+    model = shlex.quote(f"{args.model_dir}/{args.model_name}")
     initial = shlex.quote(args.initial_checkpoint) if args.initial_checkpoint else model
     checkpoint = (
         f"--hf-checkpoint {model} --load {initial} --opd-teacher-load {model} "
@@ -117,9 +126,14 @@ def execute(args: ScriptArgs):
         "--loss-type opsd_loss --disable-compute-advantages-and-returns "
         "--opsd-beta 0 --opsd-temperature 1.0 --opsd-token-clip 0 --opsd-reduction sample_mean "
         f"--opsd-context {args.context} --opsd-target {args.target} "
+        f"--opsd-task {args.task} "
         f"--opsd-target-cache-gib 8 --opsd-target-microbatch-gib {2 * args.micro_batch_size} "
         "--lora-rank 0 "
     )
+    if args.teacher_ema_decay is not None:
+        algorithm += f"--opsd-teacher-ema-decay {args.teacher_ema_decay} "
+    if args.ema_source is not None:
+        algorithm += f"--opsd-ema-source {shlex.quote(args.ema_source)} "
     optimizer = (
         "--optimizer adam --lr 5e-6 --lr-decay-style constant --weight-decay 0 "
         "--adam-beta1 0.9 --adam-beta2 0.999 --adam-eps 1e-8 --clip-grad 0.1 "
@@ -151,7 +165,7 @@ def execute(args: ScriptArgs):
             + misc
             + U.get_default_wandb_args(__file__, run_id=args.run_id, opsd_profile=True)
         ).strip(),
-        megatron_model_type="qwen3-4B",
+        megatron_model_type=args.model_name.replace("Qwen", "qwen"),
         megatron_path=args.megatron_path,
         num_gpus_per_node=2,
         job_lifetime="launcher",

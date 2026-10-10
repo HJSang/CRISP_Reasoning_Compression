@@ -11,7 +11,9 @@ from torch_memory_saver import torch_memory_saver
 
 from miles.backends.megatron_utils.hf_export import save_hf_model
 from miles.backends.megatron_utils.lora.utils import is_lora_enabled, lora_rollout_enabled
-from miles.backends.megatron_utils.opsd import score_teacher, verify_teacher_base, zero_teacher_adapters
+from miles.backends.megatron_utils.opsd import (
+    initialize_ema, save_ema_source, score_teacher, verify_teacher_base, zero_teacher_adapters,
+)
 from miles.backends.megatron_utils.rematerialize_utils import build_main_cast_context
 from miles.backends.megatron_utils.update_weight.hf_weight_iterator import get_hf_weight_iterator
 from miles.backends.training_utils.checkpoint.tracker import read_checkpoint_tracker_iteration
@@ -53,7 +55,7 @@ from miles.utils.replay_base import all_replay_managers, routing_replay_manager
 from miles.utils.test_utils.ft_test_actions import FTTestActionActorExecutor
 from miles.utils.timer import Timer, inverse_timer, timer
 from miles.utils.tracking_utils.structured_log import with_logs
-from miles.utils.tracking_utils.tracking import init_tracking
+from miles.utils.tracking_utils.tracking import init_tracking, log
 from miles.utils.types import RolloutBatch
 from miles.utils.workers.naming import compute_cell_id
 from miles.utils.workers.rpc.common.wire_types import Pickled
@@ -421,6 +423,7 @@ class MegatronTrainRayActor(TrainRayActor):
         return load_output
 
     def _load_auxiliary_checkpoints(self) -> None:
+        self.opsd_ema = None
         if self._enable_weight_backup:
             self.weights_backuper.backup("actor")
 
@@ -432,6 +435,7 @@ class MegatronTrainRayActor(TrainRayActor):
             self.load_other_checkpoint("teacher", self.args.opd_teacher_load)
             if self.args.loss_type == "opsd_loss":
                 verify_teacher_base(self.weights_backuper, full_parameter=not is_lora_enabled(self.args))
+                initialize_ema(self)
 
         if self.args.keep_old_actor:
             # Load old_actor checkpoint
@@ -673,6 +677,8 @@ class MegatronTrainRayActor(TrainRayActor):
         # Create data iterator for log_probs and train.
         data_iterator, num_microbatches = get_data_iterator(self.args, self.model, rollout_data)
         num_optimizer_steps = len(num_microbatches)
+        if self.opsd_ema is not None and num_optimizer_steps != 1:
+            raise ValueError("EMA OPSD requires exactly one optimizer update per fresh rollout")
         skip_actor_forward_only = self.args.skip_actor_forward_only
         if skip_actor_forward_only:
             option = "--skip-actor-forward-only"
@@ -804,6 +810,17 @@ class MegatronTrainRayActor(TrainRayActor):
             else:
                 torch.cuda.synchronize()
 
+            if self.opsd_ema is not None:
+                self.opsd_ema.update(self.weights_backuper.get("actor"))
+                self.opsd_ema.publish(self.weights_backuper.get("ema_teacher"))
+                if is_first_replica_megatron_main_rank():
+                    # Distances describe this TP rank's tensors, not a full-model norm.
+                    metrics = {"train/step": rollout_id, "train/ema_updates": self.opsd_ema.updates,
+                               "train/ema_local_student_distance": self.opsd_ema.relative_distance(self.weights_backuper.get("actor")),
+                               "train/ema_local_original_distance": self.opsd_ema.relative_distance(self.weights_backuper.get("teacher"))}
+                    logger.info("OPSD EMA: %s", metrics)
+                    log(self.args, metrics, step_key="train/step")
+
             # Update ref model if needed
             if (
                 self.args.ref_update_interval is not None
@@ -843,7 +860,9 @@ class MegatronTrainRayActor(TrainRayActor):
 
         if self.args.save_hf is not None and self.role == "actor":
             assert self.snapshot_publisher is not None, "HF export requires a snapshot publisher"
-            save_hf_model(self.args, rollout_id, self.model, publisher=self.snapshot_publisher)
+            save_hf_model(self.args, rollout_id, self.model, publisher=self.snapshot_publisher,
+                          raise_on_error=self.args.loss_type == "opsd_loss")
+            save_ema_source(self, rollout_id)
 
         if force_sync:
             self._finalize_pending_async_save()

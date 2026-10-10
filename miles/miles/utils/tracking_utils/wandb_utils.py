@@ -85,7 +85,8 @@ def init_wandb_primary(args):
     if getattr(args, "wandb_opsd_profile", False):
         init_kwargs["settings"] = opsd_wandb.settings(primary=True, mode="offline" if offline else "shared")
         init_kwargs["name"] = opsd_wandb.run_name(
-            target=args.opsd_target, context=args.opsd_context, seed=args.seed, group=args.wandb_group
+            target=args.opsd_target, context=args.opsd_context, seed=args.seed, group=args.wandb_group,
+            task=getattr(args, "opsd_task", "math"), ema_decay=getattr(args, "opsd_teacher_ema_decay", None),
         )
 
     wandb.init(**init_kwargs)

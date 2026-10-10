@@ -50,6 +50,7 @@ nvidia-smi topo -m 2>/dev/null | grep -o 'NV[0-9][0-9]*' | wc -l
   --opsd-reduction sample_mean
   --opsd-context worked
   --opsd-target frozen
+  --opsd-task math
   --opsd-target-cache-gib 8
   --opsd-target-microbatch-gib 2
   --lora-rank 0

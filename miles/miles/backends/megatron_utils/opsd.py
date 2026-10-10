@@ -1,8 +1,9 @@
-"""Frozen-teacher prepass in Miles' existing model slot, before student autograd."""
+"""Detached teacher prepass in Miles' existing model slot, before student autograd."""
 
 import math
 from dataclasses import replace
 from functools import partial
+from pathlib import Path
 
 import torch
 import torch.distributed as dist
@@ -13,6 +14,41 @@ from miles.backends.training_utils.data.rollout import DataIterator
 from miles.backends.training_utils.loss.hub.opsd import OPSDTarget, response_logits
 from miles.backends.training_utils.loss.hub.opsd_math import vocab_log_softmax
 from miles.backends.training_utils.parallel import get_parallel_state
+from miles.utils.distributed_utils import get_gloo_group
+from miles.utils.opsd_checkpoint import checkpoint_digest
+from miles.utils.opsd_ema import OPSDEMA
+
+
+def initialize_ema(actor):
+    decay = getattr(actor.args, "opsd_teacher_ema_decay", None)
+    actor.opsd_ema = None
+    if decay is None:
+        return
+    actor.weights_backuper.backup("ema_teacher")
+    actor.opsd_ema = OPSDEMA(actor.weights_backuper.get("teacher"), decay=decay)
+    if actor.args.opsd_ema_source is not None:
+        actor.opsd_ema.load(
+            actor.args.opsd_ema_source / f"rank-{dist.get_rank():05d}.pt",
+            student_sha256=checkpoint_digest(Path(actor.args.load)),
+        )
+    actor.opsd_ema.publish(actor.weights_backuper.get("ema_teacher"))
+
+
+def save_ema_source(actor, rollout_id):
+    """Keep only the final paired teacher, under the corresponding HF student source."""
+    if actor.opsd_ema is None or not actor.args.opsd_retain_final_eval_snapshot:
+        return
+    if rollout_id + 1 != actor.args.num_rollout:
+        return
+    # HF export's final marker is written by rank zero after its last collective.
+    # Other ranks must wait before hashing that completed student source.
+    dist.barrier(group=get_gloo_group())
+    checkpoint = Path(actor.args.save_hf.format(rollout_id=rollout_id))
+    actor.opsd_ema.save(
+        checkpoint / "ema-teacher" / f"rank-{dist.get_rank():05d}.pt",
+        student_sha256=checkpoint_digest(checkpoint),
+    )
+    dist.barrier(group=get_gloo_group())
 
 
 @torch.no_grad()
@@ -83,14 +119,23 @@ def score_teacher(actor, rollout_data, num_microbatches, *, rollout_id):
         micro_batch_size=args.micro_batch_size,
     )
     target_mode = getattr(args, "opsd_target", "frozen")
+    teacher_tag = "ema_teacher" if getattr(args, "opsd_teacher_ema_decay", None) is not None else "teacher"
     targets = _score(
         actor,
         data,
         num_microbatches,
         rollout_id=rollout_id,
         width=width,
-        model_tag="actor" if target_mode == "current" else "teacher",
+        model_tag="actor" if target_mode == "current" else teacher_tag,
     )
+    if actor.opsd_ema is not None and actor.opsd_ema.updates == 0:
+        # An EMA initialized at the original checkpoint must produce the exact
+        # frozen-teacher targets on the same response tape and privileged prefix.
+        original_targets = _score(actor, data, num_microbatches, rollout_id=rollout_id, width=width, model_tag="teacher")
+        for averaged, original in zip(targets, original_targets, strict=True):
+            if _target_identity(averaged) != _target_identity(original):
+                raise ValueError("Initial EMA target identity differs from the original teacher")
+            torch.testing.assert_close(averaged.log_probs, original.log_probs, atol=0, rtol=0)
     if target_mode == "transported":
         # No-PI passes use the exact student sequence, never an empty context wrapper.
         unprivileged = {key: rollout_data[key] for key in data}

@@ -228,9 +228,11 @@ def _provenance(args, tokenizer):
             ]
         },
         "template_sha256": hashlib.sha256(str(tokenizer.chat_template).encode()).hexdigest(),
+        "task": plan.get("task", "math"),
         "model_metadata_sha256": {
             name: _file_hash(model / name)
             for name in ["config.json", "tokenizer.json", "tokenizer_config.json", "model.safetensors.index.json"]
+            if (model / name).exists()
         },
         "evaluator_sha256": _file_hash(Path(__file__)),
         "grader_sha256": _file_hash(Path(math_utils.__file__)),
@@ -242,7 +244,11 @@ def _provenance(args, tokenizer):
 
 
 async def _evaluate(args):
-    spec = json.loads(args.plan.read_text())["evaluation"]
+    plan = json.loads(args.plan.read_text())
+    spec = plan["evaluation"]
+    task = plan.get("task", "math")
+    if task not in {"math", "code"}:
+        raise ValueError("Unknown evaluation task")
     if spec["thinking"] or spec["pi"] or spec["samples_per_question"] != args.responses:
         raise ValueError("This evaluator requires non-thinking, unprivileged, eight-response evaluation")
     sampling = {key: spec[key] for key in ["temperature", "top_p", "top_k", "min_p"]}
@@ -250,12 +256,17 @@ async def _evaluate(args):
     prompts = [json.loads(line) for line in args.prompts.read_text().splitlines()]
     if args.limit_questions is not None:
         prompts = prompts[: args.limit_questions]
-    labels = {row["id"]: row["answer"] for row in map(json.loads, args.labels.read_text().splitlines())}
+    label_rows = list(map(json.loads, args.labels.read_text().splitlines()))
+    labels = {row["id"]: row["answer"] if task == "math" else row["problem"] for row in label_rows}
+    if len(labels) != len(label_rows) or len({row["id"] for row in prompts}) != len(prompts):
+        raise ValueError("Evaluation inputs contain duplicate question IDs")
+    if any(row["id"] not in labels for row in prompts):
+        raise ValueError("Missing evaluation labels")
     checkpoint_hash = checkpoint_digest(args.checkpoint) if args.checkpoint else None
     # Every branch retains the pinned base tokenizer/template; only weights change.
     tokenizer = AutoTokenizer.from_pretrained(args.model, local_files_only=True)
     provenance = _provenance(args, tokenizer)
-    prefixes = [make_study_prefixes(tokenizer, problem=row["problem"], context=None).student_ids for row in prompts]
+    prefixes = [make_study_prefixes(tokenizer, problem=row["problem"], context=None, task=task).student_ids for row in prompts]
     if any(
         len(prefix) > spec["templated_prefix_cap"] or len(prefix) + spec["response_cap"] > spec["total_context_cap"]
         for prefix in prefixes
@@ -304,7 +315,16 @@ async def _evaluate(args):
         raise ValueError("Adapter changed during evaluation")
     if args.checkpoint and checkpoint_hash != checkpoint_digest(args.checkpoint):
         raise ValueError("Full-model checkpoint changed during evaluation")
-    _grade(rows, labels)
+    grading_start = time.monotonic()
+    if task == "code":
+        from tools.opsd.code_sandbox import grade_code
+
+        grade_code(rows, labels)
+        provenance["grader_sha256"] = _file_hash(Path(__file__).with_name("code_sandbox_worker.py"))
+        provenance["code_evaluator"] = plan["code_evaluator"]
+    else:
+        _grade(rows, labels)
+    provenance["grading_seconds"] = time.monotonic() - grading_start
     _save_results(args, rows, spec, elapsed, provenance, adapter_hash, checkpoint_hash)
 
 
@@ -322,6 +342,12 @@ def _save_results(args, rows, spec, elapsed, provenance, adapter_hash, checkpoin
                 "<think>" in row["text"] or "</think>" in row["text"] for row in subset
             ),
         }
+        if "test_failure" in subset[0]:
+            question_ids = {row["id"] for row in subset}
+            metrics[dataset].update(
+                pass_at_8=sum(any(row["correct"] for row in subset if row["id"] == q) for q in question_ids) / len(question_ids),
+                test_failure_fraction=sum(row["test_failure"] for row in subset) / len(subset),
+            )
     result = {
         "status": "completed",
         "adapter_sha256": adapter_hash,

@@ -70,3 +70,17 @@ def test_incompatible_mode_fails_before_scoring(tmp_path, key, value, match):
     setattr(args, key, value)
     with pytest.raises(ValueError, match=match):
         validate_opsd_args(args)
+
+
+@pytest.mark.parametrize("key,value", [("opsd_context", "none"), ("opsd_target", "transported"),
+                                      ("lora_rank", 4), ("use_fault_tolerance", True),
+                                      ("debug_disable_optimizer", True), ("opsd_teacher_ema_decay", float("nan"))])
+def test_ema_rejects_ambiguous_or_unrecoverable_teacher_policy(tmp_path, key, value):
+    args = _args(tmp_path)
+    args.lora_rank = 0
+    args.opsd_context = "worked"
+    args.opsd_teacher_ema_decay = 0.9
+    validate_opsd_args(args)
+    setattr(args, key, value)
+    with pytest.raises(ValueError, match="EMA"):
+        validate_opsd_args(args)

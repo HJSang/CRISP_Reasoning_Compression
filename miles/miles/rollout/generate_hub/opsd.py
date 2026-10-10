@@ -19,17 +19,21 @@ async def generate(input: GenerateFnInput) -> GenerateFnOutput:
     if not isinstance(sample.prompt, str) or sample.multimodal_inputs or sample.response_length:
         raise ValueError("OPSD requires a raw text problem and a fresh single-turn sample")
     mode = getattr(args, "opsd_context", "original")
-    if input.evaluation or mode == "original":
+    if mode == "original":
         solution = None if input.evaluation else sample.metadata["solution"]
         if not input.evaluation and (not isinstance(solution, str) or not solution.strip()):
             raise ValueError("OPSD training requires a nonempty metadata.solution")
         prefixes = make_opsd_prefixes(input.state.tokenizer, problem=sample.prompt, solution=solution)
     else:
         key = {"answer": "answer", "worked": "solution", "unrelated": "unrelated_context"}.get(mode)
-        context = sample.metadata[key] if key else ("" if mode == "empty" else None)
-        if key and (not isinstance(context, str) or not context.strip()):
+        context = None
+        if not input.evaluation:
+            context = sample.metadata[key] if key else ("" if mode == "empty" else None)
+        if key and not input.evaluation and (not isinstance(context, str) or not context.strip()):
             raise ValueError(f"OPSD {mode} context must be nonempty text")
-        prefixes = make_study_prefixes(input.state.tokenizer, problem=sample.prompt, context=context)
+        prefixes = make_study_prefixes(
+            input.state.tokenizer, problem=sample.prompt, context=context, task=getattr(args, "opsd_task", "math")
+        )
     pad_token_id = input.state.tokenizer.pad_token_id
     # The author masks every PAD ID, including IDs inside a rendered chat prefix.
     # THD packing has no per-token attention holes: reject those inputs rather

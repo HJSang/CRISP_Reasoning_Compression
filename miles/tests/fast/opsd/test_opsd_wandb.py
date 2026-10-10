@@ -125,3 +125,14 @@ def test_evaluation_writer_joins_without_finishing_the_training_run(monkeypatch)
     assert calls[0]["id"] == "test-run" and calls[0]["config"] == {}
     assert calls[0]["settings"].x_update_finish_state is False
     assert logged[0]["eval/step"] == 4
+
+
+def test_ema_branch_names_preserve_the_warmup_and_current_teacher():
+    common = dict(target="frozen", seed=101, task="code")
+    name = opsd_wandb.run_name(**common, context="none", group="generality-qwen3-1p7b-code-ema-opd-s101-r1")
+    assert "Qwen3-1.7B | code | EMA PI7 → original OPD4" in name
+    with pytest.raises(ValueError, match="teacher policy"):
+        opsd_wandb.run_name(**common, context="worked", group="generality-qwen3-8b-code-ema-pi-s101-r1")
+    name = opsd_wandb.run_name(**common, context="worked", ema_decay=0.9,
+                             group="generality-qwen3-8b-code-ema-pi-s101-r1")
+    assert "EMA PI7 → continued PI4" in name

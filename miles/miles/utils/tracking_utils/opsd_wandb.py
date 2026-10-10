@@ -18,12 +18,13 @@ CONFIG_FIELDS = (
     "seed", "rollout_seed", "num_rollout", "global_batch_size", "micro_batch_size",
     "lr", "weight_decay", "adam_beta1", "adam_beta2", "adam_eps", "clip_grad",
     "opsd_beta", "opsd_temperature", "opsd_token_clip", "lora_rank",
-    "rollout_max_response_len", "rollout_temperature", "rollout_top_p", "rollout_top_k",
+    "rollout_max_response_len", "rollout_temperature", "rollout_top_p", "rollout_top_k", "opsd_teacher_ema_decay",
 )
 CONFIG_CHOICES = {
     "opsd_context": {"none", "answer", "worked", "unrelated", "empty"},
     "opsd_target": {"frozen", "current", "transported"},
     "opsd_reduction": {"sample_mean", "token_mean"},
+    "opsd_task": {"math", "code"},
 }
 METRIC_FIELDS = {
     "train/step", "train/opsd_loss", "train/opsd_valid_tokens", "train/grad_norm",
@@ -33,16 +34,29 @@ METRIC_FIELDS = {
     "perf/step_time", "perf/save_model_time", "perf/train_wait_time",
     "perf/update_weights_time", "perf/rollout_time", "perf/tokens_per_gpu_per_sec",
     "perf/effective_tokens_per_gpu_per_sec", "perf/longest_sample_tokens_per_sec",
+    "train/ema_updates", "train/ema_local_student_distance", "train/ema_local_original_distance",
 }
 EVAL_FIELDS = (
     "avg_at_8", "completions", "cap_hit_fraction", "parse_failure_fraction",
     "grader_timeouts", "unexpected_thinking_delimiters",
 )
-EVAL_DATASETS = {"AIME 2024": "AIME_2024", "AIME 2025": "AIME_2025", "AMC23": "AMC23"}
+EVAL_DATASETS = {"AIME 2024": "AIME_2024", "AIME 2025": "AIME_2025", "AMC23": "AMC23", "HumanEval+": "HumanEval_plus"}
 
 
-def run_name(*, target: str, context: str, seed: int, group: str) -> str:
+def run_name(*, target: str, context: str, seed: int, group: str, task: str = "math", ema_decay: float | None = None) -> str:
     """Describe the recipe without exposing arbitrary group names or local paths."""
+    cell = re.fullmatch(r"generality-qwen3-(1p7b|8b)-(math|code)-(frozen|ema)-(warmup|pi|opd)-s([0-9]+)-r([0-9]+)", group)
+    if cell:
+        size, task_name, policy, phase, run_seed, attempt = cell.groups()
+        expected_ema = policy == "ema" and phase != "opd"
+        if int(run_seed) != seed or target != "frozen" or task_name != task:
+            raise ValueError("Generality run name disagrees with the recipe")
+        if context != ("none" if phase == "opd" else "worked") or expected_ema != (ema_decay is not None):
+            raise ValueError("Generality run name disagrees with the teacher policy")
+        model = {"1p7b": "Qwen3-1.7B", "8b": "Qwen3-8B"}[size]
+        warmup = "EMA PI7" if policy == "ema" else "frozen PI7"
+        label = warmup if phase == "warmup" else warmup + (" → original OPD4" if phase == "opd" else " → continued PI4")
+        return f"{model} | {task} | {label} | seed {seed} | non-thinking | attempt {int(attempt)}"
     replicate = re.fullmatch(r"replication-s([0-9]+)-(warmup|opd|pi)", group)
     if replicate:
         if int(replicate[1]) != seed or target != "frozen":
@@ -53,7 +67,7 @@ def run_name(*, target: str, context: str, seed: int, group: str) -> str:
             raise ValueError("Replication name disagrees with the PI context")
         label = {"warmup": "PI warm-up 7", "opd": "PI7 → original-teacher OPD4", "pi": "PI7 → continued PI4"}[phase]
         return f"Qwen3-4B | {label} | replicate {seed} | non-thinking"
-    teacher = "current teacher" if target == "current" else "frozen teacher"
+    teacher = "EMA teacher" if ema_decay is not None else "current teacher" if target == "current" else "frozen teacher"
     information = {
         "none": "no PI", "answer": "answer PI", "worked": "worked-solution PI",
         "unrelated": "unrelated PI", "empty": "empty PI wrapper",
@@ -93,7 +107,7 @@ def _number(value) -> float:
 
 
 def config(args) -> dict:
-    output = {key: _number(getattr(args, key)) for key in CONFIG_FIELDS if hasattr(args, key)}
+    output = {key: _number(getattr(args, key)) for key in CONFIG_FIELDS if getattr(args, key, None) is not None}
     for key, choices in CONFIG_CHOICES.items():
         value = getattr(args, key, None)
         if value is not None:
@@ -124,6 +138,9 @@ def evaluation_metrics(record: dict, *, completed_updates: int) -> dict:
             raise ValueError("Unexpected dataset in OPSD evaluation tracking")
         for key in EVAL_FIELDS:
             output[f"eval/{EVAL_DATASETS[dataset]}/{key}"] = _number(values[key])
+        for key in ("pass_at_8", "test_failure_fraction"):
+            if key in values:
+                output[f"eval/{EVAL_DATASETS[dataset]}/{key}"] = _number(values[key])
     return output
 
 

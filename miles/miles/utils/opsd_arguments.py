@@ -1,4 +1,4 @@
-"""Run-wide constraints for the first, frozen-base OPSD implementation."""
+"""Run-wide constraints for OPSD scoring and teacher updates."""
 
 import math
 from pathlib import Path
@@ -11,6 +11,11 @@ def add_opsd_arguments(parser):
         "--opsd-context", choices=["original", "none", "answer", "worked", "unrelated", "empty"], default="original"
     )
     group.add_argument("--opsd-target", choices=["frozen", "current", "transported"], default="frozen")
+    group.add_argument("--opsd-teacher-ema-decay", type=float, default=None,
+                       help="Optional FP32 teacher EMA after each successful optimizer step.")
+    group.add_argument("--opsd-ema-source", type=Path, default=None,
+                       help="Temporary FP32 teacher source paired with the starting student checkpoint.")
+    group.add_argument("--opsd-task", choices=["math", "code"], default="math")
     group.add_argument("--opsd-reduction", choices=["reference", "sample_mean"], default="reference")
     group.add_argument(
         "--opsd-eval-queue",
@@ -90,3 +95,17 @@ def validate_opsd_args(args):
         raise ValueError("OPSD requires --opd-teacher-load pointing to the HF or converted frozen base checkpoint")
     if args.opsd_context == "original" and args.opsd_target != "frozen":
         raise ValueError("Original compatibility mode requires the frozen teacher")
+    decay = getattr(args, "opsd_teacher_ema_decay", None)
+    if getattr(args, "opsd_task", "math") == "code" and args.opsd_context not in {"worked", "none"}:
+        raise ValueError("Code OPSD supports worked reference code or no PI")
+    if getattr(args, "opsd_ema_source", None) is not None and decay is None:
+        raise ValueError("An EMA source requires an EMA teacher")
+    if decay is not None:
+        if not math.isfinite(decay) or not 0 <= decay < 1:
+            raise ValueError("EMA decay must be finite and in [0, 1)")
+        if args.opsd_target != "frozen" or args.opsd_context != "worked" or args.lora_rank != 0:
+            raise ValueError("EMA requires full-parameter direct worked-PI targets")
+        if getattr(args, "debug_disable_optimizer", False) or not getattr(args, "check_for_nan_in_loss_and_grad", True):
+            raise ValueError("EMA requires successful checked optimizer updates")
+        if getattr(args, "use_fault_tolerance", False) or getattr(args, "indep_dp", False):
+            raise ValueError("EMA recovery is not supported; restart from an explicit paired source")

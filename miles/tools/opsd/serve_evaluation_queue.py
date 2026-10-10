@@ -57,6 +57,8 @@ def main():
     for name in ["pending", "running", "done", "failed", "results", "logs"]:
         (args.queue / name).mkdir(parents=True, exist_ok=True)
     protocol = _pin_protocol(args)
+    spec = json.loads(args.plan.read_text())["evaluation"]
+    expected_completions = len(args.prompts.read_text().splitlines()) * spec["samples_per_question"]
     if list((args.queue / "running").glob("*.json")):
         raise RuntimeError("Unresolved running jobs need inspection before restarting the evaluator")
     stop = threading.Event()
@@ -116,7 +118,7 @@ def main():
                 record = json.loads(result.read_text())
                 if record["provenance"]["seed_namespace"] != args.seed_namespace:
                     raise ValueError("Evaluation seed bank mismatch")
-                if record["checkpoint_sha256"] != job["checkpoint_sha256"] or record["completions"] != 800:
+                if record["checkpoint_sha256"] != job["checkpoint_sha256"] or record["completions"] != expected_completions:
                     raise ValueError("Evaluation hash or completion-count mismatch")
                 if identity := job.get("wandb"):
                     log_evaluation(identity, record, completed_updates=job["completed_updates"])
