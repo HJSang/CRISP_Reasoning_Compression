@@ -2549,7 +2549,7 @@
     "later_teacher_refresh": "fixed original versus lagged/EMA; same teacher checkpoint for both context views"
   },
   "proposed_generality_ema_study": {
-    "status": "scientific_running",
+    "status": "scientific_complete_verified",
     "user_requested_all_four_workers": true,
     "user_requested_ema_comparison": true,
     "launch_authorized": true,
@@ -3190,27 +3190,11 @@
     ],
     "scientific_controllers_launched": 4,
     "scientific_execution": {
-      "status": "all_four_training_first_finite_updates_and_hosted_metrics_verified",
+      "status": "complete",
       "started_utc": "2026-10-10 05:41 UTC",
       "start_unix": 1791610873.72556,
       "deadline_unix": 1791632473.72556,
-      "active_cells": [
-        {
-          "worker": "worker-c",
-          "model": "Qwen3-8B",
-          "task": "code",
-          "completed_updates": 30,
-          "completed_evaluations": 16,
-          "errors": [],
-          "pending": [
-            "Controller exit and cleanup",
-            "3 required evaluations",
-            "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-            "generality-qwen3-8b-code-ema-opd-s101-r1: final source/loss validation",
-            "generality-qwen3-8b-code-ema-opd-s101-r1: training process exit"
-          ]
-        }
-      ],
+      "active_cells": [],
       "reserved_gpu_hours": 135.91728585163753,
       "stage_cap_gpu_hours": 144,
       "verified_readiness": true,
@@ -3221,12 +3205,12 @@
       "startup_verified_utc": "2026-10-10 05:46 UTC",
       "initial_source_load_verified_all_cells": true,
       "hosted_training_verified_all_cells": true,
-      "full_stage_hosted_audit_complete": false,
+      "full_stage_hosted_audit_complete": true,
       "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation.",
       "latest_audit": {
-        "checked_unix": 1791624632.993875,
+        "checked_unix": 1791626725.778477,
         "matrix_matches": true,
-        "complete": false,
+        "complete": true,
         "cells": [
           {
             "worker": "worker-a",
@@ -3664,16 +3648,10 @@
             "worker": "worker-c",
             "model": "Qwen3-8B",
             "task": "code",
-            "complete": false,
+            "complete": true,
             "errors": [],
-            "pending": [
-              "Controller exit and cleanup",
-              "3 required evaluations",
-              "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-code-ema-opd-s101-r1: final source/loss validation",
-              "generality-qwen3-8b-code-ema-opd-s101-r1: training process exit"
-            ],
-            "completed_evaluations": 16,
+            "pending": [],
+            "completed_evaluations": 19,
             "completed_updates": 30,
             "scores": {
               "original": {
@@ -3747,6 +3725,18 @@
                   "pass_at_8": 0.9024390243902439,
                   "test_failure_fraction": 0.22560975609756098
                 }
+              },
+              "ema_opd": {
+                "HumanEval+": {
+                  "avg_at_8": 0.7911585365853658,
+                  "completions": 1312,
+                  "cap_hit_fraction": 0.004573170731707317,
+                  "parse_failure_fraction": 0.006097560975609756,
+                  "grader_timeouts": 16,
+                  "unexpected_thinking_delimiters": 0,
+                  "pass_at_8": 0.8963414634146342,
+                  "test_failure_fraction": 0.1989329268292683
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {
@@ -3755,6 +3745,12 @@
               },
               "frozen_opd_minus_frozen_pi": {
                 "HumanEval+": 3.0487804878048808
+              },
+              "ema_opd_minus_original": {
+                "HumanEval+": -2.591463414634143
+              },
+              "ema_opd_minus_ema_pi": {
+                "HumanEval+": 2.1341463414634165
               }
             }
           },
@@ -3870,12 +3866,12 @@
           }
         ],
         "limitation": "One training seed per cell; fixed endpoint comparisons do not establish cross-seed generality.",
-        "checked_utc": "2026-10-10T09:30:32.993875+00:00",
+        "checked_utc": "2026-10-10 10:05 UTC",
         "completed_updates": 120,
-        "completed_evaluations": 73,
-        "assigned_gpu_hours": 90.96150774214001,
-        "cost_checked_unix": 1791624669.186506,
-        "audit_validation": "Five focused CPU tests passed: complete math/code cells, nine negative mutations, delayed baseline publication, hosted-score disagreement and result-before-done publication boundaries.",
+        "completed_evaluations": 76,
+        "assigned_gpu_hours": 95.44203860441843,
+        "cost_checked_unix": 1791626800.3926551,
+        "audit_validation": "Complete local/hosted source, loss, counter, evaluation, exit and cleanup audit passed; all recorded response seeds verified.",
         "length_profiles": [
           {
             "worker": "worker-a",
@@ -4098,6 +4094,17 @@
             "p95_response_latency_seconds": 2.9301682535122384
           },
           {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "stage": "ema_opd",
+            "completions": 1312,
+            "mean_response_tokens": 379.625,
+            "generation_seconds": 183.0942808079999,
+            "output_tokens_per_second": 2720.281582810849,
+            "p95_response_latency_seconds": 4.798873768365593
+          },
+          {
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
@@ -4193,7 +4200,8 @@
           "native_recovery_checkpoints": 0,
           "original_model_preserved": true,
           "assigned_gpu_hours": 9.847855876816643,
-          "cleanup_checked_unix": 1791615357.7093868
+          "controller_gpu_hours": 9.845028634601169,
+          "cleanup_checked_unix": 1791626755.860721
         },
         "worker-a": {
           "model": "Qwen3-8B",
@@ -4210,8 +4218,9 @@
           "temporary_snapshots_remaining": 0,
           "native_recovery_checkpoints": 0,
           "original_model_preserved": true,
-          "assigned_gpu_hours": 21.61262004799313,
-          "cleanup_checked_unix": 1791620663.1595397
+          "assigned_gpu_hours": 21.61543111430274,
+          "controller_gpu_hours": 21.61262004799313,
+          "cleanup_checked_unix": 1791626756.3115184
         },
         "worker-d": {
           "model": "Qwen3-1.7B",
@@ -4228,13 +4237,33 @@
           "temporary_snapshots_remaining": 0,
           "native_recovery_checkpoints": 0,
           "original_model_preserved": true,
-          "assigned_gpu_hours": 28.844461653497483,
-          "cleanup_checked_unix": 1791623920.730691
+          "assigned_gpu_hours": 28.847254695362516,
+          "controller_gpu_hours": 28.844461653497483,
+          "cleanup_checked_unix": 1791626755.7625144
+        },
+        "worker-c": {
+          "model": "Qwen3-8B",
+          "task": "code",
+          "updates": 30,
+          "evaluations": 19,
+          "responses": 24928,
+          "training_runs": 6,
+          "exit_code": 0,
+          "hosted_audit_passed": true,
+          "owned_cleanup_verified": true,
+          "gpu_memory_and_utilization_zero": true,
+          "gpu_compute_processes": 0,
+          "temporary_snapshots_remaining": 0,
+          "native_recovery_checkpoints": 0,
+          "original_model_preserved": true,
+          "assigned_gpu_hours": 35.13149691793654,
+          "controller_gpu_hours": 35.128753821584915,
+          "cleanup_checked_unix": 1791626755.7772105
         }
       },
       "question_uncertainty": {
-        "checked_unix": 1791623893.527012,
-        "audit_sha256": "f98587f8dac5376ea0025c204fb8de50161e4a4407afb900d17c6bbfe9732dfc",
+        "checked_unix": 1791626761.597242,
+        "audit_sha256": "c7fcf301348c9388a71762bd16b3c58d27a16231ec8ec4b4f87105ba9e56e36f",
         "comparisons": [
           {
             "worker": "worker-a",
@@ -5257,6 +5286,57 @@
             "bootstrap_seed": 20261010
           },
           {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "ema_opd",
+            "right": "original",
+            "delta_percentage_points": -2.591463414634146,
+            "question_resampling_interval_95_pp": [
+              -4.954268292682927,
+              -0.3048780487804878
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "ema_opd",
+            "right": "ema_pi",
+            "delta_percentage_points": 2.1341463414634148,
+            "question_resampling_interval_95_pp": [
+              -0.6097560975609756,
+              4.954268292682927
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "ema_opd",
+            "right": "frozen_opd",
+            "delta_percentage_points": -1.1432926829268293,
+            "question_resampling_interval_95_pp": [
+              -2.4390243902439024,
+              0.22865853658536583
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
@@ -5410,28 +5490,12 @@
             "bootstrap_seed": 20261010
           }
         ],
-        "pending": [
-          {
-            "worker": "worker-c",
-            "left": "ema_opd",
-            "right": "original"
-          },
-          {
-            "worker": "worker-c",
-            "left": "ema_opd",
-            "right": "ema_pi"
-          },
-          {
-            "worker": "worker-c",
-            "left": "ema_opd",
-            "right": "frozen_opd"
-          }
-        ],
+        "pending": [],
         "limitation": "Unadjusted descriptive question-resampling intervals, conditional on one training seed and the fixed eight responses per question. They do not measure training-seed variation, establish population coverage, or correct for screening multiple recipes."
       },
       "question_changes": {
-        "checked_unix": 1791621379.876662,
-        "source_counts_sha256": "4e815f0f14f8592872ebc77eac077690c629223633f3f27e4e7b7ca30b113b38",
+        "checked_unix": 1791626955.2159822,
+        "source_counts_sha256": "8d7b9644318f5940c807c0d4246554e44d45b2363674923125225f5793e9e2c9",
         "comparisons": [
           {
             "worker": "worker-a",
@@ -5961,7 +6025,8 @@
         ]
       },
       "code_reliability": {
-        "checked_unix": 1791623962.8447208,
+        "checked_unix": 1791626800.341186,
+        "source_counts_sha256": "8d7b9644318f5940c807c0d4246554e44d45b2363674923125225f5793e9e2c9",
         "rows": [
           {
             "worker": "worker-c",
@@ -6045,6 +6110,20 @@
             "newly_any_correct": 9,
             "lost_any_correct": 4,
             "original_perfect_now_partial": 31,
+            "original_perfect_now_zero": 0
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "stage": "ema_opd",
+            "questions": 164,
+            "correct_candidates": 1038,
+            "zero_of_8": 17,
+            "one_to_seven_of_8": 38,
+            "eight_of_8": 109,
+            "newly_any_correct": 4,
+            "lost_any_correct": 0,
+            "original_perfect_now_partial": 18,
             "original_perfect_now_zero": 0
           },
           {
@@ -6147,6 +6226,323 @@
           }
         ],
         "limitation": "Descriptive fixed eight-draw counts on the same 164 questions, conditional on one training seed. Observed 8/8 is not a claim of population-perfect reliability. These counts explain the arithmetic gap between Avg@8 and pass@8, not a causal learning mechanism."
+      },
+      "completion": {
+        "checked_unix": 1791626800.3926551,
+        "complete": true,
+        "updates": 120,
+        "evaluations": 76,
+        "responses": 80256,
+        "training_runs": 24,
+        "scientific_gpu_hours": 95.44203860441843,
+        "cumulative_readiness_gpu_hours": 60.69527763472663,
+        "cumulative_study_gpu_hours": 171.63434663083817,
+        "overall_gpu_hours": 232.3296242655648,
+        "scientific_cap": 144,
+        "cumulative_study_cap": 224,
+        "overall_cap": 288,
+        "workers": [
+          {
+            "worker": "worker-a",
+            "assigned_gpu_hours": 21.61543111430274,
+            "controller_gpu_hours": 21.61262004799313,
+            "completed_unix": 1791620600.6733832,
+            "reserved_gpu_hours": 34.30767914719052
+          },
+          {
+            "worker": "worker-b",
+            "assigned_gpu_hours": 9.847855876816643,
+            "controller_gpu_hours": 9.845028634601169,
+            "completed_unix": 1791615306.5241954,
+            "reserved_gpu_hours": 16.161098956399492
+          },
+          {
+            "worker": "worker-c",
+            "assigned_gpu_hours": 35.13149691793654,
+            "controller_gpu_hours": 35.128753821584915,
+            "completed_unix": 1791626685.425369,
+            "reserved_gpu_hours": 43.71905934148364
+          },
+          {
+            "worker": "worker-d",
+            "assigned_gpu_hours": 28.847254695362516,
+            "controller_gpu_hours": 28.844461653497483,
+            "completed_unix": 1791623858.742101,
+            "reserved_gpu_hours": 41.72944840656386
+          }
+        ],
+        "telemetry": [
+          {
+            "worker": "worker-a",
+            "by_gpu": {
+              "0": {
+                "samples": 9698,
+                "max_memory_mib": 95323.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 4.146112600536193
+              },
+              "1": {
+                "samples": 9698,
+                "max_memory_mib": 95327.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 6.21901422973809
+              },
+              "2": {
+                "samples": 9698,
+                "max_memory_mib": 118334.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 58.79645287688183
+              },
+              "3": {
+                "samples": 9698,
+                "max_memory_mib": 118360.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 57.433491441534336
+              },
+              "4": {
+                "samples": 9698,
+                "max_memory_mib": 118360.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 65.41348731697258
+              },
+              "5": {
+                "samples": 9698,
+                "max_memory_mib": 118334.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 62.820375335120644
+              },
+              "6": {
+                "samples": 9698,
+                "max_memory_mib": 118350.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 62.233037739740155
+              },
+              "7": {
+                "samples": 9698,
+                "max_memory_mib": 118320.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 63.01041451845742
+              }
+            },
+            "malformed_rows": 0
+          },
+          {
+            "worker": "worker-b",
+            "by_gpu": {
+              "0": {
+                "samples": 4414,
+                "max_memory_mib": 59789.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 4.2689170820117806
+              },
+              "1": {
+                "samples": 4414,
+                "max_memory_mib": 59789.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 5.304032623470775
+              },
+              "2": {
+                "samples": 4414,
+                "max_memory_mib": 116788.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 55.09673765292252
+              },
+              "3": {
+                "samples": 4414,
+                "max_memory_mib": 116788.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 56.34549161758043
+              },
+              "4": {
+                "samples": 4414,
+                "max_memory_mib": 116750.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 57.28228364295423
+              },
+              "5": {
+                "samples": 4414,
+                "max_memory_mib": 116778.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 55.68509288627096
+              },
+              "6": {
+                "samples": 4414,
+                "max_memory_mib": 116780.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 60.3901223380154
+              },
+              "7": {
+                "samples": 4414,
+                "max_memory_mib": 116778.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 55.70253738106026
+              }
+            },
+            "malformed_rows": 0
+          },
+          {
+            "worker": "worker-c",
+            "by_gpu": {
+              "0": {
+                "samples": 15778,
+                "max_memory_mib": 82291.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 0.984662187856509
+              },
+              "1": {
+                "samples": 15778,
+                "max_memory_mib": 82291.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 2.0643934592470528
+              },
+              "2": {
+                "samples": 15778,
+                "max_memory_mib": 118326.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 5.25472176448219
+              },
+              "3": {
+                "samples": 15778,
+                "max_memory_mib": 118360.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 7.1306883001647865
+              },
+              "4": {
+                "samples": 15778,
+                "max_memory_mib": 118360.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 7.2616934972746865
+              },
+              "5": {
+                "samples": 15778,
+                "max_memory_mib": 118350.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 5.226010901254912
+              },
+              "6": {
+                "samples": 15778,
+                "max_memory_mib": 118330.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 3.4190011408290024
+              },
+              "7": {
+                "samples": 15778,
+                "max_memory_mib": 118320.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 2.408036506528077
+              }
+            },
+            "malformed_rows": 0
+          },
+          {
+            "worker": "worker-d",
+            "by_gpu": {
+              "0": {
+                "samples": 12966,
+                "max_memory_mib": 59787.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 0.7004473237698596
+              },
+              "1": {
+                "samples": 12966,
+                "max_memory_mib": 59787.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 0.9659108437451797
+              },
+              "2": {
+                "samples": 12966,
+                "max_memory_mib": 116778.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 3.8978867808113526
+              },
+              "3": {
+                "samples": 12966,
+                "max_memory_mib": 116788.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 3.629029770168132
+              },
+              "4": {
+                "samples": 12966,
+                "max_memory_mib": 116788.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 2.647462594477865
+              },
+              "5": {
+                "samples": 12966,
+                "max_memory_mib": 116788.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 3.0903902514268085
+              },
+              "6": {
+                "samples": 12966,
+                "max_memory_mib": 116788.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 3.6759987660033935
+              },
+              "7": {
+                "samples": 12966,
+                "max_memory_mib": 116778.0,
+                "memory_total_mib": 143771.0,
+                "max_utilization": 100.0,
+                "mean_utilization": 2.9507943853154406
+              }
+            },
+            "malformed_rows": 0
+          }
+        ],
+        "completed_unix": 1791626685.425369,
+        "global_deadline_unix": 1791632473.72556,
+        "all_owned_jobs_stopped": true,
+        "all_32_gpu_memory_and_utilization_zero": true,
+        "all_response_seeds_verified": true,
+        "temporary_snapshots_remaining": 0,
+        "native_recovery_checkpoints": 0,
+        "all_original_sources_preserved": true,
+        "sandbox_batches": 38,
+        "sandbox_bridge_exit": 0,
+        "hosted_state_counts": {
+          "crashed": 3,
+          "finished": 20,
+          "running": 1
+        },
+        "launch_recipe_audit_sha256": "9fd2a6795231f570405394eaaa72776317af8cc7906c4502d8209320255779d0",
+        "scientific_audit_sha256": "c7fcf301348c9388a71762bd16b3c58d27a16231ec8ec4b4f87105ba9e56e36f"
+      },
+      "recipe_launch_verification": {
+        "runs": 24,
+        "all_match": true,
+        "basis": "Recorded outer launcher arguments plus matching deployed source hashes; EMA and stop flags verified."
       }
     }
   }
