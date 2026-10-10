@@ -6775,10 +6775,11 @@
     },
     "search_order": [
       "fixed versus cycle-refreshed anchor accumulation",
+      "reset versus carry Adam crossed with constant versus global-decay LR, before full-data recipe selection",
       "single-recovery OPD8/16 followed by cyclic b=2/4/8 dose comparison",
       "PI a=3/7/14; ratio-matched 7/4 twice versus 14/8 once",
       "PI-only and single-block controls with matched reset schedules",
-      "phase LR ratio, reset carry, refresh period, separate PI and OPD anchors, probability mixture"
+      "phase LR ratio, refresh period, separate PI and OPD anchors, probability mixture"
     ],
     "mechanism_priorities": [
       "correct versus length-matched shuffled PI before OPD",
@@ -6824,6 +6825,112 @@
       "historical_max_mean_gpu_hours": 324.0462261903478,
       "planning_8192_mean_validation_gpu_hours": 402.131075797,
       "all_16384_stress_gpu_hours": 741.4588928379882
+    },
+    "optimizer_lr_ablation": {
+      "status": "user_requested_factor_design_only_not_admitted",
+      "implemented": false,
+      "new_gpu_jobs_launched": false,
+      "included_in_existing_budget_proposal": false,
+      "priority": "Before full-data recipe selection; separate from the prepared teacher-policy screen",
+      "current_implementation": {
+        "adam_state": "reset both moments and counters at each phase start",
+        "lr": 5e-06,
+        "lr_schedule": "constant",
+        "lr_scheduler_restart": false
+      },
+      "models": [
+        "Qwen3-4B",
+        "Qwen3-8B"
+      ],
+      "proposed_allocation": "Four workers compare A/B/C/D on 4B; separately admit the same four-condition 8B replication wave",
+      "teacher_policy": "fixed_original",
+      "cycles": 8,
+      "pi_updates": 7,
+      "opd_updates": 4,
+      "updates_per_arm": 88,
+      "seed": 137,
+      "training_questions": 352,
+      "variants": [
+        {
+          "id": "A",
+          "optimizer_policy": "reset_each_phase",
+          "lr_schedule": "constant"
+        },
+        {
+          "id": "B",
+          "optimizer_policy": "carry",
+          "lr_schedule": "constant"
+        },
+        {
+          "id": "C",
+          "optimizer_policy": "reset_each_phase",
+          "lr_schedule": "global_linear"
+        },
+        {
+          "id": "D",
+          "optimizer_policy": "carry",
+          "lr_schedule": "global_linear"
+        }
+      ],
+      "lr_schedule_proposal": {
+        "initial_lr": 5e-06,
+        "final_lr": 5e-07,
+        "warmup_updates": 0,
+        "formula": "lr(k)=5e-6*(1-0.9*k/87), k=0..87",
+        "clock": "successful global updates; independent of Adam reset counter",
+        "boundary_restart": false,
+        "mean_lr": 2.75e-06,
+        "applied_updates": 88,
+        "decay_intervals": 87,
+        "logging": "Record pre-update applied LR separately from post-scheduler next-update LR; default88-interval decay does not reach declared floor on final applied update"
+      },
+      "matched_factors": [
+        "teacher source",
+        "initial student",
+        "PI7/OPD4 exposure",
+        "question order",
+        "seed assignment",
+        "objective",
+        "batch and microbatch",
+        "sampling and non-thinking mode",
+        "evaluation protocol"
+      ],
+      "primary_comparison": "Fixed cycle-eight Avg@8 on existing128-question tuning panel;3462remaining validation groups withheld from this selection for locked-recipe confirmation, not historically untouched; one seed exploratory; benchmarks never select recipe or stopping point",
+      "contrasts": {
+        "B_minus_A": "optimizer continuity at constant LR",
+        "C_minus_A": "global decay with resets",
+        "D_minus_B": "global decay with carried state",
+        "D_minus_C": "optimizer continuity under global decay",
+        "interaction": "(D-B)-(C-A)"
+      },
+      "limitations": [
+        "No existing optimizer-continuity or LR-sweep outcomes",
+        "5e-6 is not established to be too large",
+        "Decay also changes average LR and the first warm-up",
+        "Carried PI momentum can oppose initial no-PI recovery",
+        "A fixed-teacher plateau can persist despite LR changes"
+      ],
+      "diagnostics_proposed": [
+        "actual learning rate",
+        "global successful-update count",
+        "Adam counter and reset events",
+        "gradient norm and clipping",
+        "relative parameter-update norm",
+        "transition moment norms",
+        "per-phase validation dip and recovery",
+        "finite loss",
+        "response lengths and truncation",
+        "assigned GPU-hour cost"
+      ],
+      "implementation_needed": [
+        "explicit optimizer policy",
+        "global decay independent of phase/reset clock",
+        "boundary and failed-step validation",
+        "descriptive run fields and restricted numeric tracking",
+        "bounded distributed readiness and measured cost admission"
+      ],
+      "conditional_followup": "Constant LR2.75e-6 if needed to distinguish schedule ordering from average LR; no automatic launch",
+      "source": "https://arxiv.org/pdf/1412.6980"
     }
   }
 }
