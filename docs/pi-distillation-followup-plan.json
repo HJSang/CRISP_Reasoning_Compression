@@ -5317,7 +5317,8 @@
         "limitation": "Unadjusted descriptive question-resampling intervals, conditional on one training seed and the fixed eight responses per question. They do not measure training-seed variation, establish population coverage, or correct for screening multiple recipes."
       },
       "question_changes": {
-        "source_counts_sha256": "ab2b9c7f243cdf0400c629d31013f373eb3a7bc1ac073e8e9604670cdeaaa335",
+        "checked_unix": 1791621379.876662,
+        "source_counts_sha256": "4e815f0f14f8592872ebc77eac077690c629223633f3f27e4e7b7ca30b113b38",
         "comparisons": [
           {
             "worker": "worker-a",
@@ -5356,6 +5357,78 @@
             "net_extra_correct": 25
           },
           {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "dataset": "AIME 2024",
+            "left": "ema_opd",
+            "right": "original",
+            "questions": 30,
+            "more_correct": 11,
+            "unchanged": 16,
+            "fewer_correct": 3,
+            "net_extra_correct": 16
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "dataset": "AIME 2025",
+            "left": "ema_opd",
+            "right": "original",
+            "questions": 30,
+            "more_correct": 9,
+            "unchanged": 19,
+            "fewer_correct": 2,
+            "net_extra_correct": 16
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "dataset": "AMC23",
+            "left": "ema_opd",
+            "right": "original",
+            "questions": 40,
+            "more_correct": 11,
+            "unchanged": 24,
+            "fewer_correct": 5,
+            "net_extra_correct": 18
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "dataset": "AIME 2024",
+            "left": "frozen_opd",
+            "right": "original",
+            "questions": 30,
+            "more_correct": 4,
+            "unchanged": 22,
+            "fewer_correct": 4,
+            "net_extra_correct": -2
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "dataset": "AIME 2025",
+            "left": "frozen_opd",
+            "right": "original",
+            "questions": 30,
+            "more_correct": 4,
+            "unchanged": 23,
+            "fewer_correct": 3,
+            "net_extra_correct": 3
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-1.7B",
+            "dataset": "AMC23",
+            "left": "frozen_opd",
+            "right": "original",
+            "questions": 40,
+            "more_correct": 8,
+            "unchanged": 17,
+            "fewer_correct": 15,
+            "net_extra_correct": -11
+          },
+          {
             "worker": "worker-b",
             "model": "Qwen3-1.7B",
             "dataset": "AIME 2024",
@@ -5392,7 +5465,7 @@
             "net_extra_correct": 2
           }
         ],
-        "limitation": "Descriptive correct-candidate counts from fixed endpoints and eight responses per question, conditional on one training seed. Not pass@8, training replication, or a significance test."
+        "limitation": "Descriptive change in each question's correct candidate count out of eight. All four completed math OPD endpoints are included. Fixed endpoints and paired draws; not pass@8, causal evidence or replicated training-seed uncertainty."
       },
       "startup_cells": [
         {
