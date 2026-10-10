@@ -3,6 +3,8 @@
 import math
 from pathlib import Path
 
+from miles.utils.environ import use_legacy_rollout_v1
+
 
 def add_opsd_arguments(parser):
     group = parser.add_argument_group("OPSD full-vocabulary loss")
@@ -11,6 +13,10 @@ def add_opsd_arguments(parser):
         "--opsd-context", choices=["original", "none", "answer", "worked", "unrelated", "empty"], default="original"
     )
     group.add_argument("--opsd-target", choices=["frozen", "current", "transported"], default="frozen")
+    group.add_argument("--opsd-cyclic-teacher-policy", choices=["fixed_original", "cycle_refresh"], default=None,
+                       help="Alternate worked PI and no-PI OPD with fresh Adam at every phase boundary.")
+    group.add_argument("--opsd-cyclic-pi-updates", type=int, default=7)
+    group.add_argument("--opsd-cyclic-opd-updates", type=int, default=4)
     group.add_argument("--opsd-teacher-ema-decay", type=float, default=None,
                        help="Optional FP32 teacher EMA after each successful optimizer step.")
     group.add_argument("--opsd-ema-source", type=Path, default=None,
@@ -53,6 +59,8 @@ def add_opsd_arguments(parser):
 
 def validate_opsd_args(args):
     if args.loss_type != "opsd_loss":
+        if getattr(args, "opsd_cyclic_teacher_policy", None) is not None:
+            raise ValueError("Cyclic OPSD requires the opsd_loss objective")
         return
     if not 0 <= args.opsd_beta <= 1:
         raise ValueError("--opsd-beta must be in [0, 1]")
@@ -109,3 +117,43 @@ def validate_opsd_args(args):
             raise ValueError("EMA requires successful checked optimizer updates")
         if getattr(args, "use_fault_tolerance", False) or getattr(args, "indep_dp", False):
             raise ValueError("EMA recovery is not supported; restart from an explicit paired source")
+    if getattr(args, "opsd_cyclic_teacher_policy", None) is not None:
+        _validate_cyclic_args(args)
+
+
+def _validate_cyclic_args(args):
+    pi, opd = args.opsd_cyclic_pi_updates, args.opsd_cyclic_opd_updates
+    if min(pi, opd) < 1 or args.num_rollout < 1 or args.num_rollout % (pi + opd):
+        raise ValueError("Cyclic OPSD requires positive phase lengths and complete planned cycles")
+    requirements = {
+        "standard synchronous rollout with an explicit rollout ID":
+            not use_legacy_rollout_v1() and getattr(args, "rollout_function_path", None) in (
+                None, "miles.rollout.inference_rollout.inference_rollout_common.InferenceRolloutFn"
+            ),
+        "full-parameter frozen direct targets starting in worked PI":
+            args.lora_rank == 0 and args.opsd_target == "frozen" and args.opsd_context == "worked",
+        "sample-mean forward KL at scoring temperature one without token clipping":
+            args.opsd_reduction == "sample_mean" and args.opsd_beta == 0
+            and args.opsd_temperature == 1 and args.opsd_token_clip == 0,
+        "a separate cyclic policy without EMA": args.opsd_teacher_ema_decay is None,
+        "one optimizer update per fresh rollout":
+            args.rollout_batch_size * args.n_samples_per_prompt == args.global_batch_size,
+        "checked Adam updates with constant LR and no warmup":
+            args.optimizer == "adam" and args.lr_decay_style == "constant"
+            and not getattr(args, "lr_warmup_iters", 0) and not getattr(args, "lr_warmup_fraction", None)
+            and not getattr(args, "debug_disable_optimizer", False)
+            and getattr(args, "check_for_nan_in_loss_and_grad", True),
+        "fresh optimizer and rollout zero":
+            getattr(args, "no_load_optim", False) and getattr(args, "start_rollout_id", None) == 0,
+        "no recovery or per-update optimizer reset":
+            not any(getattr(args, key, False) for key in (
+                "use_fault_tolerance", "indep_dp", "reset_optimizer_states", "fp16",
+                "offload_optimizer_states", "optimizer_cpu_offload", "stream_optimizer_state_to_disk",
+                "chunked_optimizer_state_offload", "use_precision_aware_optimizer",
+                "rematerialize_param_from_master_weight",
+            )),
+        "temporary evaluation snapshots only": args.save is None,
+    }
+    for description, satisfied in requirements.items():
+        if not satisfied:
+            raise ValueError(f"Cyclic OPSD requires {description}")

@@ -19,12 +19,14 @@ CONFIG_FIELDS = (
     "lr", "weight_decay", "adam_beta1", "adam_beta2", "adam_eps", "clip_grad",
     "opsd_beta", "opsd_temperature", "opsd_token_clip", "lora_rank",
     "rollout_max_response_len", "rollout_temperature", "rollout_top_p", "rollout_top_k", "opsd_teacher_ema_decay",
+    "opsd_cyclic_pi_updates", "opsd_cyclic_opd_updates",
 )
 CONFIG_CHOICES = {
     "opsd_context": {"none", "answer", "worked", "unrelated", "empty"},
     "opsd_target": {"frozen", "current", "transported"},
     "opsd_reduction": {"sample_mean", "token_mean"},
     "opsd_task": {"math", "code"},
+    "opsd_cyclic_teacher_policy": {"fixed_original", "cycle_refresh"},
 }
 METRIC_FIELDS = {
     "train/step", "train/opsd_loss", "train/opsd_valid_tokens", "train/grad_norm",
@@ -35,16 +37,42 @@ METRIC_FIELDS = {
     "perf/update_weights_time", "perf/rollout_time", "perf/tokens_per_gpu_per_sec",
     "perf/effective_tokens_per_gpu_per_sec", "perf/longest_sample_tokens_per_sec",
     "train/ema_updates", "train/ema_local_student_distance", "train/ema_local_original_distance",
+    "train/cyclic_cycle", "train/cyclic_pi_phase", "train/cyclic_optimizer_reset",
+    "train/cyclic_teacher_source_update", "train/cyclic_teacher_refreshed", "train/cyclic_completed_updates",
 }
 EVAL_FIELDS = (
     "avg_at_8", "completions", "cap_hit_fraction", "parse_failure_fraction",
     "grader_timeouts", "unexpected_thinking_delimiters",
 )
 EVAL_DATASETS = {"AIME 2024": "AIME_2024", "AIME 2025": "AIME_2025", "AMC23": "AMC23", "HumanEval+": "HumanEval_plus"}
+VALIDATION_DATASETS = {"Math validation": "Math_validation"}
 
 
-def run_name(*, target: str, context: str, seed: int, group: str, task: str = "math", ema_decay: float | None = None) -> str:
+def run_name(
+    *, target: str, context: str, seed: int, group: str, task: str = "math", ema_decay: float | None = None,
+    cyclic_teacher_policy: str | None = None, cyclic_pi_updates: int | None = None,
+    cyclic_opd_updates: int | None = None, planned_updates: int | None = None,
+) -> str:
     """Describe the recipe without exposing arbitrary group names or local paths."""
+    cyclic = re.fullmatch(r"mathcycles-qwen3-(4b|8b)-(fixed|refresh)-s([0-9]+)-r([0-9]+)", group)
+    if cyclic_teacher_policy is not None or group.startswith("mathcycles-"):
+        if cyclic is None:
+            raise ValueError("Cyclic study requires a recognized neutral run identifier")
+        size, policy, run_seed, attempt = cyclic.groups()
+        expected_policy = {"fixed": "fixed_original", "refresh": "cycle_refresh"}[policy]
+        if (int(run_seed) != seed or target != "frozen" or context != "worked" or task != "math"
+                or ema_decay is not None or cyclic_teacher_policy != expected_policy):
+            raise ValueError("Cyclic run name disagrees with the recipe or teacher policy")
+        counts = (cyclic_pi_updates, cyclic_opd_updates, planned_updates)
+        if any(not isinstance(value, int) or isinstance(value, bool) or value <= 0 for value in counts):
+            raise ValueError("Cyclic run name requires positive integer phase and total updates")
+        cycle_updates = cyclic_pi_updates + cyclic_opd_updates
+        if planned_updates % cycle_updates:
+            raise ValueError("Cyclic run name requires complete PI/OPD cycles")
+        teacher = "fixed original teacher" if policy == "fixed" else "cycle-refreshed teacher"
+        return (f"Qwen3-{size.upper()} | math | {teacher} | PI{cyclic_pi_updates} → OPD{cyclic_opd_updates}"
+                f" × {planned_updates // cycle_updates} | fresh Adam per phase | seed {seed}"
+                f" | non-thinking | attempt {int(attempt)}")
     cell = re.fullmatch(r"generality-qwen3-(1p7b|8b)-(math|code)-(frozen|ema)-(warmup|pi|opd)-s([0-9]+)-r([0-9]+)", group)
     if cell:
         size, task_name, policy, phase, run_seed, attempt = cell.groups()
@@ -129,23 +157,27 @@ def save_run_link(directory: Path, run) -> None:
     temporary.replace(directory / "wandb-link.json")
 
 
-def evaluation_metrics(record: dict, *, completed_updates: int) -> dict:
-    output = {"eval/step": completed_updates}
+def evaluation_metrics(record: dict, *, completed_updates: int, suite: str = "benchmark") -> dict:
+    if suite not in {"benchmark", "validation"}:
+        raise ValueError("Unexpected OPSD evaluation suite")
+    prefix = "eval" if suite == "benchmark" else "validation"
+    datasets = EVAL_DATASETS if suite == "benchmark" else VALIDATION_DATASETS
+    output = {f"{prefix}/step": completed_updates}
     for key in ("completions", "responses_per_second", "output_tokens_per_second", "mean_response_tokens"):
-        output[f"eval/{key}"] = _number(record[key])
+        output[f"{prefix}/{key}"] = _number(record[key])
     for dataset, values in record["metrics"].items():
-        if dataset not in EVAL_DATASETS:
+        if dataset not in datasets:
             raise ValueError("Unexpected dataset in OPSD evaluation tracking")
         for key in EVAL_FIELDS:
-            output[f"eval/{EVAL_DATASETS[dataset]}/{key}"] = _number(values[key])
+            output[f"{prefix}/{datasets[dataset]}/{key}"] = _number(values[key])
         for key in ("pass_at_8", "test_failure_fraction"):
             if key in values:
-                output[f"eval/{EVAL_DATASETS[dataset]}/{key}"] = _number(values[key])
+                output[f"{prefix}/{datasets[dataset]}/{key}"] = _number(values[key])
     return output
 
 
-def log_evaluation(identity: dict, record: dict, *, completed_updates: int) -> None:
-    payload = evaluation_metrics(record, completed_updates=completed_updates)
+def log_evaluation(identity: dict, record: dict, *, completed_updates: int, suite: str = "benchmark") -> None:
+    payload = evaluation_metrics(record, completed_updates=completed_updates, suite=suite)
     # The queue can inherit the trainer's SDK service through their common parent.
     # A shared hosted run still needs a separate local service in each process.
     os.environ.pop("WANDB_SERVICE", None)

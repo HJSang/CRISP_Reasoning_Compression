@@ -6548,8 +6548,8 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "analysis_before_full_run_user_review",
-    "launch_authorized": false,
+    "status": "design_authorized_implementation_prepared_budget_pending",
+    "launch_authorized": true,
     "executable": false,
     "new_gpu_jobs_launched": false,
     "user_scope": {
@@ -6745,7 +6745,7 @@
           "teacher_policy": "cycle_refresh"
         }
       ],
-      "screening_seed": "To be fixed before execution; no best-seed selection",
+      "screening_seed": 137,
       "primary_selection": "Fixed cycle-eight validation endpoint, with inference cost reported; confirmation on remaining validation and fresh training seeds",
       "validation_panel_questions": 128,
       "validation_draws": 8,
@@ -6771,7 +6771,7 @@
       "benchmark_responses": 33600,
       "total_responses": 101184,
       "admitted": false,
-      "budget": "Pending complete measured reservation and review; no use of completed-stage authority to launch automatically"
+      "budget": "416 GPU-hour scientific stage and 8 GPU-hour readiness proposed; explicit cap expansion and measured admission remain pending."
     },
     "search_order": [
       "fixed versus cycle-refreshed anchor accumulation",
@@ -6788,11 +6788,42 @@
       "bounded numerical-floor and optimizer controls"
     ],
     "pending": [
-      "Materialize and audit full-source group-disjoint train/validation manifests preserving existing heldouts",
-      "Implement and check cyclic phase changes and teacher promotion with exact source identities",
-      "Fix seed, confirmation rule and final partial-cycle handling",
-      "Measure and reserve complete GPU cost before any launch"
+      "Explicit expansion of existing cumulative numeric budgets",
+      "GPU validation of cyclic teacher promotion, Adam reset and multi-suite evaluation",
+      "Measured admission for all four complete arms",
+      "Later full-pass leftover-group policy and confirmation remain separate"
     ],
-    "interpretation_limit": "Observed worsening is not proof PI contributes useful information or that worsening is necessary. No repeated-cycle results exist."
+    "interpretation_limit": "Observed worsening is not proof PI contributes useful information or that worsening is necessary. No repeated-cycle results exist.",
+    "data_split": {
+      "raw_rows": 29434,
+      "historical_eligible": 28422,
+      "eligible_groups": 28399,
+      "train_groups": 24809,
+      "validation_groups": 3590,
+      "tuning_panel": 128,
+      "withheld_remainder": 3462,
+      "shared_fresh_screen": 352,
+      "excluded_invalid_groups": 23,
+      "corrected_references": 56,
+      "maximum_student_prefix_tokens": 1771,
+      "maximum_worked_teacher_prefix_tokens": 3241,
+      "maximum_answer_teacher_prefix_tokens": 1798,
+      "manifest_sha256": "b6ae6e3500ce5066c3718596fde1bc8d1da414034b0d7671b3e74ebeba25955e",
+      "scope": "Preserve historical heldouts. Remainder withheld from current recipe selection; not claimed historically untouched."
+    },
+    "proposed_budget": {
+      "readiness_stage_gpu_hours": 8,
+      "scientific_stage_gpu_hours": 416,
+      "cumulative_readiness_gpu_hours": 72,
+      "cumulative_study_gpu_hours": 592,
+      "cumulative_total_gpu_hours": 664,
+      "scientific_window_hours": 14
+    },
+    "proposed_budget_approved": false,
+    "cost_scenarios": {
+      "historical_max_mean_gpu_hours": 324.0462261903478,
+      "planning_8192_mean_validation_gpu_hours": 402.131075797,
+      "all_16384_stress_gpu_hours": 741.4588928379882
+    }
   }
 }

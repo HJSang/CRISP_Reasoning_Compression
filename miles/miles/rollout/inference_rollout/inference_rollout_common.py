@@ -61,6 +61,7 @@ async def generate_and_rm(
     sample: Sample | list[Sample],
     sampling_params: dict[str, Any],
     evaluation: bool = False,
+    rollout_id: int | None = None,
 ) -> Sample | list[Sample]:
     args = state.args
 
@@ -100,6 +101,7 @@ async def generate_and_rm(
                     sample=sample,
                     sampling_params=deepcopy(sampling_params),
                     evaluation=evaluation,
+                    rollout_id=rollout_id,
                 )
             )
             sample = output.samples
@@ -141,6 +143,7 @@ async def generate_and_rm_group(
     sampling_params: dict[str, Any],
     evaluation: bool = False,
     sample_done_callback: Callable[[], None] | None = None,
+    rollout_id: int | None = None,
 ) -> list[Sample]:
     args = state.args
 
@@ -159,7 +162,9 @@ async def generate_and_rm_group(
         current_sampling_params = sampling_params.copy()
         if getattr(args, "sglang_enable_deterministic_inference", False):
             current_sampling_params["sampling_seed"] = args.rollout_seed + idx
-        task = asyncio.create_task(generate_and_rm(state, sample, current_sampling_params, evaluation=evaluation))
+        task = asyncio.create_task(
+            generate_and_rm(state, sample, current_sampling_params, evaluation=evaluation, rollout_id=rollout_id)
+        )
         if sample_done_callback is not None:
             # fires on success, exception, and cancellation, so in-flight accounting is conserved
             task.add_done_callback(lambda _task: sample_done_callback())

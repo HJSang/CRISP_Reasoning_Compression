@@ -94,6 +94,7 @@ class GenerateFnInput:
     sample: Sample
     sampling_params: dict[str, Any]
     evaluation: bool
+    rollout_id: int | None = None
 
     @property
     def args(self) -> Namespace:

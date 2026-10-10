@@ -74,6 +74,7 @@ def submit_generate_tasks(
     state: GenerateState,
     samples: list[list[Sample]],
     sample_done_callback: Callable[[], None] | None = None,
+    rollout_id: int | None = None,
 ):
     return [
         asyncio.create_task(
@@ -84,6 +85,7 @@ def submit_generate_tasks(
                 sampling_params=state.sampling_params.copy(),
                 evaluation=False,
                 sample_done_callback=sample_done_callback,
+                rollout_id=rollout_id,
             )
         )
         for group in samples
@@ -119,7 +121,7 @@ async def generate_rollout_async(
             # get samples from the buffer and submit the generation requests.
             samples = data_source(args.over_sampling_batch_size)
             scheduler.on_submit(samples)
-            pendings.update(submit_generate_tasks(state, samples, scheduler.sample_done_callback))
+            pendings.update(submit_generate_tasks(state, samples, scheduler.sample_done_callback, rollout_id=rollout_id))
 
         # wait for the generation to finish
         logger.debug(f"[rollout] Waiting on {len(pendings)} pending tasks, data={len(data)}/{target_data_size}")

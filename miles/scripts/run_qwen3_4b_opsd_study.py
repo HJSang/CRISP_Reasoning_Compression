@@ -11,7 +11,7 @@ Args:
   --model-dir / --data-dir / --output-dir: Local checkpoint, input and result roots.
   --context: none, answer, worked, unrelated, or empty-wrapper diagnostic.
   --target: frozen, current, or transported full-vocabulary distribution.
-  --num-rollout: Completed optimizer updates, bounded at 64 per study job.
+  --num-rollout: Completed updates; at most 64 normally or 88 for the cyclic screen.
   --micro-batch-size: One, two, or four; sample-mean loss preserves weighting.
   --initial-checkpoint: Optional starting full HF or native checkpoint; Adam resets.
   --stop-after-rollout: Stop this job early while retaining the planned eval cadence.
@@ -21,6 +21,8 @@ Args:
   --model-name: Qwen3-1.7B, Qwen3-4B, or Qwen3-8B; the legacy entrypoint name stays stable.
   --task: Math or code prompt contract.
   --teacher-ema-decay / --ema-source: Optional EMA policy and its matched FP32 warm-up state.
+  --cyclic-teacher-policy: Fixed original or refresh after each completed PI/OPD cycle.
+  --cyclic-pi-updates / --cyclic-opd-updates: Positive phase lengths; fresh Adam per phase.
 
 Example:
   MILES_SCRIPT_EXTERNAL_RAY=1 python scripts/run_qwen3_4b_opsd_study.py --num-rollout 2
@@ -43,6 +45,9 @@ class ScriptArgs(U.ExecuteTrainConfig):
     task: str = "math"
     teacher_ema_decay: float | None = None
     ema_source: str | None = None
+    cyclic_teacher_policy: str | None = None
+    cyclic_pi_updates: int = 7
+    cyclic_opd_updates: int = 4
     data_dir: str = "/root/datasets"
     dataset_name: str = "warmup.jsonl"
     num_gpus_per_node: int = 2
@@ -67,8 +72,9 @@ class ScriptArgs(U.ExecuteTrainConfig):
             raise ValueError("Use a supported Qwen3 model and math/code task")
         if self.num_nodes != 1 or self.num_gpus_per_node != 2:
             raise ValueError("Study training requires one TP2/DP1 actor per node")
-        if not 1 <= self.num_rollout <= 64 or self.micro_batch_size not in (1, 2, 4):
-            raise ValueError("Use 1–64 updates and microbatch 1, 2 or 4 with effective batch four")
+        limit = 88 if self.cyclic_teacher_policy is not None else 64
+        if not 1 <= self.num_rollout <= limit or self.micro_batch_size not in (1, 2, 4):
+            raise ValueError(f"Use 1–{limit} updates and microbatch 1, 2 or 4 with effective batch four")
         if self.stop_after_rollout is not None and not 1 <= self.stop_after_rollout <= self.num_rollout:
             raise ValueError("Early stopping must be within the planned optimizer updates")
         if self.context not in {"none", "answer", "worked", "unrelated", "empty"}:
@@ -79,6 +85,26 @@ class ScriptArgs(U.ExecuteTrainConfig):
             raise ValueError("Snapshot interval must fit the planned updates")
         if self.retain_final_snapshot and self.evaluation_queue is None:
             raise ValueError("Retaining a paired source requires its evaluation queue")
+        if self.cyclic_teacher_policy is not None:
+            self._validate_cyclic()
+
+    def _validate_cyclic(self):
+        if self.cyclic_teacher_policy not in {"fixed_original", "cycle_refresh"}:
+            raise ValueError("Unknown cyclic teacher policy")
+        if min(self.cyclic_pi_updates, self.cyclic_opd_updates) < 1:
+            raise ValueError("Cyclic phase lengths must be positive")
+        if self.num_rollout % (self.cyclic_pi_updates + self.cyclic_opd_updates):
+            raise ValueError("A cyclic job must end after a complete PI/OPD cycle")
+        if self.model_name not in {"Qwen3-4B", "Qwen3-8B"} or self.task != "math":
+            raise ValueError("The cyclic screen supports 4B/8B math only")
+        if self.context != "worked" or self.target != "frozen" or self.micro_batch_size != 1:
+            raise ValueError("Cyclic training requires worked/frozen launch context and microbatch one")
+        if self.teacher_ema_decay is not None or self.ema_source is not None or self.replay_path is not None:
+            raise ValueError("Cyclic training cannot combine EMA or replay")
+        if self.save_checkpoints or self.retain_final_snapshot or self.stop_after_rollout is not None:
+            raise ValueError("Cyclic jobs require complete cycles and temporary evaluation snapshots only")
+        if self.evaluation_queue is None or self.snapshot_interval != 1:
+            raise ValueError("Cyclic evaluation requires its queue and the per-update snapshot decision")
 
 
 def execute(args: ScriptArgs):
@@ -134,6 +160,12 @@ def execute(args: ScriptArgs):
         algorithm += f"--opsd-teacher-ema-decay {args.teacher_ema_decay} "
     if args.ema_source is not None:
         algorithm += f"--opsd-ema-source {shlex.quote(args.ema_source)} "
+    if args.cyclic_teacher_policy is not None:
+        algorithm += (
+            f"--opsd-cyclic-teacher-policy {args.cyclic_teacher_policy} "
+            f"--opsd-cyclic-pi-updates {args.cyclic_pi_updates} "
+            f"--opsd-cyclic-opd-updates {args.cyclic_opd_updates} "
+        )
     optimizer = (
         "--optimizer adam --lr 5e-6 --lr-decay-style constant --weight-decay 0 "
         "--adam-beta1 0.9 --adam-beta2 0.999 --adam-eps 1e-8 --clip-grad 0.1 "

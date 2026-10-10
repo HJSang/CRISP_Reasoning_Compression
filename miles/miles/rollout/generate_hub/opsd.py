@@ -11,6 +11,7 @@ from miles.rollout.generate_utils.generate_endpoint_utils import (
     update_sample_from_response,
 )
 from miles.utils.http_utils import post
+from miles.utils.opsd_cyclic import cyclic_step
 from miles.utils.opsd_prompts import make_opsd_prefixes, make_study_prefixes, validate_response_ids
 
 
@@ -19,6 +20,15 @@ async def generate(input: GenerateFnInput) -> GenerateFnOutput:
     if not isinstance(sample.prompt, str) or sample.multimodal_inputs or sample.response_length:
         raise ValueError("OPSD requires a raw text problem and a fresh single-turn sample")
     mode = getattr(args, "opsd_context", "original")
+    if getattr(args, "opsd_cyclic_teacher_policy", None) is not None and not input.evaluation:
+        step = cyclic_step(args, input.rollout_id)
+        # The validated run schedule owns this context; data rows cannot override it.
+        mode = step.context
+        sample.metadata = sample.metadata | {
+            "opsd_cyclic_rollout_id": input.rollout_id,
+            "opsd_cyclic_context": mode,
+            "opsd_cyclic_teacher_source_update": step.teacher_source_update,
+        }
     if mode == "original":
         solution = None if input.evaluation else sample.metadata["solution"]
         if not input.evaluation and (not isinstance(solution, str) or not solution.strip()):

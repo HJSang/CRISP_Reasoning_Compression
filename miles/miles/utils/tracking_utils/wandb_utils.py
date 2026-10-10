@@ -87,6 +87,10 @@ def init_wandb_primary(args):
         init_kwargs["name"] = opsd_wandb.run_name(
             target=args.opsd_target, context=args.opsd_context, seed=args.seed, group=args.wandb_group,
             task=getattr(args, "opsd_task", "math"), ema_decay=getattr(args, "opsd_teacher_ema_decay", None),
+            cyclic_teacher_policy=getattr(args, "opsd_cyclic_teacher_policy", None),
+            cyclic_pi_updates=getattr(args, "opsd_cyclic_pi_updates", None),
+            cyclic_opd_updates=getattr(args, "opsd_cyclic_opd_updates", None),
+            planned_updates=getattr(args, "num_rollout", None),
         )
 
     wandb.init(**init_kwargs)
@@ -191,4 +195,6 @@ def _init_wandb_common():
     wandb.define_metric("passrate/*", step_metric="rollout/step")
     wandb.define_metric("eval/step")
     wandb.define_metric("eval/*", step_metric="eval/step")
+    wandb.define_metric("validation/step")
+    wandb.define_metric("validation/*", step_metric="validation/step")
     wandb.define_metric("perf/*", step_metric="rollout/step")

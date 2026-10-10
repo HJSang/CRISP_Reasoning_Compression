@@ -81,7 +81,7 @@ class Harness:
         self._next_group_index = 0
         self._blockers: list[asyncio.Event] = []
 
-        def fake_submit_generate_tasks(_state, samples, sample_done_callback=None):
+        def fake_submit_generate_tasks(_state, samples, sample_done_callback=None, rollout_id=None):
             tasks = []
             for group in samples:
                 self.submitted_group_indices.append(group[0].group_index)
@@ -255,7 +255,7 @@ async def test_failed_sample_cancels_siblings_and_conserves_credits(monkeypatch)
     """One sample raising must not leave siblings running or credits unreturned."""
     from miles.rollout.inference_rollout import inference_rollout_common as common
 
-    async def fake_generate_and_rm(state, sample, sampling_params, evaluation=False):
+    async def fake_generate_and_rm(state, sample, sampling_params, evaluation=False, rollout_id=None):
         if sample.index == 10:  # first sample of make_group(1)
             raise RuntimeError("sample failed")
         await asyncio.Event().wait()  # runs until cancelled

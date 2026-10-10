@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 
 from miles.utils.opsd_checkpoint import checkpoint_digest
+from miles.utils.opsd_cyclic import cyclic_evaluation_suites
 
 
 def evaluation_steps(updates: int) -> tuple[int, ...]:
@@ -42,7 +43,13 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
     final_step = args.num_rollout
     if stop_after is not None:
         final_step = min(final_step, args.start_rollout_id + stop_after)
-    if step not in evaluation_steps(args.num_rollout) and step != final_step:
+    suites = ("benchmark",) if step in evaluation_steps(args.num_rollout) or step == final_step else ()
+    if getattr(args, "opsd_cyclic_teacher_policy", None) is not None:
+        suites = cyclic_evaluation_suites(
+            step, planned_updates=args.num_rollout,
+            pi_updates=args.opsd_cyclic_pi_updates, opd_updates=args.opsd_cyclic_opd_updates,
+        )
+    if not suites:
         return
     if queue is None:
         raise ValueError("Study save hook requires --opsd-eval-queue")
@@ -61,6 +68,7 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
         "checkpoint_sha256": digest,
         "checkpoint_kind": "full_model",
         "planned_updates": args.num_rollout,
+        "evaluation_suites": list(suites),
         "temporary_snapshot": args.save is None and not (
             step == final_step and getattr(args, "opsd_retain_final_eval_snapshot", False)
         ),
@@ -77,8 +85,12 @@ def enqueue_evaluation(args, rollout_id, checkpoint_dir, hf_checkpoint_dir):
         existing = [queue / name / job_name for name in ("pending", "running", "done")]
         if any(path.exists() for path in existing):
             for path in existing:
-                if path.exists() and json.loads(path.read_text()).get("checkpoint_sha256") != digest:
-                    raise ValueError("Evaluation job identity collides with a different checkpoint")
+                if path.exists():
+                    previous = json.loads(path.read_text())
+                    if previous.get("checkpoint_sha256") != digest:
+                        raise ValueError("Evaluation job identity collides with a different checkpoint")
+                    if previous.get("evaluation_suites", ["benchmark"]) != list(suites):
+                        raise ValueError("Evaluation job identity collides with different required suites")
             break
         if sum(len(list((queue / name).glob("*.json"))) for name in ("pending", "running")) < 2:
             _write_json(queue / "pending" / job_name, job)

@@ -61,6 +61,16 @@ async def test_attempt_ends_once_after_success(lifecycle_sink):
     ]
 
 
+async def test_generate_receives_training_rollout_identity(lifecycle_sink):
+    async def generate(input):
+        assert input.rollout_id == 11
+        assert not input.evaluation
+        return GenerateFnOutput(samples=input.sample)
+
+    sample = Sample(index=1)
+    await common.generate_and_rm(make_state(generate), sample, sampling_params={}, rollout_id=11)
+
+
 async def test_attempt_ends_once_after_abort(lifecycle_sink):
     async def unexpected_generate(_input):
         pytest.fail("aborted attempts must not generate")

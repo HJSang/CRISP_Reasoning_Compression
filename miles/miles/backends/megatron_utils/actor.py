@@ -14,6 +14,7 @@ from miles.backends.megatron_utils.lora.utils import is_lora_enabled, lora_rollo
 from miles.backends.megatron_utils.opsd import (
     initialize_ema, save_ema_source, score_teacher, verify_teacher_base, zero_teacher_adapters,
 )
+from miles.backends.megatron_utils.opsd_cyclic import begin_cyclic_step, complete_cyclic_step, initialize_cyclic
 from miles.backends.megatron_utils.rematerialize_utils import build_main_cast_context
 from miles.backends.megatron_utils.update_weight.hf_weight_iterator import get_hf_weight_iterator
 from miles.backends.training_utils.checkpoint.tracker import read_checkpoint_tracker_iteration
@@ -50,6 +51,7 @@ from miles.utils.ft_utils.indep_dp import IndepDPInfo
 from miles.utils.lora.utils import build_lora_config, is_multi_lora_enabled
 from miles.utils.memory_utils import clear_memory, print_memory
 from miles.utils.object_store import StoreObjectRef, ValueSpec
+from miles.utils.opsd_cyclic import cyclic_evaluation_suites
 from miles.utils.reloadable_process_group import destroy_process_groups, monkey_patch_torch_dist, reload_process_groups
 from miles.utils.replay_base import all_replay_managers, routing_replay_manager
 from miles.utils.test_utils.ft_test_actions import FTTestActionActorExecutor
@@ -436,6 +438,7 @@ class MegatronTrainRayActor(TrainRayActor):
             if self.args.loss_type == "opsd_loss":
                 verify_teacher_base(self.weights_backuper, full_parameter=not is_lora_enabled(self.args))
                 initialize_ema(self)
+                initialize_cyclic(self)
 
         if self.args.keep_old_actor:
             # Load old_actor checkpoint
@@ -677,6 +680,8 @@ class MegatronTrainRayActor(TrainRayActor):
         # Create data iterator for log_probs and train.
         data_iterator, num_microbatches = get_data_iterator(self.args, self.model, rollout_data)
         num_optimizer_steps = len(num_microbatches)
+        if getattr(self.args, "opsd_cyclic_teacher_policy", None) is not None:
+            begin_cyclic_step(self, rollout_data, rollout_id=rollout_id, num_optimizer_steps=num_optimizer_steps)
         if self.opsd_ema is not None and num_optimizer_steps != 1:
             raise ValueError("EMA OPSD requires exactly one optimizer update per fresh rollout")
         skip_actor_forward_only = self.args.skip_actor_forward_only
@@ -810,6 +815,12 @@ class MegatronTrainRayActor(TrainRayActor):
             else:
                 torch.cuda.synchronize()
 
+            if getattr(self.args, "opsd_cyclic_teacher_policy", None) is not None:
+                metrics = complete_cyclic_step(self, rollout_id=rollout_id)
+                if is_first_replica_megatron_main_rank():
+                    logger.info("OPSD cyclic: %s", metrics)
+                    log(self.args, metrics, step_key="train/step")
+
             if self.opsd_ema is not None:
                 self.opsd_ema.update(self.weights_backuper.get("actor"))
                 self.opsd_ema.publish(self.weights_backuper.get("ema_teacher"))
@@ -845,6 +856,12 @@ class MegatronTrainRayActor(TrainRayActor):
     def save_model(self, rollout_id: int, force_sync: bool = False) -> None:
         self._heartbeat.bump()
         if self.args.debug_rollout_only:
+            return
+
+        if getattr(self.args, "opsd_cyclic_teacher_policy", None) is not None and not cyclic_evaluation_suites(
+            rollout_id + 1, planned_updates=self.args.num_rollout,
+            pi_updates=self.args.opsd_cyclic_pi_updates, opd_updates=self.args.opsd_cyclic_opd_updates,
+        ):
             return
 
         self._finalize_pending_async_save()
