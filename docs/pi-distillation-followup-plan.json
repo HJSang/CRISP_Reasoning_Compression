@@ -2794,7 +2794,7 @@
       }
     },
     "budget_proposal": {
-      "new_readiness_gpu_hour_cap": 16,
+      "new_readiness_gpu_hour_cap": 24,
       "new_study_gpu_hour_cap": 96,
       "new_scientific_window_hours": 6,
       "readiness_total_cap": 64,
@@ -2905,6 +2905,21 @@
           "reserved_gpu_hours": 4.664189884955219
         }
       ]
+    },
+    "readiness_resume": {
+      "approved": true,
+      "stage_cap_gpu_hours": 24,
+      "prior_used_including_redeployment": 11.422562815878125,
+      "recovery_reservation_gpu_hours": 12.476226238671936,
+      "projected_total_gpu_hours": 23.89878905455006,
+      "active_recovery_workers": [
+        "worker-a",
+        "worker-c",
+        "worker-d"
+      ],
+      "already_passed_worker": "worker-b",
+      "scientific_started": false,
+      "scientific_admission": "All four complete cells must fit measured reservations within 96 GPU-hours and six hours."
     }
   }
 }
