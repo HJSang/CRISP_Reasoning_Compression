@@ -3200,14 +3200,29 @@
           "model": "Qwen3-8B",
           "task": "code",
           "completed_updates": 26,
-          "completed_evaluations": 14
+          "completed_evaluations": 15,
+          "errors": [],
+          "pending": [
+            "Controller exit and cleanup",
+            "4 required evaluations",
+            "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
+            "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
+          ]
         },
         {
           "worker": "worker-d",
           "model": "Qwen3-1.7B",
           "task": "code",
           "completed_updates": 30,
-          "completed_evaluations": 17
+          "completed_evaluations": 18,
+          "errors": [],
+          "pending": [
+            "Controller exit and cleanup",
+            "1 required evaluations",
+            "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
+            "generality-qwen3-1p7b-code-ema-opd-s101-r1: final source/loss validation",
+            "generality-qwen3-1p7b-code-ema-opd-s101-r1: training process exit"
+          ]
         }
       ],
       "reserved_gpu_hours": 135.91728585163753,
@@ -3223,7 +3238,7 @@
       "full_stage_hosted_audit_complete": false,
       "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation.",
       "latest_audit": {
-        "checked_unix": 1791622614.707635,
+        "checked_unix": 1791623295.584241,
         "matrix_matches": true,
         "complete": false,
         "cells": [
@@ -3667,13 +3682,11 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "5 required evaluations",
+              "4 required evaluations",
               "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-code-ema-pi-s101-r1: final source/loss validation",
-              "generality-qwen3-8b-code-ema-pi-s101-r1: training process exit",
               "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 14,
+            "completed_evaluations": 15,
             "completed_updates": 26,
             "scores": {
               "original": {
@@ -3735,6 +3748,18 @@
                   "pass_at_8": 0.8963414634146342,
                   "test_failure_fraction": 0.27515243902439024
                 }
+              },
+              "ema_pi": {
+                "HumanEval+": {
+                  "avg_at_8": 0.7698170731707317,
+                  "completions": 1312,
+                  "cap_hit_fraction": 0.003048780487804878,
+                  "parse_failure_fraction": 0.003048780487804878,
+                  "grader_timeouts": 13,
+                  "unexpected_thinking_delimiters": 0,
+                  "pass_at_8": 0.9024390243902439,
+                  "test_failure_fraction": 0.22560975609756098
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {
@@ -3754,12 +3779,12 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "2 required evaluations",
+              "1 required evaluations",
               "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
               "generality-qwen3-1p7b-code-ema-opd-s101-r1: final source/loss validation",
               "generality-qwen3-1p7b-code-ema-opd-s101-r1: training process exit"
             ],
-            "completed_evaluations": 17,
+            "completed_evaluations": 18,
             "completed_updates": 30,
             "scores": {
               "original": {
@@ -3846,11 +3871,11 @@
           }
         ],
         "limitation": "One training seed per cell; fixed endpoint comparisons do not establish cross-seed generality.",
-        "checked_utc": "2026-10-10 08:56 UTC",
+        "checked_utc": "2026-10-10T09:08:15.584241+00:00",
         "completed_updates": 116,
-        "completed_evaluations": 69,
-        "assigned_gpu_hours": 83.83029728412627,
-        "cost_checked_unix": 1791622659.4419498,
+        "completed_evaluations": 71,
+        "assigned_gpu_hours": 87.03942847569783,
+        "cost_checked_unix": 1791623381.496468,
         "audit_validation": "Five focused CPU tests passed: complete math/code cells, nine negative mutations, delayed baseline publication, hosted-score disagreement and result-before-done publication boundaries.",
         "length_profiles": [
           {
@@ -4063,6 +4088,17 @@
             "p95_response_latency_seconds": 2.398874982065172
           },
           {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "stage": "ema_pi",
+            "completions": 1312,
+            "mean_response_tokens": 160.81631097560975,
+            "generation_seconds": 159.77922183502233,
+            "output_tokens_per_second": 1320.5158817074202,
+            "p95_response_latency_seconds": 2.9301682535122384
+          },
+          {
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
@@ -4169,8 +4205,8 @@
         }
       },
       "question_uncertainty": {
-        "checked_unix": 1791621160.4039822,
-        "audit_sha256": "846e6e7d9fbc2d5b45509e8ed9f1d891ba45646083403aaa705765f0b0decd17",
+        "checked_unix": 1791623313.569361,
+        "audit_sha256": "a64d7528043aacabba18fd5377135a750c7750eb73200123bbf89228a0178805",
         "comparisons": [
           {
             "worker": "worker-a",
@@ -5176,6 +5212,23 @@
             "bootstrap_seed": 20261010
           },
           {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "ema_pi",
+            "right": "original",
+            "delta_percentage_points": -4.725609756097561,
+            "question_resampling_interval_95_pp": [
+              -8.307926829268293,
+              -1.2195121951219512
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
@@ -5279,11 +5332,6 @@
           }
         ],
         "pending": [
-          {
-            "worker": "worker-c",
-            "left": "ema_pi",
-            "right": "original"
-          },
           {
             "worker": "worker-c",
             "left": "ema_opd",
