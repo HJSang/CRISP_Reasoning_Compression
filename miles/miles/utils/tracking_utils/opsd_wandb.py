@@ -58,6 +58,26 @@ def run_name(
     cyclic_optimizer_policy: str = "reset_each_phase", cyclic_lr_schedule: str = "constant",
 ) -> str:
     """Describe the recipe without exposing arbitrary group names or local paths."""
+    if group.startswith("mathphases-"):
+        phase = re.fullmatch(
+            r"mathphases(-ready)?-v1-qwen3-(4b|8b)-refresh-pi(3|5|7|9)-opd(8|6|4|2)-u(22|88)-reset-constant-s137-r1", group
+        )
+        if phase is None:
+            raise ValueError("Phase study requires a recognized neutral run identifier")
+        readiness, size, pi, opd, horizon = phase.groups()
+        expected_horizon = 22 if readiness else 88
+        allowed_ready = (size, int(pi), int(opd)) in {("4b", 3, 8), ("8b", 9, 2)}
+        counts = (cyclic_pi_updates, cyclic_opd_updates, planned_updates, seed)
+        if (any(type(value) is not int for value in counts)
+                or counts != (int(pi), int(opd), expected_horizon, 137) or int(pi) + int(opd) != 11
+                or int(horizon) != expected_horizon or (readiness and not allowed_ready)
+                or target != "frozen" or context != "worked" or task != "math" or ema_decay is not None
+                or cyclic_teacher_policy != "cycle_refresh" or cyclic_optimizer_policy != "reset_each_phase"
+                or cyclic_lr_schedule != "constant"):
+            raise ValueError("Phase run name disagrees with its finite reviewed recipe")
+        return (f"Qwen3-{size.upper()} | math | cycle-refreshed teacher | PI{pi} → OPD{opd} × {expected_horizon // 11}"
+                " | fresh Adam per phase | constant LR | seed 137 | non-thinking | attempt 1"
+                + (" | phase readiness" if readiness else " | phase study"))
     cyclic = re.fullmatch(
         r"mathcycles-qwen3-(4b|8b)-(fixed|refresh)(?:-(reset|carry)-(constant|linear)(-ready)?)?-s([0-9]+)-r([0-9]+)", group
     )
