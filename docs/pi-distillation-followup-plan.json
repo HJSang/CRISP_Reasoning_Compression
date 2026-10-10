@@ -8781,7 +8781,7 @@
         "workers": "All four worker failure receipts report received termination, exit code1, owned cleanup completed and no remaining GPU processes.",
         "transport_diagnosis": "The status payload was about 479 KB including 2,936 asset digests. Truncation is strongly suspected, but the exact failing stdout/stderr payload was not retained, so the exact transport failure is not proven.",
         "separate_from_output_adjudication": true,
-        "monitor_successor_cpu_fix_status": "Original failed-attempt source preserved; approved recovery launched at 18:54:27 UTC. The 20:44:46 UTC snapshot verifies 318 finite local/317 matching hosted updates and 85 retained suites with 79,872 responses, versus 83 strict suites with 78,048 responses. Four recovery diagnostics remain in two suites. Worker-b reaching 88 training updates does not certify a trajectory; final evaluations, baseline tracking and cleanup remain outstanding.",
+        "monitor_successor_cpu_fix_status": "Original failed-attempt source preserved; approved recovery launched at 18:54:27 UTC. The 21:13:11 UTC snapshot verifies 347 matching finite local/hosted updates and 101 retained suites with 94,688 responses, versus 99 strict suites with 92,864 responses. The same four recovery diagnostics remain. Both 4B arms pass terminal audits; both 8B arms remain incomplete. No whole-wave completion or subsequent admission.",
         "restart_or_relaunch_authorized_at_failure": false,
         "subsequent_user_approved_one_fresh_retry": true,
         "additional_automatic_retries_authorized": false
@@ -10537,7 +10537,7 @@
       }
     },
     "recovery_execution": {
-      "status": "running_verified_progress_no_complete_trajectory",
+      "status": "running_two_4b_trajectories_terminal_verified_whole_wave_incomplete",
       "user_approved": true,
       "launched": true,
       "launch_receipt_verified": true,
@@ -10605,17 +10605,17 @@
         "live_completion_certified": false
       },
       "launch_utc": "2026-10-10T18:54:27.202017Z",
-      "remote_controllers_alive": 4,
+      "remote_controllers_alive": 2,
       "remote_status_fresh_count": 4,
       "remote_asset_count_verified": 2936,
       "dispatch_errors_observed": 0,
       "failed_queues_observed": 0,
-      "training_updates_verified": 318,
+      "training_updates_verified": 347,
       "scientific_completion_certified": false,
-      "hosted_updates_verified": 317,
-      "pending_hosted_updates": 1,
-      "completed_evaluation_suites": 85,
-      "completed_trajectories": 0,
+      "hosted_updates_verified": 347,
+      "pending_hosted_updates": 0,
+      "completed_evaluation_suites": 101,
+      "completed_trajectories": 2,
       "startup_evidence": {
         "checked_unix": 1791658799.5650508,
         "checked_utc": "2026-10-10T18:59:59.565051+00:00",
@@ -10682,52 +10682,95 @@
           }
         ]
       },
-      "unique_completed_responses": 79872,
+      "unique_completed_responses": 94688,
       "progress_evidence": {
-        "checked_unix": 1791665086.626542,
-        "checked_utc": "2026-10-10T20:44:46.626542+00:00",
+        "checked_unix": 1791666791.03214,
+        "checked_utc": "2026-10-10T21:13:11.032140+00:00",
         "progress_only": true,
         "complete": false,
         "scientific_completion_certified": false,
         "observed_checks_passed": false,
         "errors": [],
         "pending": [
-          "worker-c: Hosted validation step62 leads local completed result capture; full result audit pending",
-          "worker-d: Hosted loss history is behind the local prefix",
-          "worker-d: Hosted cyclic history is behind the local prefix"
+          "worker-a: Hosted validation step88 leads local completed result capture; full result audit pending"
         ],
-        "local_updates": 318,
-        "local_cyclic_updates": 318,
-        "completed_suite_evaluations": 85,
-        "strict_passing_suites": 83,
-        "unique_completed_responses": 79872,
+        "local_updates": 347,
+        "local_cyclic_updates": 347,
+        "completed_suite_evaluations": 101,
+        "strict_passing_suites": 99,
+        "unique_completed_responses": 94688,
         "recovery_strict_zero_delimiter_passed": false,
         "output_evidence_coverage_complete": false,
         "output_delimiter_count": 4,
-        "remote_read_intervals_complete": 50,
-        "expected_deferred_hosted_baseline_suite_rows": 8,
+        "remote_read_intervals_complete": 55,
+        "expected_deferred_hosted_baseline_suite_rows": 4,
         "completed_suite_generation_throughput": {
-          "count": 85,
-          "minimum": 5479.702518124686,
-          "median": 7809.011894368723,
+          "count": 101,
+          "minimum": 5189.173133383114,
+          "median": 7803.9795988412825,
           "maximum": 10742.926923401477
         },
-        "accounting_probe": {
-          "checked_unix": 1791665086.626542,
-          "retry_gpu_hours": 58.839309192233614,
-          "prior_stage_gpu_hours": 52.27815742863549,
-          "stage_science_gpu_hours": 111.1174666208691,
-          "cumulative_readiness_gpu_hours": 78.99915054162344,
-          "cumulative_study_gpu_hours": 282.7518132517073,
-          "overall_gpu_hours": 361.7509637933307,
-          "remaining_clock_hours": 49.972512664397556,
-          "operational_intervals_covered_by_active_assignments": 905,
-          "method": "Progress-only charge of all eight assigned GPUs per worker from original recovery dispatch intent through collection cutoff. Every before-cutoff saved operational/read interval lies inside these active assignments; no duplicate addition. Immutable failed/preparation origin is included once. No terminal cleanup or future admission is certified."
-        },
-        "strict_passing_responses": 78048,
-        "amended_passing_suites": 85,
-        "amended_passing_responses": 79872,
+        "strict_passing_responses": 92864,
+        "amended_passing_suites": 101,
+        "amended_passing_responses": 94688,
         "amended_execution_audit_errors": 0,
+        "whole_wave_terminal": false,
+        "accounting_probe": {
+          "checked_unix": 1791666791.03214,
+          "retry_gpu_hours": 70.86304079214732,
+          "prior_stage_gpu_hours": 52.27815742863549,
+          "stage_science_gpu_hours": 123.14119822078281,
+          "cumulative_readiness_gpu_hours": 78.99915054162344,
+          "cumulative_study_gpu_hours": 294.77554485162096,
+          "overall_gpu_hours": 373.77469539324443,
+          "remaining_clock_hours": 49.499066664973896,
+          "operational_intervals_at_or_before_cutoff": 1124,
+          "operational_intervals_after_cutoff": 8,
+          "intervals_clipped_to_cutoff": [],
+          "workers": [
+            {
+              "worker": "worker-a",
+              "assignment_released": false,
+              "controller_end_unix": 1791666791.03214,
+              "cleanup_first_verified_unix": null,
+              "assigned_union_gpu_hours": 18.497395293447706,
+              "controller_through_release_gpu_hours": 18.497395293447706,
+              "post_release_operations_union_gpu_hours": 0,
+              "operational_intervals": 301
+            },
+            {
+              "worker": "worker-b",
+              "assignment_released": true,
+              "controller_end_unix": 1791665509.0728958,
+              "cleanup_first_verified_unix": 1791665524.6924212,
+              "assigned_union_gpu_hours": 15.856066098213196,
+              "controller_through_release_gpu_hours": 15.68330702940623,
+              "post_release_operations_union_gpu_hours": 0.17275906880696645,
+              "operational_intervals": 286
+            },
+            {
+              "worker": "worker-c",
+              "assignment_released": false,
+              "controller_end_unix": 1791666791.03214,
+              "cleanup_first_verified_unix": null,
+              "assigned_union_gpu_hours": 18.497395293447706,
+              "controller_through_release_gpu_hours": 18.497395293447706,
+              "post_release_operations_union_gpu_hours": 0,
+              "operational_intervals": 268
+            },
+            {
+              "worker": "worker-d",
+              "assignment_released": true,
+              "controller_end_unix": 1791666537.2413383,
+              "cleanup_first_verified_unix": 1791666557.0345569,
+              "assigned_union_gpu_hours": 18.01218410703871,
+              "controller_through_release_gpu_hours": 17.977400664223566,
+              "post_release_operations_union_gpu_hours": 0.03478344281514367,
+              "operational_intervals": 269
+            }
+          ],
+          "method": "Progress-only union at collection cutoff: active A/C dispatch intents through cutoff; released B/D intents through actual exit plus the unique cleanup-to-first-verified allowance and every subsequent recorded operational/read interval. All assigned intervals charge eight GPUs per worker. Overlaps are merged per worker. Failed/preparation origin is included once. Later intervals are excluded, and a completed operation crossing the cutoff is clipped transparently. This does not certify whole-wave completion or future admission."
+        },
         "output_delimiter_warnings": [
           {
             "worker": "worker-d",
@@ -10753,30 +10796,30 @@
             "worker": "worker-a",
             "model": "Qwen3-8B",
             "teacher_policy": "fixed_original",
-            "updates": 74,
+            "updates": 88,
             "training": {
-              "local_loss_updates": 74,
-              "local_cyclic_updates": 74,
+              "local_loss_updates": 88,
+              "local_cyclic_updates": 88,
               "hosted_updates": {
-                "loss": 74,
-                "cyclic": 74
+                "loss": 88,
+                "cyclic": 88
               },
               "matching_local_prefix_updates": {
-                "loss": 74,
-                "cyclic": 74
+                "loss": 88,
+                "cyclic": 88
               },
               "all_local_losses_finite": true,
               "first_no_pi_kl": 0.02580518089234829,
               "teacher_refresh_updates": [],
               "last_cyclic_record": {
-                "train/step": 73,
-                "train/cyclic_cycle": 7,
+                "train/step": 87,
+                "train/cyclic_cycle": 8,
                 "train/cyclic_pi_phase": 0,
-                "train/cyclic_optimizer_reset": 1,
+                "train/cyclic_optimizer_reset": 0,
                 "train/cyclic_teacher_source_update": 0,
                 "train/cyclic_teacher_refreshed": 0,
-                "train/cyclic_completed_updates": 74,
-                "train/cyclic_optimizer_updates": 1,
+                "train/cyclic_completed_updates": 88,
+                "train/cyclic_optimizer_updates": 4,
                 "train/cyclic_applied_lr": 5e-06,
                 "train/cyclic_next_lr": 5e-06
               }
@@ -10841,9 +10884,9 @@
                 "mean_response_tokens": 3450.94375,
                 "whole_seconds_upper_bound": 356.5764973163605,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 4614.075,
                   "AMC23": 2342.771875,
-                  "AIME 2025": 3765.375,
-                  "AIME 2024": 4614.075
+                  "AIME 2025": 3765.375
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -10907,9 +10950,9 @@
                 "mean_response_tokens": 3583.43125,
                 "whole_seconds_upper_bound": 379.0220091342926,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 5037.3375,
                   "AMC23": 2163.23125,
-                  "AIME 2025": 4023.125,
-                  "AIME 2024": 5037.3375
+                  "AIME 2025": 4023.125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -10997,9 +11040,9 @@
                 "mean_response_tokens": 2106.8275,
                 "whole_seconds_upper_bound": 284.6958885192871,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 2655.3166666666666,
                   "AMC23": 1795.08125,
-                  "AIME 2025": 1974.0,
-                  "AIME 2024": 2655.3166666666666
+                  "AIME 2025": 1974.0
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11063,9 +11106,9 @@
                 "mean_response_tokens": 2260.9225,
                 "whole_seconds_upper_bound": 290.8880715370178,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 3461.075,
                   "AMC23": 1403.0375,
-                  "AIME 2025": 2204.616666666667,
-                  "AIME 2024": 3461.075
+                  "AIME 2025": 2204.616666666667
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11153,9 +11196,9 @@
                 "mean_response_tokens": 3087.31625,
                 "whole_seconds_upper_bound": 330.6354522705078,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 4499.716666666666,
                   "AMC23": 1570.98125,
-                  "AIME 2025": 3696.695833333333,
-                  "AIME 2024": 4499.716666666666
+                  "AIME 2025": 3696.695833333333
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11243,9 +11286,9 @@
                 "mean_response_tokens": 3641.6525,
                 "whole_seconds_upper_bound": 403.4522738456726,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 5467.2125,
                   "AMC23": 2031.659375,
-                  "AIME 2025": 3962.75,
-                  "AIME 2024": 5467.2125
+                  "AIME 2025": 3962.75
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11309,9 +11352,9 @@
                 "mean_response_tokens": 3493.37125,
                 "whole_seconds_upper_bound": 363.3397889137268,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 5025.525,
                   "AMC23": 2001.128125,
-                  "AIME 2025": 3950.875,
-                  "AIME 2024": 5025.525
+                  "AIME 2025": 3950.875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11399,9 +11442,9 @@
                 "mean_response_tokens": 2587.5875,
                 "whole_seconds_upper_bound": 302.8819236755371,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 3757.4791666666665,
                   "AMC23": 1786.64375,
-                  "AIME 2025": 2485.6208333333334,
-                  "AIME 2024": 3757.4791666666665
+                  "AIME 2025": 2485.6208333333334
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11426,6 +11469,162 @@
                 "whole_seconds_upper_bound": 275.7629199028015,
                 "dataset_mean_tokens": {
                   "Math validation": 1506.3271484375
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 71,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.24583333333333332,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.05416666666666667,
+                    "parse_failure_fraction": 0.05416666666666667,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.2,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.020833333333333332,
+                    "parse_failure_fraction": 0.016666666666666666,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.625,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.015625,
+                    "parse_failure_fraction": 0.0125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 270.19471683504526,
+                "output_tokens_per_second": 6492.847160557273,
+                "mean_response_tokens": 2192.91625,
+                "whole_seconds_upper_bound": 310.8051588535309,
+                "dataset_mean_tokens": {
+                  "AIME 2024": 3021.929166666667,
+                  "AMC23": 1514.521875,
+                  "AIME 2025": 2268.429166666667
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 73,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.6689453125,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.009765625,
+                    "parse_failure_fraction": 0.0087890625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 220.7511621901067,
+                "output_tokens_per_second": 5189.173133383114,
+                "mean_response_tokens": 1118.66796875,
+                "whole_seconds_upper_bound": 262.3070635795593,
+                "dataset_mean_tokens": {
+                  "Math validation": 1118.66796875
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 77,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7021484375,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.021484375,
+                    "parse_failure_fraction": 0.0185546875,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 231.94090694596525,
+                "output_tokens_per_second": 6744.364418495742,
+                "mean_response_tokens": 1527.630859375,
+                "whole_seconds_upper_bound": 272.6590459346771,
+                "dataset_mean_tokens": {
+                  "Math validation": 1527.630859375
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 80,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.21666666666666667,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.10833333333333334,
+                    "parse_failure_fraction": 0.09583333333333334,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.19583333333333333,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.04583333333333333,
+                    "parse_failure_fraction": 0.04583333333333333,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.65,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.025,
+                    "parse_failure_fraction": 0.021875,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 289.34707477595657,
+                "output_tokens_per_second": 7459.501713197731,
+                "mean_response_tokens": 2697.98125,
+                "whole_seconds_upper_bound": 329.70843148231506,
+                "dataset_mean_tokens": {
+                  "AIME 2024": 3887.025,
+                  "AMC23": 1728.234375,
+                  "AIME 2025": 2801.9333333333334
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 84,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.6943359375,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0166015625,
+                    "parse_failure_fraction": 0.013671875,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 218.83320369792636,
+                "output_tokens_per_second": 5723.592118721373,
+                "mean_response_tokens": 1223.15625,
+                "whole_seconds_upper_bound": 259.92331981658936,
+                "dataset_mean_tokens": {
+                  "Math validation": 1223.15625
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11472,45 +11671,69 @@
             "source_config_assets_protocol_load_checks_passed": true,
             "training_command_flags_checks_passed": true,
             "hosted_evaluation_comparison": {
-              "matching_local_suites": 19,
+              "matching_local_suites": 24,
               "baseline_suites_deferred_until_exit": 2,
-              "hosted_endpoints_not_yet_in_local_capture": []
+              "hosted_endpoints_not_yet_in_local_capture": [
+                {
+                  "step": 88,
+                  "suite": "validation"
+                }
+              ]
             },
             "queue": {
-              "done": 17,
-              "pending": 1,
+              "done": 22,
+              "pending": 0,
               "running": 1,
               "failed": 0
             },
             "gpu_empty": false,
             "timings": {
               "perf/train_time": {
-                "count": 74,
+                "count": 88,
                 "minimum": 2.3723011016845703,
                 "median": 3.000671625137329,
                 "maximum": 6.967682123184204
               },
               "perf/rollout_time": {
-                "count": 74,
+                "count": 88,
                 "minimum": 4.088856220245361,
-                "median": 12.024656176567078,
+                "median": 12.270935416221619,
                 "maximum": 30.977022886276245
               },
               "perf/step_time": {
-                "count": 74,
+                "count": 88,
                 "minimum": 33.78489971160889,
-                "median": 44.91161334514618,
+                "median": 46.0101283788681,
                 "maximum": 623.2955176830292
               },
               "perf/save_model_time": {
-                "count": 73,
+                "count": 87,
                 "minimum": 8.916854858398438e-05,
-                "median": 0.00010466575622558594,
+                "median": 0.00010371208190917969,
                 "maximum": 563.0080218315125
               }
             },
+            "terminal_evidence": {
+              "controller_exit": null,
+              "trainer_exit": null,
+              "all_updates_observed": true,
+              "remaining_local_suite_endpoints": [
+                {
+                  "step": 88,
+                  "suite": "benchmark"
+                },
+                {
+                  "step": 88,
+                  "suite": "validation"
+                }
+              ],
+              "owned_cleanup_verified": false
+            },
+            "individual_terminal_contract_audit": null,
             "errors": [],
-            "pending": []
+            "pending": [
+              "Hosted validation step88 leads local completed result capture; full result audit pending"
+            ]
           },
           {
             "worker": "worker-b",
@@ -11604,8 +11827,8 @@
                 "mean_response_tokens": 3509.8975,
                 "whole_seconds_upper_bound": 302.2749733924866,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 3850.804166666667,
                   "AMC23": 2010.04375,
+                  "AIME 2025": 3850.804166666667,
                   "AIME 2024": 5168.795833333334
                 },
                 "strict_errors": [],
@@ -11670,8 +11893,8 @@
                 "mean_response_tokens": 3745.48875,
                 "whole_seconds_upper_bound": 326.24380230903625,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 4459.608333333334,
                   "AMC23": 1937.0,
+                  "AIME 2025": 4459.608333333334,
                   "AIME 2024": 5442.6875
                 },
                 "strict_errors": [],
@@ -11760,8 +11983,8 @@
                 "mean_response_tokens": 1939.36375,
                 "whole_seconds_upper_bound": 216.7850387096405,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 1903.4541666666667,
                   "AMC23": 1227.121875,
+                  "AIME 2025": 1903.4541666666667,
                   "AIME 2024": 2924.929166666667
                 },
                 "strict_errors": [],
@@ -11826,8 +12049,8 @@
                 "mean_response_tokens": 3129.245,
                 "whole_seconds_upper_bound": 281.8637726306915,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 3622.475,
                   "AMC23": 1986.521875,
+                  "AIME 2025": 3622.475,
                   "AIME 2024": 4159.645833333333
                 },
                 "strict_errors": [],
@@ -11916,8 +12139,8 @@
                 "mean_response_tokens": 3106.33875,
                 "whole_seconds_upper_bound": 287.4373381137848,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 3499.5416666666665,
                   "AMC23": 1780.915625,
+                  "AIME 2025": 3499.5416666666665,
                   "AIME 2024": 4480.366666666667
                 },
                 "strict_errors": [],
@@ -12006,8 +12229,8 @@
                 "mean_response_tokens": 4103.63875,
                 "whole_seconds_upper_bound": 335.37002086639404,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 5000.945833333333,
                   "AMC23": 2124.78125,
+                  "AIME 2025": 5000.945833333333,
                   "AIME 2024": 5844.808333333333
                 },
                 "strict_errors": [],
@@ -12072,8 +12295,8 @@
                 "mean_response_tokens": 3922.3875,
                 "whole_seconds_upper_bound": 321.0219407081604,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 4670.104166666667,
                   "AMC23": 1983.184375,
+                  "AIME 2025": 4670.104166666667,
                   "AIME 2024": 5760.275
                 },
                 "strict_errors": [],
@@ -12162,8 +12385,8 @@
                 "mean_response_tokens": 1990.92875,
                 "whole_seconds_upper_bound": 204.62217259407043,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 2189.6666666666665,
                   "AMC23": 1413.459375,
+                  "AIME 2025": 2189.6666666666665,
                   "AIME 2024": 2562.15
                 },
                 "strict_errors": [],
@@ -12228,8 +12451,8 @@
                 "mean_response_tokens": 3254.125,
                 "whole_seconds_upper_bound": 293.0659954547882,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 3610.2083333333335,
                   "AMC23": 1940.821875,
+                  "AIME 2025": 3610.2083333333335,
                   "AIME 2024": 4649.1125
                 },
                 "strict_errors": [],
@@ -12318,8 +12541,8 @@
                 "mean_response_tokens": 2718.1725,
                 "whole_seconds_upper_bound": 267.88343238830566,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 2863.0416666666665,
                   "AMC23": 1603.659375,
+                  "AIME 2025": 2863.0416666666665,
                   "AIME 2024": 4059.320833333333
                 },
                 "strict_errors": [],
@@ -12345,6 +12568,72 @@
                 "whole_seconds_upper_bound": 203.13614439964294,
                 "dataset_mean_tokens": {
                   "Math validation": 1120.4052734375
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 88,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.73046875,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0146484375,
+                    "parse_failure_fraction": 0.015625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 200.85452385799726,
+                "output_tokens_per_second": 7302.519115959657,
+                "mean_response_tokens": 1432.3671875,
+                "whole_seconds_upper_bound": 231.0,
+                "dataset_mean_tokens": {
+                  "Math validation": 1432.3671875
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 88,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.22083333333333333,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.1625,
+                    "parse_failure_fraction": 0.14166666666666666,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.19583333333333333,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.08333333333333333,
+                    "parse_failure_fraction": 0.07083333333333333,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.671875,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.00625,
+                    "parse_failure_fraction": 0.00625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 290.5898379900027,
+                "output_tokens_per_second": 10519.108380194502,
+                "mean_response_tokens": 3820.9325,
+                "whole_seconds_upper_bound": 314.0909614562988,
+                "dataset_mean_tokens": {
+                  "AMC23": 1936.040625,
+                  "AIME 2025": 4600.525,
+                  "AIME 2024": 5554.529166666666
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12391,17 +12680,17 @@
             "source_config_assets_protocol_load_checks_passed": true,
             "training_command_flags_checks_passed": true,
             "hosted_evaluation_comparison": {
-              "matching_local_suites": 24,
-              "baseline_suites_deferred_until_exit": 2,
+              "matching_local_suites": 28,
+              "baseline_suites_deferred_until_exit": 0,
               "hosted_endpoints_not_yet_in_local_capture": []
             },
             "queue": {
-              "done": 22,
+              "done": 23,
               "pending": 0,
-              "running": 1,
+              "running": 0,
               "failed": 0
             },
-            "gpu_empty": false,
+            "gpu_empty": true,
             "timings": {
               "perf/train_time": {
                 "count": 88,
@@ -12428,6 +12717,36 @@
                 "maximum": 506.6142313480377
               }
             },
+            "terminal_evidence": {
+              "controller_exit": {
+                "exit_code": 0,
+                "start_unix": 1791658469.0141904,
+                "elapsed_seconds": 7040.058705329895,
+                "assigned_gpus": 8,
+                "owned_cleanup_completed": true
+              },
+              "trainer_exit": {
+                "exit_code": 0,
+                "start_unix": 1791658552.2412262,
+                "elapsed_seconds": 6943.965722084045,
+                "deadline_unix": 1791714652.2132359,
+                "assigned_gpus": 2,
+                "owned_cleanup_completed": true,
+                "cleanup_errors": []
+              },
+              "all_updates_observed": true,
+              "remaining_local_suite_endpoints": [],
+              "owned_cleanup_verified": true
+            },
+            "individual_terminal_contract_audit": {
+              "worker": "worker-b",
+              "complete": true,
+              "errors": [],
+              "pending": [],
+              "warnings": [
+                "Hosted lifecycle badge differs; exact metrics and local exit are authoritative"
+              ]
+            },
             "errors": [],
             "pending": []
           },
@@ -12435,17 +12754,17 @@
             "worker": "worker-c",
             "model": "Qwen3-8B",
             "teacher_policy": "cycle_refresh",
-            "updates": 71,
+            "updates": 83,
             "training": {
-              "local_loss_updates": 71,
-              "local_cyclic_updates": 71,
+              "local_loss_updates": 83,
+              "local_cyclic_updates": 83,
               "hosted_updates": {
-                "loss": 71,
-                "cyclic": 71
+                "loss": 83,
+                "cyclic": 83
               },
               "matching_local_prefix_updates": {
-                "loss": 71,
-                "cyclic": 71
+                "loss": 83,
+                "cyclic": 83
               },
               "all_local_losses_finite": true,
               "first_no_pi_kl": 0.02285751886665821,
@@ -12455,17 +12774,18 @@
                 33,
                 44,
                 55,
-                66
+                66,
+                77
               ],
               "last_cyclic_record": {
-                "train/step": 70,
-                "train/cyclic_cycle": 7,
+                "train/step": 82,
+                "train/cyclic_cycle": 8,
                 "train/cyclic_pi_phase": 1,
                 "train/cyclic_optimizer_reset": 0,
-                "train/cyclic_teacher_source_update": 66,
+                "train/cyclic_teacher_source_update": 77,
                 "train/cyclic_teacher_refreshed": 0,
-                "train/cyclic_completed_updates": 71,
-                "train/cyclic_optimizer_updates": 5,
+                "train/cyclic_completed_updates": 83,
+                "train/cyclic_optimizer_updates": 6,
                 "train/cyclic_applied_lr": 5e-06,
                 "train/cyclic_next_lr": 5e-06
               }
@@ -12530,9 +12850,9 @@
                 "mean_response_tokens": 3577.92375,
                 "whole_seconds_upper_bound": 377.849196434021,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 4102.383333333333,
+                  "AMC23": 2382.528125,
                   "AIME 2024": 4647.325,
-                  "AMC23": 2382.528125
+                  "AIME 2025": 4102.383333333333
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12620,9 +12940,9 @@
                 "mean_response_tokens": 2503.5375,
                 "whole_seconds_upper_bound": 292.952800989151,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 2353.9166666666665,
+                  "AMC23": 1623.4125,
                   "AIME 2024": 3826.6583333333333,
-                  "AMC23": 1623.4125
+                  "AIME 2025": 2353.9166666666665
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12686,9 +13006,9 @@
                 "mean_response_tokens": 4515.28375,
                 "whole_seconds_upper_bound": 458.0502247810364,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 5687.804166666667,
+                  "AMC23": 2208.371875,
                   "AIME 2024": 6418.645833333333,
-                  "AMC23": 2208.371875
+                  "AIME 2025": 5687.804166666667
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12776,9 +13096,9 @@
                 "mean_response_tokens": 5268.25,
                 "whole_seconds_upper_bound": 525.4853684902191,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 6541.5875,
+                  "AMC23": 2609.58125,
                   "AIME 2024": 7539.804166666667,
-                  "AMC23": 2609.58125
+                  "AIME 2025": 6541.5875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12866,9 +13186,9 @@
                 "mean_response_tokens": 6086.82875,
                 "whole_seconds_upper_bound": 559.087568283081,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 8252.095833333333,
+                  "AMC23": 3122.696875,
                   "AIME 2024": 7873.7375,
-                  "AMC23": 3122.696875
+                  "AIME 2025": 8252.095833333333
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12932,9 +13252,9 @@
                 "mean_response_tokens": 6601.8075,
                 "whole_seconds_upper_bound": 598.7103025913239,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 9051.758333333333,
+                  "AMC23": 3282.571875,
                   "AIME 2024": 8577.504166666668,
-                  "AMC23": 3282.571875
+                  "AIME 2025": 9051.758333333333
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12959,6 +13279,162 @@
                 "whole_seconds_upper_bound": 266.01283860206604,
                 "dataset_mean_tokens": {
                   "Math validation": 1680.8212890625
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 62,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.763671875,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0185546875,
+                    "parse_failure_fraction": 0.01953125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 233.01605714298785,
+                "output_tokens_per_second": 6879.41002716533,
+                "mean_response_tokens": 1565.4423828125,
+                "whole_seconds_upper_bound": 284.0,
+                "dataset_mean_tokens": {
+                  "Math validation": 1565.4423828125
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 62,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.29583333333333334,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.21666666666666667,
+                    "parse_failure_fraction": 0.20416666666666666,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.2125,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.22916666666666666,
+                    "parse_failure_fraction": 0.20833333333333334,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.73125,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.0375,
+                    "parse_failure_fraction": 0.0375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 473.73829971288797,
+                "output_tokens_per_second": 8797.494318120082,
+                "mean_response_tokens": 5209.6375,
+                "whole_seconds_upper_bound": 513.8544185161591,
+                "dataset_mean_tokens": {
+                  "AMC23": 2617.6375,
+                  "AIME 2024": 6819.054166666667,
+                  "AIME 2025": 7056.220833333334
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 66,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7392578125,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0205078125,
+                    "parse_failure_fraction": 0.0517578125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 242.88958513597026,
+                "output_tokens_per_second": 7686.377326367787,
+                "mean_response_tokens": 1823.1845703125,
+                "whole_seconds_upper_bound": 283.605078458786,
+                "dataset_mean_tokens": {
+                  "Math validation": 1823.1845703125
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 71,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.3541666666666667,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.22916666666666666,
+                    "parse_failure_fraction": 0.22916666666666666,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.21666666666666667,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.22083333333333333,
+                    "parse_failure_fraction": 0.20416666666666666,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.740625,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.025,
+                    "parse_failure_fraction": 0.01875,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 488.2394969089655,
+                "output_tokens_per_second": 8832.482884530049,
+                "mean_response_tokens": 5390.45875,
+                "whole_seconds_upper_bound": 528.7661097049713,
+                "dataset_mean_tokens": {
+                  "AMC23": 2709.165625,
+                  "AIME 2024": 7375.525,
+                  "AIME 2025": 6980.45
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 73,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.75390625,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0205078125,
+                    "parse_failure_fraction": 0.0205078125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 236.2462154830573,
+                "output_tokens_per_second": 7399.652927457668,
+                "mean_response_tokens": 1707.16796875,
+                "whole_seconds_upper_bound": 278.5536644458771,
+                "dataset_mean_tokens": {
+                  "Math validation": 1707.16796875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13005,17 +13481,12 @@
             "source_config_assets_protocol_load_checks_passed": true,
             "training_command_flags_checks_passed": true,
             "hosted_evaluation_comparison": {
-              "matching_local_suites": 16,
+              "matching_local_suites": 21,
               "baseline_suites_deferred_until_exit": 2,
-              "hosted_endpoints_not_yet_in_local_capture": [
-                {
-                  "step": 62,
-                  "suite": "validation"
-                }
-              ]
+              "hosted_endpoints_not_yet_in_local_capture": []
             },
             "queue": {
-              "done": 14,
+              "done": 18,
               "pending": 1,
               "running": 1,
               "failed": 0
@@ -13023,50 +13494,77 @@
             "gpu_empty": false,
             "timings": {
               "perf/train_time": {
-                "count": 71,
+                "count": 83,
                 "minimum": 2.394930124282837,
-                "median": 3.1724915504455566,
+                "median": 3.1797962188720703,
                 "maximum": 5.374680757522583
               },
               "perf/rollout_time": {
-                "count": 71,
+                "count": 83,
                 "minimum": 4.629371643066406,
-                "median": 17.803351402282715,
+                "median": 17.454185485839844,
                 "maximum": 31.277344226837158
               },
               "perf/step_time": {
-                "count": 71,
+                "count": 83,
                 "minimum": 32.21492624282837,
-                "median": 50.697436809539795,
+                "median": 50.140661001205444,
                 "maximum": 719.6930038928986
               },
               "perf/save_model_time": {
-                "count": 70,
+                "count": 82,
                 "minimum": 9.179115295410156e-05,
-                "median": 0.00010907649993896484,
+                "median": 0.0001100301742553711,
                 "maximum": 658.1645209789276
               }
             },
+            "terminal_evidence": {
+              "controller_exit": null,
+              "trainer_exit": null,
+              "all_updates_observed": false,
+              "remaining_local_suite_endpoints": [
+                {
+                  "step": 77,
+                  "suite": "validation"
+                },
+                {
+                  "step": 80,
+                  "suite": "benchmark"
+                },
+                {
+                  "step": 84,
+                  "suite": "validation"
+                },
+                {
+                  "step": 88,
+                  "suite": "benchmark"
+                },
+                {
+                  "step": 88,
+                  "suite": "validation"
+                }
+              ],
+              "owned_cleanup_verified": false
+            },
+            "individual_terminal_contract_audit": null,
             "errors": [],
-            "pending": [
-              "Hosted validation step62 leads local completed result capture; full result audit pending"
-            ]
+            "pending": []
           },
           {
             "worker": "worker-d",
             "model": "Qwen3-4B",
             "teacher_policy": "cycle_refresh",
-            "updates": 85,
+            "updates": 88,
             "training": {
-              "local_loss_updates": 85,
-              "local_cyclic_updates": 85,
+              "local_loss_updates": 88,
+              "local_cyclic_updates": 88,
               "hosted_updates": {
-                "loss": 84,
-                "cyclic": 84
+                "loss": 88,
+                "cyclic": 88
               },
               "matching_local_prefix_updates": {
-                "loss": 84,
-                "cyclic": 84
+                "loss": 88,
+                "cyclic": 88
               },
               "all_local_losses_finite": true,
               "first_no_pi_kl": 0.01747148297727108,
@@ -13077,17 +13575,18 @@
                 44,
                 55,
                 66,
-                77
+                77,
+                88
               ],
               "last_cyclic_record": {
-                "train/step": 84,
+                "train/step": 87,
                 "train/cyclic_cycle": 8,
                 "train/cyclic_pi_phase": 0,
-                "train/cyclic_optimizer_reset": 1,
+                "train/cyclic_optimizer_reset": 0,
                 "train/cyclic_teacher_source_update": 77,
-                "train/cyclic_teacher_refreshed": 0,
-                "train/cyclic_completed_updates": 85,
-                "train/cyclic_optimizer_updates": 1,
+                "train/cyclic_teacher_refreshed": 1,
+                "train/cyclic_completed_updates": 88,
+                "train/cyclic_optimizer_updates": 4,
                 "train/cyclic_applied_lr": 5e-06,
                 "train/cyclic_next_lr": 5e-06
               }
@@ -13152,9 +13651,9 @@
                 "mean_response_tokens": 3525.1375,
                 "whole_seconds_upper_bound": 314.5669937133789,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 4427.183333333333,
                   "AIME 2024": 4811.15,
-                  "AMC23": 1884.09375,
-                  "AIME 2025": 4427.183333333333
+                  "AMC23": 1884.09375
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13242,9 +13741,9 @@
                 "mean_response_tokens": 3137.5925,
                 "whole_seconds_upper_bound": 290.1719992160797,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 3634.4333333333334,
                   "AIME 2024": 4413.991666666667,
-                  "AMC23": 1807.6625,
-                  "AIME 2025": 3634.4333333333334
+                  "AMC23": 1807.6625
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13308,9 +13807,9 @@
                 "mean_response_tokens": 3421.52125,
                 "whole_seconds_upper_bound": 317.8157494068146,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 4361.920833333334,
                   "AIME 2024": 4819.054166666667,
-                  "AMC23": 1668.071875,
-                  "AIME 2025": 4361.920833333334
+                  "AMC23": 1668.071875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13398,9 +13897,9 @@
                 "mean_response_tokens": 3394.76,
                 "whole_seconds_upper_bound": 310.3321006298065,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 3905.0375,
                   "AIME 2024": 5269.670833333334,
-                  "AMC23": 1605.86875,
-                  "AIME 2025": 3905.0375
+                  "AMC23": 1605.86875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13488,9 +13987,9 @@
                 "mean_response_tokens": 5109.58125,
                 "whole_seconds_upper_bound": 437.2102599143982,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 6666.4,
                   "AIME 2024": 7111.125,
-                  "AMC23": 2440.809375,
-                  "AIME 2025": 6666.4
+                  "AMC23": 2440.809375
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13554,9 +14053,9 @@
                 "mean_response_tokens": 5654.745,
                 "whole_seconds_upper_bound": 445.5448782444,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 7383.920833333334,
                   "AIME 2024": 7920.175,
-                  "AMC23": 2658.790625,
-                  "AIME 2025": 7383.920833333334
+                  "AMC23": 2658.790625
                 },
                 "strict_errors": [
                   "Grader timeout or unexpected thinking delimiter",
@@ -13647,9 +14146,9 @@
                 "mean_response_tokens": 5294.48125,
                 "whole_seconds_upper_bound": 452.4341883659363,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 6946.916666666667,
                   "AIME 2024": 7686.883333333333,
-                  "AMC23": 2260.853125,
-                  "AIME 2025": 6946.916666666667
+                  "AMC23": 2260.853125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13715,9 +14214,9 @@
                 "mean_response_tokens": 5505.77,
                 "whole_seconds_upper_bound": 439.87091398239136,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 7296.170833333334,
                   "AIME 2024": 7820.1,
-                  "AMC23": 2427.221875,
-                  "AIME 2025": 7296.170833333334
+                  "AMC23": 2427.221875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -13769,6 +14268,138 @@
                 },
                 "strict_errors": [],
                 "execution_errors": []
+              },
+              {
+                "step": 80,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.24166666666666667,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.2916666666666667,
+                    "parse_failure_fraction": 0.23333333333333334,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.2375,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.225,
+                    "parse_failure_fraction": 0.175,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.725,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.04375,
+                    "parse_failure_fraction": 0.03125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 436.1348478880245,
+                "output_tokens_per_second": 10273.59318269929,
+                "mean_response_tokens": 5600.84,
+                "whole_seconds_upper_bound": 460.3861315250397,
+                "dataset_mean_tokens": {
+                  "AIME 2025": 7006.15,
+                  "AIME 2024": 8045.358333333334,
+                  "AMC23": 2713.46875
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 84,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7548828125,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.025390625,
+                    "parse_failure_fraction": 0.0244140625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 207.51061386195943,
+                "output_tokens_per_second": 8113.0018781589815,
+                "mean_response_tokens": 1644.076171875,
+                "whole_seconds_upper_bound": 232.26373744010925,
+                "dataset_mean_tokens": {
+                  "Math validation": 1644.076171875
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 88,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.775390625,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.01171875,
+                    "parse_failure_fraction": 0.0068359375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 205.18155821005348,
+                "output_tokens_per_second": 7982.769086504312,
+                "mean_response_tokens": 1599.5283203125,
+                "whole_seconds_upper_bound": 235.0,
+                "dataset_mean_tokens": {
+                  "Math validation": 1599.5283203125
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 88,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.30833333333333335,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.3875,
+                    "parse_failure_fraction": 0.3,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.25416666666666665,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.3333333333333333,
+                    "parse_failure_fraction": 0.25833333333333336,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.715625,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.084375,
+                    "parse_failure_fraction": 0.08125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 500.8003369650105,
+                "output_tokens_per_second": 10573.171799542839,
+                "mean_response_tokens": 6618.81,
+                "whole_seconds_upper_bound": 524.2239079475403,
+                "dataset_mean_tokens": {
+                  "AIME 2025": 8570.216666666667,
+                  "AIME 2024": 8987.483333333334,
+                  "AMC23": 3378.75
+                },
+                "strict_errors": [],
+                "execution_errors": []
               }
             ],
             "baseline_metrics": {
@@ -13812,85 +14443,133 @@
             "source_config_assets_protocol_load_checks_passed": true,
             "training_command_flags_checks_passed": true,
             "hosted_evaluation_comparison": {
-              "matching_local_suites": 22,
-              "baseline_suites_deferred_until_exit": 2,
+              "matching_local_suites": 28,
+              "baseline_suites_deferred_until_exit": 0,
               "hosted_endpoints_not_yet_in_local_capture": []
             },
             "queue": {
-              "done": 19,
-              "pending": 1,
-              "running": 1,
+              "done": 22,
+              "pending": 0,
+              "running": 0,
               "failed": 0
             },
-            "gpu_empty": false,
+            "gpu_empty": true,
             "timings": {
               "perf/train_time": {
-                "count": 85,
+                "count": 88,
                 "minimum": 2.0988070964813232,
-                "median": 2.855059862136841,
+                "median": 2.866485118865967,
                 "maximum": 6.557685375213623
               },
               "perf/rollout_time": {
-                "count": 85,
+                "count": 88,
                 "minimum": 3.818622350692749,
-                "median": 13.451514720916748,
+                "median": 13.48844826221466,
                 "maximum": 26.54444456100464
               },
               "perf/step_time": {
-                "count": 85,
+                "count": 88,
                 "minimum": 19.997185468673706,
-                "median": 38.52381706237793,
+                "median": 38.366687297821045,
                 "maximum": 627.3298931121826
               },
               "perf/save_model_time": {
-                "count": 84,
+                "count": 87,
                 "minimum": 9.083747863769531e-05,
-                "median": 0.00010991096496582031,
+                "median": 0.00010848045349121094,
                 "maximum": 584.8444361686707
               }
             },
+            "terminal_evidence": {
+              "controller_exit": {
+                "exit_code": 0,
+                "start_unix": 1791658469.1403894,
+                "elapsed_seconds": 8068.100948810577,
+                "assigned_gpus": 8,
+                "owned_cleanup_completed": true
+              },
+              "trainer_exit": {
+                "exit_code": 0,
+                "start_unix": 1791658540.5147095,
+                "elapsed_seconds": 7987.232338428497,
+                "deadline_unix": 1791711727.385368,
+                "assigned_gpus": 2,
+                "owned_cleanup_completed": true,
+                "cleanup_errors": []
+              },
+              "all_updates_observed": true,
+              "remaining_local_suite_endpoints": [],
+              "owned_cleanup_verified": true
+            },
+            "individual_terminal_contract_audit": {
+              "worker": "worker-d",
+              "complete": true,
+              "errors": [],
+              "pending": [],
+              "warnings": [
+                "Hosted lifecycle badge differs; exact metrics and local exit are authoritative"
+              ]
+            },
             "errors": [],
-            "pending": [
-              "Hosted loss history is behind the local prefix",
-              "Hosted cyclic history is behind the local prefix"
-            ]
+            "pending": []
           }
         ],
         "source_and_schedule_verified_all_workers": true,
-        "observed_checks_scope": "Progress-only under the finalized policy; the original strict failures remain. Worker-d has one newer training update pending hosted upload and worker-c validation 62 awaits full-result audit. No trajectory completion or terminal cleanup is certified.",
-        "hosted_interpretation": "The 317 available hosted loss/cyclic records match their local prefixes, and all 81 comparable trained-suite rows match. Worker-d local 85 exceeds hosted 84 by one; worker-c hosted validation 62 is ahead of local full-result capture and excluded from totals. Eight baseline writes remain deferred until trainer/queue completion.",
+        "observed_checks_scope": "Progress-only whole-wave evidence under the finalized policy, with original strict failures retained. Workers b and d individually pass the frozen terminal contract; worker-a hosted validation 88 awaits full local result capture. Whole-wave completion and any subsequent admission remain pending.",
+        "hosted_interpretation": "All 347 hosted loss/cyclic records match local prefixes. Hosted evaluation comparisons match 97 trained suites plus four baseline attachments. Worker-a hosted validation 88 is ahead of local full-result capture and excluded from totals. Only four baseline attachments, for workers a and c, remain deferred.",
         "training_endpoint_status": {
           "workers_with_88_training_updates": [
-            "worker-b"
+            "worker-a",
+            "worker-b",
+            "worker-d"
           ],
-          "completed_trajectories": 0,
-          "worker_b_final_88_suites_captured": false,
-          "worker_b_successful_exit_and_cleanup_verified": false,
-          "worker_b_baseline_hosted_tracking_complete": false
+          "completed_trajectories": 2,
+          "terminal_contract_verified_workers": [
+            "worker-b",
+            "worker-d"
+          ],
+          "worker_a_final_88_local_suites_captured": false,
+          "worker_a_successful_exit_and_cleanup_verified": false,
+          "remaining_active_workers": [
+            "worker-a",
+            "worker-c"
+          ],
+          "whole_wave_completion_receipt_issued": false
         },
         "recent_progress_comparison": {
-          "previous_cutoff_utc": "2026-10-10T20:26:59.727821+00:00",
-          "elapsed_minutes": 17.78164534966151,
-          "new_training_updates": 44,
+          "previous_cutoff_utc": "2026-10-10T20:44:46.626542+00:00",
+          "elapsed_minutes": 28.40675996541977,
+          "new_training_updates": 29,
           "new_worker_updates": [
-            9,
-            11,
+            14,
+            0,
             12,
-            12
+            3
           ],
-          "new_completed_suites": 14,
-          "new_completed_responses": 13440,
-          "interpretation": "Training and evaluation continued; elapsed snapshot-hook time includes queue backpressure and does not identify disk latency."
+          "new_completed_suites": 16,
+          "new_completed_responses": 14816,
+          "interpretation": "Both 4B arms completed their terminal contracts. The 8B arms still require full scheduled evaluation and terminal evidence; elapsed snapshot-hook time includes queue backpressure."
         },
-        "interpretation": "Latest audited cycle ends are worker-a at update 66 with 69.53125%, worker-b at update 77 with 73.14453125%, worker-c at update 55 with 76.953125% and worker-d at update 77 with 80.17578125%. These are unequal update numbers, not a matched comparison. Worker-d update 66 remains 79.1015625% with one retained delimiter diagnostic. Worker-b reaching 88 training updates is not a completed trajectory; all update-88 primary results remain pending and no interim recipe is selected.",
-        "output_diagnostic_interpretation": "Four recovery diagnostics in two suites remain: worker-d benchmark update 53 AIME 2024: 2 and AIME 2025: 1, plus validation update 66 Math validation: 1. They are separate from the failed original attempt. The strict gate fails both suites; the finalized policy retains all 800 benchmark and 1,024 validation responses with mandatory warnings and unchanged scores/denominators. No grader timeout, filtering or rescoring occurs.",
-        "operational_timing_scope": "The 50 completed read intervals refer to science collection. The 905 before-cutoff operational/read intervals are covered by active assignments. Later coordinator inspection intents remain outside this progress cutoff and are not certified complete or failed; their cost remains chargeable.",
+        "primary_4b_validation": {
+          "step": 88,
+          "original_avg_at_8": 0.7265625,
+          "fixed_original_avg_at_8": 0.73046875,
+          "cycle_refresh_avg_at_8": 0.775390625,
+          "fixed_gain_percentage_points": 0.390625,
+          "refresh_gain_percentage_points": 4.8828125,
+          "refresh_minus_fixed_percentage_points": 4.4921875,
+          "model_8b_primary_pending": true,
+          "recipe_selected": false
+        },
+        "interpretation": "Both 4B arms pass their terminal contracts at update 88: fixed-original validation 73.046875%, cycle refresh 77.5390625%, original 72.65625%. This one-seed result does not establish robustness or answer optimizer carry/decay. Latest audited 8B cycle ends differ: worker-a 77 at 70.21484375% and worker-c 66 at 73.92578125%; their primary endpoints remain pending. No whole-wave completion or later-wave admission is issued.",
+        "output_diagnostic_interpretation": "The same four recovery diagnostics remain in two suites: worker-d benchmark 53 AIME 2024: 2 and AIME 2025: 1, plus validation 66 Math validation: 1. They are separate from the failed original attempt. The strict gate fails both suites; the finalized policy retains all 800 benchmark and 1,024 validation responses with mandatory warnings and unchanged scores/denominators. No new diagnostic, grader timeout, filtering or rescoring occurs.",
+        "operational_timing_scope": "All 55 science-collector reads are complete. The 1,124 at-or-before-cutoff operational intervals are unioned with active a/c assignments and released b/d assignments through first verified cleanup, plus separately charged subsequent operations. Eight later intervals are outside this cutoff and remain chargeable in subsequent accounting.",
         "limitations": [
-          "Reaching 88 training updates is insufficient: final evaluations, hosted baseline rows, exit and verified cleanup remain mandatory.",
-          "Hosted capture discrepancies and future/queued endpoints remain pending exact audit; this is not a completion receipt.",
-          "Baseline hosted attachments are intentionally deferred until worker exit; imported responses are not counted again.",
-          "Generation throughput includes both flagged retained suites and excludes grading, reload and tracking overhead; snapshot-hook timing includes evaluation-queue waits.",
-          "The finalized diagnostic policy preserves all outputs, scores and strict failures; no interim recipe selection occurs."
+          "Workers b and d are individually terminal-verified; this is not a whole-wave completion receipt or permission to skip the remaining 8B results.",
+          "Worker-a has 88 training updates but its final local suite results and terminal cleanup are pending; hosted validation 88 remains ahead of full local capture.",
+          "Four baseline hosted attachments for a/c remain deferred; imported responses are not counted again.",
+          "Latest 8B endpoints differ; compare fixed update 88 after both complete, without selecting an interim maximum.",
+          "The finalized diagnostic policy preserves all outputs, scores and strict failures. Generation throughput excludes grading, reload and tracking overhead; snapshot-hook timing includes queue waits."
         ]
       },
       "later_wave_operational_admission_dispatch_status": "cpu_tested_independently_reviewed_documented_no_actual_preflight_admission_or_dispatch",
@@ -13947,6 +14626,24 @@
           "strict_responses": 65632,
           "output_delimiter_count": 3,
           "stage_science_gpu_hours": 101.63392243438297
+        },
+        {
+          "checked_utc": "2026-10-10T20:44:46.626542+00:00",
+          "local_updates": 318,
+          "hosted_updates": 317,
+          "worker_updates": [
+            74,
+            88,
+            71,
+            85
+          ],
+          "policy_suites": 85,
+          "policy_responses": 79872,
+          "strict_suites": 83,
+          "strict_responses": 78048,
+          "output_delimiter_count": 4,
+          "stage_science_gpu_hours": 111.1174666208691,
+          "completed_trajectories": 0
         }
       ],
       "results_interpretation": {
@@ -14057,8 +14754,11 @@
           "carry_vs_reset_effect_tested_by_current_arms": false,
           "constant_vs_decay_effect_tested_by_current_arms": false
         },
-        "conclusion": "Refresh is promising at the matched interim endpoints, while fixed-anchor gains fluctuate. No winner, guaranteed accumulation or proven mechanism; select only at fixed cycle-eight validation after complete audit."
-      }
+        "conclusion": "Refresh is promising at the matched interim endpoints, while fixed-anchor gains fluctuate. No winner, guaranteed accumulation or proven mechanism; select only at fixed cycle-eight validation after complete audit.",
+        "historical_snapshot": true,
+        "status_scope": "This interpretation preserves the audited 20:44 snapshot. Its then-pending primary endpoints are historical; progress_evidence reports the subsequently completed 4B endpoints."
+      },
+      "remote_status_fresh_count_scope": "The value records the original four-controller launch verification; current terminal status is in progress_evidence."
     }
   }
 }
