@@ -8781,7 +8781,7 @@
         "workers": "All four worker failure receipts report received termination, exit code1, owned cleanup completed and no remaining GPU processes.",
         "transport_diagnosis": "The status payload was about 479 KB including 2,936 asset digests. Truncation is strongly suspected, but the exact failing stdout/stderr payload was not retained, so the exact transport failure is not proven.",
         "separate_from_output_adjudication": true,
-        "monitor_successor_cpu_fix_status": "Original failed-attempt source preserved; approved recovery launched at 18:54:27 UTC. The 19:52:41 UTC progress snapshot verifies 191 finite local and matching hosted updates and 44 strict suites with 41,472 responses. Two newer hosted validation endpoints remain pending full-result audit; no full completion.",
+        "monitor_successor_cpu_fix_status": "Original failed-attempt source preserved; approved recovery launched at 18:54:27 UTC. The 20:11:12 UTC snapshot verifies 236 finite local and matching hosted updates and 57 retained suites with 53,440 responses under the finalized policy, versus 56 strict suites with 52,640 responses. Three current recovery delimiter diagnostics and two newer hosted validation endpoints pending full-result audit remain visible; no full completion.",
         "restart_or_relaunch_authorized_at_failure": false,
         "subsequent_user_approved_one_fresh_retry": true,
         "additional_automatic_retries_authorized": false
@@ -10610,11 +10610,11 @@
       "remote_asset_count_verified": 2936,
       "dispatch_errors_observed": 0,
       "failed_queues_observed": 0,
-      "training_updates_verified": 191,
+      "training_updates_verified": 236,
       "scientific_completion_certified": false,
-      "hosted_updates_verified": 191,
+      "hosted_updates_verified": 236,
       "pending_hosted_updates": 0,
-      "completed_evaluation_suites": 44,
+      "completed_evaluation_suites": 57,
       "completed_trajectories": 0,
       "startup_evidence": {
         "checked_unix": 1791658799.5650508,
@@ -10682,83 +10682,93 @@
           }
         ]
       },
-      "unique_completed_responses": 41472,
+      "unique_completed_responses": 53440,
       "progress_evidence": {
-        "checked_unix": 1791661961.977748,
-        "checked_utc": "2026-10-10T19:52:41.977748+00:00",
+        "checked_unix": 1791663072.075063,
+        "checked_utc": "2026-10-10T20:11:12.075063+00:00",
         "progress_only": true,
         "complete": false,
         "scientific_completion_certified": false,
         "observed_checks_passed": false,
         "errors": [],
         "pending": [
-          "worker-b: Hosted validation step44 leads local completed result capture; full result audit pending",
-          "worker-d: Hosted validation step44 leads local completed result capture; full result audit pending"
+          "worker-a: Hosted validation step44 leads local completed result capture; full result audit pending",
+          "worker-c: Hosted validation step44 leads local completed result capture; full result audit pending"
         ],
-        "local_updates": 191,
-        "local_cyclic_updates": 191,
-        "completed_suite_evaluations": 44,
-        "strict_passing_suites": 44,
-        "unique_completed_responses": 41472,
-        "recovery_strict_zero_delimiter_passed": null,
+        "local_updates": 236,
+        "local_cyclic_updates": 236,
+        "completed_suite_evaluations": 57,
+        "strict_passing_suites": 56,
+        "unique_completed_responses": 53440,
+        "recovery_strict_zero_delimiter_passed": false,
         "output_evidence_coverage_complete": false,
-        "output_delimiter_count": 0,
-        "output_delimiter_warnings": [],
-        "remote_read_intervals_complete": 35,
+        "output_delimiter_count": 3,
+        "remote_read_intervals_complete": 40,
         "expected_deferred_hosted_baseline_suite_rows": 8,
         "completed_suite_generation_throughput": {
-          "count": 44,
+          "count": 57,
           "minimum": 5479.702518124686,
-          "median": 7628.456895283152,
-          "maximum": 10055.726906759392
+          "median": 7803.9795988412825,
+          "maximum": 10742.926923401477
         },
         "accounting_probe": {
-          "checked_unix": 1791661961.977748,
-          "retry_gpu_hours": 31.064653244018555,
+          "checked_unix": 1791663072.075063,
+          "retry_gpu_hours": 40.93218493355645,
           "prior_stage_gpu_hours": 52.27815742863549,
-          "stage_science_gpu_hours": 83.34281067265404,
+          "stage_science_gpu_hours": 93.21034236219194,
           "cumulative_readiness_gpu_hours": 78.99915054162344,
-          "cumulative_study_gpu_hours": 254.97715730349222,
-          "overall_gpu_hours": 333.9763078451157,
-          "remaining_clock_hours": 50.840470662779275,
-          "operational_intervals_covered_by_active_assignments": 502,
+          "cumulative_study_gpu_hours": 264.8446889930301,
+          "overall_gpu_hours": 343.8438395346535,
+          "remaining_clock_hours": 50.53211029748122,
+          "operational_intervals_covered_by_active_assignments": 647,
           "method": "Progress-only charge of all eight assigned GPUs per worker from original recovery dispatch intent through collection cutoff. Every before-cutoff saved operational/read interval lies inside these active assignments; no duplicate addition. Immutable failed/preparation origin is included once. No terminal cleanup or future admission is certified."
         },
-        "limitations": [
-          "Partial captures are not completion receipts; all 88 updates, required suites, hosted rows and verified cleanup remain mandatory.",
-          "Hosted endpoints ahead of local capture are pending exact result audit and excluded from completed-suite and response totals.",
-          "Baseline hosted attachments are intentionally deferred until worker exit; imported responses are not counted again.",
-          "Generation throughput excludes grading, reload and tracking overhead; save-model hook timings include evaluation-queue waits.",
-          "This saved-evidence audit makes no remote calls, filters no outcomes and selects no scientific recipe."
+        "strict_passing_responses": 52640,
+        "amended_passing_suites": 57,
+        "amended_passing_responses": 53440,
+        "amended_execution_audit_errors": 0,
+        "output_delimiter_warnings": [
+          {
+            "worker": "worker-d",
+            "step": 53,
+            "dataset": "AIME 2024",
+            "count": 2
+          },
+          {
+            "worker": "worker-d",
+            "step": 53,
+            "dataset": "AIME 2025",
+            "count": 1
+          }
         ],
         "workers": [
           {
             "worker": "worker-a",
             "model": "Qwen3-8B",
             "teacher_policy": "fixed_original",
-            "updates": 42,
+            "updates": 53,
             "training": {
-              "local_loss_updates": 42,
-              "local_cyclic_updates": 42,
+              "local_loss_updates": 53,
+              "local_cyclic_updates": 53,
               "hosted_updates": {
-                "loss": 42,
-                "cyclic": 42
+                "loss": 53,
+                "cyclic": 53
               },
               "matching_local_prefix_updates": {
-                "loss": 42,
-                "cyclic": 42
+                "loss": 53,
+                "cyclic": 53
               },
               "all_local_losses_finite": true,
               "first_no_pi_kl": 0.02580518089234829,
               "teacher_refresh_updates": [],
               "last_cyclic_record": {
-                "train/step": 41,
-                "train/cyclic_cycle": 4,
+                "train/step": 52,
+                "train/cyclic_cycle": 5,
                 "train/cyclic_pi_phase": 0,
                 "train/cyclic_optimizer_reset": 0,
                 "train/cyclic_teacher_source_update": 0,
                 "train/cyclic_teacher_refreshed": 0,
-                "train/cyclic_completed_updates": 42,
+                "train/cyclic_completed_updates": 53,
                 "train/cyclic_optimizer_updates": 2,
                 "train/cyclic_applied_lr": 5e-06,
                 "train/cyclic_next_lr": 5e-06
@@ -10824,9 +10834,9 @@
                 "mean_response_tokens": 3450.94375,
                 "whole_seconds_upper_bound": 356.5764973163605,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 4614.075,
                   "AMC23": 2342.771875,
-                  "AIME 2025": 3765.375,
-                  "AIME 2024": 4614.075
+                  "AIME 2025": 3765.375
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -10890,9 +10900,9 @@
                 "mean_response_tokens": 3583.43125,
                 "whole_seconds_upper_bound": 379.0220091342926,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 5037.3375,
                   "AMC23": 2163.23125,
-                  "AIME 2025": 4023.125,
-                  "AIME 2024": 5037.3375
+                  "AIME 2025": 4023.125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -10980,9 +10990,9 @@
                 "mean_response_tokens": 2106.8275,
                 "whole_seconds_upper_bound": 284.6958885192871,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 2655.3166666666666,
                   "AMC23": 1795.08125,
-                  "AIME 2025": 1974.0,
-                  "AIME 2024": 2655.3166666666666
+                  "AIME 2025": 1974.0
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11046,9 +11056,9 @@
                 "mean_response_tokens": 2260.9225,
                 "whole_seconds_upper_bound": 290.8880715370178,
                 "dataset_mean_tokens": {
+                  "AIME 2024": 3461.075,
                   "AMC23": 1403.0375,
-                  "AIME 2025": 2204.616666666667,
-                  "AIME 2024": 3461.075
+                  "AIME 2025": 2204.616666666667
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11100,6 +11110,72 @@
                 },
                 "strict_errors": [],
                 "execution_errors": []
+              },
+              {
+                "step": 36,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.2791666666666667,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.12083333333333333,
+                    "parse_failure_fraction": 0.10416666666666667,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.19166666666666668,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.09166666666666666,
+                    "parse_failure_fraction": 0.08333333333333333,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.69375,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.015625,
+                    "parse_failure_fraction": 0.009375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 290.05723708099686,
+                "output_tokens_per_second": 8515.05387300613,
+                "mean_response_tokens": 3087.31625,
+                "whole_seconds_upper_bound": 330.6354522705078,
+                "dataset_mean_tokens": {
+                  "AIME 2024": 4499.716666666666,
+                  "AMC23": 1570.98125,
+                  "AIME 2025": 3696.695833333333
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 40,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.6708984375,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0283203125,
+                    "parse_failure_fraction": 0.025390625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 228.4058995989617,
+                "output_tokens_per_second": 6084.488195970914,
+                "mean_response_tokens": 1357.1611328125,
+                "whole_seconds_upper_bound": 269.32539653778076,
+                "dataset_mean_tokens": {
+                  "Math validation": 1357.1611328125
+                },
+                "strict_errors": [],
+                "execution_errors": []
               }
             ],
             "baseline_metrics": {
@@ -11143,12 +11219,17 @@
             "source_config_assets_protocol_load_checks_passed": true,
             "training_command_flags_checks_passed": true,
             "hosted_evaluation_comparison": {
-              "matching_local_suites": 9,
+              "matching_local_suites": 11,
               "baseline_suites_deferred_until_exit": 2,
-              "hosted_endpoints_not_yet_in_local_capture": []
+              "hosted_endpoints_not_yet_in_local_capture": [
+                {
+                  "step": 44,
+                  "suite": "validation"
+                }
+              ]
             },
             "queue": {
-              "done": 9,
+              "done": 11,
               "pending": 1,
               "running": 1,
               "failed": 0
@@ -11156,61 +11237,63 @@
             "gpu_empty": false,
             "timings": {
               "perf/train_time": {
-                "count": 42,
+                "count": 53,
                 "minimum": 2.42354679107666,
-                "median": 3.0779250860214233,
+                "median": 3.098900079727173,
                 "maximum": 6.967682123184204
               },
               "perf/rollout_time": {
-                "count": 42,
+                "count": 53,
                 "minimum": 4.088856220245361,
-                "median": 12.270935416221619,
+                "median": 12.638772010803223,
                 "maximum": 30.977022886276245
               },
               "perf/step_time": {
-                "count": 42,
+                "count": 53,
                 "minimum": 33.78489971160889,
-                "median": 46.67760908603668,
+                "median": 45.47589921951294,
                 "maximum": 379.60540866851807
               },
               "perf/save_model_time": {
-                "count": 41,
+                "count": 52,
                 "minimum": 8.916854858398438e-05,
-                "median": 0.00010323524475097656,
+                "median": 0.0001043081283569336,
                 "maximum": 336.901123046875
               }
             },
             "errors": [],
-            "pending": []
+            "pending": [
+              "Hosted validation step44 leads local completed result capture; full result audit pending"
+            ]
           },
           {
             "worker": "worker-b",
             "model": "Qwen3-4B",
             "teacher_policy": "fixed_original",
-            "updates": 53,
+            "updates": 66,
             "training": {
-              "local_loss_updates": 53,
-              "local_cyclic_updates": 53,
+              "local_loss_updates": 66,
+              "local_cyclic_updates": 66,
               "hosted_updates": {
-                "loss": 53,
-                "cyclic": 53
+                "loss": 66,
+                "cyclic": 66
               },
               "matching_local_prefix_updates": {
-                "loss": 53,
-                "cyclic": 53
+                "loss": 66,
+                "cyclic": 66
               },
               "all_local_losses_finite": true,
               "first_no_pi_kl": 0.01832965761423111,
               "teacher_refresh_updates": [],
               "last_cyclic_record": {
-                "train/step": 52,
-                "train/cyclic_cycle": 5,
+                "train/step": 65,
+                "train/cyclic_cycle": 6,
                 "train/cyclic_pi_phase": 0,
                 "train/cyclic_optimizer_reset": 0,
                 "train/cyclic_teacher_source_update": 0,
                 "train/cyclic_teacher_refreshed": 0,
-                "train/cyclic_completed_updates": 53,
-                "train/cyclic_optimizer_updates": 2,
+                "train/cyclic_completed_updates": 66,
+                "train/cyclic_optimizer_updates": 4,
                 "train/cyclic_applied_lr": 5e-06,
                 "train/cyclic_next_lr": 5e-06
               }
@@ -11275,8 +11358,8 @@
                 "mean_response_tokens": 3509.8975,
                 "whole_seconds_upper_bound": 302.2749733924866,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 3850.804166666667,
                   "AIME 2024": 5168.795833333334,
+                  "AIME 2025": 3850.804166666667,
                   "AMC23": 2010.04375
                 },
                 "strict_errors": [],
@@ -11341,8 +11424,8 @@
                 "mean_response_tokens": 3745.48875,
                 "whole_seconds_upper_bound": 326.24380230903625,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 4459.608333333334,
                   "AIME 2024": 5442.6875,
+                  "AIME 2025": 4459.608333333334,
                   "AMC23": 1937.0
                 },
                 "strict_errors": [],
@@ -11431,8 +11514,8 @@
                 "mean_response_tokens": 1939.36375,
                 "whole_seconds_upper_bound": 216.7850387096405,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 1903.4541666666667,
                   "AIME 2024": 2924.929166666667,
+                  "AIME 2025": 1903.4541666666667,
                   "AMC23": 1227.121875
                 },
                 "strict_errors": [],
@@ -11497,8 +11580,8 @@
                 "mean_response_tokens": 3129.245,
                 "whole_seconds_upper_bound": 281.8637726306915,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 3622.475,
                   "AIME 2024": 4159.645833333333,
+                  "AIME 2025": 3622.475,
                   "AMC23": 1986.521875
                 },
                 "strict_errors": [],
@@ -11587,8 +11670,8 @@
                 "mean_response_tokens": 3106.33875,
                 "whole_seconds_upper_bound": 287.4373381137848,
                 "dataset_mean_tokens": {
-                  "AIME 2025": 3499.5416666666665,
                   "AIME 2024": 4480.366666666667,
+                  "AIME 2025": 3499.5416666666665,
                   "AMC23": 1780.915625
                 },
                 "strict_errors": [],
@@ -11614,6 +11697,162 @@
                 "whole_seconds_upper_bound": 198.77703404426575,
                 "dataset_mean_tokens": {
                   "Math validation": 1042.3603515625
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 44,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7529296875,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0263671875,
+                    "parse_failure_fraction": 0.0244140625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 208.3461540119606,
+                "output_tokens_per_second": 7732.304959694706,
+                "mean_response_tokens": 1573.23828125,
+                "whole_seconds_upper_bound": 238.0,
+                "dataset_mean_tokens": {
+                  "Math validation": 1573.23828125
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 44,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.25416666666666665,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.1875,
+                    "parse_failure_fraction": 0.1625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.22916666666666666,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.1375,
+                    "parse_failure_fraction": 0.11666666666666667,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.690625,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.015625,
+                    "parse_failure_fraction": 0.015625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 311.4708456589724,
+                "output_tokens_per_second": 10540.02660523303,
+                "mean_response_tokens": 4103.63875,
+                "whole_seconds_upper_bound": 335.37002086639404,
+                "dataset_mean_tokens": {
+                  "AIME 2024": 5844.808333333333,
+                  "AIME 2025": 5000.945833333333,
+                  "AMC23": 2124.78125
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 51,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.705078125,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0205078125,
+                    "parse_failure_fraction": 0.0205078125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 186.74273098999402,
+                "output_tokens_per_second": 6928.665941322922,
+                "mean_response_tokens": 1263.552734375,
+                "whole_seconds_upper_bound": 211.79380440711975,
+                "dataset_mean_tokens": {
+                  "Math validation": 1263.552734375
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 53,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.2375,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.18333333333333332,
+                    "parse_failure_fraction": 0.16666666666666666,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.22083333333333333,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.125,
+                    "parse_failure_fraction": 0.10833333333333334,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.690625,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.0125,
+                    "parse_failure_fraction": 0.0125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 297.19696338201175,
+                "output_tokens_per_second": 10558.351486137446,
+                "mean_response_tokens": 3922.3875,
+                "whole_seconds_upper_bound": 321.0219407081604,
+                "dataset_mean_tokens": {
+                  "AIME 2024": 5760.275,
+                  "AIME 2025": 4670.104166666667,
+                  "AMC23": 1983.184375
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 55,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7412109375,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0224609375,
+                    "parse_failure_fraction": 0.021484375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 200.34369940304896,
+                "output_tokens_per_second": 8045.109503331208,
+                "mean_response_tokens": 1574.0107421875,
+                "whole_seconds_upper_bound": 224.7917296886444,
+                "dataset_mean_tokens": {
+                  "Math validation": 1574.0107421875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11660,17 +11899,12 @@
             "source_config_assets_protocol_load_checks_passed": true,
             "training_command_flags_checks_passed": true,
             "hosted_evaluation_comparison": {
-              "matching_local_suites": 11,
+              "matching_local_suites": 16,
               "baseline_suites_deferred_until_exit": 2,
-              "hosted_endpoints_not_yet_in_local_capture": [
-                {
-                  "step": 44,
-                  "suite": "validation"
-                }
-              ]
+              "hosted_endpoints_not_yet_in_local_capture": []
             },
             "queue": {
-              "done": 11,
+              "done": 15,
               "pending": 1,
               "running": 1,
               "failed": 0
@@ -11678,67 +11912,66 @@
             "gpu_empty": false,
             "timings": {
               "perf/train_time": {
-                "count": 53,
+                "count": 66,
                 "minimum": 2.216501474380493,
-                "median": 2.7616305351257324,
+                "median": 2.753775477409363,
                 "maximum": 4.6814796924591064
               },
               "perf/rollout_time": {
-                "count": 53,
-                "minimum": 4.666353702545166,
-                "median": 10.921721696853638,
+                "count": 66,
+                "minimum": 4.284180402755737,
+                "median": 10.77386212348938,
                 "maximum": 27.98128080368042
               },
               "perf/step_time": {
-                "count": 53,
-                "minimum": 21.976361751556396,
-                "median": 30.551777124404907,
-                "maximum": 297.97246766090393
+                "count": 66,
+                "minimum": 21.737581968307495,
+                "median": 30.236088514328003,
+                "maximum": 549.0878005027771
               },
               "perf/save_model_time": {
-                "count": 52,
-                "minimum": 9.369850158691406e-05,
-                "median": 0.00010967254638671875,
-                "maximum": 269.90130376815796
+                "count": 65,
+                "minimum": 9.202957153320312e-05,
+                "median": 0.00010943412780761719,
+                "maximum": 506.6142313480377
               }
             },
             "errors": [],
-            "pending": [
-              "Hosted validation step44 leads local completed result capture; full result audit pending"
-            ]
+            "pending": []
           },
           {
             "worker": "worker-c",
             "model": "Qwen3-8B",
             "teacher_policy": "cycle_refresh",
-            "updates": 43,
+            "updates": 53,
             "training": {
-              "local_loss_updates": 43,
-              "local_cyclic_updates": 43,
+              "local_loss_updates": 53,
+              "local_cyclic_updates": 53,
               "hosted_updates": {
-                "loss": 43,
-                "cyclic": 43
+                "loss": 53,
+                "cyclic": 53
               },
               "matching_local_prefix_updates": {
-                "loss": 43,
-                "cyclic": 43
+                "loss": 53,
+                "cyclic": 53
               },
               "all_local_losses_finite": true,
               "first_no_pi_kl": 0.02285751886665821,
               "teacher_refresh_updates": [
                 11,
                 22,
-                33
+                33,
+                44
               ],
               "last_cyclic_record": {
-                "train/step": 42,
-                "train/cyclic_cycle": 4,
+                "train/step": 52,
+                "train/cyclic_cycle": 5,
                 "train/cyclic_pi_phase": 0,
                 "train/cyclic_optimizer_reset": 0,
-                "train/cyclic_teacher_source_update": 33,
+                "train/cyclic_teacher_source_update": 44,
                 "train/cyclic_teacher_refreshed": 0,
-                "train/cyclic_completed_updates": 43,
-                "train/cyclic_optimizer_updates": 3,
+                "train/cyclic_completed_updates": 53,
+                "train/cyclic_optimizer_updates": 2,
                 "train/cyclic_applied_lr": 5e-06,
                 "train/cyclic_next_lr": 5e-06
               }
@@ -11803,9 +12036,9 @@
                 "mean_response_tokens": 3577.92375,
                 "whole_seconds_upper_bound": 377.849196434021,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 4102.383333333333,
                   "AIME 2024": 4647.325,
-                  "AMC23": 2382.528125,
-                  "AIME 2025": 4102.383333333333
+                  "AMC23": 2382.528125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11893,9 +12126,9 @@
                 "mean_response_tokens": 2503.5375,
                 "whole_seconds_upper_bound": 292.952800989151,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 2353.9166666666665,
                   "AIME 2024": 3826.6583333333333,
-                  "AMC23": 1623.4125,
-                  "AIME 2025": 2353.9166666666665
+                  "AMC23": 1623.4125
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -11959,9 +12192,9 @@
                 "mean_response_tokens": 4515.28375,
                 "whole_seconds_upper_bound": 458.0502247810364,
                 "dataset_mean_tokens": {
+                  "AIME 2025": 5687.804166666667,
                   "AIME 2024": 6418.645833333333,
-                  "AMC23": 2208.371875,
-                  "AIME 2025": 5687.804166666667
+                  "AMC23": 2208.371875
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12013,6 +12246,72 @@
                 },
                 "strict_errors": [],
                 "execution_errors": []
+              },
+              {
+                "step": 36,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.30833333333333335,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.2625,
+                    "parse_failure_fraction": 0.25416666666666665,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.21666666666666667,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.22083333333333333,
+                    "parse_failure_fraction": 0.20416666666666666,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.71875,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.0375,
+                    "parse_failure_fraction": 0.0375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 486.29749383195303,
+                "output_tokens_per_second": 8666.711330937713,
+                "mean_response_tokens": 5268.25,
+                "whole_seconds_upper_bound": 525.4853684902191,
+                "dataset_mean_tokens": {
+                  "AIME 2025": 6541.5875,
+                  "AIME 2024": 7539.804166666667,
+                  "AMC23": 2609.58125
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 40,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7431640625,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0224609375,
+                    "parse_failure_fraction": 0.0224609375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 244.62597547704354,
+                "output_tokens_per_second": 6797.446578423743,
+                "mean_response_tokens": 1623.859375,
+                "whole_seconds_upper_bound": 284.8329336643219,
+                "dataset_mean_tokens": {
+                  "Math validation": 1623.859375
+                },
+                "strict_errors": [],
+                "execution_errors": []
               }
             ],
             "baseline_metrics": {
@@ -12056,12 +12355,17 @@
             "source_config_assets_protocol_load_checks_passed": true,
             "training_command_flags_checks_passed": true,
             "hosted_evaluation_comparison": {
-              "matching_local_suites": 9,
+              "matching_local_suites": 11,
               "baseline_suites_deferred_until_exit": 2,
-              "hosted_endpoints_not_yet_in_local_capture": []
+              "hosted_endpoints_not_yet_in_local_capture": [
+                {
+                  "step": 44,
+                  "suite": "validation"
+                }
+              ]
             },
             "queue": {
-              "done": 8,
+              "done": 10,
               "pending": 1,
               "running": 1,
               "failed": 0
@@ -12069,48 +12373,50 @@
             "gpu_empty": false,
             "timings": {
               "perf/train_time": {
-                "count": 43,
+                "count": 53,
                 "minimum": 2.394930124282837,
-                "median": 3.1581497192382812,
+                "median": 3.1797962188720703,
                 "maximum": 5.374680757522583
               },
               "perf/rollout_time": {
-                "count": 43,
+                "count": 53,
                 "minimum": 4.629371643066406,
-                "median": 16.339709520339966,
+                "median": 18.50396180152893,
                 "maximum": 30.854590892791748
               },
               "perf/step_time": {
-                "count": 43,
+                "count": 53,
                 "minimum": 32.21492624282837,
-                "median": 50.66207671165466,
+                "median": 50.697436809539795,
                 "maximum": 398.1809706687927
               },
               "perf/save_model_time": {
-                "count": 42,
+                "count": 52,
                 "minimum": 9.274482727050781e-05,
-                "median": 0.00010907649993896484,
-                "maximum": 338.33399653434753
+                "median": 0.00010633468627929688,
+                "maximum": 353.16080474853516
               }
             },
             "errors": [],
-            "pending": []
+            "pending": [
+              "Hosted validation step44 leads local completed result capture; full result audit pending"
+            ]
           },
           {
             "worker": "worker-d",
             "model": "Qwen3-4B",
             "teacher_policy": "cycle_refresh",
-            "updates": 53,
+            "updates": 64,
             "training": {
-              "local_loss_updates": 53,
-              "local_cyclic_updates": 53,
+              "local_loss_updates": 64,
+              "local_cyclic_updates": 64,
               "hosted_updates": {
-                "loss": 53,
-                "cyclic": 53
+                "loss": 64,
+                "cyclic": 64
               },
               "matching_local_prefix_updates": {
-                "loss": 53,
-                "cyclic": 53
+                "loss": 64,
+                "cyclic": 64
               },
               "all_local_losses_finite": true,
               "first_no_pi_kl": 0.01747148297727108,
@@ -12118,16 +12424,17 @@
                 11,
                 22,
                 33,
-                44
+                44,
+                55
               ],
               "last_cyclic_record": {
-                "train/step": 52,
-                "train/cyclic_cycle": 5,
+                "train/step": 63,
+                "train/cyclic_cycle": 6,
                 "train/cyclic_pi_phase": 0,
                 "train/cyclic_optimizer_reset": 0,
-                "train/cyclic_teacher_source_update": 44,
+                "train/cyclic_teacher_source_update": 55,
                 "train/cyclic_teacher_refreshed": 0,
-                "train/cyclic_completed_updates": 53,
+                "train/cyclic_completed_updates": 64,
                 "train/cyclic_optimizer_updates": 2,
                 "train/cyclic_applied_lr": 5e-06,
                 "train/cyclic_next_lr": 5e-06
@@ -12194,8 +12501,8 @@
                 "whole_seconds_upper_bound": 314.5669937133789,
                 "dataset_mean_tokens": {
                   "AIME 2024": 4811.15,
-                  "AIME 2025": 4427.183333333333,
-                  "AMC23": 1884.09375
+                  "AMC23": 1884.09375,
+                  "AIME 2025": 4427.183333333333
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12284,8 +12591,8 @@
                 "whole_seconds_upper_bound": 290.1719992160797,
                 "dataset_mean_tokens": {
                   "AIME 2024": 4413.991666666667,
-                  "AIME 2025": 3634.4333333333334,
-                  "AMC23": 1807.6625
+                  "AMC23": 1807.6625,
+                  "AIME 2025": 3634.4333333333334
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12350,8 +12657,8 @@
                 "whole_seconds_upper_bound": 317.8157494068146,
                 "dataset_mean_tokens": {
                   "AIME 2024": 4819.054166666667,
-                  "AIME 2025": 4361.920833333334,
-                  "AMC23": 1668.071875
+                  "AMC23": 1668.071875,
+                  "AIME 2025": 4361.920833333334
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12440,8 +12747,8 @@
                 "whole_seconds_upper_bound": 310.3321006298065,
                 "dataset_mean_tokens": {
                   "AIME 2024": 5269.670833333334,
-                  "AIME 2025": 3905.0375,
-                  "AMC23": 1605.86875
+                  "AMC23": 1605.86875,
+                  "AIME 2025": 3905.0375
                 },
                 "strict_errors": [],
                 "execution_errors": []
@@ -12468,6 +12775,141 @@
                   "Math validation": 1539.716796875
                 },
                 "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 44,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7705078125,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.017578125,
+                    "parse_failure_fraction": 0.009765625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 203.70262912206817,
+                "output_tokens_per_second": 8105.860032913628,
+                "mean_response_tokens": 1612.4853515625,
+                "whole_seconds_upper_bound": 233.0,
+                "dataset_mean_tokens": {
+                  "Math validation": 1612.4853515625
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 44,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.3125,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.19583333333333333,
+                    "parse_failure_fraction": 0.15833333333333333,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.24166666666666667,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.18333333333333332,
+                    "parse_failure_fraction": 0.1625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.7125,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.025,
+                    "parse_failure_fraction": 0.021875,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 413.22240722493734,
+                "output_tokens_per_second": 9892.16685380491,
+                "mean_response_tokens": 5109.58125,
+                "whole_seconds_upper_bound": 437.2102599143982,
+                "dataset_mean_tokens": {
+                  "AIME 2024": 7111.125,
+                  "AMC23": 2440.809375,
+                  "AIME 2025": 6666.4
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 51,
+                "suite": "validation",
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.76171875,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.021484375,
+                    "parse_failure_fraction": 0.017578125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 196.00063761195634,
+                "output_tokens_per_second": 7864.816251526141,
+                "mean_response_tokens": 1505.3798828125,
+                "whole_seconds_upper_bound": 220.5517976284027,
+                "dataset_mean_tokens": {
+                  "Math validation": 1505.3798828125
+                },
+                "strict_errors": [],
+                "execution_errors": []
+              },
+              {
+                "step": 53,
+                "suite": "benchmark",
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.3625,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.26666666666666666,
+                    "parse_failure_fraction": 0.225,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 2
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.25416666666666665,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.2375,
+                    "parse_failure_fraction": 0.2125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 1
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.75625,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.03125,
+                    "parse_failure_fraction": 0.028125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "elapsed_seconds": 421.0952966780169,
+                "output_tokens_per_second": 10742.926923401477,
+                "mean_response_tokens": 5654.745,
+                "whole_seconds_upper_bound": 445.5448782444,
+                "dataset_mean_tokens": {
+                  "AIME 2024": 7920.175,
+                  "AMC23": 2658.790625,
+                  "AIME 2025": 7383.920833333334
+                },
+                "strict_errors": [
+                  "Grader timeout or unexpected thinking delimiter",
+                  "Grader timeout or unexpected thinking delimiter"
+                ],
                 "execution_errors": []
               }
             ],
@@ -12512,17 +12954,12 @@
             "source_config_assets_protocol_load_checks_passed": true,
             "training_command_flags_checks_passed": true,
             "hosted_evaluation_comparison": {
-              "matching_local_suites": 11,
+              "matching_local_suites": 15,
               "baseline_suites_deferred_until_exit": 2,
-              "hosted_endpoints_not_yet_in_local_capture": [
-                {
-                  "step": 44,
-                  "suite": "validation"
-                }
-              ]
+              "hosted_endpoints_not_yet_in_local_capture": []
             },
             "queue": {
-              "done": 10,
+              "done": 13,
               "pending": 1,
               "running": 1,
               "failed": 0
@@ -12530,39 +12967,46 @@
             "gpu_empty": false,
             "timings": {
               "perf/train_time": {
-                "count": 53,
+                "count": 64,
                 "minimum": 2.0988070964813232,
-                "median": 2.855059862136841,
+                "median": 2.884017586708069,
                 "maximum": 6.557685375213623
               },
               "perf/rollout_time": {
-                "count": 53,
-                "minimum": 4.395599365234375,
-                "median": 11.813221216201782,
+                "count": 64,
+                "minimum": 3.818622350692749,
+                "median": 12.973188638687134,
                 "maximum": 26.54444456100464
               },
               "perf/step_time": {
-                "count": 53,
+                "count": 64,
                 "minimum": 20.230144500732422,
-                "median": 38.133562326431274,
-                "maximum": 403.9531497955322
+                "median": 38.366687297821045,
+                "maximum": 627.3298931121826
               },
               "perf/save_model_time": {
-                "count": 52,
+                "count": 63,
                 "minimum": 9.250640869140625e-05,
-                "median": 0.000110626220703125,
-                "maximum": 369.8793489933014
+                "median": 0.00011086463928222656,
+                "maximum": 584.8444361686707
               }
             },
             "errors": [],
-            "pending": [
-              "Hosted validation step44 leads local completed result capture; full result audit pending"
-            ]
+            "pending": []
           }
         ],
         "source_and_schedule_verified_all_workers": true,
-        "hosted_interpretation": "All 191 local loss/cyclic records and all 40 comparable trained-suite rows match hosted data. Workers b and d have newer hosted update-44 validation points pending full-result audit, excluded from the 44 suites and 41,472 responses. Eight baseline writes remain intentionally deferred until trainer/queue completion.",
-        "interpretation": "All cycle-three endpoints are audited, with validation 72.55859375/69.43359375/76.85546875/77.05078125 percent for workers a/b/c/d. Worker-b is below its original baseline; both b and c decline from PI29 to OPD33. Worker-b and d PI40 endpoints are 63.57421875 and 75.390625 percent. These incomplete scheduled comparisons do not establish a winning teacher policy or consistent accumulation; fixed cycle eight remains primary."
+        "hosted_interpretation": "All 236 local loss/cyclic records and all 53 comparable trained-suite rows match hosted data. Workers a and c have newer hosted update-44 validation points pending full-result audit, excluded from the 57 suites and 53,440 responses. The previous worker-b/d update-44 pending items are resolved. Eight baseline writes remain deferred until trainer/queue completion.",
+        "interpretation": "Worker-b recovered from PI40 validation 63.57421875% to OPD44 75.29296875% and OPD55 74.12109375%, above its original 72.65625%. Worker-d OPD44 is 77.05078125%; 8B OPD44 full-result audits and worker-d OPD55 remain pending. Endpoints at different updates are not a matched comparison. Earlier phase reversals remain; fixed cycle eight is primary, with no interim recipe selection.",
+        "output_diagnostic_interpretation": "Three current recovery diagnostics in worker-d benchmark update 53 (AIME 2024: 2; AIME 2025: 1) are separate from the failed original attempt. The original strict gate fails this suite; the already-finalized uniform policy retains all 800 responses with mandatory warnings. Source/request provenance is unchanged, grader timeouts are zero, and no response, score or denominator is altered or filtered.",
+        "limitations": [
+          "Partial captures are not completion receipts; all 88 updates, required suites, hosted rows and verified cleanup remain mandatory.",
+          "Hosted endpoints ahead of local capture are pending exact result audit and excluded from completed-suite and response totals.",
+          "Baseline hosted attachments are intentionally deferred until worker exit; imported responses are not counted again.",
+          "Generation throughput includes the flagged retained suite and excludes grading, reload and tracking overhead; save-model hook timings include evaluation-queue waits.",
+          "Generated-delimiter incidence is retained under the finalized diagnostic policy; it does not erase the original strict failure or change outputs or grading.",
+          "This saved-evidence audit makes no remote calls, filters no outcomes and selects no scientific recipe."
+        ]
       },
       "later_wave_operational_admission_dispatch_status": "cpu_tested_independently_reviewed_documented_no_actual_preflight_admission_or_dispatch",
       "completion_verifier": {
