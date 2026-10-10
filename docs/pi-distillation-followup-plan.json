@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "recovery_running_verified_progress_no_complete_trajectory",
+    "status": "teacher_screen_complete_phase_ratio_runtime_and_admission_pending",
     "launch_authorized": true,
     "executable": true,
     "new_gpu_jobs_launched": true,
@@ -6789,10 +6789,11 @@
       "bounded numerical-floor and optimizer controls"
     ],
     "pending": [
-      "Complete first-wave scientific trajectories and required evaluations",
-      "Finish and test science-wave completion verifier before next-wave transition",
-      "Verify and reuse exact control/baseline receipts before remaining optimizer waves",
-      "Later full-pass leftover-group policy and validation confirmation remain separate"
+      "Preserve the completed teacher-screen receipt and all prior evidence while implementing the new phase-study runtime",
+      "Implement, test, independently review and document the exact eight-fresh-arm phase protocol/runtime/verifier",
+      "Pin the new evaluation namespace and generate two fresh original baselines for phase-study imports",
+      "Recompute and pass full phase-matrix cost/admission under remaining caps and original clock before any dispatch",
+      "Longer cycle-period, full-stream, confirmation validation and extra-seed work remain separate scope decisions"
     ],
     "interpretation_limit": "Repeated-cycle partial results fluctuate; no 88-update trajectory completed before operational termination. They do not establish a winning teacher policy, guaranteed accumulation, or that PI degradation is necessary.",
     "data_split": {
@@ -6827,11 +6828,11 @@
       "all_16384_stress_gpu_hours": 741.4588928379882
     },
     "optimizer_lr_ablation": {
-      "status": "readiness_passed_factorial_controls_running",
+      "status": "deferred_after_user_prioritized_phase_ratio_tuning",
       "implemented": true,
       "new_gpu_jobs_launched": true,
       "included_in_existing_budget_proposal": true,
-      "priority": "Before full-data recipe selection; separate from the prepared teacher-policy screen",
+      "priority": "Deferred: six additional variants have not launched; preserve the existing controls and prior design.",
       "current_implementation": {
         "adam_state": "Explicit reset_each_phase or carry moments and counters",
         "lr": 5e-06,
@@ -6991,7 +6992,8 @@
           "wall_hours": 13.130178861250045
         }
       ],
-      "transition_review": "Initial60-minute buffers exceeded42hours by5minutes; independent review prospectively changed only operational buffers to54minutes each. All scientific work,25percenttrajectory margin,1100GPUh and42hour hardcaps preserved; initial rejected admission retained."
+      "transition_review": "Initial60-minute buffers exceeded42hours by5minutes; independent review prospectively changed only operational buffers to54minutes each. All scientific work,25percenttrajectory margin,1100GPUh and42hour hardcaps preserved; initial rejected admission retained.",
+      "current_priority_notice": "Historical teacher/optimizer authorization and reservations retained for provenance. The six unlaunched optimizer arms are now deferred; the phase screen needs its own exact manifest and fresh admission."
     },
     "scientific_executable": true,
     "readiness_launched": true,
@@ -10537,7 +10539,7 @@
       }
     },
     "recovery_execution": {
-      "status": "running_three_trajectories_terminal_verified_8b_refresh_incomplete",
+      "status": "teacher_screen_complete_independently_verified_optimizer_arms_deferred",
       "user_approved": true,
       "launched": true,
       "launch_receipt_verified": true,
@@ -10581,7 +10583,7 @@
         "preparation_intervals_uncertain": 0,
         "preparation_assigned_gpu_hours": 0.2278175157970852
       },
-      "later_wave_completion_adapter_status": "reviewed_ready_for_exact_evidence_checks_no_actual_completion",
+      "later_wave_completion_adapter_status": "actual_teacher_screen_completion_verified_later_optimizer_arms_deferred",
       "admission": {
         "passed": true,
         "scientific_completion_certified": false,
@@ -10605,17 +10607,17 @@
         "live_completion_certified": false
       },
       "launch_utc": "2026-10-10T18:54:27.202017Z",
-      "remote_controllers_alive": 1,
+      "remote_controllers_alive": 0,
       "remote_status_fresh_count": 4,
       "remote_asset_count_verified": 2936,
       "dispatch_errors_observed": 0,
       "failed_queues_observed": 0,
       "training_updates_verified": 352,
-      "scientific_completion_certified": false,
+      "scientific_completion_certified": true,
       "hosted_updates_verified": 352,
       "pending_hosted_updates": 0,
-      "completed_evaluation_suites": 106,
-      "completed_trajectories": 3,
+      "completed_evaluation_suites": 108,
+      "completed_trajectories": 4,
       "startup_evidence": {
         "checked_unix": 1791658799.5650508,
         "checked_utc": "2026-10-10T18:59:59.565051+00:00",
@@ -10682,7 +10684,7 @@
           }
         ]
       },
-      "unique_completed_responses": 99360,
+      "unique_completed_responses": 101184,
       "progress_evidence": {
         "checked_unix": 1791667892.311651,
         "checked_utc": "2026-10-10T21:31:32.311651+00:00",
@@ -14731,14 +14733,14 @@
           "Finalized output policy retains every result and strict failure. Generation rates omit grading, reload and tracking; export-hook timings include backpressure."
         ]
       },
-      "later_wave_operational_admission_dispatch_status": "cpu_tested_independently_reviewed_documented_no_actual_preflight_admission_or_dispatch",
+      "later_wave_operational_admission_dispatch_status": "Existing optimizer entrypoint remains reviewed but its six unlaunched arms are deferred; no phase-study admission or dispatch.",
       "completion_verifier": {
-        "status": "reviewed_ready_for_evidence_checks",
+        "status": "teacher_screen_completion_verified_under_finalized_policy",
         "focused_cpu_tests_passed": 154,
         "new_tests_passed": 70,
         "frozen_predecessor_tests_passed": 84,
         "documented_source_test_lines": 1329,
-        "actual_completion_receipts_issued": 0,
+        "actual_completion_receipts_issued": 1,
         "remote_actions_performed_by_verifier_preparation": false,
         "output_contract": {
           "version": "math-nonthinking-recovery-output-v1",
@@ -14935,7 +14937,7 @@
         "historical_snapshot": true,
         "status_scope": "This interpretation preserves the audited 20:44 snapshot. Its then-pending primary endpoints are historical; progress_evidence reports the subsequently completed 4B endpoints."
       },
-      "remote_status_fresh_count_scope": "The value records the original four-controller launch verification; current terminal status is in progress_evidence.",
+      "remote_status_fresh_count_scope": "The value records the original four-controller launch verification; current terminal evidence verifies all four successful exits and owned cleanup.",
       "sustained_improvement_goal_analysis": {
         "definitions": {
           "validation": "Unprivileged Math validation average answer correctness over the same128questions and8draws; percentage points reported.",
@@ -15737,8 +15739,1100 @@
           "pi_positive": 7,
           "pi_negative": 24
         },
-        "interpretation": "Above-original retention differs from continued upward growth. All three complete arms have negative cycle5–8 slopes; cycle-refresh4B retains its gain but does not establish ongoing accumulation. Fixed late6–8 diagnostics for8Brefresh remain pending. Finish exact currentmatrix before any conditional newscope."
-      }
+        "interpretation": "Above-original retention differs from continued upward growth. All three complete arms have negative cycle5–8 slopes; cycle-refresh4B retains its gain but does not establish ongoing accumulation. Fixed late6–8 diagnostics for8Brefresh remain pending. Finish exact currentmatrix before any conditional newscope.",
+        "current_priority_notice": "The numeric 21:31 analysis is preserved. Subsequent user steering prioritizes a fresh eight-arm ratio screen; the six optimizer variants discussed in that historical matrix analysis are deferred."
+      },
+      "terminal_evidence": {
+        "status": "teacher_screen_complete_independently_verified",
+        "cutoff_utc": "2026-10-10T21:48:54.300275+00:00",
+        "wave_complete": true,
+        "original_full_study_complete": false,
+        "training_updates": 352,
+        "hosted_training_updates": 352,
+        "completed_trajectories": 4,
+        "trained_snapshot_jobs": 88,
+        "generated_suites_final_policy": 108,
+        "generated_responses_final_policy": 101184,
+        "generated_suites_strict_zero_delimiter": 106,
+        "generated_responses_strict_zero_delimiter": 99360,
+        "hosted_suite_writes": 112,
+        "trained_hosted_suite_writes": 104,
+        "baseline_hosted_suite_writes": 8,
+        "source_protocol_finite_schedule_and_hosted_checks_passed": true,
+        "all_zero_exits_owned_cleanup_and_empty_gpus": true,
+        "pending": [],
+        "output_diagnostics": {
+          "strict_zero_delimiter_passed": false,
+          "finalized_policy_passed": true,
+          "count": 4,
+          "warning_records": 3,
+          "warnings": [
+            {
+              "worker": "worker-d",
+              "step": 53,
+              "suite": "benchmark",
+              "dataset": "AIME 2024",
+              "count": 2,
+              "completions": 240
+            },
+            {
+              "worker": "worker-d",
+              "step": 53,
+              "suite": "benchmark",
+              "dataset": "AIME 2025",
+              "count": 1,
+              "completions": 240
+            },
+            {
+              "worker": "worker-d",
+              "step": 66,
+              "suite": "validation",
+              "dataset": "Math validation",
+              "count": 1,
+              "completions": 1024
+            }
+          ],
+          "historical_failed_attempt_incident_separate": true,
+          "responses_filtered": false,
+          "grades_or_denominators_changed": false,
+          "new_terminal_suite_diagnostics": 0
+        },
+        "workers": [
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "teacher_policy": "fixed_original",
+            "complete": true,
+            "original_validation_percent": 67.48046875,
+            "cycle_end_validation_percent": [
+              72.8515625,
+              70.99609375,
+              72.55859375,
+              69.43359375,
+              75.09765625,
+              69.53125,
+              70.21484375,
+              71.97265625
+            ],
+            "pi_end_validation_percent": [
+              65.234375,
+              69.04296875,
+              71.2890625,
+              67.08984375,
+              72.75390625,
+              67.1875,
+              66.89453125,
+              69.43359375
+            ],
+            "phase_delta_percentage_points": {
+              "pi_minus_previous_cycle_end": [
+                -2.24609375,
+                -3.80859375,
+                0.29296875,
+                -5.46875,
+                3.3203125,
+                -7.91015625,
+                -2.63671875,
+                -0.78125
+              ],
+              "opd_minus_pi": [
+                7.6171875,
+                1.953125,
+                1.26953125,
+                2.34375,
+                2.34375,
+                2.34375,
+                3.3203125,
+                2.5390625
+              ],
+              "pi_signs": {
+                "positive": 2,
+                "negative": 6,
+                "zero": 0
+              },
+              "opd_signs": {
+                "positive": 8,
+                "negative": 0,
+                "zero": 0
+              }
+            },
+            "descriptive_trends": {
+              "cycles1_to8_ols_pp_per_cycle": -0.16043526785714285,
+              "cycles5_to8_ols_pp_per_cycle": -0.869140625,
+              "early_cycles1_to3_mean_percent": 72.13541666666667,
+              "late_cycles6_to8_mean_percent": 70.57291666666667,
+              "late_minus_early_pp": -1.5625,
+              "final_minus_original_pp": 4.4921875,
+              "final_minus_first_cycle_pp": -0.87890625,
+              "observed_peak_percent": 75.09765625,
+              "final_minus_observed_peak_pp": -3.125
+            },
+            "final_suites": {
+              "validation": {
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7197265625,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.013671875,
+                    "parse_failure_fraction": 0.0107421875,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "dataset_mean_response_tokens": {
+                  "Math validation": 1451.9072265625
+                },
+                "mean_response_tokens": 1451.9072265625,
+                "generation_seconds": 232.3544568970101,
+                "whole_seconds_upper_bound": 284.0,
+                "aggregate_output_tokens_per_second": 6398.642056859686
+              },
+              "benchmark": {
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.30416666666666664,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.175,
+                    "parse_failure_fraction": 0.15833333333333333,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.22083333333333333,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.09583333333333334,
+                    "parse_failure_fraction": 0.08333333333333333,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.684375,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.021875,
+                    "parse_failure_fraction": 0.0125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "dataset_mean_response_tokens": {
+                  "AIME 2024": 5949.670833333334,
+                  "AMC23": 2218.065625,
+                  "AIME 2025": 4928.529166666666
+                },
+                "mean_response_tokens": 4150.68625,
+                "generation_seconds": 372.48650552297477,
+                "whole_seconds_upper_bound": 412.18127036094666,
+                "aggregate_output_tokens_per_second": 8914.548448776462
+              }
+            }
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-4B",
+            "teacher_policy": "fixed_original",
+            "complete": true,
+            "original_validation_percent": 72.65625,
+            "cycle_end_validation_percent": [
+              73.046875,
+              71.77734375,
+              69.43359375,
+              75.29296875,
+              74.12109375,
+              71.484375,
+              73.14453125,
+              73.046875
+            ],
+            "pi_end_validation_percent": [
+              69.04296875,
+              72.4609375,
+              73.046875,
+              63.57421875,
+              70.5078125,
+              68.65234375,
+              69.7265625,
+              70.703125
+            ],
+            "phase_delta_percentage_points": {
+              "pi_minus_previous_cycle_end": [
+                -3.61328125,
+                -0.5859375,
+                1.26953125,
+                -5.859375,
+                -4.78515625,
+                -5.46875,
+                -1.7578125,
+                -2.44140625
+              ],
+              "opd_minus_pi": [
+                4.00390625,
+                -0.68359375,
+                -3.61328125,
+                11.71875,
+                3.61328125,
+                2.83203125,
+                3.41796875,
+                2.34375
+              ],
+              "pi_signs": {
+                "positive": 1,
+                "negative": 7,
+                "zero": 0
+              },
+              "opd_signs": {
+                "positive": 6,
+                "negative": 2,
+                "zero": 0
+              }
+            },
+            "descriptive_trends": {
+              "cycles1_to8_ols_pp_per_cycle": 0.14067150297619047,
+              "cycles5_to8_ols_pp_per_cycle": -0.15625,
+              "early_cycles1_to3_mean_percent": 71.41927083333333,
+              "late_cycles6_to8_mean_percent": 72.55859375,
+              "late_minus_early_pp": 1.1393229166666714,
+              "final_minus_original_pp": 0.390625,
+              "final_minus_first_cycle_pp": 0.0,
+              "observed_peak_percent": 75.29296875,
+              "final_minus_observed_peak_pp": -2.24609375
+            },
+            "final_suites": {
+              "validation": {
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.73046875,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0146484375,
+                    "parse_failure_fraction": 0.015625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "dataset_mean_response_tokens": {
+                  "Math validation": 1432.3671875
+                },
+                "mean_response_tokens": 1432.3671875,
+                "generation_seconds": 200.85452385799726,
+                "whole_seconds_upper_bound": 231.0,
+                "aggregate_output_tokens_per_second": 7302.519115959657
+              },
+              "benchmark": {
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.22083333333333333,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.1625,
+                    "parse_failure_fraction": 0.14166666666666666,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.19583333333333333,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.08333333333333333,
+                    "parse_failure_fraction": 0.07083333333333333,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.671875,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.00625,
+                    "parse_failure_fraction": 0.00625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "dataset_mean_response_tokens": {
+                  "AIME 2024": 5554.529166666666,
+                  "AMC23": 1936.040625,
+                  "AIME 2025": 4600.525
+                },
+                "mean_response_tokens": 3820.9325,
+                "generation_seconds": 290.5898379900027,
+                "whole_seconds_upper_bound": 314.0909614562988,
+                "aggregate_output_tokens_per_second": 10519.108380194502
+              }
+            }
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "teacher_policy": "cycle_refresh",
+            "complete": true,
+            "original_validation_percent": 67.48046875,
+            "cycle_end_validation_percent": [
+              71.97265625,
+              77.83203125,
+              76.85546875,
+              78.125,
+              76.953125,
+              73.92578125,
+              76.953125,
+              77.83203125
+            ],
+            "pi_end_validation_percent": [
+              66.11328125,
+              74.51171875,
+              78.515625,
+              74.31640625,
+              76.85546875,
+              76.3671875,
+              75.390625,
+              75.09765625
+            ],
+            "phase_delta_percentage_points": {
+              "pi_minus_previous_cycle_end": [
+                -1.3671875,
+                2.5390625,
+                0.68359375,
+                -2.5390625,
+                -1.26953125,
+                -0.5859375,
+                1.46484375,
+                -1.85546875
+              ],
+              "opd_minus_pi": [
+                5.859375,
+                3.3203125,
+                -1.66015625,
+                3.80859375,
+                0.09765625,
+                -2.44140625,
+                1.5625,
+                2.734375
+              ],
+              "pi_signs": {
+                "positive": 3,
+                "negative": 5,
+                "zero": 0
+              },
+              "opd_signs": {
+                "positive": 6,
+                "negative": 2,
+                "zero": 0
+              }
+            },
+            "descriptive_trends": {
+              "cycles1_to8_ols_pp_per_cycle": 0.3173828125,
+              "cycles5_to8_ols_pp_per_cycle": 0.56640625,
+              "early_cycles1_to3_mean_percent": 75.55338541666667,
+              "late_cycles6_to8_mean_percent": 76.23697916666667,
+              "late_minus_early_pp": 0.68359375,
+              "final_minus_original_pp": 10.3515625,
+              "final_minus_first_cycle_pp": 5.859375,
+              "observed_peak_percent": 78.125,
+              "final_minus_observed_peak_pp": -0.29296875
+            },
+            "final_suites": {
+              "validation": {
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.7783203125,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.0185546875,
+                    "parse_failure_fraction": 0.021484375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "dataset_mean_response_tokens": {
+                  "Math validation": 1843.484375
+                },
+                "mean_response_tokens": 1843.484375,
+                "generation_seconds": 251.43120475998148,
+                "whole_seconds_upper_bound": 303.0,
+                "aggregate_output_tokens_per_second": 7507.9304567706395
+              },
+              "benchmark": {
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.2916666666666667,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.3958333333333333,
+                    "parse_failure_fraction": 0.35,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.2833333333333333,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.3416666666666667,
+                    "parse_failure_fraction": 0.25833333333333336,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.7875,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.0625,
+                    "parse_failure_fraction": 0.040625,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "dataset_mean_response_tokens": {
+                  "AIME 2025": 8531.608333333334,
+                  "AMC23": 3213.215625,
+                  "AIME 2024": 9316.433333333332
+                },
+                "mean_response_tokens": 6639.69875,
+                "generation_seconds": 591.9279727169778,
+                "whole_seconds_upper_bound": 631.1716966629028,
+                "aggregate_output_tokens_per_second": 8973.65768273929
+              }
+            }
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-4B",
+            "teacher_policy": "cycle_refresh",
+            "complete": true,
+            "original_validation_percent": 72.65625,
+            "cycle_end_validation_percent": [
+              74.21875,
+              76.46484375,
+              77.05078125,
+              77.05078125,
+              79.58984375,
+              79.1015625,
+              80.17578125,
+              77.5390625
+            ],
+            "pi_end_validation_percent": [
+              67.578125,
+              76.7578125,
+              73.53515625,
+              75.390625,
+              76.171875,
+              75.48828125,
+              75.9765625,
+              75.48828125
+            ],
+            "phase_delta_percentage_points": {
+              "pi_minus_previous_cycle_end": [
+                -5.078125,
+                2.5390625,
+                -2.9296875,
+                -1.66015625,
+                -0.87890625,
+                -4.1015625,
+                -3.125,
+                -4.6875
+              ],
+              "opd_minus_pi": [
+                6.640625,
+                -0.29296875,
+                3.515625,
+                1.66015625,
+                3.41796875,
+                3.61328125,
+                4.19921875,
+                2.05078125
+              ],
+              "pi_signs": {
+                "positive": 1,
+                "negative": 7,
+                "zero": 0
+              },
+              "opd_signs": {
+                "positive": 7,
+                "negative": 1,
+                "zero": 0
+              }
+            },
+            "descriptive_trends": {
+              "cycles1_to8_ols_pp_per_cycle": 0.6010509672619048,
+              "cycles5_to8_ols_pp_per_cycle": -0.5078125,
+              "early_cycles1_to3_mean_percent": 75.91145833333333,
+              "late_cycles6_to8_mean_percent": 78.93880208333333,
+              "late_minus_early_pp": 3.02734375,
+              "final_minus_original_pp": 4.8828125,
+              "final_minus_first_cycle_pp": 3.3203125,
+              "observed_peak_percent": 80.17578125,
+              "final_minus_observed_peak_pp": -2.63671875
+            },
+            "final_suites": {
+              "validation": {
+                "completions": 1024,
+                "metrics": {
+                  "Math validation": {
+                    "avg_at_8": 0.775390625,
+                    "completions": 1024,
+                    "cap_hit_fraction": 0.01171875,
+                    "parse_failure_fraction": 0.0068359375,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "dataset_mean_response_tokens": {
+                  "Math validation": 1599.5283203125
+                },
+                "mean_response_tokens": 1599.5283203125,
+                "generation_seconds": 205.18155821005348,
+                "whole_seconds_upper_bound": 235.0,
+                "aggregate_output_tokens_per_second": 7982.769086504312
+              },
+              "benchmark": {
+                "completions": 800,
+                "metrics": {
+                  "AIME 2024": {
+                    "avg_at_8": 0.30833333333333335,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.3875,
+                    "parse_failure_fraction": 0.3,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AIME 2025": {
+                    "avg_at_8": 0.25416666666666665,
+                    "completions": 240,
+                    "cap_hit_fraction": 0.3333333333333333,
+                    "parse_failure_fraction": 0.25833333333333336,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "AMC23": {
+                    "avg_at_8": 0.715625,
+                    "completions": 320,
+                    "cap_hit_fraction": 0.084375,
+                    "parse_failure_fraction": 0.08125,
+                    "grader_timeouts": 0,
+                    "unexpected_thinking_delimiters": 0
+                  }
+                },
+                "dataset_mean_response_tokens": {
+                  "AIME 2025": 8570.216666666667,
+                  "AMC23": 3378.75,
+                  "AIME 2024": 8987.483333333334
+                },
+                "mean_response_tokens": 6618.81,
+                "generation_seconds": 500.8003369650105,
+                "whole_seconds_upper_bound": 524.2239079475403,
+                "aggregate_output_tokens_per_second": 10573.171799542839
+              }
+            }
+          }
+        ],
+        "all_completed_cycle_phase_signs": {
+          "pi_minus_previous_cycle_end": {
+            "positive": 7,
+            "negative": 25,
+            "zero": 0
+          },
+          "opd_minus_pi": {
+            "positive": 27,
+            "negative": 5,
+            "zero": 0
+          }
+        },
+        "accounting": {
+          "scientific_gpu_hours": 129.32556619008383,
+          "cumulative_study_gpu_hours": 300.959912820922,
+          "cumulative_readiness_gpu_hours": 78.99915054162344,
+          "overall_gpu_hours": 379.9590633625454,
+          "hours_remaining_at_cutoff": 48.90371440529823,
+          "original_deadline_preserved": true,
+          "controller_assignments_end_at_first_verified_cleanup": true,
+          "subsequent_recorded_operations_charged_separately_with_overlap_union": true,
+          "failed_attempt_and_preparation_retained": true
+        },
+        "interpretation": {
+          "primary": "Fixed cycle-eight no-hint validation, same 128 questions and eight draws; no maximum-checkpoint or benchmark selection.",
+          "trend": "Late-versus-early means and cycles 5–8 slopes describe this observed one-seed screen. 8B refresh has a positive late mean difference and slope; 4B refresh retains a final gain but has a negative late slope. Neither establishes monotonic or replicated growth.",
+          "phase_changes": "OPD improves 27 of 32 preceding PI endpoints; PI improves over the preceding cycle/original in 7 of 32. Repeated phase pairs are correlated, not independent replications.",
+          "cost": "Final benchmark accuracy must be read alongside cap hits, tokens and generation time. Refresh has no established superiority at matched inference cost; all outcomes remain in the denominators.",
+          "next_scope": "Six unlaunched optimizer arms are deferred. The fresh eight-arm phase-ratio screen remains conditional on reviewed runtime, bounded readiness and fresh whole-matrix admission; no phase dispatch has occurred."
+        }
+      },
+      "completion_scope": "teacher_screen",
+      "original_full_study_complete": false
+    },
+    "next_priority": {
+      "user_instruction": "Let’s focus on tuning 7 and 4.",
+      "decision_authority": "Supervising agent design choice under the latest user steering; the user did not explicitly specify this exact eight-arm grid.",
+      "status": "phase_ratio_design_pending_runtime_review_and_fresh_admission",
+      "current_teacher_runs_preserved": true,
+      "optimizer_additional_arms_deferred": 6,
+      "new_phase_jobs_launched": false,
+      "latest_public_evidence_cutoff_utc": "2026-10-10T21:48:54.300275+00:00"
+    },
+    "phase_ratio_screen": {
+      "version": "math-phases-v1",
+      "status": "design_pending_runtime_review_and_fresh_admission",
+      "admitted": false,
+      "dispatch": false,
+      "models": [
+        "Qwen3-4B",
+        "Qwen3-8B"
+      ],
+      "teacher_policy": "cycle_refresh",
+      "optimizer_policy": "reset_each_phase",
+      "learning_rate": 5e-06,
+      "lr_schedule": "constant",
+      "seed": 137,
+      "cycles": 8,
+      "updates_per_cycle": 11,
+      "updates_per_arm": 88,
+      "training_questions_shared": 352,
+      "validation_questions": 128,
+      "draws": 8,
+      "fresh_control_requirement": true,
+      "historical_run_reuse": false,
+      "ratios": [
+        {
+          "pi_updates": 3,
+          "opd_updates": 8,
+          "period": 11,
+          "cycles": 8,
+          "successful_updates": 88,
+          "unique_training_questions": 352,
+          "pi_question_uses": 96,
+          "opd_question_uses": 256,
+          "validation_updates": [
+            3,
+            11,
+            14,
+            22,
+            25,
+            33,
+            36,
+            44,
+            47,
+            55,
+            58,
+            66,
+            69,
+            77,
+            80,
+            88
+          ],
+          "benchmark_updates": [
+            9,
+            18,
+            27,
+            36,
+            44,
+            53,
+            62,
+            71,
+            80,
+            88
+          ],
+          "nonbaseline_suites": 26,
+          "nonbaseline_exports": 22,
+          "fresh_trajectory_required": true
+        },
+        {
+          "pi_updates": 5,
+          "opd_updates": 6,
+          "period": 11,
+          "cycles": 8,
+          "successful_updates": 88,
+          "unique_training_questions": 352,
+          "pi_question_uses": 160,
+          "opd_question_uses": 192,
+          "validation_updates": [
+            5,
+            11,
+            16,
+            22,
+            27,
+            33,
+            38,
+            44,
+            49,
+            55,
+            60,
+            66,
+            71,
+            77,
+            82,
+            88
+          ],
+          "benchmark_updates": [
+            9,
+            18,
+            27,
+            36,
+            44,
+            53,
+            62,
+            71,
+            80,
+            88
+          ],
+          "nonbaseline_suites": 26,
+          "nonbaseline_exports": 22,
+          "fresh_trajectory_required": true
+        },
+        {
+          "pi_updates": 7,
+          "opd_updates": 4,
+          "period": 11,
+          "cycles": 8,
+          "successful_updates": 88,
+          "unique_training_questions": 352,
+          "pi_question_uses": 224,
+          "opd_question_uses": 128,
+          "validation_updates": [
+            7,
+            11,
+            18,
+            22,
+            29,
+            33,
+            40,
+            44,
+            51,
+            55,
+            62,
+            66,
+            73,
+            77,
+            84,
+            88
+          ],
+          "benchmark_updates": [
+            9,
+            18,
+            27,
+            36,
+            44,
+            53,
+            62,
+            71,
+            80,
+            88
+          ],
+          "nonbaseline_suites": 26,
+          "nonbaseline_exports": 22,
+          "fresh_trajectory_required": true
+        },
+        {
+          "pi_updates": 9,
+          "opd_updates": 2,
+          "period": 11,
+          "cycles": 8,
+          "successful_updates": 88,
+          "unique_training_questions": 352,
+          "pi_question_uses": 288,
+          "opd_question_uses": 64,
+          "validation_updates": [
+            9,
+            11,
+            20,
+            22,
+            31,
+            33,
+            42,
+            44,
+            53,
+            55,
+            64,
+            66,
+            75,
+            77,
+            86,
+            88
+          ],
+          "benchmark_updates": [
+            9,
+            18,
+            27,
+            36,
+            44,
+            53,
+            62,
+            71,
+            80,
+            88
+          ],
+          "nonbaseline_suites": 26,
+          "nonbaseline_exports": 22,
+          "fresh_trajectory_required": true
+        }
+      ],
+      "wave_one": [
+        {
+          "worker": "worker-a",
+          "model": "Qwen3-8B",
+          "pi_updates": 3,
+          "opd_updates": 8
+        },
+        {
+          "worker": "worker-b",
+          "model": "Qwen3-4B",
+          "pi_updates": 3,
+          "opd_updates": 8
+        },
+        {
+          "worker": "worker-c",
+          "model": "Qwen3-8B",
+          "pi_updates": 7,
+          "opd_updates": 4
+        },
+        {
+          "worker": "worker-d",
+          "model": "Qwen3-4B",
+          "pi_updates": 7,
+          "opd_updates": 4
+        }
+      ],
+      "wave_two": [
+        {
+          "worker": "worker-a",
+          "model": "Qwen3-8B",
+          "pi_updates": 5,
+          "opd_updates": 6
+        },
+        {
+          "worker": "worker-b",
+          "model": "Qwen3-4B",
+          "pi_updates": 5,
+          "opd_updates": 6
+        },
+        {
+          "worker": "worker-c",
+          "model": "Qwen3-8B",
+          "pi_updates": 9,
+          "opd_updates": 2
+        },
+        {
+          "worker": "worker-d",
+          "model": "Qwen3-4B",
+          "pi_updates": 9,
+          "opd_updates": 2
+        }
+      ],
+      "counts": {
+        "phase_screen_cells": 8,
+        "new_trajectories": 8,
+        "new_training_updates": 704,
+        "new_question_uses": 2816,
+        "shared_distinct_questions": 352,
+        "new_trained_evaluation_suites": 208,
+        "new_baseline_evaluation_suites": 4,
+        "total_generated_evaluation_suites": 212,
+        "new_original_baseline_responses": 3648,
+        "new_total_generated_responses": 198720,
+        "new_trained_evaluation_responses": 195072,
+        "new_validation_suites_including_baseline": 130,
+        "new_benchmark_suites_including_baseline": 82,
+        "new_validation_responses_including_baseline": 133120,
+        "new_benchmark_responses_including_baseline": 65600,
+        "trained_exports": 176,
+        "hosted_suite_writes_including_imported_baselines": 224
+      },
+      "baseline_producers": [
+        {
+          "wave": 1,
+          "worker": "worker-a",
+          "model": "Qwen3-8B",
+          "pi_updates": 3,
+          "opd_updates": 8
+        },
+        {
+          "wave": 1,
+          "worker": "worker-b",
+          "model": "Qwen3-4B",
+          "pi_updates": 3,
+          "opd_updates": 8
+        }
+      ],
+      "baseline_hosted_tracking": {
+        "all_arms_require_step0_attachments": true,
+        "total_hosted_suite_attachments": 16,
+        "generated_source_suite_attachments": 4,
+        "imported_suite_attachments": 12,
+        "unique_generated_baseline_suites": 4,
+        "unique_generated_baseline_responses": 3648
+      },
+      "baseline_policy": "Wave 1 worker-a generates the fresh 8B original baseline and worker-b the fresh 4B original baseline, each with one validation and one benchmark suite in the new namespace. The other six arms import the matching fresh, verified two-suite payload. Four generated suites contain 3,648 responses; imported attachments do not add generated suites or responses.",
+      "evaluation_namespace": {
+        "requirement": "A new phase-study evaluation seed namespace, shared across all eight cells and pinned in the plan manifest. Do not reuse the old math-cycle namespace.",
+        "value_status": "Caller must explicitly set and freeze the literal namespace before admission; the pure phase protocol does not select it.",
+        "historical_comparability": "Old baseline and evaluator results remain references. Do not demand identical sampled responses or baseline scores across the old and new namespace/version."
+      },
+      "readout": {
+        "primary": "Fixed cycle 8 / update 88 unprivileged Math validation Avg@8: 128 questions × 8 draws. Compare each candidate against the fresh 7/4 control separately within each model.",
+        "selection": "No benchmark-based ranking, no best-intermediate-checkpoint selection and no dropping weak arms after viewing earlier results. All prespecified cells are retained unless an operational or budget gate prevents completion.",
+        "diagnostics": "Prespecify cycles 6–8 minus cycles 1–3 mean validation and the OLS slope through cycles 5–8 as descriptive diagnostics for this new screen. Cycle-eight validation remains primary. A highest final score with a flat or falling late trend does not establish sustained growth. These diagnostics are chosen after the earlier 7/4 evidence, not retroactively called predeclared for that old screen.",
+        "uncertainty": "Use question-group paired differences or a cluster bootstrap for repeated draws and the three candidate contrasts. One training seed cannot establish training-seed robustness.",
+        "cost": "Retain every capped and flagged response with original scores and denominators. Report per-dataset lengths, cap-hit and parse-failure rates, generation and total wall time. The same update/evaluation counts do not imply equal GPU-hours.",
+        "phase_alignment": "Common OPD endpoints at updates 11, 22, ..., 88 are matched. PI ends occur at different global updates across ratios and must be labelled rather than treated as equal-horizon comparisons."
+      },
+      "ratio_vs_period": {
+        "ratio": "3/8, 5/6, 7/4 and 9/2 change privileged versus unprivileged allocation within an 11-update cycle.",
+        "period": "Scaling a fixed ratio, such as 7/4 to 14/8, changes period from 11 to 22; at 88 updates this changes cycle count from eight to four, teacher-refresh cadence and optimizer reset count. It asks about anchor duration, not allocation.",
+        "followup": "Test period separately only after an explicit later scope decision, with a suitable matched training horizon. A longer stream and confirmation validation are also needed for the broader goal. None is an automatic extra launch."
+      },
+      "design_limits": [
+        "One seed, a 352-question training stream and a repeatedly inspected 128-question validation panel cannot establish robust sustained growth. Multiple candidate comparisons can overfit this panel.",
+        "Teacher refresh is fixed here; the screen does not identify teacher-policy × phase-ratio interactions.",
+        "Moving the phase boundary also moves the fresh-Adam boundary. These are whole-recipe effects, not isolated loss-ratio effects.",
+        "Constant LR 5e-6 and Adam reset remain fixed; carry and decay effects remain unanswered.",
+        "Fresh 7/4 controls avoid wrapper-equivalence assumptions, but different wave timing and execution variation remain.",
+        "Locked confirmation on reserved validation, fresh seeds and longer training would be needed before claiming reproducible sustained improvement. Any extra execution requires an explicit bounded scope and admission."
+      ],
+      "cost_gate": "Conditional only: reserve every new arm and baseline plus preparation/evaluation/cleanup/operational costs against actual spent cost and the original deadline; the old optimizer admission does not authorize the phase matrix.",
+      "runtime_status": "Pure phase protocol and tests implemented and independently reviewed: 56 focused CPU tests pass and all343addedlines documented. Actual trainer/tracking adapters, baseline dependency, separate verifier/output contract, readiness and admission remain pending.",
+      "implementation": {
+        "public_source": "miles/tools/opsd/math_phase_protocol.py",
+        "tests": "miles/tests/fast/opsd/test_math_phase_protocol.py",
+        "source_sha256": "0069ffea5e2e335c2772d5ae05a159b73c66116522e83b58f70d0b6c9662c8b7",
+        "test_sha256": "03e2514684244835d334e8afb818c7bb191504584e9b026d7aa3cc8503824e06",
+        "source_lines": 166,
+        "test_lines": 177,
+        "focused_cpu_tests_passed": 56,
+        "independent_source_review": "clear",
+        "actual_line_walkthrough_rows": 343,
+        "actual_source_file_bytes_verified_by_manifest_helper": false,
+        "gpu_readiness_proven": false
+      },
+      "prospective_feasibility": {
+        "source_cutoff_utc": "2026-10-10T21:31:32.311651+00:00",
+        "admitted": false,
+        "dispatch_authorized_by_this_receipt": false,
+        "whole_current_wave_complete_at_source_cutoff": false,
+        "allowances": {
+          "science_preparation": {
+            "gpu_hours": 8,
+            "wall_hours": 0.9,
+            "scope": "New scientific runtime/configuration staging, source verification and operational preparation. All actual intervals must be recorded; no zero-cost assumption."
+          },
+          "readiness": {
+            "gpu_hours": 16,
+            "wall_hours": 1,
+            "scope": "Separate readiness-stage allowance, including setup, assigned waiting, collection and cleanup. A concrete bounded two-model plan must still be frozen and passed. An incomplete deadline is failure, not a pass."
+          },
+          "handoffs": {
+            "gpu_hours": 16,
+            "wall_hours": 1.8,
+            "scope": "Two8-GPU-hour/0.9-hour envelopes: current screen to phase wave1, then phase wave1 to wave2. Released workers charge subsequent actual operations, not silent unrecorded assignment."
+          }
+        },
+        "readiness_caps": {
+          "approved_new_study_readiness_cap": 40,
+          "existing_new_study_readiness_spent": 18.303870023546946,
+          "prospective_new_readiness": 16,
+          "prospective_stage_readiness": 34.30387002354694,
+          "approved_cumulative_readiness_cap": 104,
+          "prospective_cumulative_readiness": 94.99915054162344
+        },
+        "scenarios": {
+          "existing_method_with_all_observed_maxima": {
+            "new_training_gpu_hours": 994.5039411535381,
+            "new_training_wall_hours": 31.97663405954749,
+            "future_science_gpu_hours_including_preparation_and_handoffs": 1018.5039411535381,
+            "future_readiness_gpu_hours": 16,
+            "future_total_gpu_hours": 1034.503941153538,
+            "future_serial_wall_hours": 35.67663405954749,
+            "cumulative_at_2132_origin": {
+              "science_gpu_hours": 1145.4997754940575,
+              "study_gpu_hours": 1317.1341221248956,
+              "readiness_gpu_hours": 94.99915054162344,
+              "overall_gpu_hours": 1412.1332726665191
+            },
+            "headroom_at_2132_origin": {
+              "science_gpu_hours": 154.50022450594247,
+              "study_gpu_hours": 182.8658778751044,
+              "readiness_gpu_hours": 9.000849458376564,
+              "overall_gpu_hours": 191.86672733348087,
+              "wall_hours": 13.516521630155601
+            },
+            "fits_numbers_at_2132_origin": true,
+            "not_fresh_admission": true
+          },
+          "existing_method_with_all_observed_maxima_16384_stress": {
+            "new_training_gpu_hours": 1467.1749235260318,
+            "new_training_wall_hours": 46.562844161427115,
+            "future_science_gpu_hours_including_preparation_and_handoffs": 1491.1749235260318,
+            "future_readiness_gpu_hours": 16,
+            "future_total_gpu_hours": 1507.1749235260318,
+            "future_serial_wall_hours": 50.26284416142712,
+            "cumulative_at_2132_origin": {
+              "science_gpu_hours": 1618.1707578665512,
+              "study_gpu_hours": 1789.8051044973893,
+              "readiness_gpu_hours": 94.99915054162344,
+              "overall_gpu_hours": 1884.8042550390128
+            },
+            "headroom_at_2132_origin": {
+              "science_gpu_hours": -318.1707578665512,
+              "study_gpu_hours": -289.80510449738927,
+              "readiness_gpu_hours": 9.000849458376564,
+              "overall_gpu_hours": -280.8042550390128,
+              "wall_hours": -1.069688471724028
+            },
+            "fits_numbers_at_2132_origin": false,
+            "not_fresh_admission": true
+          },
+          "minimum_observed_full_panel_rate": {
+            "new_training_gpu_hours": 1131.3631712323786,
+            "new_training_wall_hours": 37.12706994486824,
+            "future_science_gpu_hours_including_preparation_and_handoffs": 1155.3631712323786,
+            "future_readiness_gpu_hours": 16,
+            "future_total_gpu_hours": 1171.3631712323786,
+            "future_serial_wall_hours": 40.82706994486824,
+            "cumulative_at_2132_origin": {
+              "science_gpu_hours": 1282.359005572898,
+              "study_gpu_hours": 1453.993352203736,
+              "readiness_gpu_hours": 94.99915054162344,
+              "overall_gpu_hours": 1548.9925027453596
+            },
+            "headroom_at_2132_origin": {
+              "science_gpu_hours": 17.640994427101987,
+              "study_gpu_hours": 46.006647796263906,
+              "readiness_gpu_hours": 9.000849458376564,
+              "overall_gpu_hours": 55.007497254640384,
+              "wall_hours": 8.366085744834848
+            },
+            "fits_numbers_at_2132_origin": true,
+            "not_fresh_admission": true
+          },
+          "minimum_observed_full_panel_rate_16384_stress": {
+            "new_training_gpu_hours": 1906.6349364575308,
+            "new_training_wall_hours": 63.921233592105175,
+            "future_science_gpu_hours_including_preparation_and_handoffs": 1930.6349364575308,
+            "future_readiness_gpu_hours": 16,
+            "future_total_gpu_hours": 1946.6349364575308,
+            "future_serial_wall_hours": 67.62123359210517,
+            "cumulative_at_2132_origin": {
+              "science_gpu_hours": 2057.63077079805,
+              "study_gpu_hours": 2229.2651174288885,
+              "readiness_gpu_hours": 94.99915054162344,
+              "overall_gpu_hours": 2324.264267970512
+            },
+            "headroom_at_2132_origin": {
+              "science_gpu_hours": -757.63077079805,
+              "study_gpu_hours": -729.2651174288885,
+              "readiness_gpu_hours": 9.000849458376564,
+              "overall_gpu_hours": -720.2642679705118,
+              "wall_hours": -18.42807790240208
+            },
+            "fits_numbers_at_2132_origin": false,
+            "not_fresh_admission": true
+          }
+        },
+        "limitations": [
+          "This is arithmetic feasibility, not an operational admission or final cost receipt.",
+          "The current C trajectory and future preparation/readiness outcomes are incomplete at the source cutoff.",
+          "Six-new-run estimates are counterfactual lower-work comparisons only; strict runtime/control equivalence has not been established."
+        ],
+        "operational_prerequisites": [
+          "Complete current worker-c and issue exact whole-wave evidence before new phase dispatch.",
+          "Pin new runtime/model/data/plan identities and evaluation namespace; pass CPU validation, independent review and concrete bounded readiness.",
+          "Fresh full-matrix admission must include all actual intervals and both new waves under original caps/deadline.",
+          "Remaining current work and later operations reduce the 17.6410 scientific GPU-hour headroom of the stronger non-stress scenario.",
+          "16K-mean stress does not fit; never silently drop arms, evaluations, floors, margins or reset the deadline."
+        ]
+      },
+      "prior_teacher_wave_complete": true
     }
   }
 }
