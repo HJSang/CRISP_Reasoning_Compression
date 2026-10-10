@@ -93,6 +93,7 @@ def _cyclic_args(tmp_path):
         opsd_token_clip=0, opsd_cyclic_teacher_policy="cycle_refresh", num_rollout=88,
         rollout_batch_size=4, n_samples_per_prompt=1, global_batch_size=4, optimizer="adam",
         lr_decay_style="constant", no_load_optim=True, start_rollout_id=0, save=None,
+        lr=5e-6, min_lr=5e-7, lr_decay_iters=87,
     )
     return args
 
@@ -131,3 +132,31 @@ def test_cyclic_rejects_legacy_rollout_without_update_identity(tmp_path, monkeyp
     monkeypatch.setenv("MILES_USE_LEGACY_ROLLOUT_V1", "1")
     with pytest.raises(ValueError, match="explicit rollout ID"):
         validate_opsd_args(_cyclic_args(tmp_path))
+
+
+@pytest.mark.parametrize("policy", ["reset_each_phase", "carry"])
+@pytest.mark.parametrize("schedule", ["constant", "global_linear"])
+def test_cyclic_accepts_the_optimizer_lr_factorial(tmp_path, policy, schedule):
+    args = _cyclic_args(tmp_path)
+    args.opsd_cyclic_optimizer_policy = policy
+    args.opsd_cyclic_lr_schedule = schedule
+    args.lr_decay_style = "linear" if schedule == "global_linear" else "constant"
+    validate_opsd_args(args)
+
+
+@pytest.mark.parametrize("key,value", [("lr", 1e-5), ("min_lr", 0), ("lr_decay_iters", 88),
+                                       ("lr_decay_style", "constant"), ("opsd_cyclic_optimizer_policy", "unknown")])
+def test_cyclic_linear_rejects_unmatched_scheduler_settings(tmp_path, key, value):
+    args = _cyclic_args(tmp_path)
+    args.opsd_cyclic_lr_schedule, args.lr_decay_style = "global_linear", "linear"
+    setattr(args, key, value)
+    with pytest.raises(ValueError, match="Cyclic OPSD"):
+        validate_opsd_args(args)
+
+
+@pytest.mark.parametrize("key,value", [("opsd_cyclic_optimizer_policy", "carry"), ("opsd_cyclic_lr_schedule", "global_linear")])
+def test_cyclic_recipe_cannot_silently_apply_to_an_ordinary_run(tmp_path, key, value):
+    args = _args(tmp_path)
+    setattr(args, key, value)
+    with pytest.raises(ValueError, match="require a cyclic teacher"):
+        validate_opsd_args(args)

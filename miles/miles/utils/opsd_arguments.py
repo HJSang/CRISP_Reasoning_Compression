@@ -14,9 +14,13 @@ def add_opsd_arguments(parser):
     )
     group.add_argument("--opsd-target", choices=["frozen", "current", "transported"], default="frozen")
     group.add_argument("--opsd-cyclic-teacher-policy", choices=["fixed_original", "cycle_refresh"], default=None,
-                       help="Alternate worked PI and no-PI OPD with fresh Adam at every phase boundary.")
+                       help="Alternate worked PI and no-PI OPD with the selected optimizer policy.")
     group.add_argument("--opsd-cyclic-pi-updates", type=int, default=7)
     group.add_argument("--opsd-cyclic-opd-updates", type=int, default=4)
+    group.add_argument("--opsd-cyclic-optimizer-policy", choices=["reset_each_phase", "carry"], default="reset_each_phase",
+                       help="Reset Adam moments and counters at phase starts, or carry both through the run.")
+    group.add_argument("--opsd-cyclic-lr-schedule", choices=["constant", "global_linear"], default="constant",
+                       help="Checked global LR recipe; linear uses the floor on the last applied update.")
     group.add_argument("--opsd-teacher-ema-decay", type=float, default=None,
                        help="Optional FP32 teacher EMA after each successful optimizer step.")
     group.add_argument("--opsd-ema-source", type=Path, default=None,
@@ -58,6 +62,10 @@ def add_opsd_arguments(parser):
 
 
 def validate_opsd_args(args):
+    if getattr(args, "opsd_cyclic_teacher_policy", None) is None and (
+        args.opsd_cyclic_optimizer_policy != "reset_each_phase" or args.opsd_cyclic_lr_schedule != "constant"
+    ):
+        raise ValueError("Cyclic optimizer/LR policies require a cyclic teacher policy")
     if args.loss_type != "opsd_loss":
         if getattr(args, "opsd_cyclic_teacher_policy", None) is not None:
             raise ValueError("Cyclic OPSD requires the opsd_loss objective")
@@ -138,8 +146,10 @@ def _validate_cyclic_args(args):
         "a separate cyclic policy without EMA": args.opsd_teacher_ema_decay is None,
         "one optimizer update per fresh rollout":
             args.rollout_batch_size * args.n_samples_per_prompt == args.global_batch_size,
-        "checked Adam updates with constant LR and no warmup":
-            args.optimizer == "adam" and args.lr_decay_style == "constant"
+        "an explicit optimizer reset or carry policy":
+            args.opsd_cyclic_optimizer_policy in {"reset_each_phase", "carry"},
+        "checked Adam updates without warmup":
+            args.optimizer == "adam"
             and not getattr(args, "lr_warmup_iters", 0) and not getattr(args, "lr_warmup_fraction", None)
             and not getattr(args, "debug_disable_optimizer", False)
             and getattr(args, "check_for_nan_in_loss_and_grad", True),
@@ -153,6 +163,12 @@ def _validate_cyclic_args(args):
                 "rematerialize_param_from_master_weight",
             )),
         "temporary evaluation snapshots only": args.save is None,
+        "matching global LR arguments": (
+            args.opsd_cyclic_lr_schedule == "constant" and args.lr_decay_style == "constant"
+        ) or (
+            args.opsd_cyclic_lr_schedule == "global_linear" and args.lr_decay_style == "linear"
+            and args.lr == 5e-6 and args.min_lr == 5e-7 and args.lr_decay_iters == args.num_rollout - 1
+        ),
     }
     for description, satisfied in requirements.items():
         if not satisfied:

@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "design_authorized_implementation_prepared_budget_pending",
+    "status": "authorized_implementation_ready_gpu_readiness_preparing",
     "launch_authorized": true,
     "executable": false,
     "new_gpu_jobs_launched": false,
@@ -6771,7 +6771,7 @@
       "benchmark_responses": 33600,
       "total_responses": 101184,
       "admitted": false,
-      "budget": "416 GPU-hour scientific stage and 8 GPU-hour readiness proposed; explicit cap expansion and measured admission remain pending."
+      "budget": "First four-arm wave within combined1100GPUh scientific cap; measured complete-study admission required"
     },
     "search_order": [
       "fixed versus cycle-refreshed anchor accumulation",
@@ -6789,10 +6789,9 @@
       "bounded numerical-floor and optimizer controls"
     ],
     "pending": [
-      "Explicit expansion of existing cumulative numeric budgets",
-      "GPU validation of cyclic teacher promotion, Adam reset and multi-suite evaluation",
-      "Measured admission for all four complete arms",
-      "Later full-pass leftover-group policy and confirmation remain separate"
+      "Complete four-worker GPU readiness and uncached hosted verification",
+      "Measured admission reserving all ten complete trajectories",
+      "Later full-pass leftover-group policy and validation confirmation remain separate"
     ],
     "interpretation_limit": "Observed worsening is not proof PI contributes useful information or that worsening is necessary. No repeated-cycle results exist.",
     "data_split": {
@@ -6813,24 +6812,24 @@
       "scope": "Preserve historical heldouts. Remainder withheld from current recipe selection; not claimed historically untouched."
     },
     "proposed_budget": {
-      "readiness_stage_gpu_hours": 8,
-      "scientific_stage_gpu_hours": 416,
-      "cumulative_readiness_gpu_hours": 72,
-      "cumulative_study_gpu_hours": 592,
-      "cumulative_total_gpu_hours": 664,
-      "scientific_window_hours": 14
+      "readiness_stage_gpu_hours": 40,
+      "scientific_stage_gpu_hours": 1100,
+      "cumulative_readiness_gpu_hours": 104,
+      "cumulative_study_gpu_hours": 1280,
+      "cumulative_total_gpu_hours": 1384,
+      "scientific_window_hours": 42
     },
-    "proposed_budget_approved": false,
+    "proposed_budget_approved": true,
     "cost_scenarios": {
       "historical_max_mean_gpu_hours": 324.0462261903478,
       "planning_8192_mean_validation_gpu_hours": 402.131075797,
       "all_16384_stress_gpu_hours": 741.4588928379882
     },
     "optimizer_lr_ablation": {
-      "status": "user_requested_factor_design_only_not_admitted",
-      "implemented": false,
+      "status": "authorized_implemented_pending_gpu_readiness",
+      "implemented": true,
       "new_gpu_jobs_launched": false,
-      "included_in_existing_budget_proposal": false,
+      "included_in_existing_budget_proposal": true,
       "priority": "Before full-data recipe selection; separate from the prepared teacher-policy screen",
       "current_implementation": {
         "adam_state": "reset both moments and counters at each phase start",
@@ -6842,7 +6841,7 @@
         "Qwen3-4B",
         "Qwen3-8B"
       ],
-      "proposed_allocation": "Four workers compare A/B/C/D on 4B; separately admit the same four-condition 8B replication wave",
+      "proposed_allocation": "Reuse both A controls from teacher_screen; four-worker waveB/C across4B8B, then two-worker waveD across4B8B",
       "teacher_policy": "fixed_original",
       "cycles": 8,
       "pi_updates": 7,
@@ -6923,14 +6922,41 @@
         "assigned GPU-hour cost"
       ],
       "implementation_needed": [
-        "explicit optimizer policy",
-        "global decay independent of phase/reset clock",
-        "boundary and failed-step validation",
-        "descriptive run fields and restricted numeric tracking",
-        "bounded distributed readiness and measured cost admission"
+        "Complete bounded distributed readiness",
+        "Verify uncached hosted appliedLR and phase metrics",
+        "Measured admission and exact control/baseline reuse"
       ],
       "conditional_followup": "Constant LR2.75e-6 if needed to distinguish schedule ordering from average LR; no automatic launch",
       "source": "https://arxiv.org/pdf/1412.6980"
+    },
+    "authorized_execution": {
+      "waves": [
+        "teacher_screen",
+        "optimizer_carry_constant_reset_linear",
+        "optimizer_carry_linear"
+      ],
+      "parallel_trajectories": [
+        4,
+        4,
+        2
+      ],
+      "unique_trajectories": 10,
+      "total_optimizer_updates": 880,
+      "scientific_responses": 247488,
+      "validation_evaluations": 162,
+      "validation_responses": 165888,
+      "benchmark_suites": 102,
+      "benchmark_responses": 81600,
+      "planning_gpu_hours": 992.8,
+      "planning_wall_hours": 38.25,
+      "all_cap_stress_gpu_hours_approx": 1822,
+      "baselines_generated": 2,
+      "reuse_A_unconditional_on_outcomes": true,
+      "readiness_responses": 6400,
+      "readiness_workers": 4,
+      "scientific_global_deadline_not_reset_per_wave": true,
+      "approval": "User approved all discussed runs without another permission request",
+      "full_data_pass_automatically_authorized_by_this_schedule": false
     }
   }
 }

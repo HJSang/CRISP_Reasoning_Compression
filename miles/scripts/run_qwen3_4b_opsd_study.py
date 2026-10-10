@@ -22,7 +22,9 @@ Args:
   --task: Math or code prompt contract.
   --teacher-ema-decay / --ema-source: Optional EMA policy and its matched FP32 warm-up state.
   --cyclic-teacher-policy: Fixed original or refresh after each completed PI/OPD cycle.
-  --cyclic-pi-updates / --cyclic-opd-updates: Positive phase lengths; fresh Adam per phase.
+  --cyclic-pi-updates / --cyclic-opd-updates: Positive phase lengths.
+  --cyclic-optimizer-policy: Reset Adam each phase (default), or carry moments and counters.
+  --cyclic-lr-schedule: Constant (default), or global linear 5e-6 to 5e-7 on applied updates.
 
 Example:
   MILES_SCRIPT_EXTERNAL_RAY=1 python scripts/run_qwen3_4b_opsd_study.py --num-rollout 2
@@ -48,6 +50,8 @@ class ScriptArgs(U.ExecuteTrainConfig):
     cyclic_teacher_policy: str | None = None
     cyclic_pi_updates: int = 7
     cyclic_opd_updates: int = 4
+    cyclic_optimizer_policy: str = "reset_each_phase"
+    cyclic_lr_schedule: str = "constant"
     data_dir: str = "/root/datasets"
     dataset_name: str = "warmup.jsonl"
     num_gpus_per_node: int = 2
@@ -87,10 +91,16 @@ class ScriptArgs(U.ExecuteTrainConfig):
             raise ValueError("Retaining a paired source requires its evaluation queue")
         if self.cyclic_teacher_policy is not None:
             self._validate_cyclic()
+        elif self.cyclic_optimizer_policy != "reset_each_phase" or self.cyclic_lr_schedule != "constant":
+            raise ValueError("Cyclic optimizer/LR policies require a cyclic teacher policy")
 
     def _validate_cyclic(self):
         if self.cyclic_teacher_policy not in {"fixed_original", "cycle_refresh"}:
             raise ValueError("Unknown cyclic teacher policy")
+        if self.cyclic_optimizer_policy not in {"reset_each_phase", "carry"}:
+            raise ValueError("Unknown cyclic optimizer policy")
+        if self.cyclic_lr_schedule not in {"constant", "global_linear"}:
+            raise ValueError("Unknown cyclic LR schedule")
         if min(self.cyclic_pi_updates, self.cyclic_opd_updates) < 1:
             raise ValueError("Cyclic phase lengths must be positive")
         if self.num_rollout % (self.cyclic_pi_updates + self.cyclic_opd_updates):
@@ -165,9 +175,15 @@ def execute(args: ScriptArgs):
             f"--opsd-cyclic-teacher-policy {args.cyclic_teacher_policy} "
             f"--opsd-cyclic-pi-updates {args.cyclic_pi_updates} "
             f"--opsd-cyclic-opd-updates {args.cyclic_opd_updates} "
+            f"--opsd-cyclic-optimizer-policy {args.cyclic_optimizer_policy} "
+            f"--opsd-cyclic-lr-schedule {args.cyclic_lr_schedule} "
         )
+    lr_schedule = "--lr-decay-style constant "
+    if args.cyclic_lr_schedule == "global_linear":
+        # Megatron advances after each update: N-1 intervals put the floor on update N.
+        lr_schedule = f"--lr-decay-style linear --min-lr 5e-7 --lr-decay-iters {args.num_rollout - 1} "
     optimizer = (
-        "--optimizer adam --lr 5e-6 --lr-decay-style constant --weight-decay 0 "
+        f"--optimizer adam --lr 5e-6 {lr_schedule}--weight-decay 0 "
         "--adam-beta1 0.9 --adam-beta2 0.999 --adam-eps 1e-8 --clip-grad 0.1 "
     )
     parallel = (

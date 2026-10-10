@@ -91,6 +91,8 @@ def init_wandb_primary(args):
             cyclic_pi_updates=getattr(args, "opsd_cyclic_pi_updates", None),
             cyclic_opd_updates=getattr(args, "opsd_cyclic_opd_updates", None),
             planned_updates=getattr(args, "num_rollout", None),
+            cyclic_optimizer_policy=getattr(args, "opsd_cyclic_optimizer_policy", "reset_each_phase"),
+            cyclic_lr_schedule=getattr(args, "opsd_cyclic_lr_schedule", "constant"),
         )
 
     wandb.init(**init_kwargs)

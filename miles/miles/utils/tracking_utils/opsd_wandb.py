@@ -16,7 +16,7 @@ import wandb
 
 CONFIG_FIELDS = (
     "seed", "rollout_seed", "num_rollout", "global_batch_size", "micro_batch_size",
-    "lr", "weight_decay", "adam_beta1", "adam_beta2", "adam_eps", "clip_grad",
+    "lr", "min_lr", "lr_decay_iters", "weight_decay", "adam_beta1", "adam_beta2", "adam_eps", "clip_grad",
     "opsd_beta", "opsd_temperature", "opsd_token_clip", "lora_rank",
     "rollout_max_response_len", "rollout_temperature", "rollout_top_p", "rollout_top_k", "opsd_teacher_ema_decay",
     "opsd_cyclic_pi_updates", "opsd_cyclic_opd_updates",
@@ -27,6 +27,8 @@ CONFIG_CHOICES = {
     "opsd_reduction": {"sample_mean", "token_mean"},
     "opsd_task": {"math", "code"},
     "opsd_cyclic_teacher_policy": {"fixed_original", "cycle_refresh"},
+    "opsd_cyclic_optimizer_policy": {"reset_each_phase", "carry"},
+    "opsd_cyclic_lr_schedule": {"constant", "global_linear"},
 }
 METRIC_FIELDS = {
     "train/step", "train/opsd_loss", "train/opsd_valid_tokens", "train/grad_norm",
@@ -39,6 +41,7 @@ METRIC_FIELDS = {
     "train/ema_updates", "train/ema_local_student_distance", "train/ema_local_original_distance",
     "train/cyclic_cycle", "train/cyclic_pi_phase", "train/cyclic_optimizer_reset",
     "train/cyclic_teacher_source_update", "train/cyclic_teacher_refreshed", "train/cyclic_completed_updates",
+    "train/cyclic_optimizer_updates", "train/cyclic_applied_lr", "train/cyclic_next_lr",
 }
 EVAL_FIELDS = (
     "avg_at_8", "completions", "cap_hit_fraction", "parse_failure_fraction",
@@ -52,16 +55,22 @@ def run_name(
     *, target: str, context: str, seed: int, group: str, task: str = "math", ema_decay: float | None = None,
     cyclic_teacher_policy: str | None = None, cyclic_pi_updates: int | None = None,
     cyclic_opd_updates: int | None = None, planned_updates: int | None = None,
+    cyclic_optimizer_policy: str = "reset_each_phase", cyclic_lr_schedule: str = "constant",
 ) -> str:
     """Describe the recipe without exposing arbitrary group names or local paths."""
-    cyclic = re.fullmatch(r"mathcycles-qwen3-(4b|8b)-(fixed|refresh)-s([0-9]+)-r([0-9]+)", group)
+    cyclic = re.fullmatch(
+        r"mathcycles-qwen3-(4b|8b)-(fixed|refresh)(?:-(reset|carry)-(constant|linear)(-ready)?)?-s([0-9]+)-r([0-9]+)", group
+    )
     if cyclic_teacher_policy is not None or group.startswith("mathcycles-"):
         if cyclic is None:
             raise ValueError("Cyclic study requires a recognized neutral run identifier")
-        size, policy, run_seed, attempt = cyclic.groups()
+        size, policy, optimizer, schedule, readiness, run_seed, attempt = cyclic.groups()
+        expected_optimizer = {None: "reset_each_phase", "reset": "reset_each_phase", "carry": "carry"}[optimizer]
+        expected_schedule = {None: "constant", "constant": "constant", "linear": "global_linear"}[schedule]
         expected_policy = {"fixed": "fixed_original", "refresh": "cycle_refresh"}[policy]
         if (int(run_seed) != seed or target != "frozen" or context != "worked" or task != "math"
-                or ema_decay is not None or cyclic_teacher_policy != expected_policy):
+                or ema_decay is not None or cyclic_teacher_policy != expected_policy
+                or cyclic_optimizer_policy != expected_optimizer or cyclic_lr_schedule != expected_schedule):
             raise ValueError("Cyclic run name disagrees with the recipe or teacher policy")
         counts = (cyclic_pi_updates, cyclic_opd_updates, planned_updates)
         if any(not isinstance(value, int) or isinstance(value, bool) or value <= 0 for value in counts):
@@ -70,9 +79,11 @@ def run_name(
         if planned_updates % cycle_updates:
             raise ValueError("Cyclic run name requires complete PI/OPD cycles")
         teacher = "fixed original teacher" if policy == "fixed" else "cycle-refreshed teacher"
+        optimizer_label = "fresh Adam per phase" if expected_optimizer == "reset_each_phase" else "carried Adam"
+        schedule_label = "constant LR" if expected_schedule == "constant" else "global linear LR 5e-6 → 5e-7"
         return (f"Qwen3-{size.upper()} | math | {teacher} | PI{cyclic_pi_updates} → OPD{cyclic_opd_updates}"
-                f" × {planned_updates // cycle_updates} | fresh Adam per phase | seed {seed}"
-                f" | non-thinking | attempt {int(attempt)}")
+                f" × {planned_updates // cycle_updates} | {optimizer_label} | {schedule_label} | seed {seed}"
+                f" | non-thinking | attempt {int(attempt)}" + (" | readiness" if readiness else ""))
     cell = re.fullmatch(r"generality-qwen3-(1p7b|8b)-(math|code)-(frozen|ema)-(warmup|pi|opd)-s([0-9]+)-r([0-9]+)", group)
     if cell:
         size, task_name, policy, phase, run_seed, attempt = cell.groups()

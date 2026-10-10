@@ -8,7 +8,7 @@ from types import SimpleNamespace
 import pytest
 
 from miles.utils.opsd_study import enqueue_evaluation
-from tools.opsd.math_cyclic_protocol import evaluation_schedule, screen_cells, screen_counts
+from tools.opsd.math_cyclic_protocol import MathCycleCell, evaluation_schedule, optimizer_ablation_cells, screen_cells, screen_counts
 
 
 def test_balanced_cells_share_only_an_identical_model_baseline():
@@ -88,3 +88,55 @@ def test_launcher_rejects_incompatible_cycle_contract(changes):
     config = dict(num_rollout=88, evaluation_queue="/queue", cyclic_teacher_policy="fixed_original")
     with pytest.raises(ValueError):
         ScriptArgs(**(config | changes))
+
+
+@pytest.mark.parametrize("model", ["Qwen3-4B", "Qwen3-8B"])
+def test_optimizer_cells_hold_teacher_model_and_baseline_fixed_with_distinct_recipe_ids(model):
+    cells = optimizer_ablation_cells(model)
+    assert {(cell.optimizer_policy, cell.lr_schedule) for cell in cells} == {
+        ("reset_each_phase", "constant"), ("carry", "constant"),
+        ("reset_each_phase", "global_linear"), ("carry", "global_linear"),
+    }
+    assert {cell.model_name for cell in cells} == {model}
+    assert {cell.teacher_policy for cell in cells} == {"fixed_original"}
+    assert {cell.baseline_worker for cell in cells} == {"worker-a"}
+    assert len({cell.run_id() for cell in cells}) == 4
+    assert not {cell.run_id() for cell in cells} & {cell.run_id() for cell in screen_cells()}
+    ready = MathCycleCell("worker-a", model, "cycle_refresh", "worker-a", "carry", "global_linear", "readiness")
+    assert "-refresh-carry-linear-ready-s137-r1" in ready.run_id()
+
+
+@pytest.mark.parametrize("policy", ["reset_each_phase", "carry"])
+@pytest.mark.parametrize("schedule", ["constant", "global_linear"])
+@pytest.mark.parametrize("updates,phase", [(88, (7, 4)), (4, (1, 1))])
+def test_launcher_explicitly_wires_optimizer_history_and_applied_lr_endpoints(monkeypatch, policy, schedule, updates, phase):
+    from scripts.run_qwen3_4b_opsd_study import ScriptArgs, execute
+
+    monkeypatch.setenv("MILES_SCRIPT_EXTERNAL_RAY", "1")
+    monkeypatch.setenv("RAY_ADDRESS", "http://127.0.0.1:8265")
+    monkeypatch.delenv("WANDB_PROJECT", raising=False)
+    calls = []
+    monkeypatch.setattr(ScriptArgs, "create_backend", lambda _: SimpleNamespace(execute_train=lambda **kw: calls.append(kw)))
+    execute(ScriptArgs(num_rollout=updates, evaluation_queue="/queue", cyclic_teacher_policy="fixed_original",
+                       cyclic_pi_updates=phase[0], cyclic_opd_updates=phase[1],
+                       cyclic_optimizer_policy=policy, cyclic_lr_schedule=schedule))
+    argv = shlex.split(calls[0]["train_args"])
+    assert argv[argv.index("--opsd-cyclic-optimizer-policy") + 1] == policy
+    assert argv[argv.index("--opsd-cyclic-lr-schedule") + 1] == schedule
+    assert argv[argv.index("--lr") + 1] == "5e-6"
+    assert "--save" not in argv and "--no-load-optim" in argv
+    if schedule == "global_linear":
+        assert argv[argv.index("--lr-decay-style") + 1] == "linear"
+        assert int(argv[argv.index("--lr-decay-iters") + 1]) == updates - 1
+        assert argv[argv.index("--min-lr") + 1] == "5e-7"
+    else:
+        assert argv[argv.index("--lr-decay-style") + 1] == "constant"
+        assert "--lr-decay-iters" not in argv
+
+
+@pytest.mark.parametrize("changes", [{"cyclic_optimizer_policy": "carry"}, {"cyclic_lr_schedule": "global_linear"}])
+def test_launcher_rejects_cyclic_recipe_without_a_cyclic_run(changes):
+    from scripts.run_qwen3_4b_opsd_study import ScriptArgs
+
+    with pytest.raises(ValueError, match="require a cyclic teacher"):
+        ScriptArgs(**changes)

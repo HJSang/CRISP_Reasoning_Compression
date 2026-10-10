@@ -32,7 +32,7 @@ def test_cyclic_name_uses_validated_phase_counts_and_teacher(policy, group, labe
                   cyclic_pi_updates=7, cyclic_opd_updates=4, planned_updates=88)
     name = opsd_wandb.run_name(**recipe)
     assert f"Qwen3-4B | math | {label}" in name and "PI7 → OPD4 × 8" in name
-    assert "fresh Adam per phase | seed 137" in name
+    assert "fresh Adam per phase | constant LR | seed 137" in name
     for change in ({"seed": 138}, {"context": "none"}, {"ema_decay": 0.9},
                    {"cyclic_teacher_policy": "unexpected"}, {"task": "code"},
                    {"planned_updates": 87}, {"cyclic_pi_updates": 0},
@@ -57,3 +57,29 @@ def test_primary_initializer_forwards_cyclic_recipe_and_defines_validation_axis(
     assert "Qwen3-8B | math | cycle-refreshed teacher" in initialized[0]["name"]
     assert initialized[0]["config"]["opsd_cyclic_pi_updates"] == 7
     assert (("validation/*",), {"step_metric": "validation/step"}) in defined
+
+
+@pytest.mark.parametrize("policy,label", [("reset_each_phase", "fresh Adam per phase"), ("carry", "carried Adam")])
+@pytest.mark.parametrize("schedule,label_lr", [("constant", "constant LR"), ("global_linear", "global linear LR")])
+def test_ablation_names_and_restricted_fields_describe_both_factors(policy, label, schedule, label_lr):
+    optimizer_id = "reset" if policy == "reset_each_phase" else "carry"
+    schedule_id = "constant" if schedule == "constant" else "linear"
+    recipe = dict(target="frozen", context="worked", seed=137, cyclic_teacher_policy="fixed_original",
+                  cyclic_pi_updates=7, cyclic_opd_updates=4, planned_updates=88,
+                  cyclic_optimizer_policy=policy, cyclic_lr_schedule=schedule,
+                  group=f"mathcycles-qwen3-4b-fixed-{optimizer_id}-{schedule_id}-s137-r1")
+    name = opsd_wandb.run_name(**recipe)
+    assert label in name and label_lr in name
+    with pytest.raises(ValueError, match="recipe"):
+        opsd_wandb.run_name(**(recipe | {"cyclic_optimizer_policy": "carry" if policy == "reset_each_phase" else "reset_each_phase"}))
+    ready = recipe | {"group": recipe["group"].replace("-s137", "-ready-s137")}
+    assert opsd_wandb.run_name(**ready).endswith(" | readiness")
+    args = Namespace(opsd_cyclic_optimizer_policy=policy, opsd_cyclic_lr_schedule=schedule,
+                     min_lr=5e-7, lr_decay_iters=87, raw_state="private")
+    assert opsd_wandb.config(args) == {
+        "opsd_cyclic_optimizer_policy": policy, "opsd_cyclic_lr_schedule": schedule,
+        "min_lr": 5e-7, "lr_decay_iters": 87,
+    }
+    values = {"train/cyclic_applied_lr": 5e-6, "train/cyclic_next_lr": 4e-6,
+              "train/cyclic_optimizer_updates": 8}
+    assert opsd_wandb.metrics(values | {"optimizer_state": "private"}) == values
