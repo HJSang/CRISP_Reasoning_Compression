@@ -3297,7 +3297,7 @@
       "full_stage_hosted_audit_complete": false,
       "original_baseline_publication": "The original baseline is scored first, stored locally, and published to the first warm-up run after all six cell runs complete; trained-checkpoint curves publish per evaluation.",
       "latest_audit": {
-        "checked_unix": 1791617546.730505,
+        "checked_unix": 1791618645.773632,
         "matrix_matches": true,
         "complete": false,
         "cells": [
@@ -3309,15 +3309,12 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "7 required evaluations",
+              "4 required evaluations",
               "generality-qwen3-8b-math-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-math-ema-pi-s101-r1: final source/loss validation",
-              "generality-qwen3-8b-math-ema-pi-s101-r1: training process exit",
-              "generality-qwen3-8b-math-ema-pi-s101-r1: all hosted training steps",
               "generality-qwen3-8b-math-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 12,
-            "completed_updates": 25,
+            "completed_evaluations": 15,
+            "completed_updates": 26,
             "scores": {
               "original": {
                 "AIME 2024": {
@@ -3445,6 +3442,32 @@
                   "completions": 320,
                   "cap_hit_fraction": 0.059375,
                   "parse_failure_fraction": 0.05,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                }
+              },
+              "ema_pi": {
+                "AIME 2024": {
+                  "avg_at_8": 0.2375,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.19166666666666668,
+                  "parse_failure_fraction": 0.1875,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.17083333333333334,
+                  "completions": 240,
+                  "cap_hit_fraction": 0.1,
+                  "parse_failure_fraction": 0.08333333333333333,
+                  "grader_timeouts": 0,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.646875,
+                  "completions": 320,
+                  "cap_hit_fraction": 0.0375,
+                  "parse_failure_fraction": 0.0375,
                   "grader_timeouts": 0,
                   "unexpected_thinking_delimiters": 0
                 }
@@ -3687,15 +3710,15 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "11 required evaluations",
+              "9 required evaluations",
               "generality-qwen3-8b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-8b-code-frozen-opd-s101-r1: final source/loss validation",
-              "generality-qwen3-8b-code-frozen-opd-s101-r1: training process exit",
-              "generality-qwen3-8b-code-ema-warmup-s101-r1: not started",
+              "generality-qwen3-8b-code-ema-warmup-s101-r1: final source/loss validation",
+              "generality-qwen3-8b-code-ema-warmup-s101-r1: training process exit",
+              "generality-qwen3-8b-code-ema-warmup-s101-r1: all hosted training steps",
               "generality-qwen3-8b-code-ema-pi-s101-r1: not started",
               "generality-qwen3-8b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 8,
+            "completed_evaluations": 10,
             "completed_updates": 15,
             "scores": {
               "original": {
@@ -3733,9 +3756,28 @@
                   "pass_at_8": 0.9024390243902439,
                   "test_failure_fraction": 0.22103658536585366
                 }
+              },
+              "frozen_opd": {
+                "HumanEval+": {
+                  "avg_at_8": 0.8025914634146342,
+                  "completions": 1312,
+                  "cap_hit_fraction": 0.0022865853658536584,
+                  "parse_failure_fraction": 0.003048780487804878,
+                  "grader_timeouts": 20,
+                  "unexpected_thinking_delimiters": 0,
+                  "pass_at_8": 0.9207317073170732,
+                  "test_failure_fraction": 0.19054878048780488
+                }
               }
             },
-            "fixed_endpoint_deltas_percentage_points": {}
+            "fixed_endpoint_deltas_percentage_points": {
+              "frozen_opd_minus_original": {
+                "HumanEval+": -1.44817073170731
+              },
+              "frozen_opd_minus_frozen_pi": {
+                "HumanEval+": 3.0487804878048808
+              }
+            }
           },
           {
             "worker": "worker-d",
@@ -3745,14 +3787,15 @@
             "errors": [],
             "pending": [
               "Controller exit and cleanup",
-              "9 required evaluations",
+              "8 required evaluations",
               "generality-qwen3-1p7b-code-frozen-warmup-s101-r1: hosted evaluation 0",
-              "generality-qwen3-1p7b-code-ema-warmup-s101-r1: not started",
-              "generality-qwen3-1p7b-code-ema-pi-s101-r1: not started",
+              "generality-qwen3-1p7b-code-ema-pi-s101-r1: final source/loss validation",
+              "generality-qwen3-1p7b-code-ema-pi-s101-r1: training process exit",
+              "generality-qwen3-1p7b-code-ema-pi-s101-r1: all hosted training steps",
               "generality-qwen3-1p7b-code-ema-opd-s101-r1: not started"
             ],
-            "completed_evaluations": 10,
-            "completed_updates": 15,
+            "completed_evaluations": 11,
+            "completed_updates": 25,
             "scores": {
               "original": {
                 "HumanEval+": {
@@ -3801,6 +3844,18 @@
                   "pass_at_8": 0.774390243902439,
                   "test_failure_fraction": 0.34603658536585363
                 }
+              },
+              "ema_warmup": {
+                "HumanEval+": {
+                  "avg_at_8": 0.600609756097561,
+                  "completions": 1312,
+                  "cap_hit_fraction": 0.0,
+                  "parse_failure_fraction": 0.011432926829268292,
+                  "grader_timeouts": 15,
+                  "unexpected_thinking_delimiters": 0,
+                  "pass_at_8": 0.774390243902439,
+                  "test_failure_fraction": 0.38414634146341464
+                }
               }
             },
             "fixed_endpoint_deltas_percentage_points": {
@@ -3814,11 +3869,11 @@
           }
         ],
         "limitation": "One training seed per cell; fixed endpoint comparisons do not establish cross-seed generality.",
-        "checked_utc": "2026-10-10 07:32 UTC",
-        "completed_updates": 85,
-        "completed_evaluations": 49,
-        "assigned_gpu_hours": 54.92695277690887,
-        "cost_checked_unix": 1791617637.684095,
+        "checked_utc": "2026-10-10 07:50 UTC",
+        "completed_updates": 96,
+        "completed_evaluations": 55,
+        "assigned_gpu_hours": 62.46267830689748,
+        "cost_checked_unix": 1791618768.0429251,
         "audit_validation": "Five focused CPU tests passed: complete math/code cells, nine negative mutations, delayed baseline publication, hosted-score disagreement and result-before-done publication boundaries.",
         "length_profiles": [
           {
@@ -3864,6 +3919,28 @@
             "generation_seconds": 415.59829366899794,
             "output_tokens_per_second": 9298.207088111209,
             "p95_response_latency_seconds": 221.7793360982614
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "stage": "ema_warmup",
+            "completions": 800,
+            "mean_response_tokens": 3321.15625,
+            "generation_seconds": 296.1957185129868,
+            "output_tokens_per_second": 8970.166798287148,
+            "p95_response_latency_seconds": 203.51823189138082
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "stage": "ema_pi",
+            "completions": 800,
+            "mean_response_tokens": 3340.7825,
+            "generation_seconds": 309.73982053098734,
+            "output_tokens_per_second": 8628.616092752665,
+            "p95_response_latency_seconds": 200.76427139914009
           },
           {
             "worker": "worker-b",
@@ -3976,6 +4053,17 @@
             "p95_response_latency_seconds": 3.240393861892518
           },
           {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "stage": "frozen_opd",
+            "completions": 1312,
+            "mean_response_tokens": 294.5586890243902,
+            "generation_seconds": 166.3858785640332,
+            "output_tokens_per_second": 2322.679083917999,
+            "p95_response_latency_seconds": 4.419629272824387
+          },
+          {
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
@@ -4009,17 +4097,6 @@
             "p95_response_latency_seconds": 2.96850384741847
           },
           {
-            "worker": "worker-a",
-            "model": "Qwen3-8B",
-            "task": "math",
-            "stage": "ema_warmup",
-            "completions": 800,
-            "mean_response_tokens": 3321.15625,
-            "generation_seconds": 296.1957185129868,
-            "output_tokens_per_second": 8970.166798287148,
-            "p95_response_latency_seconds": 203.51823189138082
-          },
-          {
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
@@ -4029,6 +4106,17 @@
             "generation_seconds": 16.068366477033123,
             "output_tokens_per_second": 29342.684004245846,
             "p95_response_latency_seconds": 2.957995509216562
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "stage": "ema_warmup",
+            "completions": 1312,
+            "mean_response_tokens": 239.5060975609756,
+            "generation_seconds": 17.18812969501596,
+            "output_tokens_per_second": 18281.91929987111,
+            "p95_response_latency_seconds": 2.44907275660662
           }
         ]
       },
@@ -4053,8 +4141,8 @@
         }
       },
       "question_uncertainty": {
-        "checked_unix": 1791617566.182239,
-        "audit_sha256": "ff1558f7b50f1f24f26d91f90eafcc49d40af59ba0a54d7acff8dc3c8f260ed8",
+        "checked_unix": 1791618665.8307378,
+        "audit_sha256": "818c86e81b257b99b59b92afd108a9eee179bd60fa5d098612cdaee0bdfa20de",
         "comparisons": [
           {
             "worker": "worker-a",
@@ -4305,6 +4393,57 @@
             "question_resampling_interval_95_pp": [
               -9.0625,
               0.9375
+            ],
+            "questions": 40,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2024",
+            "left": "ema_pi",
+            "right": "original",
+            "delta_percentage_points": -0.8333333333333334,
+            "question_resampling_interval_95_pp": [
+              -4.166666666666667,
+              2.5
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AIME 2025",
+            "left": "ema_pi",
+            "right": "original",
+            "delta_percentage_points": -2.5,
+            "question_resampling_interval_95_pp": [
+              -6.25,
+              0.8333333333333334
+            ],
+            "questions": 30,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "task": "math",
+            "dataset": "AMC23",
+            "left": "ema_pi",
+            "right": "original",
+            "delta_percentage_points": -3.75,
+            "question_resampling_interval_95_pp": [
+              -9.0625,
+              1.5625
             ],
             "questions": 40,
             "responses_per_question": 8,
@@ -4805,6 +4944,40 @@
             "bootstrap_seed": 20261010
           },
           {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "frozen_opd",
+            "right": "original",
+            "delta_percentage_points": -1.4481707317073171,
+            "question_resampling_interval_95_pp": [
+              -3.8871951219512195,
+              0.9146341463414633
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "frozen_opd",
+            "right": "frozen_pi",
+            "delta_percentage_points": 3.048780487804878,
+            "question_resampling_interval_95_pp": [
+              0.7621951219512195,
+              5.48780487804878
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
+          },
+          {
             "worker": "worker-d",
             "model": "Qwen3-1.7B",
             "task": "code",
@@ -4871,16 +5044,28 @@
             "responses_per_question": 8,
             "repetitions": 20000,
             "bootstrap_seed": 20261010
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-1.7B",
+            "task": "code",
+            "dataset": "HumanEval+",
+            "left": "ema_warmup",
+            "right": "original",
+            "delta_percentage_points": -0.6097560975609756,
+            "question_resampling_interval_95_pp": [
+              -4.649390243902439,
+              3.4298780487804876
+            ],
+            "questions": 164,
+            "responses_per_question": 8,
+            "repetitions": 20000,
+            "bootstrap_seed": 20261010
           }
         ],
         "pending": [
           {
             "worker": "worker-a",
-            "left": "ema_pi",
-            "right": "original"
-          },
-          {
-            "worker": "worker-a",
             "left": "ema_opd",
             "right": "original"
           },
@@ -4893,16 +5078,6 @@
             "worker": "worker-a",
             "left": "ema_opd",
             "right": "frozen_opd"
-          },
-          {
-            "worker": "worker-c",
-            "left": "frozen_opd",
-            "right": "original"
-          },
-          {
-            "worker": "worker-c",
-            "left": "frozen_opd",
-            "right": "frozen_pi"
           },
           {
             "worker": "worker-c",
@@ -4928,11 +5103,6 @@
             "worker": "worker-c",
             "left": "ema_opd",
             "right": "frozen_opd"
-          },
-          {
-            "worker": "worker-d",
-            "left": "ema_warmup",
-            "right": "original"
           },
           {
             "worker": "worker-d",
@@ -4958,7 +5128,7 @@
         "limitation": "Unadjusted descriptive question-resampling intervals, conditional on one training seed and the fixed eight responses per question. They do not measure training-seed variation, establish population coverage, or correct for screening multiple recipes."
       },
       "question_changes": {
-        "source_counts_sha256": "bc40e086b7df50fdf25b099d0e784eab1c7d83cddd00c5560ff2e5ea263bd8b4",
+        "source_counts_sha256": "ab2b9c7f243cdf0400c629d31013f373eb3a7bc1ac073e8e9604670cdeaaa335",
         "comparisons": [
           {
             "worker": "worker-a",
