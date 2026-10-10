@@ -2549,7 +2549,7 @@
     "later_teacher_refresh": "fixed original versus lagged/EMA; same teacher checkpoint for both context views"
   },
   "proposed_generality_ema_study": {
-    "status": "approved_readiness_in_progress",
+    "status": "readiness_passed_scientific_budget_approval_pending",
     "user_requested_all_four_workers": true,
     "user_requested_ema_comparison": true,
     "launch_authorized": true,
@@ -2703,7 +2703,7 @@
       "all_four_workers_idle_verified": true,
       "native_tokenizer_cpu_checks_passed": true,
       "model_revisions_pinned": true,
-      "EMA_implementation_and_validation": "Initial EMA exact scoring and two finite updates passed in all four cells; complete restored-teacher continuation passed in 1.7B math; remaining readiness incomplete",
+      "EMA_implementation_and_validation": "All four initial equality checks, finite two-update warm-ups and inherited-EMA continuations validated; successful counter 2 to 3. All required evaluations complete. Known independent HF/Megatron parity remains failed and accepted.",
       "sandboxed_code_evaluator": true,
       "full_model_weights_cached": true,
       "known_HF_Megatron_update_parity": "existing failed exploratory status retained; no renewed open-ended parity requirement",
@@ -2712,8 +2712,8 @@
         "Qwen3-1.7B": true
       },
       "selected_models_Miles_GPU_validation": {
-        "Qwen3-8B": false,
-        "Qwen3-1.7B": false
+        "Qwen3-8B": true,
+        "Qwen3-1.7B": true
       },
       "code_grader_validation": {
         "full_canonical_references_passed": 164,
@@ -2733,16 +2733,15 @@
         "skipped": 34,
         "full_collection_blocker": "missing local inference encoding module"
       },
-      "stage_gpu_hours": 11.305,
+      "stage_gpu_hours": 21.56927062034607,
       "owned_gpu_controllers_active": 0,
       "completed_cells": [
-        "Qwen3-1.7B math"
-      ],
-      "remaining_cells": [
         "Qwen3-8B math",
+        "Qwen3-1.7B math",
         "Qwen3-8B code",
         "Qwen3-1.7B code"
       ],
+      "remaining_cells": [],
       "code_extraction_audit": {
         "old_failures_of_1312": {
           "Qwen3-8B": 10,
@@ -2758,9 +2757,11 @@
       },
       "hosted_verification": {
         "fresh_history": true,
-        "all_five_started_runs_have_finite_training": true,
-        "completed_1p7b_math_evaluations": 3,
-        "sdk_state_discrepancy": "Warm-up labelled crashed despite controller exit0 and complete metrics; other finished labels do not imply complete evaluations"
+        "all_eight_started_readiness_runs_have_finite_training": true,
+        "completed_evaluations": 12,
+        "matched_complete_response_count": 12672,
+        "inherited_EMA_counters_verified": true,
+        "sdk_state_discrepancy": "Lifecycle badges remain unreliable; completed controller exit codes and exact hosted records determine status."
       },
       "math_8b_baseline_cap_hit_fraction": {
         "AIME 2024": 0.175,
@@ -2912,14 +2913,274 @@
       "prior_used_including_redeployment": 11.422562815878125,
       "recovery_reservation_gpu_hours": 12.476226238671936,
       "projected_total_gpu_hours": 23.89878905455006,
-      "active_recovery_workers": [
-        "worker-a",
-        "worker-c",
-        "worker-d"
-      ],
+      "active_recovery_workers": [],
       "already_passed_worker": "worker-b",
       "scientific_started": false,
-      "scientific_admission": "All four complete cells must fit measured reservations within 96 GPU-hours and six hours."
-    }
+      "scientific_admission": "All four complete cells must fit measured reservations within 96 GPU-hours and six hours.",
+      "readiness_complete": true,
+      "actual_readiness_gpu_hours": 21.56927062034607,
+      "sources_retired": true,
+      "hosted_verified": true
+    },
+    "scientific_budget_proposal": {
+      "status": "pending_user_approval",
+      "reason": "Measured complete four-cell reserve exceeds the approved scientific-stage cap",
+      "measured_reservation_gpu_hours": 135.91728585163753,
+      "stage_cap_current": 96,
+      "stage_cap_requested": 144,
+      "cumulative_study_cap_current": 176,
+      "cumulative_study_cap_requested": 224,
+      "overall_cap_current": 240,
+      "overall_cap_requested": 288,
+      "readiness_cap_unchanged": 24,
+      "cumulative_readiness_cap_unchanged": 64,
+      "scientific_window_hours_unchanged": 6,
+      "scope_unchanged": {
+        "cells": 4,
+        "updates": 120,
+        "evaluations": 76,
+        "responses": 80256
+      }
+    },
+    "measured_scientific_reservations": [
+      {
+        "worker": "worker-a",
+        "gpu_hours": 34.30767914719052,
+        "wall_hours": 4.288459893398815,
+        "components_seconds": {
+          "evaluation": 8455.0,
+          "student_updates": 1571.0216689109802,
+          "EMA_updates": 601.4799981117249,
+          "trainer_startup": 819.6397047042847,
+          "snapshot_export_and_handoff": 759.797999382019,
+          "evaluator_startup": 83.82512187957764,
+          "cleanup": 60
+        },
+        "margin": 1.25
+      },
+      {
+        "worker": "worker-b",
+        "gpu_hours": 16.161098956399492,
+        "wall_hours": 2.0201373695499365,
+        "components_seconds": {
+          "evaluation": 3477.0,
+          "student_updates": 1327.825584411621,
+          "EMA_updates": 112.68399953842163,
+          "trainer_startup": 494.45355463027954,
+          "snapshot_export_and_handoff": 290.8980002403259,
+          "evaluator_startup": 55.134485483169556,
+          "cleanup": 60
+        },
+        "margin": 1.25
+      },
+      {
+        "worker": "worker-c",
+        "gpu_hours": 43.71905934148364,
+        "wall_hours": 5.464882417685455,
+        "components_seconds": {
+          "evaluation": 12236.0,
+          "student_updates": 1229.7454762458801,
+          "EMA_updates": 589.6659994125366,
+          "trainer_startup": 811.0481729507446,
+          "snapshot_export_and_handoff": 727.9559984207153,
+          "evaluator_startup": 84.44571590423584,
+          "cleanup": 60
+        },
+        "margin": 1.25
+      },
+      {
+        "worker": "worker-d",
+        "gpu_hours": 41.72944840656386,
+        "wall_hours": 5.216181050820483,
+        "components_seconds": {
+          "evaluation": 13053.0,
+          "student_updates": 1082.9526042938232,
+          "EMA_updates": 106.4909999370575,
+          "trainer_startup": 488.1679301261902,
+          "snapshot_export_and_handoff": 173.95200061798096,
+          "evaluator_startup": 58.03789138793945,
+          "cleanup": 60
+        },
+        "margin": 1.25
+      }
+    ],
+    "completed_readiness_results": [
+      {
+        "worker": "worker-a",
+        "warm_two_update_metrics": {
+          "AIME 2024": {
+            "avg_at_8": 0.24166666666666667,
+            "completions": 240,
+            "cap_hit_fraction": 0.21666666666666667,
+            "parse_failure_fraction": 0.20833333333333334,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          },
+          "AIME 2025": {
+            "avg_at_8": 0.20833333333333334,
+            "completions": 240,
+            "cap_hit_fraction": 0.1375,
+            "parse_failure_fraction": 0.10833333333333334,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          },
+          "AMC23": {
+            "avg_at_8": 0.659375,
+            "completions": 320,
+            "cap_hit_fraction": 0.040625,
+            "parse_failure_fraction": 0.034375,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          }
+        },
+        "continuation_one_update_metrics": {
+          "AIME 2024": {
+            "avg_at_8": 0.2375,
+            "completions": 240,
+            "cap_hit_fraction": 0.15,
+            "parse_failure_fraction": 0.14583333333333334,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          },
+          "AIME 2025": {
+            "avg_at_8": 0.20416666666666666,
+            "completions": 240,
+            "cap_hit_fraction": 0.08333333333333333,
+            "parse_failure_fraction": 0.058333333333333334,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          },
+          "AMC23": {
+            "avg_at_8": 0.6875,
+            "completions": 320,
+            "cap_hit_fraction": 0.053125,
+            "parse_failure_fraction": 0.034375,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          }
+        },
+        "expected_completions_per_evaluation": 800,
+        "continuation_loss": 0.028314674273133278,
+        "inherited_EMA_counter": 3
+      },
+      {
+        "worker": "worker-b",
+        "warm_two_update_metrics": {
+          "AIME 2024": {
+            "avg_at_8": 0.1375,
+            "completions": 240,
+            "cap_hit_fraction": 0.05416666666666667,
+            "parse_failure_fraction": 0.05,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          },
+          "AIME 2025": {
+            "avg_at_8": 0.0875,
+            "completions": 240,
+            "cap_hit_fraction": 0.0125,
+            "parse_failure_fraction": 0.0125,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          },
+          "AMC23": {
+            "avg_at_8": 0.45,
+            "completions": 320,
+            "cap_hit_fraction": 0.003125,
+            "parse_failure_fraction": 0.003125,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          }
+        },
+        "continuation_one_update_metrics": {
+          "AIME 2024": {
+            "avg_at_8": 0.125,
+            "completions": 240,
+            "cap_hit_fraction": 0.08333333333333333,
+            "parse_failure_fraction": 0.07083333333333333,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          },
+          "AIME 2025": {
+            "avg_at_8": 0.09166666666666666,
+            "completions": 240,
+            "cap_hit_fraction": 0.020833333333333332,
+            "parse_failure_fraction": 0.0125,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          },
+          "AMC23": {
+            "avg_at_8": 0.41875,
+            "completions": 320,
+            "cap_hit_fraction": 0.009375,
+            "parse_failure_fraction": 0.00625,
+            "grader_timeouts": 0,
+            "unexpected_thinking_delimiters": 0
+          }
+        },
+        "expected_completions_per_evaluation": 800,
+        "continuation_loss": 0.07050929218530655,
+        "inherited_EMA_counter": 3
+      },
+      {
+        "worker": "worker-c",
+        "warm_two_update_metrics": {
+          "HumanEval+": {
+            "avg_at_8": 0.7964939024390244,
+            "completions": 1312,
+            "cap_hit_fraction": 0.0,
+            "parse_failure_fraction": 0.001524390243902439,
+            "grader_timeouts": 10,
+            "unexpected_thinking_delimiters": 0,
+            "pass_at_8": 0.8719512195121951,
+            "test_failure_fraction": 0.20198170731707318
+          }
+        },
+        "continuation_one_update_metrics": {
+          "HumanEval+": {
+            "avg_at_8": 0.8010670731707317,
+            "completions": 1312,
+            "cap_hit_fraction": 0.0,
+            "parse_failure_fraction": 0.0022865853658536584,
+            "grader_timeouts": 10,
+            "unexpected_thinking_delimiters": 0,
+            "pass_at_8": 0.8719512195121951,
+            "test_failure_fraction": 0.19664634146341464
+          }
+        },
+        "expected_completions_per_evaluation": 1312,
+        "continuation_loss": 0.3210984170436859,
+        "inherited_EMA_counter": 3
+      },
+      {
+        "worker": "worker-d",
+        "warm_two_update_metrics": {
+          "HumanEval+": {
+            "avg_at_8": 0.6349085365853658,
+            "completions": 1312,
+            "cap_hit_fraction": 0.0007621951219512195,
+            "parse_failure_fraction": 0.009146341463414634,
+            "grader_timeouts": 15,
+            "unexpected_thinking_delimiters": 0,
+            "pass_at_8": 0.7378048780487805,
+            "test_failure_fraction": 0.3513719512195122
+          }
+        },
+        "continuation_one_update_metrics": {
+          "HumanEval+": {
+            "avg_at_8": 0.6204268292682927,
+            "completions": 1312,
+            "cap_hit_fraction": 0.001524390243902439,
+            "parse_failure_fraction": 0.01676829268292683,
+            "grader_timeouts": 14,
+            "unexpected_thinking_delimiters": 0,
+            "pass_at_8": 0.7621951219512195,
+            "test_failure_fraction": 0.3589939024390244
+          }
+        },
+        "expected_completions_per_evaluation": 1312,
+        "continuation_loss": 0.24313917756080627,
+        "inherited_EMA_counter": 3
+      }
+    ]
   }
 }
