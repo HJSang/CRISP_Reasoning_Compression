@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "recovery_running_model_and_baseline_startup",
+    "status": "recovery_startup_prefix_verified_one_hosted_update_pending",
     "launch_authorized": true,
     "executable": true,
     "new_gpu_jobs_launched": true,
@@ -8781,7 +8781,7 @@
         "workers": "All four worker failure receipts report received termination, exit code1, owned cleanup completed and no remaining GPU processes.",
         "transport_diagnosis": "The status payload was about 479 KB including 2,936 asset digests. Truncation is strongly suspected, but the exact failing stdout/stderr payload was not retained, so the exact transport failure is not proven.",
         "separate_from_output_adjudication": true,
-        "monitor_successor_cpu_fix_status": "reviewed successor preserved; separate approved recovery entrypoint and admission passed; four fresh controllers launched at 18:54:27 UTC with model/baseline startup and no training updates claimed",
+        "monitor_successor_cpu_fix_status": "reviewed successor preserved; separate approved recovery launched at 18:54:27 UTC; 18:59:59 startup audit verifies 14 finite local updates and 13 matching hosted updates with one newer worker-c upload pending, no completed evaluation or trajectory",
         "restart_or_relaunch_authorized_at_failure": false,
         "subsequent_user_approved_one_fresh_retry": true,
         "additional_automatic_retries_authorized": false
@@ -10537,7 +10537,7 @@
       }
     },
     "recovery_execution": {
-      "status": "four_controllers_running_model_and_baseline_startup",
+      "status": "startup_prefix_verified_one_hosted_update_pending",
       "user_approved": true,
       "launched": true,
       "launch_receipt_verified": true,
@@ -10610,8 +10610,78 @@
       "remote_asset_count_verified": 2936,
       "dispatch_errors_observed": 0,
       "failed_queues_observed": 0,
-      "training_updates_verified": 0,
-      "scientific_completion_certified": false
+      "training_updates_verified": 14,
+      "scientific_completion_certified": false,
+      "hosted_updates_verified": 13,
+      "pending_hosted_updates": 1,
+      "completed_evaluation_suites": 0,
+      "completed_trajectories": 0,
+      "startup_evidence": {
+        "checked_unix": 1791658799.5650508,
+        "checked_utc": "2026-10-10T18:59:59.565051+00:00",
+        "observed_checks_passed": true,
+        "scientific_completion_certified": false,
+        "completed_trajectories": 0,
+        "completed_evaluation_suites": 0,
+        "science_read_intervals_complete": 20,
+        "local_updates": 14,
+        "hosted_updates": 13,
+        "limitation": "Startup prefix audit only. One newer local update is pending hosted upload. No complete trajectory or final recipe comparison.",
+        "workers": [
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "updates": 2,
+            "hosted_updates": 2,
+            "pending_hosted_updates": 0,
+            "source_loaded": true,
+            "assets_verified": true,
+            "finite": true,
+            "cyclic_schedule_matches": true,
+            "hosted_available_prefix_matches": true,
+            "failed_queue_jobs": 0
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-4B",
+            "updates": 4,
+            "hosted_updates": 4,
+            "pending_hosted_updates": 0,
+            "source_loaded": true,
+            "assets_verified": true,
+            "finite": true,
+            "cyclic_schedule_matches": true,
+            "hosted_available_prefix_matches": true,
+            "failed_queue_jobs": 0
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "updates": 3,
+            "hosted_updates": 2,
+            "pending_hosted_updates": 1,
+            "source_loaded": true,
+            "assets_verified": true,
+            "finite": true,
+            "cyclic_schedule_matches": true,
+            "hosted_available_prefix_matches": true,
+            "failed_queue_jobs": 0
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-4B",
+            "updates": 5,
+            "hosted_updates": 5,
+            "pending_hosted_updates": 0,
+            "source_loaded": true,
+            "assets_verified": true,
+            "finite": true,
+            "cyclic_schedule_matches": true,
+            "hosted_available_prefix_matches": true,
+            "failed_queue_jobs": 0
+          }
+        ]
+      }
     }
   }
 }
