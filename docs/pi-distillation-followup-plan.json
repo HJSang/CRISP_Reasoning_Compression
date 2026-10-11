@@ -59695,5 +59695,189 @@
       "Source/test review plus documentation/root acceptance are required before actual graph access; final completion remains a separate future gate."
     ],
     "safe_for_verified_completed_graph_analysis": true
+  },
+  "late_decay_fork_prefix_terminal": {
+    "version": "public-late-fork-prefix-terminal-v2",
+    "status": "both_shared_prefixes_terminal_independently_reviewed_and_accepted",
+    "phase_accepted": true,
+    "independent_phase_review_passed": true,
+    "accounting_cutoff_utc": "2026-10-11T14:07:28.886517+00:00",
+    "accepted_transition_utc": "2026-10-11T14:10:51.609629+00:00",
+    "counts": {
+      "delimiter_diagnostics": 3,
+      "exports": 16,
+      "grader_timeouts": 0,
+      "losses": 88,
+      "queue_jobs": 18,
+      "responses": 21632,
+      "strict_responses": 19808,
+      "strict_suites": 20,
+      "suites": 22,
+      "updates": 88
+    },
+    "retired_exports": 14,
+    "retained_midpoint_sources": 2,
+    "models": [
+      {
+        "model": "Qwen3-4B",
+        "updates": 44,
+        "generated_suites": 11,
+        "generated_responses": 10816,
+        "strict_suites": 9,
+        "strict_responses": 8992,
+        "delimiter_affected_responses": 3,
+        "grader_timeouts": 0,
+        "exports": 8,
+        "retired_exports": 7,
+        "retained_midpoint_sources": 1,
+        "terminal_verified": true,
+        "final_policy_passed": true,
+        "strict_zero_delimiter_passed": false,
+        "warnings": [],
+        "diagnostic_suites": [
+          {
+            "suite": "validation",
+            "step": 44,
+            "delimiter_diagnostics": 1,
+            "diagnostic_datasets": [
+              {
+                "dataset": "Math validation",
+                "diagnostics": 1
+              }
+            ],
+            "responses": 1024
+          },
+          {
+            "suite": "benchmark",
+            "step": 44,
+            "delimiter_diagnostics": 2,
+            "diagnostic_datasets": [
+              {
+                "dataset": "AIME 2024",
+                "diagnostics": 2
+              }
+            ],
+            "responses": 800
+          }
+        ]
+      },
+      {
+        "model": "Qwen3-8B",
+        "updates": 44,
+        "generated_suites": 11,
+        "generated_responses": 10816,
+        "strict_suites": 11,
+        "strict_responses": 10816,
+        "delimiter_affected_responses": 0,
+        "grader_timeouts": 0,
+        "exports": 8,
+        "retired_exports": 7,
+        "retained_midpoint_sources": 1,
+        "terminal_verified": true,
+        "final_policy_passed": true,
+        "strict_zero_delimiter_passed": true,
+        "warnings": [
+          "Hosted run badge remains running after independently verified cleanup"
+        ],
+        "diagnostic_suites": []
+      }
+    ],
+    "raw_outcomes_retained": true,
+    "actual_gpu_hours_at_cutoff": {
+      "overall": 575.4378050173655,
+      "readiness": 86.68810977247026,
+      "readiness_stage": 25.992832137743637,
+      "science": 317.11534861405704,
+      "study": 488.74969524489524
+    },
+    "projected_gpu_hours_at_acceptance": {
+      "overall": 985.4522485474968,
+      "readiness": 86.68810977247026,
+      "readiness_stage": 25.992832137743637,
+      "science": 727.1297921441883,
+      "study": 898.7641387750265
+    },
+    "cost_projection_is_not_actual_spend": true,
+    "transfer_certified_in_this_snapshot": false,
+    "tail_dispatch_certified_in_this_snapshot": false,
+    "full_family_complete": false,
+    "sustained_improvement_established": false,
+    "score_selection_performed_for_this_update": false,
+    "limits": [
+      "The dated snapshot certifies the two fixed 44-update prefixes only; subsequent transfer and continuation require their own evidence.",
+      "The three delimiter-affected 4B responses remain unchanged under the frozen output policy. Strict zero-delimiter counts are reported separately, without excluding responses from the final-policy totals.",
+      "The 8B hosted running badge is a warning; exact source-bound local and hosted records, successful exits and owned cleanup establish terminal status.",
+      "The two retained midpoint exports were fixed by the protocol before outcomes, not selected from observed scores.",
+      "The final teacher-source hash follows verified promotion telemetry, the reviewed copy hook and retained export; teacher tensor equality was not separately measured.",
+      "No final-88 contrast, recipe advantage, sustained-gain conclusion or training-seed generalization is established."
+    ]
+  },
+  "late_decay_fork_transfer_continuation": {
+    "version": "public-late-fork-transfer-continuation-v1",
+    "status": "transfer_failed_uncertain_chunk_pending_endpoint_inspection",
+    "observation_cutoff_utc": "2026-10-11T14:33:55.944279+00:00",
+    "prefix_phase_accepted": true,
+    "continuation_authorized_under_standing_implementation_authority": true,
+    "new_user_approval_of_this_specific_amendment_claimed": false,
+    "continuation_claimed_once": true,
+    "first_lease_model": "Qwen3-8B",
+    "first_lease_started_utc": "2026-10-11T14:32:20.791711+00:00",
+    "completed_chunk_calls_before_failure": 3,
+    "uncertain_paired_calls": 1,
+    "uncertain_endpoint_intervals": 2,
+    "tail_launches": 0,
+    "transfer_completion_certified": false,
+    "full_family_complete": false,
+    "sustained_improvement_established": false,
+    "exact_failure_cause_known": false,
+    "automatic_retry_authorized": false,
+    "original_local_failure": {
+      "before_first_remote_action": true,
+      "before_first_lease": true,
+      "copies_started": 0,
+      "consumed_original_attempt_preserved": true
+    },
+    "reviewed_clock_correction": {
+      "original_phase_seconds": 9000,
+      "cumulative_nonlease_buffer_seconds": 1800,
+      "full_lease_seconds_per_model": 3600,
+      "minimum_residual_local_seconds_before_lease": 60,
+      "phase_start_unchanged": true,
+      "phase_deadline_unchanged": true,
+      "global_deadline_unchanged": true,
+      "gpu_caps_unchanged": true,
+      "scientific_protocol_unchanged": true,
+      "deployed_training_runtime_unchanged": true,
+      "separate_versioned_local_adapter": true,
+      "independent_source_review_passed": true,
+      "independent_documentation_review_passed": true,
+      "final_continuation_lineage_replay_required": true
+    },
+    "cpu_validation": {
+      "owner_cases_passed": 33,
+      "elapsed_seconds": 21.79,
+      "local_binary_transport_test": true,
+      "real_remote_calls_by_tests": 0,
+      "does_not_certify_real_transfer_success": true
+    },
+    "implementation_documentation": {
+      "new_source_rows": 311,
+      "new_test_rows": 290,
+      "new_rows": 601,
+      "prior_rows_preserved": 34580,
+      "total_rows": 35181,
+      "display_redactions": 2,
+      "source_files": {
+        "transfer_continuation.py": "e2e42dddd57a8c7b9c2a14e3e5e2f7a094119cf8d93635717b953b844096f255",
+        "test_transfer_continuation.py": "e2a93f18c5d1bea25695434b23410547e551edaf979ce7a09a9f7df833a5a28b"
+      }
+    },
+    "limits": [
+      "This is a dated failure snapshot; endpoint inspection and cost closure remain pending.",
+      "A later paired transfer call failed after source inventory and three completed chunk calls; its underlying cause is not established.",
+      "The original failure was local and pre-remote. The separately authorized continuation did perform transfer work, so the later failure must not be described as no-copy.",
+      "No unresolved call may be replayed automatically, and no tail or transfer-completion claim is made.",
+      "The accepted-prefix costs retain their earlier accounting cutoff and are not a total for the later failed transfer."
+    ]
   }
 }
