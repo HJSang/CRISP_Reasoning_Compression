@@ -59418,5 +59418,282 @@
       "No new scientific result or sustained-growth claim.",
       "Earlier preparation and completed-study snapshots remain unchanged historical evidence."
     ]
+  },
+  "late_decay_fork_readiness_completion": {
+    "version": "public-late-fork-readiness-complete-v1",
+    "status": "readiness_mechanics_independently_verified_and_phase_accepted",
+    "terminal_evidence_cutoff_utc": "2026-10-11T12:53:43.137530+00:00",
+    "acceptance_checked_utc": "2026-10-11T13:00:51.137798+00:00",
+    "readiness_complete": true,
+    "independent_review_passed": true,
+    "phase_accepted": true,
+    "scientific_dispatched_at_acceptance_cutoff": false,
+    "scope": "Two synthetic-offset mechanics probes from original student and teacher weights; not scientific trajectories.",
+    "counts": {
+      "models": 2,
+      "successful_updates": 22,
+      "exports": 4,
+      "retired_exports": 4,
+      "completed_queue_jobs": 6,
+      "generated_suites": 10,
+      "generated_responses": 384,
+      "delimiter_affected_responses": 0,
+      "grader_timeouts": 0
+    },
+    "probes": [
+      {
+        "model": "Qwen3-4B",
+        "global_update_labels": [
+          45,
+          55
+        ],
+        "successful_updates": 11,
+        "original_student_and_teacher": true,
+        "synthetic_counter_offset": true,
+        "first_applied_lr": 5e-06,
+        "last_applied_lr": 3.953488372093024e-06,
+        "adam_reset_global_updates": [
+          45,
+          54
+        ],
+        "teacher_refresh_global_update": 55,
+        "local_and_hosted_exact": true
+      },
+      {
+        "model": "Qwen3-8B",
+        "global_update_labels": [
+          78,
+          88
+        ],
+        "successful_updates": 11,
+        "original_student_and_teacher": true,
+        "synthetic_counter_offset": true,
+        "first_applied_lr": 1.5465116279069765e-06,
+        "last_applied_lr": 5e-07,
+        "adam_reset_global_updates": [
+          78,
+          87
+        ],
+        "teacher_refresh_global_update": 88,
+        "local_and_hosted_exact": true
+      }
+    ],
+    "verification": {
+      "actual_sources_and_global_clocks_verified": true,
+      "applied_next_and_parameter_group_lr_verified": true,
+      "uncached_hosted_verified": true,
+      "zero_exit_and_owned_cleanup_verified": true,
+      "strict_zero_delimiter_passed": true,
+      "final_policy_passed": true,
+      "training_response_cap": 4096,
+      "evaluation_response_cap": 1024,
+      "scientific_evaluation_response_cap": 16384,
+      "hosted_running_badges": "Retained as warnings; exact metrics, zero exits and owned cleanup determine terminal status.",
+      "teacher_hash_provenance": "Derived from verified promotion telemetry, the reviewed copy hook and export identity; no independent hash of final teacher tensors."
+    },
+    "accounting": {
+      "checked_utc": "2026-10-11T13:00:51.137798+00:00",
+      "actual_gpu_hours": {
+        "science": 300.8170721981262,
+        "study": 472.4514188289644,
+        "readiness": 86.68810977247026,
+        "overall": 559.1395286014347,
+        "readiness_stage": 25.992832137743637
+      },
+      "new_readiness_gpu_hours": 4.024042609002848,
+      "new_preparation_science_gpu_hours": 0.2761282353931165,
+      "complete_operations": 24,
+      "uncertain_operations": 0,
+      "remaining_reserved_gpu_hours": {
+        "readiness": 0.0,
+        "science": 625.0293394553469
+      },
+      "projected_gpu_hours": {
+        "science": 925.8464116534731,
+        "study": 1097.4807582843114,
+        "readiness": 86.68810977247026,
+        "overall": 1184.1688680567815,
+        "readiness_stage": 25.992832137743637
+      },
+      "original_deadline_unix": 1791844987.672134,
+      "timing_note": "All readiness assignments and reads are closed; acceptance releases unused readiness reservation. The earlier independent review is retained at its earlier cutoff."
+    },
+    "limits": [
+      "The 1024-token mechanics probe does not establish 16384-token scientific throughput or accuracy.",
+      "Synthetic offsets are not evidence of trained update44 or update77 scientific checkpoints.",
+      "The separate fixed-prefix and continuation experiment remains incomplete; no sustained-gain claim.",
+      "Scientific prefix startup, when independently verified, belongs to a later dated snapshot; this accepted-readiness record remains immutable."
+    ]
+  },
+  "late_decay_fork_prefix_startup": {
+    "version": "public-late-fork-prefix-startup-v1",
+    "status": "both_scientific_prefixes_dispatched_owned_alive_tails_reserved_unlaunched",
+    "process_observation_cutoff_utc": "2026-10-11T13:04:06.278191+00:00",
+    "accounting_cutoff_utc": "2026-10-11T13:04:48.461396+00:00",
+    "independent_startup_review_passed": true,
+    "review_status": "independent_startup_accounting_and_publication_review_passed",
+    "readiness_complete": true,
+    "scientific_controllers_dispatched": 2,
+    "completed_scientific_controllers": 0,
+    "prefixes": [
+      {
+        "model": "Qwen3-4B",
+        "planned_updates": 44,
+        "owned_alive_at_observation": true,
+        "observed_utc": "2026-10-11T13:04:00.695180+00:00",
+        "assets_and_declared_source_identities_verified": true,
+        "initial_student_and_teacher": "original model",
+        "queue_at_observation": {
+          "done": 0,
+          "failed": 0,
+          "pending": 0,
+          "running": 1
+        }
+      },
+      {
+        "model": "Qwen3-8B",
+        "planned_updates": 44,
+        "owned_alive_at_observation": true,
+        "observed_utc": "2026-10-11T13:04:06.278191+00:00",
+        "assets_and_declared_source_identities_verified": true,
+        "initial_student_and_teacher": "original model",
+        "queue_at_observation": {
+          "done": 0,
+          "failed": 0,
+          "pending": 0,
+          "running": 0
+        }
+      }
+    ],
+    "audited_scientific_evidence": {
+      "finite_training_updates": false,
+      "hosted_history": false,
+      "completed_evaluation_suites": false,
+      "completed_scientific_trajectories": 0
+    },
+    "tails": {
+      "planned_controllers": 4,
+      "all_reserved": true,
+      "dispatched": false,
+      "scope": "Two continuations per model from its fixed complete update44 source: constant LR versus late linear decay."
+    },
+    "accounting": {
+      "checked_utc": "2026-10-11T13:04:48.461396+00:00",
+      "complete_operations": 30,
+      "uncertain_operations": 0,
+      "actual_gpu_hours": {
+        "science": 301.62021179835017,
+        "study": 473.25455842918836,
+        "readiness": 86.68810977247026,
+        "overall": 559.9426682016585,
+        "readiness_stage": 25.992832137743637
+      },
+      "new_family_science_gpu_hours": 1.0792678356170882,
+      "new_readiness_gpu_hours": 4.024042609002848,
+      "remaining_reserved_gpu_hours": {
+        "readiness": 0.0,
+        "science": 624.2261998551229
+      },
+      "projected_gpu_hours": {
+        "science": 925.8464116534731,
+        "study": 1097.4807582843114,
+        "readiness": 86.68810977247026,
+        "overall": 1184.1688680567813,
+        "readiness_stage": 25.992832137743637
+      },
+      "original_deadline_utc": "2026-10-12T22:43:07.672134+00:00",
+      "timing_note": "Costs include assigned time through the accounting cutoff, later than the two process observations. Both source and readiness histories remain separately dated."
+    },
+    "scientific_scope": {
+      "models": [
+        "Qwen3-4B",
+        "Qwen3-8B"
+      ],
+      "seed": 137,
+      "recipe": "PI9/OPD2, cycle-refresh teacher and phase-reset Adam",
+      "shared_prefix_updates": 44,
+      "continuation_updates_each": 44,
+      "original_logical_horizon": 88,
+      "evaluation_response_cap": 16384,
+      "unique_updates": 264,
+      "generated_suites": 58,
+      "generated_responses": 57600,
+      "exports": 48,
+      "imported_original_midpoint_records": "References only, not new generated suites or responses."
+    },
+    "limits": [
+      "Operational startup does not certify finite training, model behavior, hosted training results or scientific scores.",
+      "No claim that no unobserved training or generation had occurred; no such outcomes are certified in this snapshot.",
+      "Tail dispatch remains conditional on accepted complete prefix evidence and exact retained-source transfer.",
+      "The scientific experiment and sustained-improvement goal remain incomplete."
+    ]
+  },
+  "late_decay_fork_offline_analysis": {
+    "version": "late-fork-offline-analysis-public-status-v1",
+    "status": "CPU capability, independent statistical review and exact-line documentation accepted; actual analysis awaits complete final evidence",
+    "actual_scientific_results_analyzed": false,
+    "actual_scientific_graph_access_permitted": false,
+    "runtime_modified": false,
+    "new_remote_calls": 0,
+    "launch_authority": false,
+    "validation": {
+      "cpu_cases_passed": 47,
+      "elapsed_seconds": 8.45,
+      "source_statistical_review_passed": true,
+      "documentation_review_passed": true,
+      "source_statistical_review_sha256": "9eb230af22add7bb70bc2a32ec0a449f4455c2e76e24099d51d316b41af41f0c",
+      "source_lines": 267,
+      "test_lines": 289,
+      "new_exact_rows": 556,
+      "documentation_review_sha256": "0ad59bf287d8ce4b50e507f5fb7e921520cb003cd1175e68448a88a30cbb8925"
+    },
+    "source_sha256": {
+      "trajectory_analysis.py": "c606b76d27d4bc09d4639df8238f7d964ef20d4067a36810034f4b59e41a1747",
+      "test_trajectory_analysis.py": "9571f1007aa4e13df53a69a98888751d72c3c815cbc7b2816e099148ec472f2e"
+    },
+    "protocol_sha256": "1ae55f43b2681181a627f49c246e90b9b1961e36e3ad9971979b9dc8cc230bc2",
+    "diagnostic_conventions_sha256": "c2e50acf226db9081e67b9830296051f0267aa24d818b09277306cf55d2e9c83",
+    "method": {
+      "primary_accuracy_contrasts": [
+        "4B_decay88_minus_shared44",
+        "8B_decay88_minus_shared44",
+        "4B_decay88_minus_constant88",
+        "8B_decay88_minus_constant88"
+      ],
+      "resamples": 20000,
+      "generator": "PCG64",
+      "seed": 137044088,
+      "resampling": "one exact integers(0,128,size=(20000,128)) draw; shared question weights across models and all conditions; eight response draws stay clustered",
+      "simultaneous_interval": "observed estimate +/- linear95th quantile of maximum absolute centered standardized bootstrap deviations times fixed bootstrap SD(ddof1)",
+      "degenerate_primary_scale": "withhold all four simultaneous intervals and associated claim gates",
+      "secondary_marginal_intervals": 390,
+      "late_slope_steps": [
+        44,
+        55,
+        66,
+        77,
+        88
+      ],
+      "length_quantiles": [
+        0,
+        0.25,
+        0.5,
+        0.75,
+        0.9,
+        0.95,
+        1
+      ],
+      "counts": "all six scientific segments,58 generated suites,57,600 draws;16 import references do not inflate denominators"
+    },
+    "boundaries": [
+      "Requires an accepted closed final journal, its unchanged complete:false candidate, exact independent final review and full local source-bound phase replay.",
+      "The loader does not call live finalization, transport or dispatch.",
+      "All fixed candidate points, cycle and phase reversals, dataset counts, caps, parse failures and delimiter diagnostics remain visible; benchmarks are descriptive only.",
+      "The validation panel is historically exposed; question uncertainty is conditional on these realized single-seed runs, not training-seed or pristine-confirmation uncertainty.",
+      "Own-midpoint gain and relative preservation are separate. Positive finite-horizon flags cannot establish indefinite sustained improvement.",
+      "Exact numerical conventions were frozen after readiness launch but before scientific launch and outcome access.",
+      "Source/test review plus documentation/root acceptance are required before actual graph access; final completion remains a separate future gate."
+    ],
+    "safe_for_verified_completed_graph_analysis": true
   }
 }
