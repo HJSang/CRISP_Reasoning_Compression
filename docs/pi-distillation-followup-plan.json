@@ -60254,5 +60254,84 @@
       "Flat queue counts and an alive controller alone do not establish a stall; no new timing forecast, stopping threshold or retry is introduced.",
       "Fixed endpoint accuracy remains primary. Costs are descriptive; no compute-to-quality analysis is introduced."
     ]
+  },
+  "late_decay_fork_monitor_20261011T184041Z": {
+    "version": "public-late-fork-operational-monitor-v1",
+    "accounting_cutoff_utc": "2026-10-11T18:40:41.915070+00:00",
+    "inspection_window_utc": {
+      "first": "2026-10-11T18:40:13.908637+00:00",
+      "last": "2026-10-11T18:40:36.752028+00:00"
+    },
+    "status": "four_owned_controllers_alive_with_continued_queue_movement",
+    "owned_alive_controllers": 4,
+    "exact_source_bindings_unchanged": true,
+    "controller_failures_observed": 0,
+    "operations_complete": 20,
+    "operations_uncertain": 0,
+    "queue_observations": [
+      {
+        "model": "Qwen3-8B",
+        "schedule": "constant",
+        "done": 3,
+        "failed": 0,
+        "pending": 0,
+        "running": 1
+      },
+      {
+        "model": "Qwen3-4B",
+        "schedule": "constant",
+        "done": 4,
+        "failed": 0,
+        "pending": 1,
+        "running": 1
+      },
+      {
+        "model": "Qwen3-8B",
+        "schedule": "late_linear_decay",
+        "done": 3,
+        "failed": 0,
+        "pending": 0,
+        "running": 1
+      },
+      {
+        "model": "Qwen3-4B",
+        "schedule": "late_linear_decay",
+        "done": 4,
+        "failed": 0,
+        "pending": 1,
+        "running": 1
+      }
+    ],
+    "queue_counts_are_atomic": false,
+    "queue_counts_certify_training_steps_or_suite_denominators": false,
+    "progress_files_present": 0,
+    "progress_marker_role": "segment_complete_after_trainer_exit_queue_drain_validation_and_baseline_import_tracking_before_cleanup",
+    "progress_marker_is_heartbeat": false,
+    "progress_marker_alone_certifies_final_completion": false,
+    "completed_tail_updates_certified": 0,
+    "finite_tail_losses_certified": 0,
+    "new_tail_scores_certified": 0,
+    "actual_gpu_hours": {
+      "science": 341.3493204975129,
+      "study": 512.9836671283512,
+      "readiness": 86.68810977247026,
+      "overall": 599.6717769008214,
+      "readiness_stage": 25.992832137743637
+    },
+    "science_cost_scope": "current_stage",
+    "study_and_readiness_cost_scope": "cumulative",
+    "independent_monitor_review_passed": true,
+    "scientific_family_complete": false,
+    "sustained_improvement_established": false,
+    "limits": [
+      "These are non-atomic queue-directory observations, not certified training-step, result-score or suite-denominator evidence.",
+      "The segment-complete marker is normally absent during execution and is written after trainer success, queue drain, result validation and baseline/import tracking. Cleanup follows, so the marker alone is not final completion.",
+      "Flat queue counts and an alive controller alone do not establish a stall; no new timing forecast, stopping threshold or retry is introduced.",
+      "Fixed endpoint accuracy remains primary. Costs are descriptive; no compute-to-quality analysis is introduced."
+    ],
+    "previous_monitor_snapshot": "late_decay_fork_monitor_20261011T182805Z",
+    "controller_exits_observed": 0,
+    "cleanup_receipts_observed": 0,
+    "completed_tail_trajectories_certified": 0
   }
 }
