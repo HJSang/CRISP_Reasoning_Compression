@@ -48864,7 +48864,7 @@
       ]
     },
     "frozen_teacher_logit_mixture_pilot": {
-      "status": "reviewed_numerical_and_runtime_CPU_capability_orchestration_in_development",
+      "status": "reviewed_CPU_numerical_runtime_and_orchestration_capability_waiting_for_phase_wave2_completion",
       "model": "Qwen3-4B",
       "teacher": "same frozen original weights with and without PI on identical observed response prefixes within each arm",
       "formula": "softmax(alpha*z_PI+(1-alpha)*z_noPI) at scoring temperature1",
@@ -48889,7 +48889,15 @@
       "staged": false,
       "dispatch": false,
       "actual_model_results": false,
-      "scientific_limit": "Feasibility and mechanism pilot; cannot establish sustained gains, best alpha,8B/full-data generalization or superiority to a complete cyclic88-update trajectory."
+      "scientific_limit": "Feasibility and mechanism pilot; cannot establish sustained gains, best alpha,8B/full-data generalization or superiority to a complete cyclic88-update trajectory.",
+      "orchestration_cpu_tests": 56,
+      "orchestration_documented_lines": 1317,
+      "orchestration_source_and_documentation_review_passed": true,
+      "local_configs_independently_verified": true,
+      "prospective_full_cap_cost_envelope_gpu_hours": 54,
+      "prospective_pilot_wall_hours": 4.5,
+      "prospective_setup_evidence_gpu_hours": 2,
+      "actual_reservation_created": false
     }
   }
 }
