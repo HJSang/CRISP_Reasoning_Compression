@@ -60333,5 +60333,49 @@
     "controller_exits_observed": 0,
     "cleanup_receipts_observed": 0,
     "completed_tail_trajectories_certified": 0
+  },
+  "late_decay_fork_terminal_collection_recovery": {
+    "version": "public-late-fork-terminal-collection-recovery-v1",
+    "status": "four_tail_runtime_cleanups_verified_collective_scientific_audit_pending",
+    "runtime_cleanup_cutoff_utc": "2026-10-11T19:13:38.191292+00:00",
+    "successful_tail_runtime_cleanups": 4,
+    "owned_controller_processes_absent": true,
+    "idle_gpus_per_worker": 8,
+    "gpu_compute_processes_empty": true,
+    "independent_runtime_cleanup_review_passed": true,
+    "collection_interruption": "local immutable dependency seal check before first collector transport",
+    "first_collector_contact_occurred_in_failed_invocation": false,
+    "raw_failed_journal_operations": 36,
+    "prior_completed_operations_preserved": 35,
+    "unexecuted_collector_intents_preserved": 1,
+    "original_collection_marker_consumed": true,
+    "independent_no_contact_review_passed": true,
+    "exact_mutated_dependency_proven": false,
+    "continuation_capability": {
+      "version": "late-fork-collection-recovery-v1",
+      "cpu_cases_passed": 29,
+      "source_review_passed": true,
+      "documentation_review_passed": true,
+      "actual_continuation_invoked": false,
+      "collection_calls": 5,
+      "later_retirement_calls_reserved": 4,
+      "same_first_call_id_and_original_start": true,
+      "original_caps_clocks_and_scientific_protocol_unchanged": true,
+      "no_automatic_retry": true
+    },
+    "full_scientific_family_complete": false,
+    "new_tail_scores_certified": false,
+    "sustained_improvement_established": false,
+    "resource_metrics_role": "descriptive_only",
+    "implementation_walkthrough_rows_added": 490,
+    "attributed_implementation_rows_preserved": 42086,
+    "attributed_implementation_rows_total": 42576,
+    "limits": [
+      "Runtime exit and physical cleanup do not replace exact training, draw-level, hosted and source evidence verification.",
+      "The dependency seal mismatch is proven; the precise changed dependency is not uniquely identified.",
+      "The local failure and failed journal remain immutable. The reviewed continuation is a tool capability pending separate root execution.",
+      "If executed, the first operation retains its original accounting start through completion. The local pause is conservative GPU-equivalent bookkeeping, not measured remote execution, and is counted only once.",
+      "Full scientific verification, independent phase acceptance, source retirement and final accounting remain required. No accuracy or sustained-gain conclusion follows."
+    ]
   }
 }
