@@ -4,6 +4,126 @@
 <body><main>
 <p class="meta">October 10, 2026 · completed pilots audited · 4B/8B cyclic and optimizer studies approved · original attempt failed; approved teacher-comparison retry complete; all eight phase-allocation arms complete; both eight-update and 88-update mixture pairs independently complete under strict rules; sustained-gain goal remains open</p>
 <h1>Does PI warm-up followed by original-teacher distillation generalize?</h1>
+<section id="late-fork-fixed-midpoint-results">
+<h2>Matched midpoint results: uniform late decay did not extend gain · 11 October 2026</h2>
+<p><strong>The six-segment experiment is operationally complete; the sustained-improvement goal remains open.</strong> The fixed 44-update midpoint was shared before the two continuations: PI9/OPD2 with cycle refresh and phase-wise Adam resets, either constant 5 × 10<sup>−6</sup> or a uniform linear decrease from 5 × 10<sup>−6</sup> at update 45 to 5 × 10<sup>−7</sup> at update 88. Both decay arms finish below their own midpoint. Constant-LR 8B improves from midpoint to final, while 4B is nearly flat. This particular late-decay intervention fails the planned continued-gain test; other LR schedules and Adam-continuity mechanisms remain untested.</p>
+<p>All six segments, exact training/evaluation/hosted evidence, source retirement and final accounting passed review. The frozen numerical results were independently reproduced, including all four joint intervals and all 390 marginal intervals. The family contains <strong>264 unique updates, 48 exports, 58 generated suites and 57,600 responses</strong>: 50 validation suites and eight benchmark suites. The 16 imported suite references account for 74 hosted suite writes; they add no unique evaluation responses. All 50 delimiter-affected responses, capped outputs and parse failures remain in their original denominators. No filtering or rescoring was applied.</p>
+<h3>Fixed validation endpoints</h3>
+<div class="scroll"><table><thead><tr><th>Model</th><th>Original (%)</th><th>Shared 44 (%)</th><th>Constant 88 (%)</th><th>Decay 88 (%)</th></tr></thead><tbody>
+<tr><td>Qwen3-4B</td><td>71.1914</td><td>78.5156</td><td>78.8086</td><td>77.3438</td></tr>
+<tr><td>Qwen3-8B</td><td>67.4805</td><td>78.7109</td><td>82.1289</td><td>77.8320</td></tr>
+</tbody></table></div>
+<p>Validation uses the same historically exposed 128 questions, eight draws each, and one training seed. Original baselines are descriptive context; the fixed midpoint and fixed update-88 contrasts answer the planned intervention question.</p>
+<h3>Four primary contrasts with simultaneous 95% intervals</h3>
+<div class="scroll"><table><thead><tr><th>Accuracy contrast</th><th>Estimate (pp)</th><th>Joint 95% interval (pp)</th></tr></thead><tbody>
+<tr><td>4B: decay 88 − shared 44</td><td>-1.1719</td><td>[-4.8828, +2.5391]</td></tr>
+<tr><td>8B: decay 88 − shared 44</td><td>-0.8789</td><td>[-5.3150, +3.5572]</td></tr>
+<tr><td>4B: decay 88 − constant 88</td><td>-1.4648</td><td>[-4.8624, +1.9327]</td></tr>
+<tr><td>8B: decay 88 − constant 88</td><td>-4.2969</td><td>[-8.5543, -0.0395]</td></tr>
+</tbody></table></div>
+<p>The 8B decay-minus-constant interval ends just below zero; the other three cross zero. Crossing zero does not establish equivalence. These intervals concern this four-contrast family conditional on the questions and realized runs, not training-seed uncertainty or general model superiority. They use 20,000 paired question resamples shared across models and checkpoints, PCG64 seed 137044088, sample-SD standardization and the linear 95th quantile of the centered maximum absolute statistic. Scope contrasts and slope endpoints were prospective; detailed resampling conventions were frozen after readiness launch but before scientific launch and outcome access.</p>
+<h3>All five complete-cycle endpoints and late reversals</h3>
+<div class="scroll"><table><thead><tr><th>Model</th><th>Arm</th><th>44 (%)</th><th>55 (%)</th><th>66 (%)</th><th>77 (%)</th><th>88 (%)</th><th>OLS pp/cycle</th><th>Marginal 95% interval</th></tr></thead><tbody>
+<tr><td>Qwen3-4B</td><td>Constant</td><td>78.5156</td><td>81.0547</td><td>78.7109</td><td>78.8086</td><td>78.8086</td><td>-0.1660</td><td>[-0.9473, +0.5957]</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay</td><td>78.5156</td><td>79.5898</td><td>79.1016</td><td>79.9805</td><td>77.3438</td><td>-0.1953</td><td>[-0.8984, +0.4980]</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant</td><td>78.7109</td><td>81.5430</td><td>83.0078</td><td>82.8125</td><td>82.1289</td><td>+0.8105</td><td>[+0.2539, +1.4063]</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay</td><td>78.7109</td><td>78.8086</td><td>79.8828</td><td>78.1250</td><td>77.8320</td><td>-0.2441</td><td>[-1.1133, +0.6250]</td></tr>
+</tbody></table></div>
+<div class="scroll"><table><thead><tr><th>Model</th><th>Arm</th><th>55 − 44 (pp)</th><th>66 − 55 (pp)</th><th>77 − 66 (pp)</th><th>88 − 77 (pp)</th></tr></thead><tbody>
+<tr><td>Qwen3-4B</td><td>Constant</td><td>+2.5391</td><td>-2.3438</td><td>+0.0977</td><td>+0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay</td><td>+1.0742</td><td>-0.4883</td><td>+0.8789</td><td>-2.6367</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant</td><td>+2.8320</td><td>+1.4648</td><td>-0.1953</td><td>-0.6836</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay</td><td>+0.0977</td><td>+1.0742</td><td>-1.7578</td><td>-0.2930</td></tr>
+</tbody></table></div>
+<p>Constant 8B gains <strong>+3.4180 pp</strong> from 44 to 88 (marginal 95% interval [+0.9766, +5.9570]) and has a positive five-point slope, yet falls from 83.0078% to 82.8125% to 82.1289% at 66, 77 and 88. Constant 4B changes +0.2930 pp (marginal interval [−3.1250, +3.7109]) with a slightly negative slope. Both decay slopes are negative. The own-midpoint and late-trend requirements for continued gain therefore fail for both decay arms. These finite curves neither establish monotonic improvement nor justify selecting a peak. Slopes use all five points and are measured per 11-update cycle; the intervals in this table and the 390 secondary intervals are marginal, not simultaneous.</p>
+<details><summary>Every planned validation point, including phase reversals and output diagnostics</summary>
+<p>Each row is one 128-question × eight-draw suite. Shared update 44 is displayed once below per model and reused in both tail curves above. Accuracy, cap, parse-failure and delimiter columns are percentages; length is mean response tokens.</p>
+<div class="scroll"><table><thead><tr><th>Model</th><th>Segment</th><th>Update</th><th>Accuracy (%)</th><th>Mean tokens</th><th>Cap (%)</th><th>Parse fail (%)</th><th>Delimiter (%)</th></tr></thead><tbody>
+<tr><td>Qwen3-4B</td><td>Shared prefix</td><td>0</td><td>71.1914</td><td>1403.7236</td><td>1.9531</td><td>1.7578</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared prefix</td><td>9</td><td>70.9961</td><td>984.3545</td><td>0.2930</td><td>0.0000</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared prefix</td><td>11</td><td>73.3398</td><td>1475.9902</td><td>2.2461</td><td>1.8555</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared prefix</td><td>20</td><td>73.1445</td><td>1554.9033</td><td>3.5156</td><td>2.6367</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared prefix</td><td>22</td><td>77.9297</td><td>1598.6367</td><td>1.8555</td><td>1.2695</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared prefix</td><td>31</td><td>76.7578</td><td>2517.1113</td><td>8.9844</td><td>3.0273</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared prefix</td><td>33</td><td>77.5391</td><td>1633.4238</td><td>2.2461</td><td>1.2695</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared prefix</td><td>42</td><td>75.0000</td><td>1453.7139</td><td>2.2461</td><td>0.8789</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared prefix</td><td>44</td><td>78.5156</td><td>1662.8379</td><td>2.0508</td><td>1.8555</td><td>0.0977</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant tail</td><td>53</td><td>74.7070</td><td>1745.2920</td><td>2.8320</td><td>1.9531</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant tail</td><td>55</td><td>81.0547</td><td>1869.6338</td><td>2.6367</td><td>2.0508</td><td>0.1953</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant tail</td><td>64</td><td>77.2461</td><td>1811.1279</td><td>2.2461</td><td>1.6602</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant tail</td><td>66</td><td>78.7109</td><td>1784.4668</td><td>2.4414</td><td>2.1484</td><td>0.0977</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant tail</td><td>75</td><td>76.4648</td><td>1737.7744</td><td>2.0508</td><td>1.5625</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant tail</td><td>77</td><td>78.8086</td><td>1815.8848</td><td>2.1484</td><td>1.7578</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant tail</td><td>86</td><td>74.9023</td><td>1596.3125</td><td>1.9531</td><td>1.6602</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant tail</td><td>88</td><td>78.8086</td><td>1738.5381</td><td>2.0508</td><td>1.8555</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay tail</td><td>53</td><td>77.1484</td><td>1727.6660</td><td>2.9297</td><td>2.1484</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay tail</td><td>55</td><td>79.5898</td><td>1784.1133</td><td>2.5391</td><td>1.9531</td><td>0.0977</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay tail</td><td>64</td><td>75.8789</td><td>1641.4170</td><td>1.8555</td><td>1.2695</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay tail</td><td>66</td><td>79.1016</td><td>1847.9053</td><td>2.5391</td><td>2.2461</td><td>0.0977</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay tail</td><td>75</td><td>78.2227</td><td>1733.1279</td><td>2.2461</td><td>1.9531</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay tail</td><td>77</td><td>79.9805</td><td>1800.9297</td><td>1.9531</td><td>1.7578</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay tail</td><td>86</td><td>76.8555</td><td>1897.3643</td><td>3.4180</td><td>3.1250</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay tail</td><td>88</td><td>77.3438</td><td>1934.2871</td><td>3.0273</td><td>2.5391</td><td>0.0977</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared prefix</td><td>0</td><td>67.4805</td><td>1571.6338</td><td>2.7344</td><td>2.5391</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared prefix</td><td>9</td><td>66.2109</td><td>1266.1113</td><td>2.0508</td><td>1.7578</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared prefix</td><td>11</td><td>69.4336</td><td>1449.7588</td><td>2.5391</td><td>1.6602</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared prefix</td><td>20</td><td>72.5586</td><td>1520.3438</td><td>3.5156</td><td>2.7344</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared prefix</td><td>22</td><td>76.0742</td><td>1531.0371</td><td>2.2461</td><td>1.2695</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared prefix</td><td>31</td><td>75.1953</td><td>1936.1543</td><td>5.4688</td><td>3.1250</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared prefix</td><td>33</td><td>76.7578</td><td>1360.1201</td><td>1.0742</td><td>2.6367</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared prefix</td><td>42</td><td>75.0977</td><td>1531.6338</td><td>2.4414</td><td>1.6602</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared prefix</td><td>44</td><td>78.7109</td><td>1394.1025</td><td>0.9766</td><td>1.2695</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant tail</td><td>53</td><td>73.8281</td><td>1403.2969</td><td>1.9531</td><td>1.4648</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant tail</td><td>55</td><td>81.5430</td><td>1553.5557</td><td>1.3672</td><td>1.0742</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant tail</td><td>64</td><td>78.1250</td><td>1615.5830</td><td>2.0508</td><td>1.6602</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant tail</td><td>66</td><td>83.0078</td><td>1487.8389</td><td>0.3906</td><td>0.4883</td><td>0.0977</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant tail</td><td>75</td><td>77.1484</td><td>1511.2988</td><td>1.2695</td><td>1.0742</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant tail</td><td>77</td><td>82.8125</td><td>1595.8721</td><td>1.3672</td><td>1.2695</td><td>0.4883</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant tail</td><td>86</td><td>78.8086</td><td>1499.3711</td><td>1.1719</td><td>0.9766</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant tail</td><td>88</td><td>82.1289</td><td>1737.5615</td><td>1.7578</td><td>1.5625</td><td>0.3906</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay tail</td><td>53</td><td>73.6328</td><td>1360.9531</td><td>2.0508</td><td>1.8555</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay tail</td><td>55</td><td>78.8086</td><td>1526.4814</td><td>1.0742</td><td>1.0742</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay tail</td><td>64</td><td>78.1250</td><td>1412.3984</td><td>1.5625</td><td>1.4648</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay tail</td><td>66</td><td>79.8828</td><td>1613.4443</td><td>1.7578</td><td>1.4648</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay tail</td><td>75</td><td>74.4141</td><td>1317.7949</td><td>1.0742</td><td>0.8789</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay tail</td><td>77</td><td>78.1250</td><td>1500.2959</td><td>1.3672</td><td>1.1719</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay tail</td><td>86</td><td>73.8281</td><td>1449.0625</td><td>1.8555</td><td>1.7578</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay tail</td><td>88</td><td>77.8320</td><td>1549.1963</td><td>2.1484</td><td>1.6602</td><td>0.0000</td></tr>
+</tbody></table></div>
+</details>
+<details><summary>All benchmark endpoints and dataset-level output costs (descriptive only)</summary>
+<p>Each benchmark suite contains AIME 2024 (30 questions), AIME 2025 (30) and AMC23 (40), with eight draws per question and a 16,384-token cap. No benchmark interval or population-level claim is inferred here.</p>
+<div class="scroll"><table><thead><tr><th>Model</th><th>Checkpoint</th><th>Dataset</th><th>Accuracy (%)</th><th>Mean tokens</th><th>Cap (%)</th><th>Parse fail (%)</th><th>Delimiter (%)</th></tr></thead><tbody>
+<tr><td>Qwen3-4B</td><td>Original</td><td>AIME 2024</td><td>21.2500</td><td>4758.7875</td><td>16.2500</td><td>14.5833</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Original</td><td>AIME 2025</td><td>21.2500</td><td>3824.8208</td><td>9.1667</td><td>7.5000</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Original</td><td>AMC23</td><td>69.0625</td><td>1845.6562</td><td>1.5625</td><td>0.9375</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared 44</td><td>AIME 2024</td><td>32.5000</td><td>7308.1375</td><td>23.3333</td><td>20.8333</td><td>0.8333</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared 44</td><td>AIME 2025</td><td>22.9167</td><td>7765.4917</td><td>26.6667</td><td>24.5833</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Shared 44</td><td>AMC23</td><td>73.4375</td><td>2593.1250</td><td>2.1875</td><td>1.5625</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant 88</td><td>AIME 2024</td><td>31.2500</td><td>7086.6708</td><td>21.2500</td><td>20.8333</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant 88</td><td>AIME 2025</td><td>23.7500</td><td>7495.4542</td><td>24.5833</td><td>24.1667</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Constant 88</td><td>AMC23</td><td>70.3125</td><td>2681.3000</td><td>3.7500</td><td>3.4375</td><td>0.0000</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay 88</td><td>AIME 2024</td><td>28.7500</td><td>7859.1708</td><td>27.0833</td><td>25.4167</td><td>0.4167</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay 88</td><td>AIME 2025</td><td>25.0000</td><td>8009.0458</td><td>27.9167</td><td>27.0833</td><td>0.8333</td></tr>
+<tr><td>Qwen3-4B</td><td>Decay 88</td><td>AMC23</td><td>74.0625</td><td>2852.4531</td><td>2.8125</td><td>2.8125</td><td>0.3125</td></tr>
+<tr><td>Qwen3-8B</td><td>Original</td><td>AIME 2024</td><td>25.4167</td><td>4896.5375</td><td>13.7500</td><td>12.9167</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Original</td><td>AIME 2025</td><td>17.9167</td><td>3947.4750</td><td>9.1667</td><td>7.5000</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Original</td><td>AMC23</td><td>66.5625</td><td>2289.8844</td><td>4.6875</td><td>4.3750</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared 44</td><td>AIME 2024</td><td>37.0833</td><td>6822.6958</td><td>20.4167</td><td>18.3333</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared 44</td><td>AIME 2025</td><td>22.5000</td><td>6258.9208</td><td>18.3333</td><td>16.2500</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Shared 44</td><td>AMC23</td><td>72.1875</td><td>2327.2250</td><td>2.1875</td><td>1.5625</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant 88</td><td>AIME 2024</td><td>42.9167</td><td>8654.7667</td><td>32.0833</td><td>30.4167</td><td>4.5833</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant 88</td><td>AIME 2025</td><td>28.7500</td><td>9236.8042</td><td>35.4167</td><td>33.7500</td><td>5.8333</td></tr>
+<tr><td>Qwen3-8B</td><td>Constant 88</td><td>AMC23</td><td>73.7500</td><td>3270.5344</td><td>5.6250</td><td>5.3125</td><td>0.6250</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay 88</td><td>AIME 2024</td><td>26.2500</td><td>6435.9417</td><td>19.5833</td><td>16.2500</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay 88</td><td>AIME 2025</td><td>18.3333</td><td>4998.3583</td><td>9.1667</td><td>6.2500</td><td>0.0000</td></tr>
+<tr><td>Qwen3-8B</td><td>Decay 88</td><td>AMC23</td><td>69.3750</td><td>2234.0750</td><td>2.8125</td><td>1.8750</td><td>0.0000</td></tr>
+</tbody></table></div>
+</details>
+<p><strong>Output behavior changed substantially.</strong> On AIME 2024 / 2025, constant 8B reaches cap rates of 32.0833% / 35.4167%, versus 13.7500% / 9.1667% originally; mean lengths rise from 4,896.54 / 3,947.48 to 8,654.77 / 9,236.80 tokens, and parse failures rise from 12.9167% / 7.5000% to 30.4167% / 33.7500%. Its benchmark accuracy also rises, so neither length nor caps alone explain the score. The tables retain the less favorable diagnostics as well as accuracy. Fixed-state teacher-KL measurements were not collected; loss trajectories alone do not identify a forgetting or anchoring mechanism.</p>
+<p>Final accounting cutoff: <strong>2026-10-11T19:47:04.770511Z</strong>. Stage science / cumulative study / cumulative readiness / overall cost is 360.871482 / 532.505829 / 86.688110 / 619.193939 GPU-hours. These are descriptive resource totals with the stated stage and cumulative scopes, including accounted operational work; they are not an efficiency comparison between the two LR arms.</p>
+<p><strong>Limits and next question.</strong> One seed and a reused validation panel cannot establish generalization or persistent gain. This result concerns uniform late decay with phase-wise resets, not all schedules or all ways of continuing training. Adam continuity after a fresh common tail-entry optimizer is a proposed next contrast only: it has no admission or launch, requires measured readiness and a new cost/window review, and must use a fresh shared prefix because the temporary midpoint sources were retired. Earlier operational snapshots and implementation walkthroughs below remain historical evidence; no implementation changed in this result update.</p>
+</section>
 <section id="late-fork-four-tail-startup"><h2>Four matched continuations launched · 11 October 2026, 18:17 UTC</h2>
 <p><strong>All four scientific tail controllers are launched and observed alive.</strong> For each of Qwen3-4B and Qwen3-8B, the constant-LR and late-linear-decay arms resume from the same accepted update-44 student and teacher. Both retain PI9/OPD2 cycles, teacher refresh and Adam reset; the fixed continuation covers global updates 45–88. The constant arm uses 5 × 10<sup>−6</sup>, while the decay arm decreases to 5 × 10<sup>−7</sup>. Earlier failed transfers, consumed nonlaunch attempts and the expired unused packet remain unchanged historical evidence.</p>
 <p>Controller inspections span <strong>18:16:33.476036–18:16:56.210271 UTC</strong>; accounting ends at <strong>18:17:00.402056 UTC</strong>. Source assets, midpoint student/teacher identity, configuration and output-policy bindings passed their checks. GPU memory and compute processes are present. The journal contains <strong>12 completed calls and zero uncertain calls</strong>, with no observed queue or controller failure. Progress files are not present yet: <strong>no completed tail update, finite training loss, new evaluation or scientific improvement is certified by this startup snapshot</strong>. This does not imply that no computation occurred.</p>
