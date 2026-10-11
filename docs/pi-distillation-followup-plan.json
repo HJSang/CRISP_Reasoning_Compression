@@ -67088,5 +67088,629 @@
       "No indefinite improvement claim",
       "Both optimizer policies may fail to improve"
     ]
+  },
+  "math_adam_shared_prefix44_verified": {
+    "version": "math-adam-shared-prefix44-public-v1",
+    "status": "independently_verified_prefixes; remaining_reset_carry_comparison_unlaunched",
+    "cutoff_utc": "2026-10-11T23:39:09.078237+00:00",
+    "scope": "Two44-update shared9PI/2OPD math prefixes, before unlaunched Adam reset/carry tails; seed137; exposed128-question validation.",
+    "total_updates": 88,
+    "complete_suites": 22,
+    "generated_responses": 21632,
+    "owned_gpu_assignments_released": true,
+    "goal_achieved": false,
+    "no_new_transfer_results": true,
+    "proof_sha256": "37fd42e117df2d89e5b81f6337e364407285de6fdd139357312d19f50b678291",
+    "independent_review_sha256": "e1f96b07c14f8a32f08ba8c7dec1e65f71e4225a04bf74a2e3fc6bbfc7be5519",
+    "models": [
+      {
+        "model": "Qwen3-8B",
+        "updates_verified": 44,
+        "generated_suites": 11,
+        "responses": 10816,
+        "original_validation_percent": 68.26171875,
+        "step44_validation_percent": 79.1015625,
+        "change_pp": 10.83984375,
+        "delimiter_diagnostics": 0,
+        "strict_zero_delimiter_passed": true,
+        "final_policy_passed": true,
+        "warnings": [
+          "Hosted run badge remains running after independently verified cleanup"
+        ],
+        "validation_endpoint_percent": [
+          {
+            "step": 0,
+            "avg_at_8_percent": 68.26171875
+          },
+          {
+            "step": 9,
+            "avg_at_8_percent": 68.26171875
+          },
+          {
+            "step": 11,
+            "avg_at_8_percent": 69.82421875
+          },
+          {
+            "step": 20,
+            "avg_at_8_percent": 76.3671875
+          },
+          {
+            "step": 22,
+            "avg_at_8_percent": 76.953125
+          },
+          {
+            "step": 31,
+            "avg_at_8_percent": 75.87890625
+          },
+          {
+            "step": 33,
+            "avg_at_8_percent": 78.22265625
+          },
+          {
+            "step": 42,
+            "avg_at_8_percent": 76.953125
+          },
+          {
+            "step": 44,
+            "avg_at_8_percent": 79.1015625
+          }
+        ],
+        "evaluations": [
+          {
+            "step": 0,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1488.8232421875,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.6826171875,
+                "cap_hit_fraction": 0.025390625,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0205078125,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "bc35b0627d873fe7208ee435918b1292c6fc74340237559f4555a337aac94237"
+          },
+          {
+            "step": 0,
+            "suite": "benchmark",
+            "responses": 800,
+            "mean_response_tokens": 3557.48875,
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.25833333333333336,
+                "cap_hit_fraction": 0.125,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.1125,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.19583333333333333,
+                "cap_hit_fraction": 0.1,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.058333333333333334,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.69375,
+                "cap_hit_fraction": 0.05625,
+                "completions": 320,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.04375,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "3123b5e68a1dd728ccf264522ab3604096d077bb5a4044c1d39d15d2367d3610"
+          },
+          {
+            "step": 9,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1275.83203125,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.6826171875,
+                "cap_hit_fraction": 0.01953125,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.017578125,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "286e1cc5fc5e9b7081b163322446f45fb823fcf03d3f75fee01984aafd73bbe4"
+          },
+          {
+            "step": 11,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1372.658203125,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.6982421875,
+                "cap_hit_fraction": 0.01953125,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.015625,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "571e4c5d573c8aaa909e0eec12ebcdf808fadfa16f70b719b162974a339a8889"
+          },
+          {
+            "step": 20,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1374.4638671875,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.763671875,
+                "cap_hit_fraction": 0.029296875,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0224609375,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "8a01d0a8ffdfc9d85acbd11ce5edabea320fa7a1d827e984247e0b77ae830a4b"
+          },
+          {
+            "step": 22,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1425.76171875,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.76953125,
+                "cap_hit_fraction": 0.01171875,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.01171875,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "543261ba56487a6d01284582d84d2cedeee35ac1f69be934bbd3ee1b9c628fdf"
+          },
+          {
+            "step": 31,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1733.3779296875,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.7587890625,
+                "cap_hit_fraction": 0.0361328125,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0224609375,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "b999050886e91372778d370eb296a472e8e6eb0d0983fe6aefe15c1c4aeaa9ca"
+          },
+          {
+            "step": 33,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1490.224609375,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.7822265625,
+                "cap_hit_fraction": 0.017578125,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0146484375,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "2ebd56188262c463dda3ad6ed0a563aea041f56779924f846020ba517ddd97e9"
+          },
+          {
+            "step": 42,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1869.548828125,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.76953125,
+                "cap_hit_fraction": 0.048828125,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0361328125,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "56f62e43e2f28a00f540ed4f4bc9072eb8ff57f4f6308fd64819ef45e48fe248"
+          },
+          {
+            "step": 44,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1507.4541015625,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.791015625,
+                "cap_hit_fraction": 0.0166015625,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.013671875,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "d7fa0cdf0a66e4bd33d5bfd8a11d6d0f016a701ccf84ec9d4e09f82b44436055"
+          },
+          {
+            "step": 44,
+            "suite": "benchmark",
+            "responses": 800,
+            "mean_response_tokens": 4650.385,
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.37083333333333335,
+                "cap_hit_fraction": 0.17083333333333334,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.15,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.2125,
+                "cap_hit_fraction": 0.16666666666666666,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.1375,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.75625,
+                "cap_hit_fraction": 0.01875,
+                "completions": 320,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.009375,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "5c444440ad9268135ab3d621cb91e22596e37147abf26c216fe09e99158e82bf"
+          }
+        ]
+      },
+      {
+        "model": "Qwen3-4B",
+        "updates_verified": 44,
+        "generated_suites": 11,
+        "responses": 10816,
+        "original_validation_percent": 71.77734375,
+        "step44_validation_percent": 78.61328125,
+        "change_pp": 6.8359375,
+        "delimiter_diagnostics": 4,
+        "strict_zero_delimiter_passed": false,
+        "final_policy_passed": true,
+        "warnings": [],
+        "validation_endpoint_percent": [
+          {
+            "step": 0,
+            "avg_at_8_percent": 71.77734375
+          },
+          {
+            "step": 9,
+            "avg_at_8_percent": 70.8984375
+          },
+          {
+            "step": 11,
+            "avg_at_8_percent": 71.484375
+          },
+          {
+            "step": 20,
+            "avg_at_8_percent": 68.65234375
+          },
+          {
+            "step": 22,
+            "avg_at_8_percent": 76.953125
+          },
+          {
+            "step": 31,
+            "avg_at_8_percent": 73.6328125
+          },
+          {
+            "step": 33,
+            "avg_at_8_percent": 76.85546875
+          },
+          {
+            "step": 42,
+            "avg_at_8_percent": 75.78125
+          },
+          {
+            "step": 44,
+            "avg_at_8_percent": 78.61328125
+          }
+        ],
+        "evaluations": [
+          {
+            "step": 0,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1478.1123046875,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.7177734375,
+                "cap_hit_fraction": 0.0224609375,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0205078125,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "d4c08cab8a5cf5212dabeeade201752bcc94644080b7464442ca75b88e88dde6"
+          },
+          {
+            "step": 0,
+            "suite": "benchmark",
+            "responses": 800,
+            "mean_response_tokens": 3418.2775,
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.22916666666666666,
+                "cap_hit_fraction": 0.15,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.13333333333333333,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.20833333333333334,
+                "cap_hit_fraction": 0.11666666666666667,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.09583333333333334,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.7125,
+                "cap_hit_fraction": 0.0125,
+                "completions": 320,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0125,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "ccc57a5f86c6d764c2fa0745bdd6a01c87606c7a70f1136f78ee705d5c53aaca"
+          },
+          {
+            "step": 9,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1087.2802734375,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.708984375,
+                "cap_hit_fraction": 0.0068359375,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0068359375,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "614d2e8546b2279ac84eee9c0f4697a8a52cdefa95d47caa8096437485fd90ff"
+          },
+          {
+            "step": 11,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1733.51953125,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.71484375,
+                "cap_hit_fraction": 0.041015625,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0322265625,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "b9c5af7705e3f87ef8bf90da8df2077c0eb4cc28a585e820a98d3caee413ea0f"
+          },
+          {
+            "step": 20,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1275.6123046875,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.6865234375,
+                "cap_hit_fraction": 0.02734375,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.021484375,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "e038c82e6231350722405b833869da9641e78695f0d5bdbed5e08346da47cb17"
+          },
+          {
+            "step": 22,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1625.90625,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.76953125,
+                "cap_hit_fraction": 0.0263671875,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.021484375,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "8e91b7fd7c7ff50beb2eccd18ced36a840d9eda24ba9958137c9d1ecd729492a"
+          },
+          {
+            "step": 31,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1847.482421875,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.736328125,
+                "cap_hit_fraction": 0.0556640625,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.03125,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "bd8bb534b8ed456b704d6a87b152dcd2e3d676b9107da62ee0882f26d816b606"
+          },
+          {
+            "step": 33,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1856.9453125,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.7685546875,
+                "cap_hit_fraction": 0.0283203125,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.02734375,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "45c2708c079a75df32c24b0865ab0cd91eef2e994844b73e26b303742eb2013e"
+          },
+          {
+            "step": 42,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1784.0576171875,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.7578125,
+                "cap_hit_fraction": 0.033203125,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.021484375,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "22786c3e0491429e0a50b031a5ca5628949e0b4c2be3865ed7b3103b9e5780b7"
+          },
+          {
+            "step": 44,
+            "suite": "validation",
+            "responses": 1024,
+            "mean_response_tokens": 1624.3955078125,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.7861328125,
+                "cap_hit_fraction": 0.0166015625,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0185546875,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "26ae6a55361a6e1a4f225336fa5dfdda99e8d345c1abddeff43154450faadf5c"
+          },
+          {
+            "step": 44,
+            "suite": "benchmark",
+            "responses": 800,
+            "mean_response_tokens": 5884.2075,
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.31666666666666665,
+                "cap_hit_fraction": 0.2708333333333333,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.25416666666666665,
+                "unexpected_thinking_delimiters": 4
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.22083333333333333,
+                "cap_hit_fraction": 0.25833333333333336,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.25416666666666665,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.725,
+                "cap_hit_fraction": 0.05625,
+                "completions": 320,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.05625,
+                "unexpected_thinking_delimiters": 0
+              }
+            },
+            "result_sha256": "2c888e383d1aaf49fbd3f65bbcd754da60c19f9a3762ada75e007b638bb968bb"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Both prefixes improve over their own original validation scores. This establishes finite four-cycle gains only, not sustained improvement, an Adam reset/carry contrast, matched continuousPI superiority, or cross-domain/family transfer. No benchmark selection.",
+    "remaining_priority": "Llama math and Qwen4B/8B coding, recipe versus continuousPI; GRPO deferred. Adam tails held, sources and reservations preserved.",
+    "cost_gpu_hours": {
+      "science": 377.19874708069705,
+      "study": 548.8330937115353,
+      "readiness": 93.65943979210323,
+      "overall": 642.4925335036386,
+      "readiness_stage": 32.96416215737661
+    }
+  },
+  "current_transfer_priority": {
+    "version": "domain-family-priority-v3",
+    "status": "prospective_not_admitted_not_launched",
+    "methods": [
+      "PI9\u2192OPD2 repeated8;cycle_refresh;phase_reset_Adam",
+      "continuousPI88;original_frozen_teacher;continuous_Adam"
+    ],
+    "cells": [
+      "Llama-3.1-8B-Instruct/math",
+      "Qwen3-4B/code",
+      "Qwen3-8B/code"
+    ],
+    "training_seed": 211,
+    "updates_per_run": 88,
+    "runs": 6,
+    "training_questions_per_run": 352,
+    "validation_questions": {
+      "math": 128,
+      "code": 89
+    },
+    "coding_source": "google-research-datasets/mbpp",
+    "coding_source_revision": "4bb6404fdc6cacfda99d4ac4205087b89d32030c",
+    "code_eligible_training_items": 360,
+    "unused_eligible_training_items": 8,
+    "benchmark_questions": {
+      "math": {
+        "AIME2024": 30,
+        "AIME2025": 30,
+        "AMC23": 40
+      },
+      "code": {
+        "HumanEval+": 164
+      }
+    },
+    "updates_total": 528,
+    "evaluation_suites": 114,
+    "evaluation_responses": 97904,
+    "training_responses": 2112,
+    "primary": "fixed-update88 validation Avg@8; three paired contrasts",
+    "comparison_limit": "Teacher refresh and optimizer handling differ; method-package comparison, not isolated alpha-only effect.",
+    "deferred": [
+      "GRPO",
+      "additional seeds",
+      "matched-refresh continuousPI arm"
+    ],
+    "new_runs_started": 0,
+    "data_audit": "All464originalreferencespassprovidedtests; source-only semantic/duplicate exclusions retained. Reference tests are not new model outcomes.",
+    "gpu_readiness_passed": false,
+    "admitted": false,
+    "dispatch": false,
+    "readiness_status": "CPU source audit and isolated launcher candidate prepared; MBPP grading integration, restricted tracking, authorized Llama weights, model readiness and whole-remaining-package admission remain open.",
+    "ongoing_adam_prefixes": "Both shared prefixes are independently verified and cleaned up. Four new Adam tails remain held, preserving source snapshots and prior reservations."
   }
 }
