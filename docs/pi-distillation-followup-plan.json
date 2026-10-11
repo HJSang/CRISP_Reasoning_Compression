@@ -56984,5 +56984,413 @@
         ]
       }
     }
+  },
+  "sustained_recipe_latest_audit": {
+    "version": "sustained-recipe-audit-v1",
+    "status": "exploratory_analysis_and_prospective_design_no_new_training",
+    "rerun": {
+      "summary": "The earliest retained difference is the first optimizer gradient-norm scalar, not a teacher refresh or new evaluation seed. At update2 generated response lengths and training losses differ. Equal configured seeds and equal initial loss do not prove bitwise replay; current evidence cannot assign a unique cause.",
+      "models": [
+        {
+          "model": "Qwen3-4B",
+          "same_88_source_reset_teacher_records": true,
+          "first_gradient_norm_pair": [
+            2.217491865158081,
+            2.2175092697143555
+          ],
+          "first_loss_difference_update": 2,
+          "first_generated_length_difference_update": 2
+        },
+        {
+          "model": "Qwen3-8B",
+          "same_88_source_reset_teacher_records": true,
+          "first_gradient_norm_pair": [
+            2.8905539512634277,
+            2.89050030708313
+          ],
+          "first_loss_difference_update": 2,
+          "first_generated_length_difference_update": 2
+        }
+      ],
+      "cause_identified": false
+    },
+    "confirmation_candidate": {
+      "source_rows": 103022,
+      "historical_rows_excluded": 29434,
+      "benchmark_rows_excluded": 100,
+      "eligible_nonoverlapping_groups": 94539,
+      "rejections": {
+        "solved_prompt_heuristic": 1136,
+        "historical_or_benchmark_overlap": 4440,
+        "missing_or_oversized_text": 2
+      },
+      "selected": 512,
+      "candidate_sha256": "66b5b70943ce5947a24a659356724c70e2bbaa7a22db210f9b35fb7b9b6e2448",
+      "sealed_confirmation": false,
+      "model_outcomes_collected": 0,
+      "limitations": [
+        "Approximate lexical components can miss paraphrases; source-card decontamination is not an independent proof.",
+        "Published labels have not been independently proved; source and prompt/grader compatibility need review.",
+        "Historical coverage here is the full pinned original corpus and declared three benchmarks, not an assertion that every past exposure or pretraining source is known.",
+        "Selection is source-defined and outcome-blind, but changes evaluation distribution from the original tuning panel."
+      ]
+    },
+    "persistence_diagnostic": {
+      "version": "long-horizon-mixture-diagnostic-design-v1",
+      "created_unix": 1791701885.921064,
+      "admitted": false,
+      "dispatch": false,
+      "runtime_ready": false,
+      "scope": "Prospective development-panel persistence diagnostic; separate from the completed eight-update pilot and paper confirmatory core.",
+      "arms": [
+        {
+          "model": "Qwen3-4B",
+          "alpha": 0.5,
+          "updates": 88,
+          "teacher_policy": "fixed_original",
+          "teacher_logits": "alpha*z_PI+(1-alpha)*z_noPI; same frozen weights, same generated prefix, T=1",
+          "optimizer": "fresh Adam at original start, live moments and counter carried through all88updates",
+          "learning_rate": 5e-06,
+          "training_seed": 137
+        },
+        {
+          "model": "Qwen3-4B",
+          "alpha": 1.0,
+          "updates": 88,
+          "teacher_policy": "fixed_original",
+          "teacher_logits": "alpha*z_PI+(1-alpha)*z_noPI; same frozen weights, same generated prefix, T=1",
+          "optimizer": "fresh Adam at original start, live moments and counter carried through all88updates",
+          "learning_rate": 5e-06,
+          "training_seed": 137
+        }
+      ],
+      "data": {
+        "training_questions": 352,
+        "order": "same frozen352-question phase-screen stream for both arms",
+        "validation_questions": 128,
+        "validation_status": "reused tuning panel; not confirmation",
+        "new_external_candidate_used": false,
+        "benchmark_questions": {
+          "AIME 2024": 30,
+          "AIME 2025": 30,
+          "AMC23": 40
+        }
+      },
+      "protocol": {
+        "full_parameters": true,
+        "loss": "detached full-vocabulary sample-mean forward KL",
+        "train_max_tokens": 4096,
+        "train_temperature": 1,
+        "train_top_p": 1,
+        "train_top_k": -1,
+        "batch_size": 4,
+        "microbatch_size": 1,
+        "beta": 0,
+        "token_clip": 0,
+        "non_thinking": true,
+        "eval_max_tokens": 16384,
+        "eval_temperature": 0.7,
+        "eval_top_p": 0.8,
+        "eval_top_k": 20,
+        "eval_min_p": 0,
+        "draws": 8
+      },
+      "evaluations": {
+        "validation_steps": [
+          0,
+          11,
+          22,
+          33,
+          44,
+          55,
+          66,
+          77,
+          88
+        ],
+        "benchmark_steps": [
+          0,
+          44,
+          88
+        ],
+        "baseline": "one exact original source baseline for each suite, verified immutable import by second arm",
+        "shared_baseline_source_and_seed_checks_required": true,
+        "retain_all_responses_and_diagnostics": true
+      },
+      "counts": {
+        "updates": 176,
+        "exports": 16,
+        "unique_validation_suites": 17,
+        "unique_benchmark_suites": 5,
+        "unique_total_suites": 22,
+        "responses": 21408,
+        "hosted_suite_writes": 24
+      },
+      "primary_estimands": [
+        "Final update88 validation Avg@8 difference: alpha.5 minus alpha1.",
+        "Final update88 validation Avg@8 minus shared original for each arm."
+      ],
+      "secondary_descriptive_estimands": [
+        "All fixed validation endpoints and mean response length/cap/parse diagnostics.",
+        "Least-squares validation trend over updates44,55,66,77,88, with question-cluster uncertainty conditional on these fixed models.",
+        "Final-minus-early update11 difference; no checkpoint or phase selection by its sign."
+      ],
+      "interpretation_rules": [
+        "Freeze schedules and source identities before any new model outcomes.",
+        "Question-cluster intervals describe this panel and these realized models, not training-seed variability.",
+        "An88-update advantage or positive tail slope cannot establish indefinite monotonic improvement.",
+        "Do not require all eight noisy checkpoints to increase; report every reversal and final effect.",
+        "Benchmark scores cannot choose alpha, schedule, stopping point or winning model.",
+        "Lengths are outcomes; no conditioning/filtering on post-treatment length as a causal adjustment.",
+        "Later confirmation requires fresh seed/data replication, a sealed panel and matched computation controls."
+      ],
+      "cost_feasibility": {
+        "source_sha256": "4f6928e7483e37e56421a987066209097508136f617ab07c1d19ac8eea4727e0",
+        "planning_gpu_hours": 188.46055598116646,
+        "full_16k_stress_gpu_hours": 269.5696847180187,
+        "full_16k_stress_wall_hours": 19.980776251691083,
+        "original_deadline_unix": 1791844987.672134,
+        "this_is_admission": false,
+        "later_operations_must_be_added": true
+      },
+      "pending_gates": [
+        "New versioned88-update runtime/config/evidence contract; old frozen eight-update pilot is unchanged.",
+        "Focused endpoint/source/counter/evaluation tests and independent exact-source review.",
+        "Concrete experiment-plan review under existing authorization and repository policy.",
+        "Fresh whole-matrix measured admission including readiness/preparation/operational intervals and original deadline.",
+        "Exact idle-worker/source/identity and restricted hosted-history preflight before any dispatch."
+      ]
+    },
+    "provenance": {
+      "rerun_evidence": "d09125de50570195661c1e0301f3bde93692a4cbf2dae9ecdc45ec808a70e78b",
+      "rerun_independent_review": "8d3553da275e22f10d8304672321419cc70e9ee1bae27db2b9f1ae698708ed1c",
+      "candidate_summary": "23d3dfc847db46eec3d428d4f3ed437543b7effe9b291ff383b6cd2e0c3c2877",
+      "candidate_independent_review": "50c8ee06e0e96562b1324dbe600f52b347230138807b65feea37607a83b44da6",
+      "persistence_design": "e6b67e1d492f6f2c42ce2f4b71c7d1521e0dd415b193f5bf9dd67dffb0be2952",
+      "persistence_independent_review": "85a53a27731a36ab54debba630d8d7d89f819adf610fbe10e1d7b3b3d43dd4fd",
+      "question_statistics": "fd2d325a47fbff55ec8974978ff8dac70eedf6a39aa6a73e6d6c9d2fb0f8396b",
+      "question_statistics_independent_review": "46306bb25353b42ae6c0968da81527e01095e0a24cc2882c6582f6e1b2136e2c",
+      "read_only_accounting_independent_review": "42440db7d4a8fa4b10e8d22e7f71cccbe0b8c1c31cf6e7c688f6c1b8785ff7d4"
+    },
+    "mixture_question_uncertainty": {
+      "version": "mixture-question-cluster-bootstrap-v1",
+      "method": {
+        "all_responses_retained": 5120,
+        "generator": "NumPy PCG64",
+        "interval": "marginal percentile 95%, linear quantile",
+        "multiplicity": "12 marginal intervals; no simultaneous/familywise coverage, multiplicity adjustment, p-value or confirmation claim",
+        "numpy_version": "2.5.3",
+        "paired_requested_draw_ids_and_seeds": true,
+        "primary": "half_minus_one at fixed update8",
+        "resamples": 20000,
+        "resampling_unit": "128 questions; all eight draws and five conditions remain together",
+        "seed": 137001
+      },
+      "comparisons": {
+        "half_minus_one": {
+          "descriptive_questions_with_any_correct_draw": {
+            "both": 112,
+            "gained": 3,
+            "lost": 2,
+            "neither": 11
+          },
+          "leave_one_question_out_accuracy_pp": {
+            "max": 4.133858267716535,
+            "min": 3.1496062992125986
+          },
+          "metrics": {
+            "accuracy_pp": {
+              "ci95": [
+                0.5859375,
+                6.93359375
+              ],
+              "estimate": 3.7109375
+            },
+            "cap_pp": {
+              "ci95": [
+                0.1953125,
+                2.24609375
+              ],
+              "estimate": 1.171875
+            },
+            "mean_response_tokens": {
+              "ci95": [
+                197.9991455078125,
+                563.4944580078125
+              ],
+              "estimate": 372.484375
+            },
+            "parse_failure_pp": {
+              "ci95": [
+                0.29296875,
+                2.05078125
+              ],
+              "estimate": 1.07421875
+            }
+          },
+          "paired_draw_correctness": {
+            "both_correct": 657,
+            "both_incorrect": 195,
+            "lost_correct": 67,
+            "newly_correct": 105
+          },
+          "question_score_signs": {
+            "loss": 20,
+            "tie": 72,
+            "win": 36
+          }
+        },
+        "half_minus_original": {
+          "descriptive_questions_with_any_correct_draw": {
+            "both": 110,
+            "gained": 5,
+            "lost": 2,
+            "neither": 11
+          },
+          "leave_one_question_out_accuracy_pp": {
+            "max": 4.822834645669292,
+            "min": 3.838582677165354
+          },
+          "metrics": {
+            "accuracy_pp": {
+              "ci95": [
+                1.26953125,
+                7.71484375
+              ],
+              "estimate": 4.39453125
+            },
+            "cap_pp": {
+              "ci95": [
+                -0.87890625,
+                0.48828125
+              ],
+              "estimate": -0.1953125
+            },
+            "mean_response_tokens": {
+              "ci95": [
+                -168.39411621093748,
+                70.34562988281242
+              ],
+              "estimate": -49.41796875
+            },
+            "parse_failure_pp": {
+              "ci95": [
+                -1.26953125,
+                0.29296875
+              ],
+              "estimate": -0.48828125
+            }
+          },
+          "paired_draw_correctness": {
+            "both_correct": 647,
+            "both_incorrect": 192,
+            "lost_correct": 70,
+            "newly_correct": 115
+          },
+          "question_score_signs": {
+            "loss": 15,
+            "tie": 82,
+            "win": 31
+          }
+        },
+        "one_minus_original": {
+          "descriptive_questions_with_any_correct_draw": {
+            "both": 108,
+            "gained": 6,
+            "lost": 4,
+            "neither": 10
+          },
+          "leave_one_question_out_accuracy_pp": {
+            "max": 1.1811023622047243,
+            "min": 0.1968503937007874
+          },
+          "metrics": {
+            "accuracy_pp": {
+              "ci95": [
+                -2.734375,
+                4.1015625
+              ],
+              "estimate": 0.68359375
+            },
+            "cap_pp": {
+              "ci95": [
+                -2.44140625,
+                -0.390625
+              ],
+              "estimate": -1.3671875
+            },
+            "mean_response_tokens": {
+              "ci95": [
+                -634.2573974609375,
+                -236.90944824218764
+              ],
+              "estimate": -421.90234375
+            },
+            "parse_failure_pp": {
+              "ci95": [
+                -2.63671875,
+                -0.5859375
+              ],
+              "estimate": -1.5625
+            }
+          },
+          "paired_draw_correctness": {
+            "both_correct": 626,
+            "both_incorrect": 209,
+            "lost_correct": 91,
+            "newly_correct": 98
+          },
+          "question_score_signs": {
+            "loss": 26,
+            "tie": 71,
+            "win": 31
+          }
+        }
+      },
+      "descriptive_post_treatment_cap_strata": {
+        "half_cap_0_one_cap_0": {
+          "accuracy_delta_pp": 4.112337011033099,
+          "draws": 997,
+          "token_delta": 208.58475426278835
+        },
+        "half_cap_0_one_cap_1": {
+          "accuracy_delta_pp": 42.857142857142854,
+          "draws": 7,
+          "token_delta": -13760.0
+        },
+        "half_cap_1_one_cap_0": {
+          "accuracy_delta_pp": -31.57894736842105,
+          "draws": 19,
+          "token_delta": 14199.21052631579
+        },
+        "half_cap_1_one_cap_1": {
+          "accuracy_delta_pp": 0.0,
+          "draws": 1,
+          "token_delta": 0.0
+        }
+      },
+      "limitations": [
+        "Conditional on these fixed trained snapshots and this reused development panel; not training-seed uncertainty or independent confirmation.",
+        "The question bootstrap models changes in empirical question composition under exchangeability; historical panel reuse limits generalization.",
+        "Matched requested seeds do not imply identical random-number consumption or generated response prefixes.",
+        "Cap strata and length differences are post-treatment descriptions; no output is removed or causally adjusted.",
+        "The eight-update pilot cannot establish persistence, a phase-switch mechanism, or a best alpha."
+      ],
+      "new_training_or_rescoring": false,
+      "numeric_records_equal_redecoded_wire": true
+    },
+    "read_only_accounting": {
+      "new_training_jobs": 0,
+      "remote_reads": 2,
+      "actual_gpu_hours": 0.006618406507703993,
+      "cutoff_unix": 1791702531.039465,
+      "updated_totals": {
+        "overall": 539.0438653220072,
+        "readiness": 82.66406716346741,
+        "science": 284.7454515277015,
+        "study": 456.3797981585397
+      },
+      "all_calls_complete": true
+    },
+    "public_projection": "Aggregate values and neutral evidence-role digests only; question records, checkpoint/result mappings, private source filenames and transport receipts remain private."
   }
 }
