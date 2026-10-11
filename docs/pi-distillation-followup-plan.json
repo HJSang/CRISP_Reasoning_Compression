@@ -57487,6 +57487,71 @@
         "dispatch": false,
         "operational_input_packet_independently_reviewed": true
       }
+    },
+    "persistence_startup": {
+      "version": "math-logit-mixture-u88-startup-public-v1",
+      "cutoff_unix": 1791706907.4491231,
+      "cutoff_utc": "2026-10-11T08:21:47.449123+00:00",
+      "status": "producer_dispatched_and_last_verified_owned_alive_consumer_unassigned",
+      "preparation_passed": true,
+      "preparation_operations_complete": 2,
+      "preparation_gpu_hours": 0.08150363922119142,
+      "actual_admission_independently_passed": true,
+      "canonical_one_use_consumed": true,
+      "producer": {
+        "alpha": 0.5,
+        "dispatched": true,
+        "owned_alive_last_verified": true,
+        "observation_age_seconds": 20.628616333007812,
+        "source_asset_entries": 2932,
+        "queue": {
+          "done": 0,
+          "pending": 0,
+          "running": 0,
+          "failed": 0
+        }
+      },
+      "consumer": {
+        "alpha": 1,
+        "assigned": false,
+        "dispatched": false,
+        "reason": "Awaiting audited original validation and benchmark baseline suites."
+      },
+      "coordinator_operations": {
+        "complete": 5,
+        "unresolved": 0
+      },
+      "model_load_audited": false,
+      "finite_training_updates_audited": 0,
+      "hosted_training_rows_audited": 0,
+      "evaluation_suites_audited": 0,
+      "completed_trajectories": 0,
+      "complete": false,
+      "output_contract": "strict_zero_delimiters_and_zero_grader_timeouts",
+      "automatic_retries": 0,
+      "cost_at_cutoff": {
+        "new_attempt_gpu_hours": 0.3221936416625977,
+        "actual_totals": {
+          "science": 285.0676451693641,
+          "study": 456.7019918002023,
+          "readiness": 82.66406716346741,
+          "overall": 539.3660589636697
+        },
+        "guarded_projection": {
+          "science": 554.3151362457202,
+          "study": 725.9494828765585,
+          "readiness": 82.66406716346741,
+          "overall": 808.6135500400259
+        },
+        "remaining_reserved_gpu_hours": 269.24749107635614
+      },
+      "original_deadline_unix": 1791844987.672134,
+      "attempt_deadline_unix": 1791778432.950694,
+      "original_caps_and_deadline_unchanged": true,
+      "limits_passed": true,
+      "evidence_independent_review_passed": true,
+      "evidence_review_sha256": "702cce3d50b5156bfe568dcfdfd207e233f91ccc298988c0d4fe2d25dbba8821",
+      "scope_limit": "Startup process/source/accounting evidence only. No executed model load, finite training, hosted metrics, evaluation result or sustained gain is certified. The completed eight-update pilot and historical forecasts remain unchanged."
     }
   }
 }
