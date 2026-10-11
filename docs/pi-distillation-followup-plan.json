@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "teacher_screen_complete_phase_ratio_wave1_complete",
+    "status": "teacher_screen_complete_phase_ratio_wave1_complete_wave2_started",
     "launch_authorized": true,
     "executable": true,
     "new_gpu_jobs_launched": true,
@@ -16354,15 +16354,16 @@
     "next_priority": {
       "user_instruction": "Let\u2019s focus on tuning 7 and 4.",
       "decision_authority": "Supervising agent design choice under the latest user steering; the user did not explicitly specify this exact eight-arm grid.",
-      "status": "phase_ratio_wave1_complete_wave2_admitted_undispatched",
+      "status": "phase_ratio_wave2_four_owned_controllers_started_results_pending",
       "current_teacher_runs_preserved": true,
       "optimizer_additional_arms_deferred": 6,
       "new_phase_jobs_launched": true,
-      "latest_public_evidence_cutoff_utc": "2026-10-11T02:31:13.914315+00:00"
+      "latest_public_evidence_cutoff_utc": "2026-10-11T02:47:08.214968+00:00",
+      "latest_scientific_results_cutoff_utc": "2026-10-11T02:31:13.914315+00:00"
     },
     "phase_ratio_screen": {
       "version": "math-phases-v1",
-      "status": "wave1_complete_wave2_admitted_undispatched",
+      "status": "wave1_complete_wave2_four_controllers_started",
       "admitted": true,
       "dispatch": true,
       "models": [
@@ -16680,7 +16681,7 @@
         "Locked confirmation on reserved validation, fresh seeds and longer training would be needed before claiming reproducible sustained improvement. Any extra execution requires an explicit bounded scope and admission."
       ],
       "cost_gate": "Original full-matrix admission reserved all eight arms. After complete wave-one evidence, wave two separately passed fresh measured admission with reservations raised to at least the old and newly measured full-panel bounds. Original caps and deadline remain; admission does not itself dispatch any arm.",
-      "runtime_status": "At 2026-10-11T02:31:13.914315+00:00, all four wave-one arms pass the full terminal contract, with 352 finite matching updates, 88 exports, 108 finalized-policy generated suites / 101184 responses and 112 hosted writes. Original strict rule: 107 suites / 100384 responses, with the sole retained D benchmark53 delimiter diagnostic. Complete baseline attachments and owned cleanup are verified. Wave two requires separate measured admission; the sustained-improvement goal remains unmet. A later independently reviewed operational decision admits wave two; no dispatch is recorded.",
+      "runtime_status": "At 2026-10-11T02:47:08.214968+00:00, all four wave-two owned controllers are dispatched and last verified alive, with exact source/configuration/baseline guards and 2940 assets each. The 5/6 and 9/2 runs reuse verified wave-one baseline payloads. This is startup-only evidence: no new finite-loss, executed model-load or evaluation result audit is claimed. Wave one remains complete; wave two, the full matrix and sustained-gain goal remain incomplete.",
       "implementation": {
         "public_source": "miles/tools/opsd/math_phase_protocol.py",
         "tests": "miles/tests/fast/opsd/test_math_phase_protocol.py",
@@ -17038,7 +17039,7 @@
         "hosted_badge_limitation": "Lifecycle badge disagrees with verified local exit; exact complete metrics are authoritative.",
         "scientific_admission_note": "Readiness alone grants no scientific admission. A subsequent independent actual full-matrix wave-one admission is recorded separately."
       },
-      "admitted_wave": 1,
+      "admitted_wave": 2,
       "startup_observation": {
         "checked_utc": "2026-10-10T23:45:07.836531+00:00",
         "wave": 1,
@@ -45615,6 +45616,115 @@
         "prospective_overall_gpu_hours": 1027.5088421939909,
         "later_full_panel_measurements_used": true,
         "original_caps_and_deadline_unchanged": true
+      },
+      "wave_two_startup": {
+        "checked_utc": "2026-10-11T02:47:08.214968+00:00",
+        "wave": 2,
+        "all_four_dispatched_and_owned_alive": true,
+        "source_and_input_guard_passed": true,
+        "frozen_sources_unchanged": true,
+        "all_four_imported_verified_wave1_baseline": true,
+        "new_baselines_generated": 0,
+        "new_training_rows_audited": false,
+        "new_evaluation_results_audited": false,
+        "executed_model_load_evidence_audited": false,
+        "finite_training_updates_certified": null,
+        "new_comparative_scores_claimed": false,
+        "complete": false,
+        "whole_matrix_complete": false,
+        "rows": [
+          {
+            "worker": "worker-a",
+            "model": "Qwen3-8B",
+            "pi_updates": 5,
+            "opd_updates": 6,
+            "owned_alive": true,
+            "owned_status_fresh_flag": false,
+            "status_age_seconds": 44.540647983551025,
+            "last_verified_status_utc": "2026-10-11T02:46:23.674320+00:00",
+            "asset_entries": 2940,
+            "baseline_bound": true,
+            "queue": {
+              "done": 0,
+              "failed": 0,
+              "pending": 0,
+              "running": 0
+            }
+          },
+          {
+            "worker": "worker-b",
+            "model": "Qwen3-4B",
+            "pi_updates": 5,
+            "opd_updates": 6,
+            "owned_alive": true,
+            "owned_status_fresh_flag": true,
+            "status_age_seconds": 41.46934795379639,
+            "last_verified_status_utc": "2026-10-11T02:46:26.745620+00:00",
+            "asset_entries": 2940,
+            "baseline_bound": true,
+            "queue": {
+              "done": 0,
+              "failed": 0,
+              "pending": 0,
+              "running": 0
+            }
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "pi_updates": 9,
+            "opd_updates": 2,
+            "owned_alive": true,
+            "owned_status_fresh_flag": true,
+            "status_age_seconds": 37.865450859069824,
+            "last_verified_status_utc": "2026-10-11T02:46:30.349517+00:00",
+            "asset_entries": 2940,
+            "baseline_bound": true,
+            "queue": {
+              "done": 0,
+              "failed": 0,
+              "pending": 0,
+              "running": 0
+            }
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-4B",
+            "pi_updates": 9,
+            "opd_updates": 2,
+            "owned_alive": true,
+            "owned_status_fresh_flag": true,
+            "status_age_seconds": 34.453531980514526,
+            "last_verified_status_utc": "2026-10-11T02:46:33.761436+00:00",
+            "asset_entries": 2940,
+            "baseline_bound": true,
+            "queue": {
+              "done": 0,
+              "failed": 0,
+              "pending": 0,
+              "running": 0
+            }
+          }
+        ],
+        "operation_journal": {
+          "retained_operations": 33,
+          "complete": 32,
+          "intent": 1,
+          "intent_scope": "A retained inspection intent; charged within the worker active assignment, not rewritten as completed.",
+          "all_retained_operations_complete": false
+        },
+        "cost": {
+          "stage_science_gpu_hours": 209.48808185736337,
+          "cumulative_study_gpu_hours": 381.12242848820154,
+          "cumulative_readiness_gpu_hours": 82.66406716346741,
+          "overall_gpu_hours": 463.78649565166893
+        },
+        "limits": [
+          "Owned-alive checks precede the cutoff by 34\u201345 seconds; worker a has a new inspection in flight and its freshness flag is false. This is not a confirmed dead or failed worker.",
+          "Startup guards are not finite-loss, executed model-load or result certification.",
+          "Existing caps, original deadline, full matrix reservations, fixed cycle-eight primary and response denominators remain unchanged.",
+          "Historical completion and admission records retain their own earlier timestamps."
+        ]
       }
     },
     "cycle_count_interpretation": {
