@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "math_cycle_teacher_and_phase_screens_complete_mixture_producer_running",
+  "status": "math_cycle_teacher_phase_and_mixture_screens_complete_sustained_gain_goal_open",
   "launch_authorized": true,
   "executable": true,
   "new_gpu_jobs_launched": 9,
@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "teacher_and_phase_screens_complete_mixture_pilot_running_sustained_gain_goal_open",
+    "status": "teacher_phase_and_mixture_screens_complete_sustained_gain_goal_open",
     "launch_authorized": true,
     "executable": true,
     "new_gpu_jobs_launched": true,
@@ -16354,12 +16354,12 @@
     "next_priority": {
       "user_instruction": "Let\u2019s focus on tuning 7 and 4.",
       "decision_authority": "Supervising agent design choice under the latest user steering; the user did not explicitly specify this exact eight-arm grid.",
-      "status": "mixture_producer_running_consumer_waiting_unassigned",
+      "status": "mixture_pilot_complete_sustained_gain_unproven_no_new_admission",
       "current_teacher_runs_preserved": true,
       "optimizer_additional_arms_deferred": 6,
       "new_phase_jobs_launched": true,
-      "latest_public_evidence_cutoff_utc": "2026-10-11T06:02:08.282865+00:00",
-      "latest_scientific_results_cutoff_utc": "2026-10-11T05:36:24.172375+00:00"
+      "latest_public_evidence_cutoff_utc": "2026-10-11T06:26:45.901910+00:00",
+      "latest_scientific_results_cutoff_utc": "2026-10-11T06:26:45.901910+00:00"
     },
     "phase_ratio_screen": {
       "version": "math-phases-v1",
@@ -56710,7 +56710,7 @@
       ]
     },
     "frozen_teacher_logit_mixture_pilot": {
-      "status": "admitted_producer_owned_alive_consumer_unassigned_waiting_baseline",
+      "status": "complete_strict_pair_and_independent_accounting_verified",
       "model": "Qwen3-4B",
       "teacher": "same frozen original weights with and without PI on identical observed response prefixes within each arm",
       "formula": "softmax(alpha*z_PI+(1-alpha)*z_noPI) at scoring temperature1",
@@ -56734,7 +56734,7 @@
       "admitted": true,
       "staged": true,
       "dispatch": true,
-      "actual_model_results": false,
+      "actual_model_results": true,
       "scientific_limit": "Feasibility and mechanism pilot; cannot establish sustained gains, best alpha,8B/full-data generalization or superiority to a complete cyclic88-update trajectory.",
       "orchestration_cpu_tests": 56,
       "orchestration_documented_lines": 1317,
@@ -56746,7 +56746,7 @@
       "actual_reservation_created": true,
       "whole_phase_wave_two_completion_verified": true,
       "actual_worker_preparation_calls": 2,
-      "actual_preflight_calls": 1,
+      "actual_preflight_calls": 2,
       "startup_snapshot": {
         "cutoff_utc": "2026-10-11T06:02:08.282865+00:00",
         "scope": "Owned startup and independently reviewed actual admission; no audited model training or scientific outcomes yet.",
@@ -56805,6 +56805,183 @@
           "Consumer launch confirmation and all fixed update-eight scientific/cleanup/accounting checks."
         ],
         "independent_reviews_passed": true
+      },
+      "completed_trajectories": 2,
+      "complete": true,
+      "terminal_snapshot": {
+        "cutoff_utc": "2026-10-11T06:26:45.901910+00:00",
+        "cutoff_unix": 1791700005.90191,
+        "scope": "Independently verified complete paired eight-update pilot; no sustained-improvement claim.",
+        "complete": true,
+        "independent_reviews_passed": true,
+        "strict_output_rule": "strict_zero",
+        "strict_zero_delimiter_passed": true,
+        "source_and_alpha_verified": true,
+        "local_and_uncached_hosted_training_verified": true,
+        "baseline_binding_verified": true,
+        "zero_exits_and_owned_cleanup_verified": true,
+        "shared_original_baseline": {
+          "accuracy_percent": 70.01953125,
+          "avg_at_8": 0.7001953125,
+          "cap_hit_draws": 22,
+          "cap_hit_fraction": 0.021484375,
+          "cap_hit_percent": 2.1484375,
+          "completed_updates": 0,
+          "correct_draws": 717,
+          "delimiter_diagnostics": 0,
+          "elapsed_seconds": 192.16721550701186,
+          "grader_timeouts": 0,
+          "mean_response_tokens": 1438.6611328125,
+          "parse_failure_draws": 21,
+          "parse_failure_fraction": 0.0205078125,
+          "parse_failure_percent": 2.05078125,
+          "responses": 1024
+        },
+        "arms": [
+          {
+            "alpha": 0.5,
+            "endpoints": [
+              {
+                "accuracy_percent": 70.703125,
+                "avg_at_8": 0.70703125,
+                "cap_hit_draws": 13,
+                "cap_hit_fraction": 0.0126953125,
+                "cap_hit_percent": 1.26953125,
+                "completed_updates": 4,
+                "correct_draws": 724,
+                "delimiter_diagnostics": 0,
+                "elapsed_seconds": 162.31590376002714,
+                "grader_timeouts": 0,
+                "mean_response_tokens": 1143.7158203125,
+                "parse_failure_draws": 11,
+                "parse_failure_fraction": 0.0107421875,
+                "parse_failure_percent": 1.07421875,
+                "responses": 1024
+              },
+              {
+                "accuracy_percent": 74.4140625,
+                "avg_at_8": 0.744140625,
+                "cap_hit_draws": 20,
+                "cap_hit_fraction": 0.01953125,
+                "cap_hit_percent": 1.953125,
+                "completed_updates": 8,
+                "correct_draws": 762,
+                "delimiter_diagnostics": 0,
+                "elapsed_seconds": 193.18492715997854,
+                "grader_timeouts": 0,
+                "mean_response_tokens": 1389.2431640625,
+                "parse_failure_draws": 16,
+                "parse_failure_fraction": 0.015625,
+                "parse_failure_percent": 1.5625,
+                "responses": 1024
+              }
+            ],
+            "terminal_verified": true,
+            "strict_zero": true
+          },
+          {
+            "alpha": 1.0,
+            "endpoints": [
+              {
+                "accuracy_percent": 66.30859375,
+                "avg_at_8": 0.6630859375,
+                "cap_hit_draws": 7,
+                "cap_hit_fraction": 0.0068359375,
+                "cap_hit_percent": 0.68359375,
+                "completed_updates": 4,
+                "correct_draws": 679,
+                "delimiter_diagnostics": 0,
+                "elapsed_seconds": 183.85128115105908,
+                "grader_timeouts": 0,
+                "mean_response_tokens": 1060.2333984375,
+                "parse_failure_draws": 7,
+                "parse_failure_fraction": 0.0068359375,
+                "parse_failure_percent": 0.68359375,
+                "responses": 1024
+              },
+              {
+                "accuracy_percent": 70.703125,
+                "avg_at_8": 0.70703125,
+                "cap_hit_draws": 8,
+                "cap_hit_fraction": 0.0078125,
+                "cap_hit_percent": 0.78125,
+                "completed_updates": 8,
+                "correct_draws": 724,
+                "delimiter_diagnostics": 0,
+                "elapsed_seconds": 175.67153770499863,
+                "grader_timeouts": 0,
+                "mean_response_tokens": 1016.7587890625,
+                "parse_failure_draws": 5,
+                "parse_failure_fraction": 0.0048828125,
+                "parse_failure_percent": 0.48828125,
+                "responses": 1024
+              }
+            ],
+            "terminal_verified": true,
+            "strict_zero": true
+          }
+        ],
+        "paired_differences": {
+          "4": {
+            "alpha_half_minus_baseline_pp": 0.68359375,
+            "alpha_half_minus_one_pp": 4.39453125,
+            "alpha_one_minus_baseline_pp": -3.7109375,
+            "cap_hit_half_minus_one_pp": 0.5859375,
+            "mean_tokens_half_minus_one": 83.482421875,
+            "parse_failure_half_minus_one_pp": 0.390625
+          },
+          "8": {
+            "alpha_half_minus_baseline_pp": 4.39453125,
+            "alpha_half_minus_one_pp": 3.7109375,
+            "alpha_one_minus_baseline_pp": 0.68359375,
+            "cap_hit_half_minus_one_pp": 1.171875,
+            "mean_tokens_half_minus_one": 372.484375,
+            "parse_failure_half_minus_one_pp": 1.07421875
+          }
+        },
+        "counts": {
+          "arms": 2,
+          "delimiter_diagnostics": 0,
+          "exports": 4,
+          "generated_responses": 5120,
+          "generated_suites": 5,
+          "grader_timeouts": 0,
+          "hosted_suite_writes": 6,
+          "successful_updates_per_arm": 8,
+          "total_successful_updates": 16
+        },
+        "cost_at_cutoff": {
+          "outside_assignment": 0.0879026211632623,
+          "overall": 539.0372469154994,
+          "pilot": 3.631387906074524,
+          "readiness": 82.66406716346741,
+          "science": 284.7388331211938,
+          "study": 456.373179752032
+        },
+        "operational_accounting": {
+          "prior_intervals": 3243,
+          "controller_intervals": 2,
+          "preparation_calls": 2,
+          "coordinator_calls": 46,
+          "collector_calls": 3,
+          "extra_operator_calls": 0,
+          "total_intervals": 3296,
+          "all_complete": true,
+          "first_cleanup_releases_verified": true,
+          "post_release_reads_charged": true
+        },
+        "sustained_improvement_established": false,
+        "new_admission": false,
+        "original_caps_and_deadline_unchanged": true,
+        "limitations": [
+          "One model size and training seed, same 32 training questions per arm, one reused 128-question tuning panel; no independent confirmation panel.",
+          "Step 8 was fixed before pilot outcomes; step 4 is diagnostic. The shared fresh original baseline was generated once, then imported without regenerating or double-counting it.",
+          "The two constant-alpha arms contain no sequential PI-to-OPD phase switch, teacher refresh or EMA; this is a related target-mixture pilot, not direct confirmation of cyclic PI-to-OPD mechanism.",
+          "Avg@8 is mean draw accuracy, not pass@8. Draws within a question are not independent training replicates; aggregate counts do not establish significance.",
+          "Higher alpha-half accuracy accompanies longer outputs and more cap hits and parse failures than alpha-one at step 8. Accuracy, length and format tradeoffs are all retained.",
+          "Losses use different fresh batches and student-generated prefixes at each update, and different target objectives across arms. Smaller raw loss is not a fixed-probe KL, proof of better utility, or isolated gradient-scale mechanism. Adam and clipping further prevent an equivalence to a smaller learning rate.",
+          "No benchmark evaluation, long-horizon persistence, alpha sweep or sustained-improvement claim is supported."
+        ]
       }
     }
   }
