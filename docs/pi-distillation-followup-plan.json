@@ -57637,6 +57637,89 @@
         "Semantic overlap, historical exposure and pretraining contamination are not certified.",
         "No selection, filtering, rewriting, model evaluation or candidate sealing occurred."
       ]
+    },
+    "persistence_analysis_preparation": {
+      "version": "u88-offline-analysis-capability-public-v1",
+      "status": "source_and_exact_line_documentation_independently_reviewed_CPU_only",
+      "actual_u88_numeric_results_read": 0,
+      "remote_calls": 0,
+      "new_training_or_rescoring": false,
+      "scientific_completion_certified": false,
+      "operational_admission": false,
+      "real_input_ready": false,
+      "expected_suites": 22,
+      "expected_responses": 21408,
+      "validation_conditions": 17,
+      "benchmark_conditions": 5,
+      "validation_questions": 128,
+      "draws_per_question": 8,
+      "primary_metric": "accuracy_pp",
+      "primary_contrasts": [
+        "alpha0.5_minus_alpha1_at88",
+        "alpha0.5_at88_minus_original",
+        "alpha1_at88_minus_original"
+      ],
+      "prelaunch_secondary_estimands": [
+        "OLS44,55,66,77,88 slope per11updates",
+        "step88_minus_step11"
+      ],
+      "postlaunch_analysis_details": {
+        "resamples": 20000,
+        "seed": 137088,
+        "marginal_intervals": 112,
+        "interval_type": "95% percentile; no simultaneous or training-seed coverage",
+        "unit": "Same128 question clusters across every draw, checkpoint and arm",
+        "additional_descriptions": "All scheduled curves, adjacent reversals and length/cap/parse/joint counts; no filtering, causal length adjustment, peak or benchmark selection."
+      },
+      "cpu_tests": {
+        "analyzer": 80,
+        "extractor": 51,
+        "distinct_total": 131,
+        "counting": "Two separate owner test runs, not one joint131-case run. Independent source and exact-line reviews are separate."
+      },
+      "exact_documented_rows": {
+        "analyzer": 683,
+        "numeric_helpers": 496,
+        "added_total": 1179,
+        "prior_preserved": 23473,
+        "new_total": 24652,
+        "redactions": "Two private input-contract SHA display literals: trajectory_analysis.py line 13 and synthetic_numeric_fixture.py line 15. Raw private source remains hash-bound."
+      },
+      "source_sha256": {
+        "trajectory_analysis.py": "b502e021329d9c8a23d1efda4e9e4bc0cb3ddb8fcfe739d825ee83c363791e4c",
+        "test_trajectory_analysis.py": "f991849435c31d7e69961ffdecdc398634c92bbe34cb90b9ac1f360b253cbfa0",
+        "numeric_extractor.py": "b27b00af9f03486f0bb54edc8eb9eb2bdf89a58a5e1f4a5871595ddf1580d33d",
+        "test_numeric_extractor.py": "e2f1fc86c327a05c6ef2284c59a6d7a93d5ea6cb7ddbc773d7239fc49c011bdc",
+        "synthetic_numeric_fixture.py": "aff216f024ee211785661da4fe2cae5d35d68329e5a99e1e5680a73bd7496b0b",
+        "measure_numeric_envelopes.py": "f7ca84162b5a1c0be3cbb5828be54a05bf69ed5e598ade1941adef517e7dc4bd"
+      },
+      "independent_review_sha256": {
+        "analyzer": "ac59fd711a09d5d6fec0c5360d621c1c9c0fae83cabcb6568c9b81b0d6f56d49",
+        "numeric_helpers": "3584b02eed02fb7a721cce851ab21c2b1133bb49b87ebbfc4247c419e9bbb0a9"
+      },
+      "numeric_read_design": {
+        "fixed_chunks": 4,
+        "chunk_order": [
+          "worker-b0",
+          "worker-b1",
+          "worker-d0",
+          "worker-d1"
+        ],
+        "maximum_measured_envelope_bytes": 121052,
+        "hard_envelope_limit_bytes": 180000,
+        "measurement": "Six deterministic synthetic high-entropy fixtures per worker; empirical capacity check, not a worst-case proof.",
+        "actual_inventory_built": false,
+        "operational_driver_built": false,
+        "prospective_seconds_per_call": 60,
+        "prospective_gpu_hours": 0.5333333333333333,
+        "budget_source": "Existing8GPUh operations allowance; no extra allowance or actual read admission."
+      },
+      "remaining_requirements": [
+        "Independent exact terminal completion with all raw-source hashes, hosted rows and cleanup.",
+        "Root-reviewed final numeric inventory/program/source bindings and journaled per-call budget/deadline admission.",
+        "All four immutable replies, exact reassembly and an independent numeric-input review before real analysis."
+      ],
+      "interpretation": "Finite retained gain and positive late slope are different claims. A positive contrast can reflect comparator decline; a positive slope can coexist with reversals. No sustained-growth result is reported."
     }
   }
 }
