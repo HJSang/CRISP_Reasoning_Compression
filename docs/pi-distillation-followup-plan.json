@@ -59993,5 +59993,69 @@
     "startup_order_confirmed": "Both consumers failed before the corresponding producer wrote ready.json; start acknowledged process creation before full source hashing and listen.",
     "network_routability_established": false,
     "producer_terminal": "TimeoutError ended before exact cleanup observation; no causal attribution to stop signal."
+  },
+  "late_decay_fork_corrected_copy": {
+    "version": "public-late-fork-corrected-copy-v1",
+    "status": "both_midpoint_copies_verified_tails_unlaunched",
+    "accounting_cutoff_utc": "2026-10-11T16:48:05.273114+00:00",
+    "copy_verified": true,
+    "model_pairs": 2,
+    "physical_endpoints_released": 4,
+    "operations_complete": 26,
+    "operations_uncertain": 0,
+    "source_checkpoint_identity_verified": true,
+    "full_file_hashes_verified": true,
+    "durable_destination_checkpoint_reread_verified": true,
+    "successful_endpoint_exits_verified": true,
+    "owned_process_absence_verified": true,
+    "idle_gpus_per_endpoint": 8,
+    "compute_processes_present": false,
+    "producer_readiness_gate_used": true,
+    "prior_failures_and_consumed_guards_preserved": true,
+    "one_corrected_attempt_consumed": true,
+    "automatic_retry": false,
+    "scientific_tail_jobs_launched": 0,
+    "scientific_launch_authorized_by_transfer": false,
+    "new_tail_training_results": false,
+    "full_scientific_family_complete": false,
+    "sustained_improvement_established": false,
+    "correction_gpu_hours": 1.3887876187430488,
+    "actual_gpu_hours": {
+      "overall": 584.7631906244492,
+      "readiness": 86.68810977247026,
+      "readiness_stage": 25.992832137743637,
+      "science": 326.44073422114064,
+      "study": 498.07508085197884
+    },
+    "unchanged_projected_gpu_hours": {
+      "overall": 985.4522485474967,
+      "readiness": 86.68810977247026,
+      "readiness_stage": 25.992832137743637,
+      "science": 727.1297921441883,
+      "study": 898.7641387750264
+    },
+    "all_four_tail_reservations_retained": true,
+    "original_global_deadline_and_caps_unchanged": true,
+    "independent_source_documentation_admission_reviews_passed": true,
+    "independent_terminal_review_passed": true,
+    "implementation_documentation": {
+      "new_rows": 465,
+      "prior_rows_preserved": 37675,
+      "total_rows": 38140,
+      "display_redactions": 6,
+      "unchanged_blocks": 16,
+      "cpu_cases": {
+        "latest_focused": 41,
+        "retained_peer": 30,
+        "distinct": 71,
+        "one_joint_final_run_claimed": false
+      }
+    },
+    "limits": [
+      "This is checkpoint-transfer and physical-cleanup evidence, not a new trained result or an admission for the four scientific tails.",
+      "Earlier incomplete-copy and refused-connection attempts remain unchanged historical evidence; this was one separately adjudicated correction with new identities and a ready-listener gate.",
+      "Fixed final accuracy endpoints remain primary. Actual resource costs are descriptive; no compute-to-quality experiment or stopping rule is introduced.",
+      "Root and independent terminal/cumulative-accounting reviews passed. Copy success does not authorize scientific tail dispatch."
+    ]
   }
 }
