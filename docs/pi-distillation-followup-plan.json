@@ -57552,6 +57552,91 @@
       "evidence_independent_review_passed": true,
       "evidence_review_sha256": "702cce3d50b5156bfe568dcfdfd207e233f91ccc298988c0d4fe2d25dbba8821",
       "scope_limit": "Startup process/source/accounting evidence only. No executed model load, finite training, hosted metrics, evaluation result or sustained gain is certified. The completed eight-update pilot and historical forecasts remain unchanged."
+    },
+    "persistence_handoff": {
+      "version": "math-logit-mixture-u88-handoff-public-v1",
+      "cutoff_unix": 1791707629.443359,
+      "cutoff_utc": "2026-10-11T08:33:49.443359Z",
+      "status": "both_arms_dispatched_and_last_verified_owned_alive",
+      "alphas": [
+        0.5,
+        1.0
+      ],
+      "model": "Qwen3-4B",
+      "baseline_suites_verified": 2,
+      "baseline_responses": 1824,
+      "baseline_validation_avg_at_8_percent": 69.921875,
+      "baseline_source": "original checkpoint; fresh u88 evaluation seed namespace",
+      "consumer_import_verified": true,
+      "producer_finite_local_prefix_updates": 13,
+      "hosted_training_rows_audited": 0,
+      "trained_evaluation_suites_audited": 0,
+      "completed_trajectories": 0,
+      "complete": false,
+      "preparation_calls_complete": 2,
+      "coordinator_calls_complete": 31,
+      "unresolved_calls": 0,
+      "queue_failures": 0,
+      "cost_at_cutoff": {
+        "new_attempt_gpu_hours": 2.3328343031141494,
+        "actual_totals": {
+          "science": 287.0782858308156,
+          "study": 458.7126324616538,
+          "readiness": 82.66406716346741,
+          "overall": 541.3766996251212
+        },
+        "guarded_projection": {
+          "science": 554.3151362457202,
+          "study": 725.9494828765584,
+          "readiness": 82.66406716346741,
+          "overall": 808.6135500400258
+        }
+      },
+      "original_deadline_unix": 1791844987.672134,
+      "caps_and_deadline_unchanged": true,
+      "limits_passed": true,
+      "independent_review_sha256": "3c61c308a2a8ff97266089982ed0a72df101151b79c27d3e8b406aa4d72846b5",
+      "descriptive_metadata_discrepancy": "A retained dataset-role string describes the old eight-update pilot. Executable u88 configuration, command, queues and schedule were independently checked; this string is copied provenance and does not control scheduling. Frozen bytes remain unchanged.",
+      "limitations": [
+        "Owned-alive and costs apply to the dated cutoff, not an indefinite live claim.",
+        "The 13-update producer prefix is local evidence from baseline handoff, without hosted confirmation or an audited trained score.",
+        "Original-baseline metrics are not training gains.",
+        "No final completeness or sustained-improvement claim."
+      ]
+    },
+    "confirmation_grader_audit": {
+      "version": "external-confirmation-grader-public-v1",
+      "candidate_sha256": "66b5b70943ce5947a24a659356724c70e2bbaa7a22db210f9b35fb7b9b6e2448",
+      "selected": 512,
+      "source_identical_rows": 512,
+      "nonempty_labels": 512,
+      "normalization_changes": 115,
+      "proof_prompt_cues": 9,
+      "boolean_labels": 109,
+      "synthetic_boxed_copy_matches": 512,
+      "copy_test_scope": "Extraction and string normalization only; not label correctness or proof validity.",
+      "schema_projection_materialized": false,
+      "symbolic_dataset_execution": false,
+      "handwritten_grader_controls": 8,
+      "cpu_tests_passed": 11,
+      "exact_documented_lines": 231,
+      "unchanged_candidate": true,
+      "sealed_confirmation": false,
+      "model_outcomes_collected": 0,
+      "admitted": false,
+      "semantic_label_correctness_checked": 0,
+      "independent_review_sha256": "18a9dea36319f9407cdc91eb96a1e83fd1a052616a9265b33bb5af32e2a7f359",
+      "source_sha256": {
+        "audit_confirmation_grader.py": "a12cfc5adb9d1fe2e2d74863517c507706c7fbde318fa824f01de5947e102e49",
+        "test_confirmation_grader_audit.py": "edb851b65ee891db03f16a4ebeb36377d01aa87fba5b9dbd4126c64d825eb29e"
+      },
+      "audit_sha256": "79bac268eb7ebb33e6afaea035b46baacdd9890a8267e3148abab84287c8431c",
+      "rubric_finding": "Some proof-style questions store only a short symbol or conclusion. A final-answer match could accept that string without evaluating the requested proof; nine lexical proof cues are review flags, not nine invalid labels.",
+      "limitations": [
+        "Equivalent-answer formats, tokenizer/context compatibility and semantic label correctness remain unresolved.",
+        "Semantic overlap, historical exposure and pretraining contamination are not certified.",
+        "No selection, filtering, rewriting, model evaluation or candidate sealing occurred."
+      ]
     }
   }
 }
