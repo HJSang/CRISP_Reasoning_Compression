@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "math_cycle_teacher_screen_and_phase_matrix_complete_mixture_preparation_pending",
+  "status": "math_cycle_teacher_and_phase_screens_complete_mixture_producer_running",
   "launch_authorized": true,
   "executable": true,
   "new_gpu_jobs_launched": 9,
@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "teacher_screen_and_eight_arm_phase_screen_complete_sustained_gain_goal_open",
+    "status": "teacher_and_phase_screens_complete_mixture_pilot_running_sustained_gain_goal_open",
     "launch_authorized": true,
     "executable": true,
     "new_gpu_jobs_launched": true,
@@ -16354,11 +16354,11 @@
     "next_priority": {
       "user_instruction": "Let\u2019s focus on tuning 7 and 4.",
       "decision_authority": "Supervising agent design choice under the latest user steering; the user did not explicitly specify this exact eight-arm grid.",
-      "status": "phase_matrix_complete_mixture_actual_preparation_and_admission_pending",
+      "status": "mixture_producer_running_consumer_waiting_unassigned",
       "current_teacher_runs_preserved": true,
       "optimizer_additional_arms_deferred": 6,
       "new_phase_jobs_launched": true,
-      "latest_public_evidence_cutoff_utc": "2026-10-11T05:36:24.172375+00:00",
+      "latest_public_evidence_cutoff_utc": "2026-10-11T06:02:08.282865+00:00",
       "latest_scientific_results_cutoff_utc": "2026-10-11T05:36:24.172375+00:00"
     },
     "phase_ratio_screen": {
@@ -56710,7 +56710,7 @@
       ]
     },
     "frozen_teacher_logit_mixture_pilot": {
-      "status": "reviewed_CPU_capability_and_local_inputs_phase_completion_satisfied_actual_preparation_and_admission_pending",
+      "status": "admitted_producer_owned_alive_consumer_unassigned_waiting_baseline",
       "model": "Qwen3-4B",
       "teacher": "same frozen original weights with and without PI on identical observed response prefixes within each arm",
       "formula": "softmax(alpha*z_PI+(1-alpha)*z_noPI) at scoring temperature1",
@@ -56731,9 +56731,9 @@
       "operational_cpu_tests": 111,
       "independent_source_and_documentation_reviews_passed": true,
       "whole_phase_wave_two_completion_required_before_worker_operations": true,
-      "admitted": false,
-      "staged": false,
-      "dispatch": false,
+      "admitted": true,
+      "staged": true,
+      "dispatch": true,
       "actual_model_results": false,
       "scientific_limit": "Feasibility and mechanism pilot; cannot establish sustained gains, best alpha,8B/full-data generalization or superiority to a complete cyclic88-update trajectory.",
       "orchestration_cpu_tests": 56,
@@ -56743,10 +56743,69 @@
       "prospective_full_cap_cost_envelope_gpu_hours": 54,
       "prospective_pilot_wall_hours": 4.5,
       "prospective_setup_evidence_gpu_hours": 2,
-      "actual_reservation_created": false,
+      "actual_reservation_created": true,
       "whole_phase_wave_two_completion_verified": true,
-      "actual_worker_preparation_calls": 0,
-      "actual_preflight_calls": 0
+      "actual_worker_preparation_calls": 2,
+      "actual_preflight_calls": 1,
+      "startup_snapshot": {
+        "cutoff_utc": "2026-10-11T06:02:08.282865+00:00",
+        "scope": "Owned startup and independently reviewed actual admission; no audited model training or scientific outcomes yet.",
+        "actual_preparation_complete": true,
+        "actual_admission_independently_verified": true,
+        "canonical_authority_consumed": true,
+        "automatic_retries": 0,
+        "dispatched_arms": 1,
+        "producer": {
+          "alpha": 0.5,
+          "owned_alive": true,
+          "status_fresh": true,
+          "original_model_source_verified_by_fresh_dispatch_preflight": true,
+          "model_loaded_for_training_verified": false,
+          "queue_done": 0,
+          "queue_pending": 0,
+          "queue_running": 0,
+          "queue_failed": 0
+        },
+        "consumer": {
+          "alpha": 1.0,
+          "assigned": false,
+          "dispatched": false,
+          "status": "Waiting for the producer original-baseline audit and binding; full consumer reservation remains required."
+        },
+        "training_updates_audited": 0,
+        "hosted_training_audited": false,
+        "generated_suites_audited": 0,
+        "generated_responses_audited": 0,
+        "completed_trajectories": 0,
+        "strict_output_rule": "strict_zero",
+        "strict_output_result_audit": null,
+        "actual_model_results": false,
+        "complete": false,
+        "sustained_improvement_established": false,
+        "pilot_envelope_gpu_hours": 54,
+        "pilot_wall_hours": 4.5,
+        "setup_and_evidence_allowance_gpu_hours": 2,
+        "setup_and_evidence_allowance_wall_hours": 0.5,
+        "original_caps_and_deadline_unchanged": true,
+        "cost_at_cutoff": {
+          "pilot_gpu_hours": 0.20865550571017796,
+          "outside_assignment_gpu_hours": 0.07053035259246829,
+          "actual_totals": {
+            "science": 281.3161007208294,
+            "study": 452.9504473516676,
+            "readiness": 82.66406716346741,
+            "overall": 535.614514515135
+          },
+          "scope": "Per-worker interval union at this startup cutoff, not terminal or full pilot cost; reservation is separate from actual spend."
+        },
+        "pending": [
+          "Actual model loading and exact training command/source verification.",
+          "Finite local and uncached hosted training evidence.",
+          "Strict original-baseline results and exact consumer binding before consumer assignment.",
+          "Consumer launch confirmation and all fixed update-eight scientific/cleanup/accounting checks."
+        ],
+        "independent_reviews_passed": true
+      }
     }
   }
 }
