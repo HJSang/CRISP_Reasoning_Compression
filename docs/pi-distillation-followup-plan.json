@@ -14940,9 +14940,9 @@
         "definitions": {
           "validation": "Unprivileged Math validation average answer correctness over the same128questions and8draws; percentage points reported.",
           "cycle_endpoint": "Only completed OPD endpoints11,22,...88 enter trend analysis. PI endpoints analyzed separately.",
-          "matched_horizons": "8B cycles1–7 for both teacher arms;4Bcycles1–8. Fixed8Bcycle8 is retained in all_completed_cycles, not compared with refreshcycle7.",
+          "matched_horizons": "8B cycles1\u20137 for both teacher arms;4Bcycles1\u20138. Fixed8Bcycle8 is retained in all_completed_cycles, not compared with refreshcycle7.",
           "slope": "Ordinary least-squares descriptive slope of cycle-end percent against cycle number, with an intercept; no standard errors or independent-replication claim.",
-          "late_window": "Fixed cycles6–8 compared with cycles1–3, only when all are captured. Also report explicitly labelled last-three-observed diagnostic for incomplete8B.",
+          "late_window": "Fixed cycles6\u20138 compared with cycles1\u20133, only when all are captured. Also report explicitly labelled last-three-observed diagnostic for incomplete8B.",
           "phase_changes": "PIend minus preceding OPDend (or original forcycle1); OPDend minus that same cycle PIend. Seven PI versus four OPD updates: phase deltas are not equal-compute causal effects.",
           "warnings": "Retain the flagged Dcycle6 validation score and unchanged denominator; defaultstrictfailure remains separate."
         },
@@ -15690,15 +15690,15 @@
         ],
         "matrix_identification": {
           "unique_trajectories": 10,
-          "per_model": "Five unique arms: four fixed-original reset/carry × constant/global_linear variants, plus cycle_refresh/reset/constant. Original teacher-screen reset/constant arm is the shared factorial control.",
+          "per_model": "Five unique arms: four fixed-original reset/carry \u00d7 constant/global_linear variants, plus cycle_refresh/reset/constant. Original teacher-screen reset/constant arm is the shared factorial control.",
           "identified_exploratory_contrasts": [
             "Teacher refresh versus fixed-original with reset_each_phase and constant5e-6 only.",
             "Adam carry versus reset with fixed-original teacher at each LR schedule.",
             "Global-linear decay versus constant with fixed-original teacher at each optimizer policy.",
-            "Reset/carry × constant/decay interaction under fixed-original teacher only."
+            "Reset/carry \u00d7 constant/decay interaction under fixed-original teacher only."
           ],
           "not_identified": [
-            "Refresh × Adam-carry interaction, refresh × LR-decay interaction, or their three-way interaction: three refresh optimizer/LR cells per model are absent.",
+            "Refresh \u00d7 Adam-carry interaction, refresh \u00d7 LR-decay interaction, or their three-way interaction: three refresh optimizer/LR cells per model are absent.",
             "Best LR or whether5e-6 is too large: only one constant rate and one changing schedule.",
             "Pure schedule-order effect: linear mean LR2.75e-6 differs from constant5e-6; no constant2.75e-6 control.",
             "Generalization across training seeds, model families, full24809trainingquestions or longer horizons than88updates.",
@@ -15711,8 +15711,8 @@
         "decision_criteria_proposal": {
           "status": "Proposed diagnostic interpretation for the user goal, formulated after observing trajectories; not a new preregistered primary endpoint, hard gate or launch authorization.",
           "primary": "Retain update88 validation Avg@8 for every required arm; no maximum-over-checkpoints, no benchmark selection, no dropping failed or weak arms.",
-          "durable_gain": "Describe gain as retained only when finalcycle8 exceeds original and fixedlatecycles6–8 remain above original on average; report all three individual late endpoints and uncertainty, not merely the mean. This is distinct from continued growth.",
-          "continued_growth": "For support of accumulating gain, require concordant positive late-vs-early change and no material late decline: report cycles6–8 minus1–3 and slope over fixedcycles5–8, together with cycle8 minuscycle7. Do not invent an effect-size threshold from these outcomes; select a practical tolerance before new confirmation evidence.",
+          "durable_gain": "Describe gain as retained only when finalcycle8 exceeds original and fixedlatecycles6\u20138 remain above original on average; report all three individual late endpoints and uncertainty, not merely the mean. This is distinct from continued growth.",
+          "continued_growth": "For support of accumulating gain, require concordant positive late-vs-early change and no material late decline: report cycles6\u20138 minus1\u20133 and slope over fixedcycles5\u20138, together with cycle8 minuscycle7. Do not invent an effect-size threshold from these outcomes; select a practical tolerance before new confirmation evidence.",
           "confirmation": "After candidate selection solely on the fixed primary endpoint, evaluate a locked recipe on held-out3462validationgroups and freshtrainingseeds before claiming robust sustained improvement; these require separately bounded authorization if outside current executable scope. The groups are withheld from this selection, not guaranteed historically untouched.",
           "uncertainty": "Use question-level paired differences/cluster bootstrap for repeated draws and arm comparisons when raw records are available; aggregate summary alone cannot provide this. One trainingseed cannot quantify training-seed uncertainty. Repeated phase points are not independent replications.",
           "cost": "Report actual tokens, cap-hit/parse-failure rates and generation/totalwall alongside validation; do not exclude capped/flagged outcomes. A more accurate longer-output recipe is not established to be more compute-efficient. Any equal-token-budget experiment is a separate proposed scope.",
@@ -15737,7 +15737,7 @@
           "pi_positive": 7,
           "pi_negative": 24
         },
-        "interpretation": "Above-original retention differs from continued upward growth. All three complete arms have negative cycle5–8 slopes; cycle-refresh4B retains its gain but does not establish ongoing accumulation. Fixed late6–8 diagnostics for8Brefresh remain pending. Finish exact currentmatrix before any conditional newscope.",
+        "interpretation": "Above-original retention differs from continued upward growth. All three complete arms have negative cycle5\u20138 slopes; cycle-refresh4B retains its gain but does not establish ongoing accumulation. Fixed late6\u20138 diagnostics for8Brefresh remain pending. Finish exact currentmatrix before any conditional newscope.",
         "current_priority_notice": "The numeric 21:31 analysis is preserved. Subsequent user steering prioritizes a fresh eight-arm ratio screen; the six optimizer variants discussed in that historical matrix analysis are deferred."
       },
       "terminal_evidence": {
@@ -16342,7 +16342,7 @@
         },
         "interpretation": {
           "primary": "Fixed cycle-eight no-hint validation, same 128 questions and eight draws; no maximum-checkpoint or benchmark selection.",
-          "trend": "Late-versus-early means and cycles 5–8 slopes describe this observed one-seed screen. 8B refresh has a positive late mean difference and slope; 4B refresh retains a final gain but has a negative late slope. Neither establishes monotonic or replicated growth.",
+          "trend": "Late-versus-early means and cycles 5\u20138 slopes describe this observed one-seed screen. 8B refresh has a positive late mean difference and slope; 4B refresh retains a final gain but has a negative late slope. Neither establishes monotonic or replicated growth.",
           "phase_changes": "OPD improves 27 of 32 preceding PI endpoints; PI improves over the preceding cycle/original in 7 of 32. Repeated phase pairs are correlated, not independent replications.",
           "cost": "Final benchmark accuracy must be read alongside cap hits, tokens and generation time. Refresh has no established superiority at matched inference cost; all outcomes remain in the denominators.",
           "next_scope": "Six unlaunched optimizer arms are deferred. The fresh eight-arm phase-ratio screen remains conditional on reviewed runtime, bounded readiness and fresh whole-matrix admission; no phase dispatch has occurred."
@@ -16352,7 +16352,7 @@
       "original_full_study_complete": false
     },
     "next_priority": {
-      "user_instruction": "Let’s focus on tuning 7 and 4.",
+      "user_instruction": "Let\u2019s focus on tuning 7 and 4.",
       "decision_authority": "Supervising agent design choice under the latest user steering; the user did not explicitly specify this exact eight-arm grid.",
       "status": "mixture_pilot_complete_sustained_gain_unproven_no_new_admission",
       "current_teacher_runs_preserved": true,
@@ -16660,9 +16660,9 @@
         "value": "math-phases-v1:s137"
       },
       "readout": {
-        "primary": "Fixed cycle 8 / update 88 unprivileged Math validation Avg@8: 128 questions × 8 draws. Compare each candidate against the fresh 7/4 control separately within each model.",
+        "primary": "Fixed cycle 8 / update 88 unprivileged Math validation Avg@8: 128 questions \u00d7 8 draws. Compare each candidate against the fresh 7/4 control separately within each model.",
         "selection": "No benchmark-based ranking, no best-intermediate-checkpoint selection and no dropping weak arms after viewing earlier results. All prespecified cells are retained unless an operational or budget gate prevents completion.",
-        "diagnostics": "Prespecify cycles 6–8 minus cycles 1–3 mean validation and the OLS slope through cycles 5–8 as descriptive diagnostics for this new screen. Cycle-eight validation remains primary. A highest final score with a flat or falling late trend does not establish sustained growth. These diagnostics are chosen after the earlier 7/4 evidence, not retroactively called predeclared for that old screen.",
+        "diagnostics": "Prespecify cycles 6\u20138 minus cycles 1\u20133 mean validation and the OLS slope through cycles 5\u20138 as descriptive diagnostics for this new screen. Cycle-eight validation remains primary. A highest final score with a flat or falling late trend does not establish sustained growth. These diagnostics are chosen after the earlier 7/4 evidence, not retroactively called predeclared for that old screen.",
         "uncertainty": "Use question-group paired differences or a cluster bootstrap for repeated draws and the three candidate contrasts. One training seed cannot establish training-seed robustness.",
         "cost": "Retain every capped and flagged response with original scores and denominators. Report per-dataset lengths, cap-hit and parse-failure rates, generation and total wall time. The same update/evaluation counts do not imply equal GPU-hours.",
         "phase_alignment": "Common OPD endpoints at updates 11, 22, ..., 88 are matched. PI ends occur at different global updates across ratios and must be labelled rather than treated as equal-horizon comparisons."
@@ -16674,7 +16674,7 @@
       },
       "design_limits": [
         "One seed, a 352-question training stream and a repeatedly inspected 128-question validation panel cannot establish robust sustained growth. Multiple candidate comparisons can overfit this panel.",
-        "Teacher refresh is fixed here; the screen does not identify teacher-policy × phase-ratio interactions.",
+        "Teacher refresh is fixed here; the screen does not identify teacher-policy \u00d7 phase-ratio interactions.",
         "Moving the phase boundary also moves the fresh-Adam boundary. These are whole-recipe effects, not isolated loss-ratio effects.",
         "Constant LR 5e-6 and Adam reset remain fixed; carry and decay effects remain unanswered.",
         "Fresh 7/4 controls avoid wrapper-equivalence assumptions, but different wave timing and execution variation remain.",
@@ -44229,7 +44229,7 @@
                 "worker": "worker-d"
               }
             ],
-            "trend_interpretation": "For the three complete arms, cycles 6–8 means are below cycles 1–3. A positive slope over cycles 5–8 can coexist with an endpoint below baseline, so recovery and sustained gain are different claims. C fixed-window trends remain null until cycle eight.",
+            "trend_interpretation": "For the three complete arms, cycles 6\u20138 means are below cycles 1\u20133. A positive slope over cycles 5\u20138 can coexist with an endpoint below baseline, so recovery and sustained gain are different claims. C fixed-window trends remain null until cycle eight.",
             "partial_scope": "A/B/D are terminal per arm; C is not. Three C suites, its two baseline hosted writes and cleanup remain pending. No whole-wave completion or next-wave admission is issued.",
             "phase_decomposition_cutoff_utc": "2026-10-11T02:14:49.440874+00:00",
             "phase_sign_counts_by_worker": {
@@ -44482,7 +44482,7 @@
             "terminal_verified": true
           }
         ],
-        "trend_interpretation": "The 8B 7/4 final gain is +1.26953125 pp over its fresh baseline, but its cycle5–8 slope is -2.48046875 pp/cycle and late-minus-early mean is -2.7669270833333335 pp. Positive 3/8 late slopes describe recovery rather than sustained above-baseline growth.",
+        "trend_interpretation": "The 8B 7/4 final gain is +1.26953125 pp over its fresh baseline, but its cycle5\u20138 slope is -2.48046875 pp/cycle and late-minus-early mean is -2.7669270833333335 pp. Positive 3/8 late slopes describe recovery rather than sustained above-baseline growth.",
         "phase_decomposition_cutoff_utc": "2026-10-11T02:31:13.914315+00:00",
         "completed_phase_triples": 32,
         "identification_limit": [
@@ -45479,7 +45479,7 @@
               "worker": "worker-d"
             }
           ],
-          "trend_interpretation": "For the three complete arms, cycles 6–8 means are below cycles 1–3. A positive slope over cycles 5–8 can coexist with an endpoint below baseline, so recovery and sustained gain are different claims. C fixed-window trends remain null until cycle eight.",
+          "trend_interpretation": "For the three complete arms, cycles 6\u20138 means are below cycles 1\u20133. A positive slope over cycles 5\u20138 can coexist with an endpoint below baseline, so recovery and sustained gain are different claims. C fixed-window trends remain null until cycle eight.",
           "partial_scope": "A/B/D are terminal per arm; C is not. Three C suites, its two baseline hosted writes and cleanup remain pending. No whole-wave completion or next-wave admission is issued.",
           "phase_decomposition_cutoff_utc": "2026-10-11T02:14:49.440874+00:00",
           "phase_sign_counts_by_worker": {
@@ -45720,7 +45720,7 @@
           "overall_gpu_hours": 463.78649565166893
         },
         "limits": [
-          "Owned-alive checks precede the cutoff by 34–45 seconds; worker a has a new inspection in flight and its freshness flag is false. This is not a confirmed dead or failed worker.",
+          "Owned-alive checks precede the cutoff by 34\u201345 seconds; worker a has a new inspection in flight and its freshness flag is false. This is not a confirmed dead or failed worker.",
           "Startup guards are not finite-loss, executed model-load or result certification.",
           "Existing caps, original deadline, full matrix reservations, fixed cycle-eight primary and response denominators remain unchanged.",
           "Historical completion and admission records retain their own earlier timestamps."
@@ -56627,7 +56627,7 @@
       }
     },
     "cycle_count_interpretation": {
-      "scope": "completed PI7→OPD4 teacher comparison; retrospective validation description",
+      "scope": "completed PI7\u2192OPD4 teacher comparison; retrospective validation description",
       "source_collection_sha256": "b5fac08d09272d23e9ae18aaebb468e3e33b1cd7d2a205c36ea8dd971013add9",
       "source_complete": true,
       "cycles": [
@@ -59190,7 +59190,7 @@
       "primary_metric": "accuracy_pp",
       "resampling_unit": "128 question clusters, all eight draws, both arms and all fixed checkpoints together",
       "slope_units": "metric change per 11 updates; fixed OLS at 44,55,66,77,88; no peak/window selection",
-      "design_status": "Final step 88 contrasts, late 44–88 trend and 88-minus-11 were specified before launch; RNG seed, 112 marginal intervals and reversal/joint summaries are post-launch implementation choices.",
+      "design_status": "Final step 88 contrasts, late 44\u201388 trend and 88-minus-11 were specified before launch; RNG seed, 112 marginal intervals and reversal/joint summaries are post-launch implementation choices.",
       "requested_draw_ids_and_seeds_paired": true,
       "outcome_filtering": false
     },
@@ -67011,5 +67011,82 @@
       "overall": "overall accounted total",
       "readiness_stage": "current stage readiness"
     }
+  },
+  "adam_continuity_prospective_design": {
+    "version": "math-adam-continuity-design-summary-v1",
+    "status": "reviewed_CPU_capability_pending_worker_collector_integration",
+    "scientific_results": null,
+    "actual_readiness_passed": false,
+    "admitted": false,
+    "dispatch": false,
+    "new_remote_calls": 0,
+    "models": [
+      "Qwen3-4B",
+      "Qwen3-8B"
+    ],
+    "recipe": {
+      "pi_updates": 9,
+      "opd_updates": 2,
+      "cycles": 8,
+      "teacher_policy": "cycle_refresh",
+      "lr": 5e-06,
+      "seed": 137
+    },
+    "comparison": {
+      "prefix_updates": 44,
+      "tail_updates": 44,
+      "fresh_adam_at_global45": true,
+      "policies": [
+        "reset_each_phase",
+        "carry"
+      ]
+    },
+    "scientific_counts": {
+      "unique_updates": 264,
+      "exports": 48,
+      "generated_suites": 58,
+      "responses": 57600,
+      "imported_suite_references": 16,
+      "hosted_suite_writes": 74
+    },
+    "readiness_counts": {
+      "updates": 24,
+      "exports": 6,
+      "suites": 12,
+      "responses": 448,
+      "eval_response_cap": 1024,
+      "synthetic_global_offset": 44
+    },
+    "scientific_eval_response_cap": 16384,
+    "validation": {
+      "runtime_cpu_cases": 46,
+      "contract_cpu_cases": 89,
+      "independent_integration_scenarios": 8,
+      "count_note": "Separately run suites; CPU representation and Gloo do not establish actual GPU fused Adam behavior."
+    },
+    "primary_contrasts": [
+      "4B carry88-shared44",
+      "8B carry88-shared44",
+      "4B carry88-reset88",
+      "8B carry88-reset88"
+    ],
+    "conditional_reservation": {
+      "science_gpu_hours": 397.9766034993548,
+      "readiness_gpu_hours": 12.666666666666666,
+      "whole_package_hours": 21.33132497614944,
+      "mean_validation_tokens": 8192,
+      "full16k_sensitivity_hours": 32.0528963523448,
+      "full16k_misses_remaining_window": true,
+      "admitted": false
+    },
+    "source_review_sha256": "7bbaace9be82d161ccc1f43c109b9c9d7bd5b78ff53c4c040e05b8f2b64a9bac",
+    "scope_sha256": "5d7334f184deb4d16a9f13128b5de649fd858d9b43e253db0c30d0257e8ab931",
+    "analysis_protocol_sha256": "245592e6db1c76b05525b2155a47655150da034e8b46bb54303878e7a1d24d24",
+    "limitations": [
+      "Historically exposed128-question validation panel and one seed",
+      "No compute-to-quality analysis",
+      "No indefinite improvement claim",
+      "Both optimizer policies may fail to improve"
+    ]
   }
 }
