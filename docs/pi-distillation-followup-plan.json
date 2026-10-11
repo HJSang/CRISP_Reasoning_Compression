@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Does PI warm-up followed by original-teacher distillation generalize?",
-  "status": "math_cycle_teacher_screen_complete_phase_wave1_early_progress_with_hosted_uploads_pending",
+  "status": "math_cycle_teacher_screen_complete_phase_wave1_first_cycle_endpoints_observed",
   "launch_authorized": true,
   "executable": true,
   "new_gpu_jobs_launched": 9,
@@ -6548,7 +6548,7 @@
     }
   },
   "proposed_math_cyclic_study": {
-    "status": "teacher_screen_complete_phase_ratio_wave1_early_progress_with_hosted_uploads_pending",
+    "status": "teacher_screen_complete_phase_ratio_wave1_first_cycle_endpoints_observed",
     "launch_authorized": true,
     "executable": true,
     "new_gpu_jobs_launched": true,
@@ -6789,8 +6789,8 @@
       "bounded numerical-floor and optimizer controls"
     ],
     "pending": [
-      "Retain the two current hosted-upload gaps and eight deliberately deferred step-zero hosted writes until exact later evidence resolves them.",
-      "Capture the scheduled first cycle-end validation at total update 11 (3 PI + 8 OPD updates) and first 7/4 evaluations before interpreting cycle recovery or comparing phase allocations.",
+      "Capture the 8B 7/4 first cycle-end validation at total update 11 and all remaining scheduled cycle endpoints; do not select a recipe from the initial 4B contrast.",
+      "Complete the eight deliberately deferred step-zero hosted writes when workers exit; the prior C/D training-upload gaps are resolved at this cutoff.",
       "Complete all scheduled wave-one updates, evaluations, hosted attachments, cleanup and exact whole-wave accounting audit.",
       "Raise wave-two reservations from all newly observed full-panel timing and response tails if necessary, and require fresh admission within the original caps and clock before wave-two dispatch.",
       "Longer cycle-period, full-stream, confirmation validation and extra-seed work remain separate scope decisions."
@@ -16356,15 +16356,15 @@
     "next_priority": {
       "user_instruction": "Let\u2019s focus on tuning 7 and 4.",
       "decision_authority": "Supervising agent design choice under the latest user steering; the user did not explicitly specify this exact eight-arm grid.",
-      "status": "phase_ratio_wave1_early_progress_fixed_endpoints_pending",
+      "status": "phase_ratio_wave1_first_cycle_endpoints_fixed_cycle_eight_pending",
       "current_teacher_runs_preserved": true,
       "optimizer_additional_arms_deferred": 6,
       "new_phase_jobs_launched": true,
-      "latest_public_evidence_cutoff_utc": "2026-10-10T23:50:44.055428+00:00"
+      "latest_public_evidence_cutoff_utc": "2026-10-11T00:01:20.209987+00:00"
     },
     "phase_ratio_screen": {
       "version": "math-phases-v1",
-      "status": "wave1_early_progress_first_PI3_validation_available_OPD11_and_controls_pending",
+      "status": "wave1_three_first_cycle_endpoints_observed_8B_control_and_fixed_cycle_eight_pending",
       "admitted": true,
       "dispatch": true,
       "models": [
@@ -16682,7 +16682,7 @@
         "Locked confirmation on reserved validation, fresh seeds and longer training would be needed before claiming reproducible sustained improvement. Any extra execution requires an explicit bounded scope and admission."
       ],
       "cost_gate": "Actual wave-one admission independently passed while reserving all eight phase arms, fresh baselines and remaining handoff/evaluation/cleanup/operational costs. Wave two still requires a fresh bound-only-raised reassessment from completed full-panel wave-one evidence, within the unchanged caps and original deadline.",
-      "runtime_status": "Detailed audit at 2026-10-10T23:50:44.055428 UTC verifies 46 finite local updates across A/B/C/D (14/17/4/11) and 44 matching uncached hosted updates (14/17/3/10). C/D each have one upload pending; exact overlapping loss and phase records match. All four actual sources/assets/protocols pass. Seven completed suites with 6496 responses pass strict and final-policy checks. No first cycle-end validation at total update 11 (3 PI + 8 OPD updates) or 7/4 evaluation is captured, so no phase-ratio or accumulating-gain claim is made.",
+      "runtime_status": "At 2026-10-11T00:01:20.209987 UTC, 83 finite local and uncached hosted training updates match (A/B/C/D: 20/25/15/23). All four source/assets/protocol checks pass. Sixteen completed suites with 15040 responses pass observed strict and finalized-policy checks; all twelve trained hosted evaluations match. Three first cycle-end validation results at total update 11 are captured; the 8B 7/4 endpoint remains pending. All four trajectories are nonterminal.",
       "implementation": {
         "public_source": "miles/tools/opsd/math_phase_protocol.py",
         "tests": "miles/tests/fast/opsd/test_math_phase_protocol.py",
@@ -17232,7 +17232,7 @@
         }
       ],
       "progress_observation": {
-        "checked_utc": "2026-10-10T23:50:44.055428+00:00",
+        "checked_utc": "2026-10-11T00:01:20.209987+00:00",
         "wave": 1,
         "progress_only": true,
         "complete": false,
@@ -17240,87 +17240,86 @@
         "coverage_complete": false,
         "workers": {
           "worker-a": {
-            "local_updates": 14,
-            "hosted_updates": 14,
-            "local_cyclic_records": 14,
-            "hosted_cyclic_records": 14,
+            "local_updates": 20,
+            "hosted_updates": 20,
+            "local_cyclic_records": 20,
+            "hosted_cyclic_records": 20,
             "source_loaded": true,
             "actual_assets_verified": true,
             "actual_launch_matches": true,
             "queue_protocol_initialized": true,
             "queue_protocol_matches": true,
             "baseline_state": "generate",
-            "completed_suites": 3,
-            "hosted_evaluation_records_matched": 1,
+            "completed_suites": 5,
+            "hosted_evaluation_records_matched": 3,
             "terminal_verified": false
           },
           "worker-b": {
-            "local_updates": 17,
-            "hosted_updates": 17,
-            "local_cyclic_records": 17,
-            "hosted_cyclic_records": 17,
+            "local_updates": 25,
+            "hosted_updates": 25,
+            "local_cyclic_records": 25,
+            "hosted_cyclic_records": 25,
             "source_loaded": true,
             "actual_assets_verified": true,
             "actual_launch_matches": true,
             "queue_protocol_initialized": true,
             "queue_protocol_matches": true,
             "baseline_state": "generate",
-            "completed_suites": 4,
-            "hosted_evaluation_records_matched": 2,
+            "completed_suites": 7,
+            "hosted_evaluation_records_matched": 5,
             "terminal_verified": false
           },
           "worker-c": {
-            "local_updates": 4,
-            "hosted_updates": 3,
-            "local_cyclic_records": 4,
-            "hosted_cyclic_records": 3,
+            "local_updates": 15,
+            "hosted_updates": 15,
+            "local_cyclic_records": 15,
+            "hosted_cyclic_records": 15,
             "source_loaded": true,
             "actual_assets_verified": true,
             "actual_launch_matches": true,
             "queue_protocol_initialized": true,
             "queue_protocol_matches": true,
             "baseline_state": "bound",
-            "completed_suites": 0,
-            "hosted_evaluation_records_matched": 0,
+            "completed_suites": 1,
+            "hosted_evaluation_records_matched": 1,
             "terminal_verified": false
           },
           "worker-d": {
-            "local_updates": 11,
-            "hosted_updates": 10,
-            "local_cyclic_records": 11,
-            "hosted_cyclic_records": 10,
+            "local_updates": 23,
+            "hosted_updates": 23,
+            "local_cyclic_records": 23,
+            "hosted_cyclic_records": 23,
             "source_loaded": true,
             "actual_assets_verified": true,
             "actual_launch_matches": true,
             "queue_protocol_initialized": true,
             "queue_protocol_matches": true,
             "baseline_state": "bound",
-            "completed_suites": 0,
-            "hosted_evaluation_records_matched": 0,
+            "completed_suites": 3,
+            "hosted_evaluation_records_matched": 3,
             "terminal_verified": false
           }
         },
         "aggregate": {
-          "audited_policy_responses": 6496,
-          "audited_policy_suites": 7,
-          "audited_strict_responses": 6496,
-          "audited_strict_suites": 7,
+          "audited_policy_responses": 15040,
+          "audited_policy_suites": 16,
+          "audited_strict_responses": 15040,
+          "audited_strict_suites": 16,
           "delimiter_diagnostics": 0,
           "failed_queue_jobs": 0,
           "generated_baseline_models": 2,
-          "hosted_evaluation_records_matched": 3,
-          "hosted_updates": 44,
+          "hosted_evaluation_records_matched": 12,
+          "hosted_updates": 83,
           "imported_baselines_verified": 2,
-          "local_updates": 46,
-          "trained_checkpoint_suites": 3
+          "local_updates": 83,
+          "trained_checkpoint_suites": 12
         },
-        "all_local_updates_hosted": false,
-        "hosted_pending_updates": {
-          "worker-c": 1,
-          "worker-d": 1
-        },
+        "all_local_updates_hosted": true,
+        "hosted_pending_updates": {},
+        "previous_training_upload_gaps_resolved": true,
         "hosted_overlap_loss_and_phase_records_match": true,
         "step_zero_hosted_writes_deferred_until_worker_exit": 8,
+        "observed_prefix_checks_passed": true,
         "observed_suites_strict_passed": true,
         "observed_suites_final_policy_passed": true,
         "whole_wave_strict_status": null,
@@ -17335,10 +17334,13 @@
             "pi_updates": 3,
             "opd_updates": 8,
             "fresh_baseline_avg_at_8": 0.6826171875,
-            "pi3_avg_at_8": 0.6455078125,
-            "pi3_minus_own_baseline_percentage_points": -3.7109375,
+            "pi_end_total_update": 3,
+            "pi_end_avg_at_8": 0.6455078125,
+            "pi_minus_own_baseline_percentage_points": -3.7109375,
             "first_cycle_end_total_update": 11,
-            "first_cycle_end_validation_captured": false
+            "first_cycle_end_validation_captured": true,
+            "first_cycle_end_avg_at_8": 0.6943359375,
+            "first_cycle_end_minus_own_baseline_percentage_points": 1.171875
           },
           {
             "worker": "worker-b",
@@ -17346,12 +17348,109 @@
             "pi_updates": 3,
             "opd_updates": 8,
             "fresh_baseline_avg_at_8": 0.701171875,
-            "pi3_avg_at_8": 0.689453125,
-            "pi3_minus_own_baseline_percentage_points": -1.171875,
+            "pi_end_total_update": 3,
+            "pi_end_avg_at_8": 0.689453125,
+            "pi_minus_own_baseline_percentage_points": -1.171875,
             "first_cycle_end_total_update": 11,
-            "first_cycle_end_validation_captured": false
+            "first_cycle_end_validation_captured": true,
+            "first_cycle_end_avg_at_8": 0.703125,
+            "first_cycle_end_minus_own_baseline_percentage_points": 0.1953125
+          },
+          {
+            "worker": "worker-c",
+            "model": "Qwen3-8B",
+            "pi_updates": 7,
+            "opd_updates": 4,
+            "fresh_baseline_avg_at_8": 0.6826171875,
+            "pi_end_total_update": 7,
+            "pi_end_avg_at_8": 0.6533203125,
+            "pi_minus_own_baseline_percentage_points": -2.9296875,
+            "first_cycle_end_total_update": 11,
+            "first_cycle_end_validation_captured": false,
+            "first_cycle_end_avg_at_8": null,
+            "first_cycle_end_minus_own_baseline_percentage_points": null
+          },
+          {
+            "worker": "worker-d",
+            "model": "Qwen3-4B",
+            "pi_updates": 7,
+            "opd_updates": 4,
+            "fresh_baseline_avg_at_8": 0.701171875,
+            "pi_end_total_update": 7,
+            "pi_end_avg_at_8": 0.6640625,
+            "pi_minus_own_baseline_percentage_points": -3.7109375,
+            "first_cycle_end_total_update": 11,
+            "first_cycle_end_validation_captured": true,
+            "first_cycle_end_avg_at_8": 0.75390625,
+            "first_cycle_end_minus_own_baseline_percentage_points": 5.2734375
           }
         ],
+        "cycle_end_validation": [
+          {
+            "worker": "worker-a",
+            "model_name": "Qwen3-8B",
+            "pi_updates": 3,
+            "opd_updates": 8,
+            "cycle": 1,
+            "step": 11,
+            "completions": 1024,
+            "avg_at_8": 0.6943359375,
+            "original_avg_at_8": 0.6826171875,
+            "preceding_pi_step": 3,
+            "preceding_pi_avg_at_8": 0.6455078125,
+            "change_from_original_percentage_points": 1.171875,
+            "opd_change_from_pi_percentage_points": 4.8828125,
+            "descriptive_only": true
+          },
+          {
+            "worker": "worker-b",
+            "model_name": "Qwen3-4B",
+            "pi_updates": 3,
+            "opd_updates": 8,
+            "cycle": 1,
+            "step": 11,
+            "completions": 1024,
+            "avg_at_8": 0.703125,
+            "original_avg_at_8": 0.701171875,
+            "preceding_pi_step": 3,
+            "preceding_pi_avg_at_8": 0.689453125,
+            "change_from_original_percentage_points": 0.1953125,
+            "opd_change_from_pi_percentage_points": 1.3671875,
+            "descriptive_only": true
+          },
+          {
+            "worker": "worker-d",
+            "model_name": "Qwen3-4B",
+            "pi_updates": 7,
+            "opd_updates": 4,
+            "cycle": 1,
+            "step": 11,
+            "completions": 1024,
+            "avg_at_8": 0.75390625,
+            "original_avg_at_8": 0.701171875,
+            "preceding_pi_step": 7,
+            "preceding_pi_avg_at_8": 0.6640625,
+            "change_from_original_percentage_points": 5.2734375,
+            "opd_change_from_pi_percentage_points": 8.984375,
+            "descriptive_only": true
+          }
+        ],
+        "first_cycle_4B_contrast": {
+          "total_update": 11,
+          "pi7_opd4_minus_pi3_opd8_percentage_points": 5.078125,
+          "descriptive_only": true,
+          "recipe_selected": false
+        },
+        "second_cycle_PI_observation": {
+          "worker": "worker-b",
+          "model": "Qwen3-4B",
+          "pi_updates": 3,
+          "opd_updates": 8,
+          "total_update": 14,
+          "avg_at_8": 0.7080078125,
+          "change_from_preceding_cycle_end_percentage_points": 0.48828125,
+          "change_from_own_baseline_percentage_points": 0.68359375
+        },
         "suites": [
           {
             "worker": "worker-a",
@@ -17422,6 +17521,60 @@
                 "completions": 1024,
                 "grader_timeouts": 0,
                 "parse_failure_fraction": 0.0263671875,
+                "unexpected_thinking_delimiters": 0
+              }
+            }
+          },
+          {
+            "worker": "worker-a",
+            "step": 9,
+            "suite": "benchmark",
+            "completions": 800,
+            "generation_seconds": 332.66379247396253,
+            "mean_response_tokens": 3486.9925,
+            "output_tokens_per_second": 8385.625556825034,
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.22083333333333333,
+                "cap_hit_fraction": 0.18333333333333332,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.15833333333333333,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.17083333333333334,
+                "cap_hit_fraction": 0.075,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0625,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.653125,
+                "cap_hit_fraction": 0.0375,
+                "completions": 320,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.034375,
+                "unexpected_thinking_delimiters": 0
+              }
+            }
+          },
+          {
+            "worker": "worker-a",
+            "step": 11,
+            "suite": "validation",
+            "completions": 1024,
+            "generation_seconds": 239.10666308098007,
+            "mean_response_tokens": 1665.498046875,
+            "output_tokens_per_second": 7132.674506115271,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.6943359375,
+                "cap_hit_fraction": 0.0361328125,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0322265625,
                 "unexpected_thinking_delimiters": 0
               }
             }
@@ -17533,29 +17686,523 @@
                 "unexpected_thinking_delimiters": 0
               }
             }
+          },
+          {
+            "worker": "worker-b",
+            "step": 11,
+            "suite": "validation",
+            "completions": 1024,
+            "generation_seconds": 196.98841590702068,
+            "mean_response_tokens": 1417.9931640625,
+            "output_tokens_per_second": 7371.11871941425,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.703125,
+                "cap_hit_fraction": 0.021484375,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.017578125,
+                "unexpected_thinking_delimiters": 0
+              }
+            }
+          },
+          {
+            "worker": "worker-b",
+            "step": 14,
+            "suite": "validation",
+            "completions": 1024,
+            "generation_seconds": 178.73498251696583,
+            "mean_response_tokens": 1144.681640625,
+            "output_tokens_per_second": 6558.05586289599,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.7080078125,
+                "cap_hit_fraction": 0.01171875,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.01171875,
+                "unexpected_thinking_delimiters": 0
+              }
+            }
+          },
+          {
+            "worker": "worker-b",
+            "step": 18,
+            "suite": "benchmark",
+            "completions": 800,
+            "generation_seconds": 268.40908914001193,
+            "mean_response_tokens": 3379.8175,
+            "output_tokens_per_second": 10073.630549036927,
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.21666666666666667,
+                "cap_hit_fraction": 0.15416666666666667,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.15,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.19166666666666668,
+                "cap_hit_fraction": 0.09583333333333334,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.07083333333333333,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.653125,
+                "cap_hit_fraction": 0.028125,
+                "completions": 320,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.028125,
+                "unexpected_thinking_delimiters": 0
+              }
+            }
+          },
+          {
+            "worker": "worker-c",
+            "step": 7,
+            "suite": "validation",
+            "completions": 1024,
+            "generation_seconds": 211.31056619097944,
+            "mean_response_tokens": 1216.3671875,
+            "output_tokens_per_second": 5894.452049663626,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.6533203125,
+                "cap_hit_fraction": 0.01953125,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0166015625,
+                "unexpected_thinking_delimiters": 0
+              }
+            }
+          },
+          {
+            "worker": "worker-d",
+            "step": 7,
+            "suite": "validation",
+            "completions": 1024,
+            "generation_seconds": 152.70872035098728,
+            "mean_response_tokens": 922.5390625,
+            "output_tokens_per_second": 6186.156218379264,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.6640625,
+                "cap_hit_fraction": 0.00390625,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.00390625,
+                "unexpected_thinking_delimiters": 0
+              }
+            }
+          },
+          {
+            "worker": "worker-d",
+            "step": 9,
+            "suite": "benchmark",
+            "completions": 800,
+            "generation_seconds": 262.3531956389779,
+            "mean_response_tokens": 3539.26875,
+            "output_tokens_per_second": 10792.378545662112,
+            "metrics": {
+              "AIME 2024": {
+                "avg_at_8": 0.22083333333333333,
+                "cap_hit_fraction": 0.14583333333333334,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.14583333333333334,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AIME 2025": {
+                "avg_at_8": 0.20833333333333334,
+                "cap_hit_fraction": 0.10833333333333334,
+                "completions": 240,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0875,
+                "unexpected_thinking_delimiters": 0
+              },
+              "AMC23": {
+                "avg_at_8": 0.6875,
+                "cap_hit_fraction": 0.009375,
+                "completions": 320,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.003125,
+                "unexpected_thinking_delimiters": 0
+              }
+            }
+          },
+          {
+            "worker": "worker-d",
+            "step": 11,
+            "suite": "validation",
+            "completions": 1024,
+            "generation_seconds": 207.1494833379984,
+            "mean_response_tokens": 1552.703125,
+            "output_tokens_per_second": 7675.462059471836,
+            "metrics": {
+              "Math validation": {
+                "avg_at_8": 0.75390625,
+                "cap_hit_fraction": 0.0234375,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.01953125,
+                "unexpected_thinking_delimiters": 0
+              }
+            }
           }
         ],
         "operation_journal": {
-          "coordinator_intervals_complete": 97,
-          "collection_intervals_complete": 12,
-          "later_live_calls_excluded": 8,
+          "coordinator_intervals_complete": 157,
+          "collection_intervals_complete": 17,
+          "additional_live_calls_before_cutoff_covered_by_assignments": 2,
+          "later_live_calls_excluded": 13,
           "collector_calls_overlap_included_assignments": true
         },
         "cost": {
-          "stage_science_gpu_hours": 137.13463810867734,
-          "cumulative_study_gpu_hours": 308.76898473951553,
+          "stage_science_gpu_hours": 142.78934530099232,
+          "cumulative_study_gpu_hours": 314.4236919318305,
           "cumulative_readiness_gpu_hours": 82.66406716346741,
-          "overall_gpu_hours": 391.4330519029829,
+          "overall_gpu_hours": 397.0877590952979,
           "all_four_assignments_charged_through_cutoff": true
         },
         "limits": [
-          "Observed matching prefixes are not complete hosted coverage: C/D each have one upload pending.",
-          "First cycle-end validation at total update 11 (3 PI + 8 OPD updates) and all 7/4 evaluation results are not captured; do not compare recipes or infer repeated improvement.",
-          "The sources are unchanged, but the new phase-study evaluation seed namespace and draws give fresh baselines; compare PI3 only with its own model-matched baseline.",
-          "Fixed cycle-eight validation remains primary. Preserve all scheduled evaluations and pending results; no checkpoint or benchmark selection.",
-          "The existing full-matrix admission and original deadline remain unchanged; this progress audit issues no new admission or completion."
+          "The three captured cycle-one endpoints are above their own fresh baselines after the preceding PI dip; this is early descriptive evidence, not sustained or compounding improvement.",
+          "The matched 4B cycle-one contrast favors 7/4 by 5.078125 percentage points. One cycle and one training seed cannot select a recipe; the matched 8B endpoint remains pending.",
+          "The 4B 3/8 second PI phase ends at total update 14 above its preceding cycle end, so a PI dip is not universal.",
+          "Model sources are unchanged, but the new phase evaluation namespace and draws require comparison with each model-matched fresh baseline, not historical teacher-study scores.",
+          "Fixed cycle-eight validation remains primary; all scheduled outcomes and benchmark denominators are retained without best-checkpoint or benchmark selection.",
+          "All current training prefixes match, but eight baseline hosted writes, later evaluations and terminal cleanup remain pending. This audit issues no new admission or completion."
         ]
-      }
+      },
+      "progress_history": [
+        {
+          "checked_utc": "2026-10-10T23:50:44.055428+00:00",
+          "wave": 1,
+          "progress_only": true,
+          "complete": false,
+          "scientific_completion_certified": false,
+          "coverage_complete": false,
+          "workers": {
+            "worker-a": {
+              "local_updates": 14,
+              "hosted_updates": 14,
+              "local_cyclic_records": 14,
+              "hosted_cyclic_records": 14,
+              "source_loaded": true,
+              "actual_assets_verified": true,
+              "actual_launch_matches": true,
+              "queue_protocol_initialized": true,
+              "queue_protocol_matches": true,
+              "baseline_state": "generate",
+              "completed_suites": 3,
+              "hosted_evaluation_records_matched": 1,
+              "terminal_verified": false
+            },
+            "worker-b": {
+              "local_updates": 17,
+              "hosted_updates": 17,
+              "local_cyclic_records": 17,
+              "hosted_cyclic_records": 17,
+              "source_loaded": true,
+              "actual_assets_verified": true,
+              "actual_launch_matches": true,
+              "queue_protocol_initialized": true,
+              "queue_protocol_matches": true,
+              "baseline_state": "generate",
+              "completed_suites": 4,
+              "hosted_evaluation_records_matched": 2,
+              "terminal_verified": false
+            },
+            "worker-c": {
+              "local_updates": 4,
+              "hosted_updates": 3,
+              "local_cyclic_records": 4,
+              "hosted_cyclic_records": 3,
+              "source_loaded": true,
+              "actual_assets_verified": true,
+              "actual_launch_matches": true,
+              "queue_protocol_initialized": true,
+              "queue_protocol_matches": true,
+              "baseline_state": "bound",
+              "completed_suites": 0,
+              "hosted_evaluation_records_matched": 0,
+              "terminal_verified": false
+            },
+            "worker-d": {
+              "local_updates": 11,
+              "hosted_updates": 10,
+              "local_cyclic_records": 11,
+              "hosted_cyclic_records": 10,
+              "source_loaded": true,
+              "actual_assets_verified": true,
+              "actual_launch_matches": true,
+              "queue_protocol_initialized": true,
+              "queue_protocol_matches": true,
+              "baseline_state": "bound",
+              "completed_suites": 0,
+              "hosted_evaluation_records_matched": 0,
+              "terminal_verified": false
+            }
+          },
+          "aggregate": {
+            "audited_policy_responses": 6496,
+            "audited_policy_suites": 7,
+            "audited_strict_responses": 6496,
+            "audited_strict_suites": 7,
+            "delimiter_diagnostics": 0,
+            "failed_queue_jobs": 0,
+            "generated_baseline_models": 2,
+            "hosted_evaluation_records_matched": 3,
+            "hosted_updates": 44,
+            "imported_baselines_verified": 2,
+            "local_updates": 46,
+            "trained_checkpoint_suites": 3
+          },
+          "all_local_updates_hosted": false,
+          "hosted_pending_updates": {
+            "worker-c": 1,
+            "worker-d": 1
+          },
+          "hosted_overlap_loss_and_phase_records_match": true,
+          "step_zero_hosted_writes_deferred_until_worker_exit": 8,
+          "observed_suites_strict_passed": true,
+          "observed_suites_final_policy_passed": true,
+          "whole_wave_strict_status": null,
+          "strict_status_scope": "Observed completed suites only; no whole-wave strict pass while coverage is incomplete",
+          "grader_timeouts": 0,
+          "diagnostics": [],
+          "errors": [],
+          "observed_validation": [
+            {
+              "worker": "worker-a",
+              "model": "Qwen3-8B",
+              "pi_updates": 3,
+              "opd_updates": 8,
+              "fresh_baseline_avg_at_8": 0.6826171875,
+              "pi3_avg_at_8": 0.6455078125,
+              "pi3_minus_own_baseline_percentage_points": -3.7109375,
+              "first_cycle_end_total_update": 11,
+              "first_cycle_end_validation_captured": false
+            },
+            {
+              "worker": "worker-b",
+              "model": "Qwen3-4B",
+              "pi_updates": 3,
+              "opd_updates": 8,
+              "fresh_baseline_avg_at_8": 0.701171875,
+              "pi3_avg_at_8": 0.689453125,
+              "pi3_minus_own_baseline_percentage_points": -1.171875,
+              "first_cycle_end_total_update": 11,
+              "first_cycle_end_validation_captured": false
+            }
+          ],
+          "suites": [
+            {
+              "worker": "worker-a",
+              "step": 0,
+              "suite": "validation",
+              "completions": 1024,
+              "generation_seconds": 233.7042546919547,
+              "mean_response_tokens": 1513.7177734375,
+              "output_tokens_per_second": 6632.51510779346,
+              "metrics": {
+                "Math validation": {
+                  "avg_at_8": 0.6826171875,
+                  "cap_hit_fraction": 0.02734375,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0263671875,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            },
+            {
+              "worker": "worker-a",
+              "step": 0,
+              "suite": "benchmark",
+              "completions": 800,
+              "generation_seconds": 341.815056940075,
+              "mean_response_tokens": 3554.86625,
+              "output_tokens_per_second": 8319.975794684126,
+              "metrics": {
+                "AIME 2024": {
+                  "avg_at_8": 0.25,
+                  "cap_hit_fraction": 0.15,
+                  "completions": 240,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.1375,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.20833333333333334,
+                  "cap_hit_fraction": 0.06666666666666667,
+                  "completions": 240,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.041666666666666664,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.6875,
+                  "cap_hit_fraction": 0.046875,
+                  "completions": 320,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.03125,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            },
+            {
+              "worker": "worker-a",
+              "step": 3,
+              "suite": "validation",
+              "completions": 1024,
+              "generation_seconds": 224.73550291196443,
+              "mean_response_tokens": 1553.7041015625,
+              "output_tokens_per_second": 7079.40213889231,
+              "metrics": {
+                "Math validation": {
+                  "avg_at_8": 0.6455078125,
+                  "cap_hit_fraction": 0.0341796875,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0263671875,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            },
+            {
+              "worker": "worker-b",
+              "step": 0,
+              "suite": "validation",
+              "completions": 1024,
+              "generation_seconds": 198.4556638589711,
+              "mean_response_tokens": 1486.0087890625,
+              "output_tokens_per_second": 7667.571539209631,
+              "metrics": {
+                "Math validation": {
+                  "avg_at_8": 0.701171875,
+                  "cap_hit_fraction": 0.0234375,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0224609375,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            },
+            {
+              "worker": "worker-b",
+              "step": 0,
+              "suite": "benchmark",
+              "completions": 800,
+              "generation_seconds": 278.5683683870011,
+              "mean_response_tokens": 3325.4075,
+              "output_tokens_per_second": 9549.99311445204,
+              "metrics": {
+                "AIME 2024": {
+                  "avg_at_8": 0.225,
+                  "cap_hit_fraction": 0.13333333333333333,
+                  "completions": 240,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.12916666666666668,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.19166666666666668,
+                  "cap_hit_fraction": 0.075,
+                  "completions": 240,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.07083333333333333,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.678125,
+                  "cap_hit_fraction": 0.01875,
+                  "completions": 320,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.009375,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            },
+            {
+              "worker": "worker-b",
+              "step": 3,
+              "suite": "validation",
+              "completions": 1024,
+              "generation_seconds": 192.22352880600374,
+              "mean_response_tokens": 1406.775390625,
+              "output_tokens_per_second": 7494.077384531958,
+              "metrics": {
+                "Math validation": {
+                  "avg_at_8": 0.689453125,
+                  "cap_hit_fraction": 0.0224609375,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0185546875,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            },
+            {
+              "worker": "worker-b",
+              "step": 9,
+              "suite": "benchmark",
+              "completions": 800,
+              "generation_seconds": 238.12413525604643,
+              "mean_response_tokens": 3297.28625,
+              "output_tokens_per_second": 11077.537340612853,
+              "metrics": {
+                "AIME 2024": {
+                  "avg_at_8": 0.22916666666666666,
+                  "cap_hit_fraction": 0.17916666666666667,
+                  "completions": 240,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.16666666666666666,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "avg_at_8": 0.20833333333333334,
+                  "cap_hit_fraction": 0.075,
+                  "completions": 240,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.07083333333333333,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "avg_at_8": 0.64375,
+                  "cap_hit_fraction": 0.00625,
+                  "completions": 320,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.003125,
+                  "unexpected_thinking_delimiters": 0
+                }
+              }
+            }
+          ],
+          "operation_journal": {
+            "coordinator_intervals_complete": 97,
+            "collection_intervals_complete": 12,
+            "later_live_calls_excluded": 8,
+            "collector_calls_overlap_included_assignments": true
+          },
+          "cost": {
+            "stage_science_gpu_hours": 137.13463810867734,
+            "cumulative_study_gpu_hours": 308.76898473951553,
+            "cumulative_readiness_gpu_hours": 82.66406716346741,
+            "overall_gpu_hours": 391.4330519029829,
+            "all_four_assignments_charged_through_cutoff": true
+          },
+          "limits": [
+            "Observed matching prefixes are not complete hosted coverage: C/D each have one upload pending.",
+            "First cycle-end validation at total update 11 (3 PI + 8 OPD updates) and all 7/4 evaluation results are not captured; do not compare recipes or infer repeated improvement.",
+            "The sources are unchanged, but the new phase-study evaluation seed namespace and draws give fresh baselines; compare PI3 only with its own model-matched baseline.",
+            "Fixed cycle-eight validation remains primary. Preserve all scheduled evaluations and pending results; no checkpoint or benchmark selection.",
+            "The existing full-matrix admission and original deadline remain unchanged; this progress audit issues no new admission or completion."
+          ]
+        }
+      ]
     },
     "cycle_count_interpretation": {
       "scope": "completed PI7\u2192OPD4 teacher comparison; retrospective validation description",
