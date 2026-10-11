@@ -57391,6 +57391,102 @@
       },
       "all_calls_complete": true
     },
-    "public_projection": "Aggregate values and neutral evidence-role digests only; question records, checkpoint/result mappings, private source filenames and transport receipts remain private."
+    "public_projection": "Aggregate values and neutral evidence-role digests only; question records, checkpoint/result mappings, private source filenames and transport receipts remain private.",
+    "persistence_implementation_status": {
+      "version": "math-logit-mixture-u88-preparation-v1",
+      "status": "CPU implementation, local bundle and operational input packet independently reviewed; charged worker preparation and actual admission pending",
+      "runtime_ready": false,
+      "admitted": false,
+      "dispatched": false,
+      "new_experiment_results": 0,
+      "tests": {
+        "runtime_and_numerics": 163,
+        "evidence": 72,
+        "orchestration": 80,
+        "total": 329,
+        "builder": 14,
+        "counting": "315 in one joint core run plus 14 separate builder cases; not one joint 329-case run"
+      },
+      "scope": {
+        "model": "Qwen3-4B",
+        "alphas": [
+          0.5,
+          1
+        ],
+        "updates_per_arm": 88,
+        "training_questions": 352,
+        "validation_questions": 128,
+        "benchmark_questions": 100,
+        "unique_suites": 22,
+        "responses": 21408,
+        "exports": 16,
+        "training_seed": 137,
+        "teacher": "fixed original",
+        "optimizer": "fresh once then carried",
+        "learning_rate": 5e-06,
+        "validation_steps": [
+          0,
+          11,
+          22,
+          33,
+          44,
+          55,
+          66,
+          77,
+          88
+        ],
+        "benchmark_steps": [
+          0,
+          44,
+          88
+        ],
+        "hosted_suite_writes": 24,
+        "primary_endpoint": 88,
+        "original_baselines": "One validation suite and one benchmark suite generated once, then independently verified and imported by the second arm."
+      },
+      "cost": {
+        "stress_gpu_hours": 269.5696847180187,
+        "stress_wall_hours": 19.980776251691083,
+        "current_science_gpu_hours": 284.7454515277015,
+        "projected_science_gpu_hours": 554.3151362457202,
+        "current_overall_gpu_hours": 539.0438653220072,
+        "projected_overall_gpu_hours": 808.6135500400259,
+        "forecast_is_admission": false
+      },
+      "checks": [
+        "Original pilot stays immutable and closed.",
+        "Full 352-question source and 128-question validation bytes must match the historical inputs.",
+        "One validation and one benchmark original-baseline payload are generated once and verified before the second arm starts.",
+        "Final update 88 remains primary; no peak or benchmark selection.",
+        "No raw output is removed or regraded; strict zero-delimiter and zero-timeout contract."
+      ],
+      "limitations": [
+        "One realized training seed on a reused development panel.",
+        "Stress reservation is conditional on measured throughput, with a 25% margin.",
+        "Passing CPU tests does not establish a new GPU trajectory or sustained improvement."
+      ],
+      "joint_cpu_validation": {
+        "passed": 315,
+        "runtime_and_numerics": 163,
+        "evidence": 72,
+        "orchestration": 80,
+        "counts_are_disjoint": true,
+        "gpu_execution_verified": false
+      },
+      "source_review_sha256": "78817d3fc5280db2f2ab65d57379d66c68cd2fc686f674f96905e8416ed7e533",
+      "historical_design_preserved": true,
+      "local_bundle": {
+        "assembled": true,
+        "assets": 2932,
+        "independent_local_verification_passed": true,
+        "builder_cpu_cases_passed": 14,
+        "source_and_input_review_sha256": "a482ad8de25326f7cd0c2610a843df77c3066853af7637bcc6deb0e412fcb903",
+        "remote_model_or_source_verification": false,
+        "actual_preparation": false,
+        "actual_admission": false,
+        "dispatch": false,
+        "operational_input_packet_independently_reviewed": true
+      }
+    }
   }
 }
