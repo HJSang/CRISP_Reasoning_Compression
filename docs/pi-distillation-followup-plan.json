@@ -60109,5 +60109,75 @@
     "joint_cpu_tests": 44,
     "capability_not_execution": true,
     "sustained_improvement_established": false
+  },
+  "late_decay_fork_four_tail_startup": {
+    "version": "public-late-fork-four-tail-startup-v1",
+    "status": "four_tail_controllers_launched_and_observed_alive",
+    "accounting_cutoff_utc": "2026-10-11T18:17:00.402056+00:00",
+    "controller_inspection_window_utc": {
+      "first": "2026-10-11T18:16:33.476036+00:00",
+      "last": "2026-10-11T18:16:56.210271+00:00"
+    },
+    "actual_tail_jobs_launched": 4,
+    "owned_alive_controllers": 4,
+    "arms": [
+      {
+        "model": "Qwen3-4B",
+        "schedule": "constant_5e-6"
+      },
+      {
+        "model": "Qwen3-4B",
+        "schedule": "late_linear_5e-6_to_5e-7"
+      },
+      {
+        "model": "Qwen3-8B",
+        "schedule": "constant_5e-6"
+      },
+      {
+        "model": "Qwen3-8B",
+        "schedule": "late_linear_5e-6_to_5e-7"
+      }
+    ],
+    "shared_midpoint_update": 44,
+    "recipe": {
+      "pi_updates_per_cycle": 9,
+      "opd_updates_per_cycle": 2,
+      "teacher_policy": "cycle_refresh",
+      "optimizer_state": "reset_Adam",
+      "seed": 137
+    },
+    "same_midpoint_student_and_teacher_verified": true,
+    "source_assets_config_and_output_policy_verified": true,
+    "gpu_memory_and_compute_processes_observed": true,
+    "observed_queue_failures": 0,
+    "observed_controller_failures": 0,
+    "progress_files_present": 0,
+    "completed_tail_updates_certified": 0,
+    "finite_tail_losses_certified": 0,
+    "new_tail_evaluations_certified": 0,
+    "operations_complete": 12,
+    "operations_uncertain": 0,
+    "actual_gpu_hours": {
+      "science": 328.7136492612628,
+      "study": 500.347995892101,
+      "readiness": 86.68810977247026,
+      "overall": 587.0361056645713,
+      "readiness_stage": 25.992832137743637
+    },
+    "prior_failures_nonlaunches_and_consumed_guards_preserved": true,
+    "original_caps_and_global_deadline_unchanged": true,
+    "full_scientific_family_complete": false,
+    "sustained_improvement_established": false,
+    "independent_startup_review_passed": true,
+    "limits": [
+      "Controller and GPU startup observations do not prove a completed optimizer step, finite loss, new evaluation or scientific improvement. Absent progress files mean those outcomes are not yet certified, not that no computation occurred.",
+      "The four fixed continuations compare constant versus late linear learning rate from each model's same accepted update-44 student and teacher. No peak, benchmark score or interim outcome selects the endpoint.",
+      "All earlier failed and unexecuted operational attempts remain historical records. The new one-use reviewed start does not reset their guards.",
+      "Fixed update-88 accuracy contrasts remain primary. Costs are descriptive; no compute-to-quality analysis, efficiency-driven run or quality-based stopping rule is introduced."
+    ],
+    "planned_global_update_range": [
+      45,
+      88
+    ]
   }
 }
