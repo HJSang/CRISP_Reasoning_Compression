@@ -59959,5 +59959,39 @@
       "The underlying transport failure cause remains unknown; there is no successful transfer, automatic retry permission, tail launch, or new scientific gain claim.",
       "All original remaining reservations and deadlines are retained; projected capacity alone does not authorize continuation."
     ]
+  },
+  "late_decay_fork_peer_transfer_repair": {
+    "status": "transfer_repair_failed_physically_released",
+    "cutoff_unix": 1791734776.4150348,
+    "copy_verified": false,
+    "scientific_tail_jobs_launched": 0,
+    "operations_complete": 20,
+    "operations_uncertain": 0,
+    "source_checkpoints_retained": true,
+    "observed_receiver_error": "ConnectionRefusedError",
+    "receiver_probe_completed": false,
+    "failure_cause_established": false,
+    "physical_cleanup": "All four exact owned transfer processes absent; eight idle GPUs and no compute process on each endpoint.",
+    "one_use_repair_consumed": true,
+    "automatic_retry_authorized": false,
+    "repair_gpu_hours": 1.5366226694318983,
+    "actual_gpu_hours": {
+      "overall": 583.3744030057061,
+      "readiness": 86.68810977247026,
+      "readiness_stage": 25.992832137743637,
+      "science": 325.0519466023976,
+      "study": 496.6862932332358
+    },
+    "unchanged_projected_gpu_hours": {
+      "overall": 985.4522485474967,
+      "readiness": 86.68810977247026,
+      "readiness_stage": 25.992832137743637,
+      "science": 727.1297921441883,
+      "study": 898.7641387750264
+    },
+    "scope": "Original 4B/8B shared-midpoint constant versus late-linear comparison; no new training or efficiency experiment.",
+    "startup_order_confirmed": "Both consumers failed before the corresponding producer wrote ready.json; start acknowledged process creation before full source hashing and listen.",
+    "network_routability_established": false,
+    "producer_terminal": "TimeoutError ended before exact cleanup observation; no causal attribution to stop signal."
   }
 }

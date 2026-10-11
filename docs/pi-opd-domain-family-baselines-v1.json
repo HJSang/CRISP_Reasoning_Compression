@@ -1,0 +1,386 @@
+{
+  "version": "pi-opd-domain-family-baselines-v1",
+  "created_utc": "2026-10-11T15:36:38.188687+00:00",
+  "artifact_kind": "prospective_non_executable_experiment_manifest",
+  "user_requested": true,
+  "admitted": false,
+  "dispatch": false,
+  "trained_new_runs": 0,
+  "supersedes": null,
+  "relationship": "Adds a domain/family/baseline module; preserves all earlier evidence and active reservations. Does not replace the short PI7/OPD4 causal package.",
+  "cells": [
+    {
+      "id": "qwen3-4b-math",
+      "model": "Qwen/Qwen3-4B",
+      "domain": "math"
+    },
+    {
+      "id": "qwen3-8b-math",
+      "model": "Qwen/Qwen3-8B",
+      "domain": "math"
+    },
+    {
+      "id": "qwen3-4b-code",
+      "model": "Qwen/Qwen3-4B",
+      "domain": "code"
+    },
+    {
+      "id": "qwen3-8b-code",
+      "model": "Qwen/Qwen3-8B",
+      "domain": "code"
+    },
+    {
+      "id": "llama31-8b-math",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "domain": "math",
+      "model_revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_parameters": 8030261248,
+      "weights_access_verified": false
+    }
+  ],
+  "methods": [
+    {
+      "id": "pi9-opd2-refresh",
+      "target": "cycle-frozen teacher; PI for9 updates then no PI for2; promote after each11",
+      "adam": "reset at each9/2 phase boundary",
+      "role": "prospectively locked transfer recipe",
+      "alpha_schedule": "1 if (u-1)%11<9 else0"
+    },
+    {
+      "id": "pi88-original",
+      "target": "original frozen teacher with PI for all88 updates",
+      "adam": "continuous",
+      "role": "continuous full-parameter PI-OPSD baseline",
+      "alpha_schedule": "1"
+    },
+    {
+      "id": "pi88-refresh-matched",
+      "target": "cycle-frozen teacher with PI for all88 updates; promote every11",
+      "adam": "reset at identical9/2 shadow boundaries",
+      "role": "isolates context removal conditional on matched schedule; teacher values may diverge",
+      "alpha_schedule": "1"
+    },
+    {
+      "id": "grpo88",
+      "target": "binary training-only verifiable outcome reward; original frozen KL reference",
+      "adam": "continuous",
+      "role": "reward-based baseline; no teacher logits or PI in student input",
+      "alpha_schedule": null
+    }
+  ],
+  "seeds": [
+    211,
+    223,
+    227
+  ],
+  "protocol": {
+    "updates_per_trajectory": 88,
+    "cycles": 8,
+    "pi_updates_per_cycle": 9,
+    "opd_updates_per_cycle": 2,
+    "selection": "9/2 selected on previous exposed Qwen math tuning; freeze before code/Llama outcomes; no claim of independent confirmation on same math panel",
+    "unique_training_questions": 352,
+    "prompt_batch": 4,
+    "microbatch_responses": 1,
+    "parameters": "all",
+    "lr": 5e-06,
+    "schedule": "constant",
+    "distillation_rollouts_per_prompt": 1,
+    "distillation": "detached full-vocabulary forward KL, per-response mean over response tokens then sample mean; score temperature1; beta0; tokenclip0",
+    "training_decoding": {
+      "max_new_tokens": 4096,
+      "temperature": 1,
+      "top_p": 1,
+      "top_k": -1
+    },
+    "evaluation_decoding": {
+      "max_new_tokens": 16384,
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "min_p": 0,
+      "draws": 8
+    },
+    "thinking": "disabled where natively supported; Llama native chat template, no invented thinking flag; natural reasoning text retained",
+    "chat_template": "model-native, identical within model; pin template and vocabulary hashes before readiness",
+    "checkpoint_reuse": "only within identical source/data/seed/eval identity; no existing scores imported as new baselines"
+  },
+  "data": {
+    "math": {
+      "source": "siyanzhao/Openthoughts_math_30k_opsd",
+      "revision": "1f33e9dc2e8a1c639ca74f8024ad4a9f1f5eae62",
+      "same_training_stream_all_models": true,
+      "historical_hashes": {
+        "train_manifest": "b6ae6e3500ce5066c3718596fde1bc8d1da414034b0d7671b3e74ebeba25955e",
+        "train_stream": "354c71bcaceacebaaa7a975e74dcb2324294c4252324f9ad6852bcd22e1e9a1c",
+        "validation_panel": "bf6e2500392d0a661c54523082436ae2fd9d42a707e83648064a4cdb2597c7ef",
+        "validation_prompts": "be2f039d8fd8931329a5c84adb32e2947958672a41a3b26c3642ab11e31dbe3f",
+        "validation_labels": "020bdc0f8e7a86a8f75c4ed059102fbc1f75b44d236b24106b27128a168ab529",
+        "benchmark_prompts": "57ab614317fe8d8e614da2b7ea22f5fae7e3751d2d028bd5801cd266edc35163",
+        "benchmark_labels": "a6ad70a1449c7f7149d0a5a4dd96c865b25cdf75851ce1f7af02f9a2978c5028",
+        "plans_manifest": "34f8c82b16602b1047e422fb2cfcfe7a9d2cb77ef7f15937f8ed8ca06a31602d"
+      },
+      "training_groups": 24809,
+      "screen_groups": 352,
+      "validation_questions": 128,
+      "validation_status": "exposed tuning panel",
+      "benchmarks": {
+        "AIME2024": 30,
+        "AIME2025": 30,
+        "AMC23": 40
+      }
+    },
+    "code": {
+      "source": "google-research-datasets/mbpp",
+      "revision": "4bb6404fdc6cacfda99d4ac4205087b89d32030c",
+      "config": "full",
+      "training_source_split": "train",
+      "training_source_rows": 374,
+      "screen_target_questions": 352,
+      "selection": "Outcome-blind group deduplication and reference/test audit, then SHA256 rank(namespace20261011,group_id); one shared manifest for all code methods/models/seeds. Do not repeat44 old questions8times. No silent replacement if fewer352 eligible.",
+      "training_membership_sha256": null,
+      "validation_split": "validation",
+      "validation_target_questions": 90,
+      "validation_membership_sha256": null,
+      "validation_rule": "all90 only if source/reference/dedup audit supports all90; otherwise version/count/cost before launch",
+      "benchmark": "HumanEval+",
+      "release": "v0.1.10",
+      "questions": 164,
+      "evaluator_commit": "26d6d00bb1fd0fa37f39c99d5290da67891d1c5e",
+      "dataset_gzip_sha256": "272720b90ac375502c8ed23cd791c2a93dfb22a911641a494da74a426c09f101",
+      "pi": "training reference implementation plus explanation; no evaluation solutions/tests in training",
+      "reward": "all provided training tests pass gives1; incorrect/syntax/candidate timeout gives0; sandbox/infrastructure failure invalidates job and is not a model0",
+      "sandbox": "network-disabled credential-free CPU VM; never execute generated code on host or GPU worker",
+      "leakage": "cross-split problem/AST/near-duplicate screening including HumanEval; overlap audit before outcome collection, never hidden-test-selected references",
+      "historical_limit": "old44 reference implementations were checked; the other330 are not certified by that audit"
+    }
+  },
+  "grpo": {
+    "group_size": 8,
+    "prompt_batch": 4,
+    "response_batch": 32,
+    "optimizer_steps_per_group": 1,
+    "clip_epsilon": 0.2,
+    "kl_coefficient": 0.01,
+    "reference": "original model immutable",
+    "advantage": "(reward-group_mean)/(population_std+1e-4); zero-reward-variance groups retained with zero policy advantage",
+    "loss_reduction": "mean response token objective per response, then group and prompt means",
+    "no_dynamic_filtering": true,
+    "math_reward": "training final-answer verification only; no validation or benchmark labels",
+    "standard_adaptation": "Full-parameter matched-data implementation; not a reproduction of original paper LoRA/length/peak-selection setup",
+    "diagnostics": [
+      "zero-variance group fraction",
+      "reward distribution",
+      "advantage distribution",
+      "clip fraction",
+      "KL",
+      "entropy",
+      "tokens",
+      "truncation",
+      "all training failures"
+    ]
+  },
+  "evaluations": {
+    "validation_steps": [
+      9,
+      11,
+      20,
+      22,
+      31,
+      33,
+      42,
+      44,
+      53,
+      55,
+      64,
+      66,
+      75,
+      77,
+      86,
+      88
+    ],
+    "benchmark_steps": [
+      0,
+      44,
+      88
+    ],
+    "original_baseline": "one validation+benchmark pair per model-domain-seed; reused by all4 methods",
+    "primary": "fixed update88 Avg@8; average individual success not pass@8",
+    "secondary": [
+      "per-dataset accuracy",
+      "pass@8 for code",
+      "response tokens",
+      "truncation",
+      "syntax/extraction/test failures",
+      "all step-labelled trajectories"
+    ],
+    "selection": "benchmarks reporting only; no method/length/checkpoint selection on benchmarks"
+  },
+  "comparisons": {
+    "efficacy": "same unique problems/order/update count; method-native rollout multiplicity differs",
+    "efficiency": "Report actual generated/scored tokens and unioned assigned GPU-hours separately from fixed update-88 accuracy; no equal-compute or compute-to-quality claim.",
+    "mechanism": "recipe vs matched refreshedPI changes PI availability at designated OPD positions; subsequent teacher drift is part of total effect",
+    "statistics": "paired question clusters retaining8draws; per-seed outcomes and crossed seed/question uncertainty;3seeds insufficient for strong seed-level significance",
+    "primary_contrast_family": "5 cells x3 recipe-vs-trained-baseline contrasts; preregister multiplicity procedure before outcomes",
+    "claim_limits": "success in two code models and one non-Qwen math model would support limited transfer, not universal-domain or all-family generality"
+  },
+  "counts": {
+    "cells": 5,
+    "trained_methods": 4,
+    "training_seeds": 3,
+    "trajectories": 60,
+    "optimizer_updates": 5280,
+    "original_baseline_pairs": 15,
+    "trained_suite_records": 1080,
+    "original_suite_records": 30,
+    "suite_records_total": 1110,
+    "math_responses": 663840,
+    "code_responses_if90_validation": 351648,
+    "evaluation_responses_total": 1015488,
+    "training_responses_distillation": 15840,
+    "training_responses_grpo": 42240,
+    "training_responses_total": 58080
+  },
+  "stages": [
+    {
+      "id": "readiness",
+      "scope": "CPU data/model/GRPO correctness first; measured new-runtime readiness with explicit reservation before GPU assignment",
+      "admitted": false
+    },
+    {
+      "id": "first_seed_complete_matrix",
+      "seed": 211,
+      "trajectories": 20,
+      "updates": 1760,
+      "status": "queued pending all-cell readiness and cost admission; no performance-based deletion of later cells"
+    },
+    {
+      "id": "replication",
+      "seeds": [
+        223,
+        227
+      ],
+      "trajectories": 40,
+      "updates": 3520,
+      "status": "reserved as research plan, not compute reservation; no automatic budget extension"
+    }
+  ],
+  "readiness_gates": [
+    "pin exact Llama model revision, access, tokenizer and source checksum",
+    "native Llama load/export/rollout/teacher-prefix alignment and finite full-parameter update",
+    "GRPO group boundaries, reward signs, reference KL, masks and length reduction independently checked",
+    "MBPP membership/reference/test/dedup audit; all model outcomes remain unseen",
+    "full-evaluation output parser and sandbox controls on pinned revisions",
+    "measured all-method costs including GRPO8rollouts and CPU grading",
+    "whole remaining-matrix admission preserving active four-tail reservations, original deadlines and all existing caps"
+  ],
+  "budget": {
+    "new_measured_gpu_hours": null,
+    "new_admission_receipt": null,
+    "existing_caps_unchanged": true,
+    "existing_remaining_work_reserved": true,
+    "operational_authority": "user requested new experiments, not an automatic numeric cap increase",
+    "status": "No credible measured Llama/GRPO/code profile yet; do not infer affordability from idle GPUs or Qwen math rates"
+  },
+  "sources": [
+    {
+      "topic": "Llama8B source model",
+      "url": "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct"
+    },
+    {
+      "topic": "GRPO original",
+      "url": "https://arxiv.org/html/2402.03300v3"
+    },
+    {
+      "topic": "OPSD original and GRPO comparison",
+      "url": "https://arxiv.org/html/2601.18734v3"
+    },
+    {
+      "topic": "MBPP",
+      "url": "https://huggingface.co/datasets/google-research-datasets/mbpp"
+    },
+    {
+      "topic": "EvalPlus",
+      "url": "https://github.com/evalplus/evalplus"
+    }
+  ],
+  "unified_framework": {
+    "target": "softmax(alpha[u]*z_PI + (1-alpha[u])*z_noPI)",
+    "alpha_range": [
+      0,
+      1
+    ],
+    "index": "successful optimizer update; separate token position",
+    "teacher": "same vocabulary and scoring temperature; each branch response-position aligned",
+    "main_teacher_sources": "both endpoints same frozen checkpoint per cycle",
+    "separate_axes": [
+      "teacher source/refresh",
+      "Adam state",
+      "learning rate",
+      "rollout distribution"
+    ],
+    "grpo": "external reward baseline, not an alpha schedule",
+    "arithmetic_mixture": "distinct target; not implemented by logit interpolation"
+  },
+  "schedule_only_module": {
+    "admitted": false,
+    "dispatch": false,
+    "model": "Qwen/Qwen3-4B",
+    "seed": 211,
+    "updates_each": 88,
+    "teacher": "original frozen",
+    "adam": "continuous",
+    "lr": 5e-06,
+    "schedules": [
+      {
+        "id": "square9-2",
+        "formula": "1 if (u-1)%11<9 else0"
+      },
+      {
+        "id": "constant9-11",
+        "formula": "9/11"
+      },
+      {
+        "id": "blocked72-16",
+        "formula": "1 if u<=72 else0"
+      },
+      {
+        "id": "linear1-to7-11",
+        "formula": "1-(4/11)*(u-1)/87"
+      }
+    ],
+    "sum_alpha_each": 72,
+    "counts_not_in_main_matrix": true,
+    "purpose": "same mean alpha, different temporal placement; two-pass compute differs; no historical-arm reuse"
+  },
+  "user_followup": {
+    "approval": "lgtm",
+    "interpretation": "Proceed with alpha-schedule framing, OPSD-style LaTeX rewrite and requested experiment preparation. Existing numeric caps/deadlines remain unchanged."
+  },
+  "efficiency": {
+    "status": "Descriptive resource reporting alongside fixed update-88 accuracy; no measured efficiency-superiority claim.",
+    "separate_reporting": [
+      "training only",
+      "whole experiment including evaluations, grading waits, transfer, startup and cleanup",
+      "CPU grading cost"
+    ],
+    "binary_vs_pi_ideal_saving": "Q/(P+Q)*(T_PI-T_0)/(R+U+T_PI), conditional on equal student response lengths and common overhead",
+    "constant_interior_alpha": "usually two teacher passes; endpoint alpha needs one",
+    "grpo": "one vs8 training rollouts per prompt is not an8xGPU speedup",
+    "descriptive_metrics": [
+      "training generated tokens",
+      "teacher/reference scored tokens",
+      "measured unioned assigned GPU-hours"
+    ],
+    "user_scope_decision": {
+      "request": "I decide to not do this \"compute needed to reach a given quality\"",
+      "recorded_utc": "2026-10-11T15:58:12.093750+00:00",
+      "fixed_schedule_accuracy_primary": true,
+      "compute_to_quality_analysis": false,
+      "quality_thresholds": false,
+      "matched_quality_frontier": false,
+      "additional_efficiency_runs": false,
+      "efficiency_stopping_rules": false
+    }
+  }
+}
