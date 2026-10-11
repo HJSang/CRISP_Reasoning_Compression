@@ -16358,8 +16358,8 @@
       "current_teacher_runs_preserved": true,
       "optimizer_additional_arms_deferred": 6,
       "new_phase_jobs_launched": true,
-      "latest_public_evidence_cutoff_utc": "2026-10-11T03:39:23.956283+00:00",
-      "latest_scientific_results_cutoff_utc": "2026-10-11T03:39:23.956283+00:00"
+      "latest_public_evidence_cutoff_utc": "2026-10-11T03:58:49.495701+00:00",
+      "latest_scientific_results_cutoff_utc": "2026-10-11T03:58:49.495701+00:00"
     },
     "phase_ratio_screen": {
       "version": "math-phases-v1",
@@ -45727,7 +45727,7 @@
         ]
       },
       "wave_two_progress": {
-        "cutoff_utc": "2026-10-11T03:39:23.956283+00:00",
+        "cutoff_utc": "2026-10-11T03:58:49.495701+00:00",
         "wave": 2,
         "progress_only": true,
         "complete": false,
@@ -45736,20 +45736,20 @@
           "baseline_hosted_suite_writes": 0,
           "baseline_hosted_writes_deferred": 8,
           "delimiter_diagnostics": 0,
-          "final_policy_responses": 36800,
-          "final_policy_suites": 39,
+          "final_policy_responses": 51616,
+          "final_policy_suites": 55,
           "generated_baseline_responses": 0,
           "generated_baseline_suites": 0,
           "grader_timeouts": 0,
-          "hosted_cyclic_updates": 191,
-          "hosted_training_updates": 191,
+          "hosted_cyclic_updates": 240,
+          "hosted_training_updates": 240,
           "imported_baseline_payloads": 4,
-          "local_training_updates": 191,
-          "matching_training_prefix_updates": 191,
-          "strict_responses": 36800,
-          "strict_suites": 39,
+          "local_training_updates": 240,
+          "matching_training_prefix_updates": 240,
+          "strict_responses": 51616,
+          "strict_suites": 55,
           "terminal_workers": 0,
-          "trained_hosted_suite_matches": 39,
+          "trained_hosted_suite_matches": 55,
           "unique_prior_baseline_payloads": 2,
           "warning_records": 0
         },
@@ -45757,98 +45757,70 @@
           {
             "asset_entries": 2940,
             "assets_verified": true,
-            "checked_unix": 1791689948.1320994,
-            "evaluations": 9,
-            "exact_overlapping_rows": 43,
-            "hosted_cyclic_updates": 43,
+            "checked_unix": 1791691112.9035983,
+            "evaluations": 13,
+            "exact_overlapping_rows": 55,
+            "hosted_cyclic_updates": 55,
             "hosted_state": "running",
-            "hosted_updates": 43,
+            "hosted_updates": 55,
             "imported_baseline_verified": true,
             "model_name": "Qwen3-8B",
             "opd_updates": 6,
             "pi_updates": 5,
             "queue": {
-              "done": 8,
+              "done": 11,
               "failed": 0,
               "pending": 1,
               "running": 1
             },
-            "result_file_count": 9,
+            "result_file_count": 13,
             "source_and_recipe_passed": true,
             "source_loaded": true,
             "terminal_verified": false,
             "trainer_exit_present": false,
-            "updates": 43,
+            "updates": 55,
             "worker": "worker-a",
             "worker_exit_present": false
           },
           {
             "asset_entries": 2940,
             "assets_verified": true,
-            "checked_unix": 1791689951.5203354,
-            "evaluations": 11,
-            "exact_overlapping_rows": 53,
-            "hosted_cyclic_updates": 53,
+            "checked_unix": 1791691116.510825,
+            "evaluations": 16,
+            "exact_overlapping_rows": 66,
+            "hosted_cyclic_updates": 66,
             "hosted_state": "running",
-            "hosted_updates": 53,
+            "hosted_updates": 66,
             "imported_baseline_verified": true,
             "model_name": "Qwen3-4B",
             "opd_updates": 6,
             "pi_updates": 5,
             "queue": {
-              "done": 10,
+              "done": 14,
               "failed": 0,
               "pending": 1,
               "running": 1
             },
-            "result_file_count": 12,
+            "result_file_count": 16,
             "source_and_recipe_passed": true,
             "source_loaded": true,
             "terminal_verified": false,
             "trainer_exit_present": false,
-            "updates": 53,
+            "updates": 66,
             "worker": "worker-b",
             "worker_exit_present": false
           },
           {
             "asset_entries": 2940,
             "assets_verified": true,
-            "checked_unix": 1791689955.1467807,
-            "evaluations": 8,
-            "exact_overlapping_rows": 40,
-            "hosted_cyclic_updates": 40,
-            "hosted_state": "running",
-            "hosted_updates": 40,
-            "imported_baseline_verified": true,
-            "model_name": "Qwen3-8B",
-            "opd_updates": 2,
-            "pi_updates": 9,
-            "queue": {
-              "done": 7,
-              "failed": 0,
-              "pending": 1,
-              "running": 1
-            },
-            "result_file_count": 8,
-            "source_and_recipe_passed": true,
-            "source_loaded": true,
-            "terminal_verified": false,
-            "trainer_exit_present": false,
-            "updates": 40,
-            "worker": "worker-c",
-            "worker_exit_present": false
-          },
-          {
-            "asset_entries": 2940,
-            "assets_verified": true,
-            "checked_unix": 1791689958.614217,
+            "checked_unix": 1791691120.3971014,
             "evaluations": 11,
             "exact_overlapping_rows": 55,
             "hosted_cyclic_updates": 55,
             "hosted_state": "running",
             "hosted_updates": 55,
             "imported_baseline_verified": true,
-            "model_name": "Qwen3-4B",
+            "model_name": "Qwen3-8B",
             "opd_updates": 2,
             "pi_updates": 9,
             "queue": {
@@ -45863,6 +45835,34 @@
             "terminal_verified": false,
             "trainer_exit_present": false,
             "updates": 55,
+            "worker": "worker-c",
+            "worker_exit_present": false
+          },
+          {
+            "asset_entries": 2940,
+            "assets_verified": true,
+            "checked_unix": 1791691124.0036428,
+            "evaluations": 15,
+            "exact_overlapping_rows": 64,
+            "hosted_cyclic_updates": 64,
+            "hosted_state": "running",
+            "hosted_updates": 64,
+            "imported_baseline_verified": true,
+            "model_name": "Qwen3-4B",
+            "opd_updates": 2,
+            "pi_updates": 9,
+            "queue": {
+              "done": 12,
+              "failed": 0,
+              "pending": 1,
+              "running": 1
+            },
+            "result_file_count": 15,
+            "source_and_recipe_passed": true,
+            "source_loaded": true,
+            "terminal_verified": false,
+            "trainer_exit_present": false,
+            "updates": 64,
             "worker": "worker-d",
             "worker_exit_present": false
           }
@@ -45871,7 +45871,7 @@
           {
             "excluded_from_audited_totals": true,
             "kind": "hosted_suite_ahead_of_retired_local_capture",
-            "step": 44,
+            "step": 60,
             "suite": "validation",
             "worker": "worker-b"
           },
@@ -45880,7 +45880,7 @@
             "kind": "hosted_suite_ahead_of_retired_local_capture",
             "step": 44,
             "suite": "validation",
-            "worker": "worker-d"
+            "worker": "worker-c"
           }
         ],
         "diagnostics": [],
@@ -45994,6 +45994,38 @@
                 },
                 "phase": "cycle_end",
                 "step": 33
+              },
+              {
+                "avg_at_8": 0.6220703125,
+                "cycle": 4,
+                "generation_seconds": 216.33593008399475,
+                "mean_response_tokens": 1147.5732421875,
+                "metrics": {
+                  "avg_at_8": 0.6220703125,
+                  "cap_hit_fraction": 0.0107421875,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0068359375,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "phase": "pi_end",
+                "step": 38
+              },
+              {
+                "avg_at_8": 0.6484375,
+                "cycle": 4,
+                "generation_seconds": 221.1549316640012,
+                "mean_response_tokens": 1332.150390625,
+                "metrics": {
+                  "avg_at_8": 0.6484375,
+                  "cap_hit_fraction": 0.013671875,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0068359375,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "phase": "cycle_end",
+                "step": 44
               }
             ],
             "opd_updates": 6,
@@ -46123,6 +46155,54 @@
                 },
                 "phase": "pi_end",
                 "step": 38
+              },
+              {
+                "avg_at_8": 0.72265625,
+                "cycle": 4,
+                "generation_seconds": 178.59178013599012,
+                "mean_response_tokens": 1276.169921875,
+                "metrics": {
+                  "avg_at_8": 0.72265625,
+                  "cap_hit_fraction": 0.0029296875,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0048828125,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "phase": "cycle_end",
+                "step": 44
+              },
+              {
+                "avg_at_8": 0.7216796875,
+                "cycle": 5,
+                "generation_seconds": 178.83395786600886,
+                "mean_response_tokens": 1261.392578125,
+                "metrics": {
+                  "avg_at_8": 0.7216796875,
+                  "cap_hit_fraction": 0.005859375,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0048828125,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "phase": "pi_end",
+                "step": 49
+              },
+              {
+                "avg_at_8": 0.7021484375,
+                "cycle": 5,
+                "generation_seconds": 191.39550289098406,
+                "mean_response_tokens": 1311.27734375,
+                "metrics": {
+                  "avg_at_8": 0.7021484375,
+                  "cap_hit_fraction": 0.0048828125,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0107421875,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "phase": "cycle_end",
+                "step": 55
               }
             ],
             "opd_updates": 6,
@@ -46220,6 +46300,38 @@
                 },
                 "phase": "pi_end",
                 "step": 31
+              },
+              {
+                "avg_at_8": 0.7734375,
+                "cycle": 3,
+                "generation_seconds": 250.2612277350854,
+                "mean_response_tokens": 1667.55078125,
+                "metrics": {
+                  "avg_at_8": 0.7734375,
+                  "cap_hit_fraction": 0.025390625,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0205078125,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "phase": "cycle_end",
+                "step": 33
+              },
+              {
+                "avg_at_8": 0.732421875,
+                "cycle": 4,
+                "generation_seconds": 237.06202530895825,
+                "mean_response_tokens": 1523.0029296875,
+                "metrics": {
+                  "avg_at_8": 0.732421875,
+                  "cap_hit_fraction": 0.0341796875,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0244140625,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "phase": "pi_end",
+                "step": 42
               }
             ],
             "opd_updates": 2,
@@ -46349,6 +46461,38 @@
                 },
                 "phase": "pi_end",
                 "step": 42
+              },
+              {
+                "avg_at_8": 0.787109375,
+                "cycle": 4,
+                "generation_seconds": 207.68052528100088,
+                "mean_response_tokens": 1536.6552734375,
+                "metrics": {
+                  "avg_at_8": 0.787109375,
+                  "cap_hit_fraction": 0.0107421875,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0078125,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "phase": "cycle_end",
+                "step": 44
+              },
+              {
+                "avg_at_8": 0.748046875,
+                "cycle": 5,
+                "generation_seconds": 201.47637663700152,
+                "mean_response_tokens": 1685.455078125,
+                "metrics": {
+                  "avg_at_8": 0.748046875,
+                  "cap_hit_fraction": 0.0205078125,
+                  "completions": 1024,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.015625,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "phase": "pi_end",
+                "step": 53
               }
             ],
             "opd_updates": 2,
@@ -46373,6 +46517,14 @@
             "step": 22
           },
           {
+            "cycle": 3,
+            "model_name": "Qwen3-8B",
+            "pi5_opd6_avg_at_8": 0.658203125,
+            "pi9_opd2_avg_at_8": 0.7734375,
+            "pi9_opd2_minus_pi5_opd6_pp": 11.5234375,
+            "step": 33
+          },
+          {
             "cycle": 1,
             "model_name": "Qwen3-4B",
             "pi5_opd6_avg_at_8": 0.7158203125,
@@ -46395,20 +46547,28 @@
             "pi9_opd2_avg_at_8": 0.7880859375,
             "pi9_opd2_minus_pi5_opd6_pp": 6.8359375,
             "step": 33
+          },
+          {
+            "cycle": 4,
+            "model_name": "Qwen3-4B",
+            "pi5_opd6_avg_at_8": 0.72265625,
+            "pi9_opd2_avg_at_8": 0.787109375,
+            "pi9_opd2_minus_pi5_opd6_pp": 6.4453125,
+            "step": 44
           }
         ],
         "per_dataset_changes_from_own_fresh_baseline": [
           {
             "datasets": {
               "AIME 2024": {
-                "accuracy_delta_pp": 0.4166666666666652,
-                "avg_at_8": 0.25416666666666665,
+                "accuracy_delta_pp": 4.166666666666669,
+                "avg_at_8": 0.2916666666666667,
                 "baseline_avg_at_8": 0.25,
                 "baseline_cap_hit_fraction": 0.15,
-                "cap_delta_pp": -7.916666666666666,
-                "cap_hit_fraction": 0.07083333333333333,
+                "cap_delta_pp": -9.166666666666666,
+                "cap_hit_fraction": 0.058333333333333334,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.058333333333333334,
+                "parse_failure_fraction": 0.05,
                 "unexpected_thinking_delimiters": 0
               },
               "AIME 2025": {
@@ -46416,170 +46576,170 @@
                 "avg_at_8": 0.17916666666666667,
                 "baseline_avg_at_8": 0.20833333333333334,
                 "baseline_cap_hit_fraction": 0.06666666666666667,
-                "cap_delta_pp": -6.25,
-                "cap_hit_fraction": 0.004166666666666667,
+                "cap_delta_pp": -3.75,
+                "cap_hit_fraction": 0.029166666666666667,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.004166666666666667,
+                "parse_failure_fraction": 0.016666666666666666,
                 "unexpected_thinking_delimiters": 0
               },
               "AMC23": {
-                "accuracy_delta_pp": -5.625000000000002,
-                "avg_at_8": 0.63125,
+                "accuracy_delta_pp": -1.8750000000000044,
+                "avg_at_8": 0.66875,
                 "baseline_avg_at_8": 0.6875,
                 "baseline_cap_hit_fraction": 0.046875,
-                "cap_delta_pp": -2.8125,
-                "cap_hit_fraction": 0.01875,
+                "cap_delta_pp": -4.0625,
+                "cap_hit_fraction": 0.00625,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.015625,
+                "parse_failure_fraction": 0.00625,
                 "unexpected_thinking_delimiters": 0
               }
             },
             "model_name": "Qwen3-8B",
-            "step": 27,
+            "step": 44,
             "worker": "worker-a"
           },
           {
             "datasets": {
               "AIME 2024": {
-                "accuracy_delta_pp": -3.3333333333333326,
-                "avg_at_8": 0.19166666666666668,
+                "accuracy_delta_pp": 5.833333333333332,
+                "avg_at_8": 0.2833333333333333,
                 "baseline_avg_at_8": 0.225,
                 "baseline_cap_hit_fraction": 0.13333333333333333,
-                "cap_delta_pp": -5.833333333333333,
-                "cap_hit_fraction": 0.075,
+                "cap_delta_pp": -3.749999999999999,
+                "cap_hit_fraction": 0.09583333333333334,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.075,
+                "parse_failure_fraction": 0.07916666666666666,
                 "unexpected_thinking_delimiters": 0
               },
               "AIME 2025": {
-                "accuracy_delta_pp": -2.0833333333333344,
-                "avg_at_8": 0.17083333333333334,
+                "accuracy_delta_pp": 3.3333333333333326,
+                "avg_at_8": 0.225,
                 "baseline_avg_at_8": 0.19166666666666668,
                 "baseline_cap_hit_fraction": 0.075,
-                "cap_delta_pp": -2.4999999999999996,
-                "cap_hit_fraction": 0.05,
+                "cap_delta_pp": -1.6666666666666663,
+                "cap_hit_fraction": 0.058333333333333334,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.0375,
+                "parse_failure_fraction": 0.041666666666666664,
                 "unexpected_thinking_delimiters": 0
               },
               "AMC23": {
-                "accuracy_delta_pp": -4.999999999999993,
-                "avg_at_8": 0.628125,
+                "accuracy_delta_pp": -2.500000000000002,
+                "avg_at_8": 0.653125,
                 "baseline_avg_at_8": 0.678125,
                 "baseline_cap_hit_fraction": 0.01875,
-                "cap_delta_pp": 0.31249999999999994,
-                "cap_hit_fraction": 0.021875,
+                "cap_delta_pp": -0.31249999999999994,
+                "cap_hit_fraction": 0.015625,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.021875,
+                "parse_failure_fraction": 0.0125,
                 "unexpected_thinking_delimiters": 0
               }
             },
             "model_name": "Qwen3-4B",
-            "step": 36,
+            "step": 53,
             "worker": "worker-b"
           },
           {
             "datasets": {
               "AIME 2024": {
-                "accuracy_delta_pp": -1.6666666666666663,
-                "avg_at_8": 0.23333333333333334,
+                "accuracy_delta_pp": 1.6666666666666663,
+                "avg_at_8": 0.26666666666666666,
                 "baseline_avg_at_8": 0.25,
                 "baseline_cap_hit_fraction": 0.15,
-                "cap_delta_pp": 7.500000000000001,
-                "cap_hit_fraction": 0.225,
+                "cap_delta_pp": 8.333333333333334,
+                "cap_hit_fraction": 0.23333333333333334,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.18333333333333332,
+                "parse_failure_fraction": 0.17916666666666667,
                 "unexpected_thinking_delimiters": 0
               },
               "AIME 2025": {
-                "accuracy_delta_pp": -5.000000000000002,
-                "avg_at_8": 0.15833333333333333,
+                "accuracy_delta_pp": -1.250000000000001,
+                "avg_at_8": 0.19583333333333333,
                 "baseline_avg_at_8": 0.20833333333333334,
                 "baseline_cap_hit_fraction": 0.06666666666666667,
-                "cap_delta_pp": 10.0,
-                "cap_hit_fraction": 0.16666666666666666,
+                "cap_delta_pp": 4.166666666666667,
+                "cap_hit_fraction": 0.10833333333333334,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.11666666666666667,
+                "parse_failure_fraction": 0.075,
                 "unexpected_thinking_delimiters": 0
               },
               "AMC23": {
-                "accuracy_delta_pp": -2.500000000000002,
-                "avg_at_8": 0.6625,
+                "accuracy_delta_pp": -4.062500000000002,
+                "avg_at_8": 0.646875,
                 "baseline_avg_at_8": 0.6875,
                 "baseline_cap_hit_fraction": 0.046875,
-                "cap_delta_pp": -1.2499999999999998,
-                "cap_hit_fraction": 0.034375,
+                "cap_delta_pp": 0.6249999999999999,
+                "cap_hit_fraction": 0.053125,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.028125,
+                "parse_failure_fraction": 0.0375,
                 "unexpected_thinking_delimiters": 0
               }
             },
             "model_name": "Qwen3-8B",
-            "step": 27,
+            "step": 36,
             "worker": "worker-c"
           },
           {
             "datasets": {
               "AIME 2024": {
-                "accuracy_delta_pp": 0.4166666666666652,
-                "avg_at_8": 0.22916666666666666,
+                "accuracy_delta_pp": -1.250000000000001,
+                "avg_at_8": 0.2125,
                 "baseline_avg_at_8": 0.225,
                 "baseline_cap_hit_fraction": 0.13333333333333333,
-                "cap_delta_pp": 1.250000000000001,
-                "cap_hit_fraction": 0.14583333333333334,
+                "cap_delta_pp": 4.583333333333334,
+                "cap_hit_fraction": 0.17916666666666667,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.10416666666666667,
+                "parse_failure_fraction": 0.15833333333333333,
                 "unexpected_thinking_delimiters": 0
               },
               "AIME 2025": {
-                "accuracy_delta_pp": -0.41666666666666796,
-                "avg_at_8": 0.1875,
+                "accuracy_delta_pp": -1.250000000000001,
+                "avg_at_8": 0.17916666666666667,
                 "baseline_avg_at_8": 0.19166666666666668,
                 "baseline_cap_hit_fraction": 0.075,
-                "cap_delta_pp": 0.4166666666666666,
-                "cap_hit_fraction": 0.07916666666666666,
+                "cap_delta_pp": 1.6666666666666663,
+                "cap_hit_fraction": 0.09166666666666666,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.06666666666666667,
+                "parse_failure_fraction": 0.0625,
                 "unexpected_thinking_delimiters": 0
               },
               "AMC23": {
-                "accuracy_delta_pp": 1.2500000000000067,
-                "avg_at_8": 0.690625,
+                "accuracy_delta_pp": -2.500000000000002,
+                "avg_at_8": 0.653125,
                 "baseline_avg_at_8": 0.678125,
                 "baseline_cap_hit_fraction": 0.01875,
-                "cap_delta_pp": -1.5625,
-                "cap_hit_fraction": 0.003125,
+                "cap_delta_pp": -0.31249999999999994,
+                "cap_hit_fraction": 0.015625,
                 "grader_timeouts": 0,
-                "parse_failure_fraction": 0.003125,
+                "parse_failure_fraction": 0.0125,
                 "unexpected_thinking_delimiters": 0
               }
             },
             "model_name": "Qwen3-4B",
-            "step": 36,
+            "step": 53,
             "worker": "worker-d"
           }
         ],
         "observed_prefix_checks_passed": false,
         "strict_zero_delimiter_passed": true,
         "cost": {
-          "science_gpu_hours": 237.36133798970116,
-          "cumulative_study_gpu_hours": 408.99568462053935,
+          "science_gpu_hours": 247.72168837388355,
+          "cumulative_study_gpu_hours": 419.3560350047218,
           "cumulative_readiness_gpu_hours": 82.66406716346741,
-          "overall_gpu_hours": 491.65975178400674,
-          "wave_two_increment_gpu_hours": 30.15767515871258,
-          "separate_handoff_and_audit_gpu_hours": 0.24744320657518415,
-          "remaining_original_window_hours": 43.06214329196347,
+          "overall_gpu_hours": 502.02010216818917,
+          "wave_two_increment_gpu_hours": 40.518025542894975,
+          "separate_handoff_and_audit_gpu_hours": 0.24744320657515573,
+          "remaining_original_window_hours": 42.73838234245777,
           "no_assignments_released": true,
-          "controller_operational_intervals": 324,
-          "complete_collection_intervals": 15,
-          "union_input_intervals": 2735,
+          "controller_operational_intervals": 432,
+          "complete_collection_intervals": 20,
+          "union_input_intervals": 2848,
           "later_operations_remain_chargeable": true
         },
         "independent_reviews_passed": true,
         "snapshot_job_vs_suite_count": {
-          "completed_snapshot_jobs": 35,
-          "completed_suites": 39,
-          "reason": "Four retired snapshots each contain both validation and benchmark; workers a/b coalesce at update27, c/d at9.",
+          "completed_snapshot_jobs": 47,
+          "completed_suites": 55,
+          "reason": "Eight retired snapshots contain both suites: a/b at27/44, c at9, d at9/44/53.",
           "pending_hosted_results_excluded": true
         }
       },
@@ -47746,8 +47906,879 @@
             "later_operations_remain_chargeable": true
           },
           "independent_reviews_passed": true
+        },
+        {
+          "cutoff_utc": "2026-10-11T03:39:23.956283+00:00",
+          "wave": 2,
+          "progress_only": true,
+          "complete": false,
+          "scientific_completion_certified": false,
+          "aggregate": {
+            "baseline_hosted_suite_writes": 0,
+            "baseline_hosted_writes_deferred": 8,
+            "delimiter_diagnostics": 0,
+            "final_policy_responses": 36800,
+            "final_policy_suites": 39,
+            "generated_baseline_responses": 0,
+            "generated_baseline_suites": 0,
+            "grader_timeouts": 0,
+            "hosted_cyclic_updates": 191,
+            "hosted_training_updates": 191,
+            "imported_baseline_payloads": 4,
+            "local_training_updates": 191,
+            "matching_training_prefix_updates": 191,
+            "strict_responses": 36800,
+            "strict_suites": 39,
+            "terminal_workers": 0,
+            "trained_hosted_suite_matches": 39,
+            "unique_prior_baseline_payloads": 2,
+            "warning_records": 0
+          },
+          "workers": [
+            {
+              "asset_entries": 2940,
+              "assets_verified": true,
+              "checked_unix": 1791689948.1320994,
+              "evaluations": 9,
+              "exact_overlapping_rows": 43,
+              "hosted_cyclic_updates": 43,
+              "hosted_state": "running",
+              "hosted_updates": 43,
+              "imported_baseline_verified": true,
+              "model_name": "Qwen3-8B",
+              "opd_updates": 6,
+              "pi_updates": 5,
+              "queue": {
+                "done": 8,
+                "failed": 0,
+                "pending": 1,
+                "running": 1
+              },
+              "result_file_count": 9,
+              "source_and_recipe_passed": true,
+              "source_loaded": true,
+              "terminal_verified": false,
+              "trainer_exit_present": false,
+              "updates": 43,
+              "worker": "worker-a",
+              "worker_exit_present": false
+            },
+            {
+              "asset_entries": 2940,
+              "assets_verified": true,
+              "checked_unix": 1791689951.5203354,
+              "evaluations": 11,
+              "exact_overlapping_rows": 53,
+              "hosted_cyclic_updates": 53,
+              "hosted_state": "running",
+              "hosted_updates": 53,
+              "imported_baseline_verified": true,
+              "model_name": "Qwen3-4B",
+              "opd_updates": 6,
+              "pi_updates": 5,
+              "queue": {
+                "done": 10,
+                "failed": 0,
+                "pending": 1,
+                "running": 1
+              },
+              "result_file_count": 12,
+              "source_and_recipe_passed": true,
+              "source_loaded": true,
+              "terminal_verified": false,
+              "trainer_exit_present": false,
+              "updates": 53,
+              "worker": "worker-b",
+              "worker_exit_present": false
+            },
+            {
+              "asset_entries": 2940,
+              "assets_verified": true,
+              "checked_unix": 1791689955.1467807,
+              "evaluations": 8,
+              "exact_overlapping_rows": 40,
+              "hosted_cyclic_updates": 40,
+              "hosted_state": "running",
+              "hosted_updates": 40,
+              "imported_baseline_verified": true,
+              "model_name": "Qwen3-8B",
+              "opd_updates": 2,
+              "pi_updates": 9,
+              "queue": {
+                "done": 7,
+                "failed": 0,
+                "pending": 1,
+                "running": 1
+              },
+              "result_file_count": 8,
+              "source_and_recipe_passed": true,
+              "source_loaded": true,
+              "terminal_verified": false,
+              "trainer_exit_present": false,
+              "updates": 40,
+              "worker": "worker-c",
+              "worker_exit_present": false
+            },
+            {
+              "asset_entries": 2940,
+              "assets_verified": true,
+              "checked_unix": 1791689958.614217,
+              "evaluations": 11,
+              "exact_overlapping_rows": 55,
+              "hosted_cyclic_updates": 55,
+              "hosted_state": "running",
+              "hosted_updates": 55,
+              "imported_baseline_verified": true,
+              "model_name": "Qwen3-4B",
+              "opd_updates": 2,
+              "pi_updates": 9,
+              "queue": {
+                "done": 10,
+                "failed": 0,
+                "pending": 1,
+                "running": 1
+              },
+              "result_file_count": 12,
+              "source_and_recipe_passed": true,
+              "source_loaded": true,
+              "terminal_verified": false,
+              "trainer_exit_present": false,
+              "updates": 55,
+              "worker": "worker-d",
+              "worker_exit_present": false
+            }
+          ],
+          "pending": [
+            {
+              "excluded_from_audited_totals": true,
+              "kind": "hosted_suite_ahead_of_retired_local_capture",
+              "step": 44,
+              "suite": "validation",
+              "worker": "worker-b"
+            },
+            {
+              "excluded_from_audited_totals": true,
+              "kind": "hosted_suite_ahead_of_retired_local_capture",
+              "step": 44,
+              "suite": "validation",
+              "worker": "worker-d"
+            }
+          ],
+          "diagnostics": [],
+          "errors": [],
+          "validation_trajectories": {
+            "worker-a": {
+              "baseline_avg_at_8": 0.6826171875,
+              "baseline_mean_response_tokens": 1513.7177734375,
+              "baseline_metrics": {
+                "avg_at_8": 0.6826171875,
+                "cap_hit_fraction": 0.02734375,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0263671875,
+                "unexpected_thinking_delimiters": 0
+              },
+              "model_name": "Qwen3-8B",
+              "observed": [
+                {
+                  "avg_at_8": 0.6162109375,
+                  "cycle": 1,
+                  "generation_seconds": 215.26862667500973,
+                  "mean_response_tokens": 1206.55078125,
+                  "metrics": {
+                    "avg_at_8": 0.6162109375,
+                    "cap_hit_fraction": 0.021484375,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.021484375,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 5
+                },
+                {
+                  "avg_at_8": 0.7041015625,
+                  "cycle": 1,
+                  "generation_seconds": 227.44945925206412,
+                  "mean_response_tokens": 1401.7568359375,
+                  "metrics": {
+                    "avg_at_8": 0.7041015625,
+                    "cap_hit_fraction": 0.0205078125,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.017578125,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 11
+                },
+                {
+                  "avg_at_8": 0.69921875,
+                  "cycle": 2,
+                  "generation_seconds": 224.99954525800422,
+                  "mean_response_tokens": 1285.9599609375,
+                  "metrics": {
+                    "avg_at_8": 0.69921875,
+                    "cap_hit_fraction": 0.0205078125,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.01953125,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 16
+                },
+                {
+                  "avg_at_8": 0.6943359375,
+                  "cycle": 2,
+                  "generation_seconds": 232.67582019104157,
+                  "mean_response_tokens": 1519.0498046875,
+                  "metrics": {
+                    "avg_at_8": 0.6943359375,
+                    "cap_hit_fraction": 0.0234375,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0185546875,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 22
+                },
+                {
+                  "avg_at_8": 0.669921875,
+                  "cycle": 3,
+                  "generation_seconds": 218.53516347892582,
+                  "mean_response_tokens": 1266.44921875,
+                  "metrics": {
+                    "avg_at_8": 0.669921875,
+                    "cap_hit_fraction": 0.01953125,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0166015625,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 27
+                },
+                {
+                  "avg_at_8": 0.658203125,
+                  "cycle": 3,
+                  "generation_seconds": 225.09719064296223,
+                  "mean_response_tokens": 1478.3056640625,
+                  "metrics": {
+                    "avg_at_8": 0.658203125,
+                    "cap_hit_fraction": 0.0224609375,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.021484375,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 33
+                }
+              ],
+              "opd_updates": 6,
+              "pi_updates": 5
+            },
+            "worker-b": {
+              "baseline_avg_at_8": 0.701171875,
+              "baseline_mean_response_tokens": 1486.0087890625,
+              "baseline_metrics": {
+                "avg_at_8": 0.701171875,
+                "cap_hit_fraction": 0.0234375,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0224609375,
+                "unexpected_thinking_delimiters": 0
+              },
+              "model_name": "Qwen3-4B",
+              "observed": [
+                {
+                  "avg_at_8": 0.693359375,
+                  "cycle": 1,
+                  "generation_seconds": 184.44780067703687,
+                  "mean_response_tokens": 1341.11328125,
+                  "metrics": {
+                    "avg_at_8": 0.693359375,
+                    "cap_hit_fraction": 0.0234375,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.021484375,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 5
+                },
+                {
+                  "avg_at_8": 0.7158203125,
+                  "cycle": 1,
+                  "generation_seconds": 204.89824315096484,
+                  "mean_response_tokens": 1543.3779296875,
+                  "metrics": {
+                    "avg_at_8": 0.7158203125,
+                    "cap_hit_fraction": 0.029296875,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0283203125,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 11
+                },
+                {
+                  "avg_at_8": 0.67578125,
+                  "cycle": 2,
+                  "generation_seconds": 187.4242878369987,
+                  "mean_response_tokens": 1340.71484375,
+                  "metrics": {
+                    "avg_at_8": 0.67578125,
+                    "cap_hit_fraction": 0.0234375,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0205078125,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 16
+                },
+                {
+                  "avg_at_8": 0.7294921875,
+                  "cycle": 2,
+                  "generation_seconds": 193.91495064197807,
+                  "mean_response_tokens": 1354.7802734375,
+                  "metrics": {
+                    "avg_at_8": 0.7294921875,
+                    "cap_hit_fraction": 0.0166015625,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.01171875,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 22
+                },
+                {
+                  "avg_at_8": 0.67578125,
+                  "cycle": 3,
+                  "generation_seconds": 187.06924089696258,
+                  "mean_response_tokens": 1370.775390625,
+                  "metrics": {
+                    "avg_at_8": 0.67578125,
+                    "cap_hit_fraction": 0.03125,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.02734375,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 27
+                },
+                {
+                  "avg_at_8": 0.7197265625,
+                  "cycle": 3,
+                  "generation_seconds": 196.7246413769899,
+                  "mean_response_tokens": 1380.3466796875,
+                  "metrics": {
+                    "avg_at_8": 0.7197265625,
+                    "cap_hit_fraction": 0.0166015625,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.015625,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 33
+                },
+                {
+                  "avg_at_8": 0.6767578125,
+                  "cycle": 4,
+                  "generation_seconds": 184.98608812800376,
+                  "mean_response_tokens": 1279.0595703125,
+                  "metrics": {
+                    "avg_at_8": 0.6767578125,
+                    "cap_hit_fraction": 0.0185546875,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.017578125,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 38
+                }
+              ],
+              "opd_updates": 6,
+              "pi_updates": 5
+            },
+            "worker-c": {
+              "baseline_avg_at_8": 0.6826171875,
+              "baseline_mean_response_tokens": 1513.7177734375,
+              "baseline_metrics": {
+                "avg_at_8": 0.6826171875,
+                "cap_hit_fraction": 0.02734375,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0263671875,
+                "unexpected_thinking_delimiters": 0
+              },
+              "model_name": "Qwen3-8B",
+              "observed": [
+                {
+                  "avg_at_8": 0.701171875,
+                  "cycle": 1,
+                  "generation_seconds": 222.85836369206663,
+                  "mean_response_tokens": 1314.6552734375,
+                  "metrics": {
+                    "avg_at_8": 0.701171875,
+                    "cap_hit_fraction": 0.0224609375,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.021484375,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 9
+                },
+                {
+                  "avg_at_8": 0.693359375,
+                  "cycle": 1,
+                  "generation_seconds": 228.40110457898118,
+                  "mean_response_tokens": 1463.837890625,
+                  "metrics": {
+                    "avg_at_8": 0.693359375,
+                    "cap_hit_fraction": 0.0234375,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0166015625,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 11
+                },
+                {
+                  "avg_at_8": 0.7216796875,
+                  "cycle": 2,
+                  "generation_seconds": 224.8549383620266,
+                  "mean_response_tokens": 1500.0947265625,
+                  "metrics": {
+                    "avg_at_8": 0.7216796875,
+                    "cap_hit_fraction": 0.0380859375,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0322265625,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 20
+                },
+                {
+                  "avg_at_8": 0.73046875,
+                  "cycle": 2,
+                  "generation_seconds": 235.65195915393997,
+                  "mean_response_tokens": 1640.498046875,
+                  "metrics": {
+                    "avg_at_8": 0.73046875,
+                    "cap_hit_fraction": 0.0302734375,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0244140625,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 22
+                },
+                {
+                  "avg_at_8": 0.7451171875,
+                  "cycle": 3,
+                  "generation_seconds": 278.8116933279671,
+                  "mean_response_tokens": 2262.3984375,
+                  "metrics": {
+                    "avg_at_8": 0.7451171875,
+                    "cap_hit_fraction": 0.0751953125,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0498046875,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 31
+                }
+              ],
+              "opd_updates": 2,
+              "pi_updates": 9
+            },
+            "worker-d": {
+              "baseline_avg_at_8": 0.701171875,
+              "baseline_mean_response_tokens": 1486.0087890625,
+              "baseline_metrics": {
+                "avg_at_8": 0.701171875,
+                "cap_hit_fraction": 0.0234375,
+                "completions": 1024,
+                "grader_timeouts": 0,
+                "parse_failure_fraction": 0.0224609375,
+                "unexpected_thinking_delimiters": 0
+              },
+              "model_name": "Qwen3-4B",
+              "observed": [
+                {
+                  "avg_at_8": 0.7021484375,
+                  "cycle": 1,
+                  "generation_seconds": 190.44484988600016,
+                  "mean_response_tokens": 1090.009765625,
+                  "metrics": {
+                    "avg_at_8": 0.7021484375,
+                    "cap_hit_fraction": 0.0107421875,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0087890625,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 9
+                },
+                {
+                  "avg_at_8": 0.73828125,
+                  "cycle": 1,
+                  "generation_seconds": 192.02714354894124,
+                  "mean_response_tokens": 1416.265625,
+                  "metrics": {
+                    "avg_at_8": 0.73828125,
+                    "cap_hit_fraction": 0.0166015625,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.01171875,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 11
+                },
+                {
+                  "avg_at_8": 0.7099609375,
+                  "cycle": 2,
+                  "generation_seconds": 186.53839831298683,
+                  "mean_response_tokens": 1175.5771484375,
+                  "metrics": {
+                    "avg_at_8": 0.7099609375,
+                    "cap_hit_fraction": 0.015625,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0107421875,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 20
+                },
+                {
+                  "avg_at_8": 0.79296875,
+                  "cycle": 2,
+                  "generation_seconds": 205.939233851037,
+                  "mean_response_tokens": 1427.0078125,
+                  "metrics": {
+                    "avg_at_8": 0.79296875,
+                    "cap_hit_fraction": 0.0166015625,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.01171875,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 22
+                },
+                {
+                  "avg_at_8": 0.7392578125,
+                  "cycle": 3,
+                  "generation_seconds": 207.80892647302244,
+                  "mean_response_tokens": 1707.0419921875,
+                  "metrics": {
+                    "avg_at_8": 0.7392578125,
+                    "cap_hit_fraction": 0.0390625,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0224609375,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 31
+                },
+                {
+                  "avg_at_8": 0.7880859375,
+                  "cycle": 3,
+                  "generation_seconds": 188.4190795030445,
+                  "mean_response_tokens": 1401.8056640625,
+                  "metrics": {
+                    "avg_at_8": 0.7880859375,
+                    "cap_hit_fraction": 0.009765625,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0078125,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "cycle_end",
+                  "step": 33
+                },
+                {
+                  "avg_at_8": 0.732421875,
+                  "cycle": 4,
+                  "generation_seconds": 205.71966605295893,
+                  "mean_response_tokens": 1518.6611328125,
+                  "metrics": {
+                    "avg_at_8": 0.732421875,
+                    "cap_hit_fraction": 0.025390625,
+                    "completions": 1024,
+                    "grader_timeouts": 0,
+                    "parse_failure_fraction": 0.0146484375,
+                    "unexpected_thinking_delimiters": 0
+                  },
+                  "phase": "pi_end",
+                  "step": 42
+                }
+              ],
+              "opd_updates": 2,
+              "pi_updates": 9
+            }
+          },
+          "matched_cycle_comparisons": [
+            {
+              "cycle": 1,
+              "model_name": "Qwen3-8B",
+              "pi5_opd6_avg_at_8": 0.7041015625,
+              "pi9_opd2_avg_at_8": 0.693359375,
+              "pi9_opd2_minus_pi5_opd6_pp": -1.07421875,
+              "step": 11
+            },
+            {
+              "cycle": 2,
+              "model_name": "Qwen3-8B",
+              "pi5_opd6_avg_at_8": 0.6943359375,
+              "pi9_opd2_avg_at_8": 0.73046875,
+              "pi9_opd2_minus_pi5_opd6_pp": 3.61328125,
+              "step": 22
+            },
+            {
+              "cycle": 1,
+              "model_name": "Qwen3-4B",
+              "pi5_opd6_avg_at_8": 0.7158203125,
+              "pi9_opd2_avg_at_8": 0.73828125,
+              "pi9_opd2_minus_pi5_opd6_pp": 2.24609375,
+              "step": 11
+            },
+            {
+              "cycle": 2,
+              "model_name": "Qwen3-4B",
+              "pi5_opd6_avg_at_8": 0.7294921875,
+              "pi9_opd2_avg_at_8": 0.79296875,
+              "pi9_opd2_minus_pi5_opd6_pp": 6.34765625,
+              "step": 22
+            },
+            {
+              "cycle": 3,
+              "model_name": "Qwen3-4B",
+              "pi5_opd6_avg_at_8": 0.7197265625,
+              "pi9_opd2_avg_at_8": 0.7880859375,
+              "pi9_opd2_minus_pi5_opd6_pp": 6.8359375,
+              "step": 33
+            }
+          ],
+          "per_dataset_changes_from_own_fresh_baseline": [
+            {
+              "datasets": {
+                "AIME 2024": {
+                  "accuracy_delta_pp": 0.4166666666666652,
+                  "avg_at_8": 0.25416666666666665,
+                  "baseline_avg_at_8": 0.25,
+                  "baseline_cap_hit_fraction": 0.15,
+                  "cap_delta_pp": -7.916666666666666,
+                  "cap_hit_fraction": 0.07083333333333333,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.058333333333333334,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "accuracy_delta_pp": -2.9166666666666674,
+                  "avg_at_8": 0.17916666666666667,
+                  "baseline_avg_at_8": 0.20833333333333334,
+                  "baseline_cap_hit_fraction": 0.06666666666666667,
+                  "cap_delta_pp": -6.25,
+                  "cap_hit_fraction": 0.004166666666666667,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.004166666666666667,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "accuracy_delta_pp": -5.625000000000002,
+                  "avg_at_8": 0.63125,
+                  "baseline_avg_at_8": 0.6875,
+                  "baseline_cap_hit_fraction": 0.046875,
+                  "cap_delta_pp": -2.8125,
+                  "cap_hit_fraction": 0.01875,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.015625,
+                  "unexpected_thinking_delimiters": 0
+                }
+              },
+              "model_name": "Qwen3-8B",
+              "step": 27,
+              "worker": "worker-a"
+            },
+            {
+              "datasets": {
+                "AIME 2024": {
+                  "accuracy_delta_pp": -3.3333333333333326,
+                  "avg_at_8": 0.19166666666666668,
+                  "baseline_avg_at_8": 0.225,
+                  "baseline_cap_hit_fraction": 0.13333333333333333,
+                  "cap_delta_pp": -5.833333333333333,
+                  "cap_hit_fraction": 0.075,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.075,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "accuracy_delta_pp": -2.0833333333333344,
+                  "avg_at_8": 0.17083333333333334,
+                  "baseline_avg_at_8": 0.19166666666666668,
+                  "baseline_cap_hit_fraction": 0.075,
+                  "cap_delta_pp": -2.4999999999999996,
+                  "cap_hit_fraction": 0.05,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.0375,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "accuracy_delta_pp": -4.999999999999993,
+                  "avg_at_8": 0.628125,
+                  "baseline_avg_at_8": 0.678125,
+                  "baseline_cap_hit_fraction": 0.01875,
+                  "cap_delta_pp": 0.31249999999999994,
+                  "cap_hit_fraction": 0.021875,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.021875,
+                  "unexpected_thinking_delimiters": 0
+                }
+              },
+              "model_name": "Qwen3-4B",
+              "step": 36,
+              "worker": "worker-b"
+            },
+            {
+              "datasets": {
+                "AIME 2024": {
+                  "accuracy_delta_pp": -1.6666666666666663,
+                  "avg_at_8": 0.23333333333333334,
+                  "baseline_avg_at_8": 0.25,
+                  "baseline_cap_hit_fraction": 0.15,
+                  "cap_delta_pp": 7.500000000000001,
+                  "cap_hit_fraction": 0.225,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.18333333333333332,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "accuracy_delta_pp": -5.000000000000002,
+                  "avg_at_8": 0.15833333333333333,
+                  "baseline_avg_at_8": 0.20833333333333334,
+                  "baseline_cap_hit_fraction": 0.06666666666666667,
+                  "cap_delta_pp": 10.0,
+                  "cap_hit_fraction": 0.16666666666666666,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.11666666666666667,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "accuracy_delta_pp": -2.500000000000002,
+                  "avg_at_8": 0.6625,
+                  "baseline_avg_at_8": 0.6875,
+                  "baseline_cap_hit_fraction": 0.046875,
+                  "cap_delta_pp": -1.2499999999999998,
+                  "cap_hit_fraction": 0.034375,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.028125,
+                  "unexpected_thinking_delimiters": 0
+                }
+              },
+              "model_name": "Qwen3-8B",
+              "step": 27,
+              "worker": "worker-c"
+            },
+            {
+              "datasets": {
+                "AIME 2024": {
+                  "accuracy_delta_pp": 0.4166666666666652,
+                  "avg_at_8": 0.22916666666666666,
+                  "baseline_avg_at_8": 0.225,
+                  "baseline_cap_hit_fraction": 0.13333333333333333,
+                  "cap_delta_pp": 1.250000000000001,
+                  "cap_hit_fraction": 0.14583333333333334,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.10416666666666667,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AIME 2025": {
+                  "accuracy_delta_pp": -0.41666666666666796,
+                  "avg_at_8": 0.1875,
+                  "baseline_avg_at_8": 0.19166666666666668,
+                  "baseline_cap_hit_fraction": 0.075,
+                  "cap_delta_pp": 0.4166666666666666,
+                  "cap_hit_fraction": 0.07916666666666666,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.06666666666666667,
+                  "unexpected_thinking_delimiters": 0
+                },
+                "AMC23": {
+                  "accuracy_delta_pp": 1.2500000000000067,
+                  "avg_at_8": 0.690625,
+                  "baseline_avg_at_8": 0.678125,
+                  "baseline_cap_hit_fraction": 0.01875,
+                  "cap_delta_pp": -1.5625,
+                  "cap_hit_fraction": 0.003125,
+                  "grader_timeouts": 0,
+                  "parse_failure_fraction": 0.003125,
+                  "unexpected_thinking_delimiters": 0
+                }
+              },
+              "model_name": "Qwen3-4B",
+              "step": 36,
+              "worker": "worker-d"
+            }
+          ],
+          "observed_prefix_checks_passed": false,
+          "strict_zero_delimiter_passed": true,
+          "cost": {
+            "science_gpu_hours": 237.36133798970116,
+            "cumulative_study_gpu_hours": 408.99568462053935,
+            "cumulative_readiness_gpu_hours": 82.66406716346741,
+            "overall_gpu_hours": 491.65975178400674,
+            "wave_two_increment_gpu_hours": 30.15767515871258,
+            "separate_handoff_and_audit_gpu_hours": 0.24744320657518415,
+            "remaining_original_window_hours": 43.06214329196347,
+            "no_assignments_released": true,
+            "controller_operational_intervals": 324,
+            "complete_collection_intervals": 15,
+            "union_input_intervals": 2735,
+            "later_operations_remain_chargeable": true
+          },
+          "independent_reviews_passed": true,
+          "snapshot_job_vs_suite_count": {
+            "completed_snapshot_jobs": 35,
+            "completed_suites": 39,
+            "reason": "Four retired snapshots each contain both validation and benchmark; workers a/b coalesce at update27, c/d at9.",
+            "pending_hosted_results_excluded": true
+          }
         }
-      ]
+      ],
+      "loss_gradient_diagnostic": {
+        "cutoff_utc": "2026-10-11T03:39:23.956283+00:00",
+        "scope": "Completed wave1 plus observed wave2 prefixes",
+        "training_rows": 543,
+        "complete_opd_phase_pairs": 43,
+        "last_logged_loss_lower_than_first": 43,
+        "validation_up": 31,
+        "validation_down": 12,
+        "raw_gradient_norms_above_clip_threshold": 543,
+        "gradient_clip_threshold": 0.1,
+        "fixed_prefix_contraction_measured": false,
+        "causal_mechanism_identified": false,
+        "new_experiment_launched": false
+      }
     },
     "cycle_count_interpretation": {
       "scope": "completed PI7\u2192OPD4 teacher comparison; retrospective validation description",
