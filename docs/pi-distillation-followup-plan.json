@@ -60057,5 +60057,40 @@
       "Fixed final accuracy endpoints remain primary. Actual resource costs are descriptive; no compute-to-quality experiment or stopping rule is introduced.",
       "Root and independent terminal/cumulative-accounting reviews passed. Copy success does not authorize scientific tail dispatch."
     ]
+  },
+  "late_decay_fork_tail_nonlaunch": {
+    "version": "public-late-fork-tail-nonlaunch-v1",
+    "status": "local_time_guard_rejected_before_remote_intent",
+    "observation_cutoff_utc": "2026-10-11T17:10:17.643659+00:00",
+    "independent_review_cutoff_utc": "2026-10-11T17:11:29.665016+00:00",
+    "independent_review_passed": true,
+    "scientific_tail_jobs_launched": 0,
+    "remote_operations_recorded": 0,
+    "remote_preflight_or_dispatch_intents": 0,
+    "scientific_updates": 0,
+    "incremental_assigned_gpu_hours": 0.0,
+    "original_launch_guard_consumed": true,
+    "original_failed_journal_and_guard_preserved": true,
+    "automatic_retry_authorized": false,
+    "verified_midpoint_copies_still_valid": true,
+    "all_four_original_tails_still_pending": true,
+    "continuation_status": "separate_CPU_candidate_only",
+    "continuation_admitted": false,
+    "continuation_remote_authorized": false,
+    "actual_gpu_hours_unchanged": {
+      "overall": 584.7631906244492,
+      "readiness": 86.68810977247026,
+      "readiness_stage": 25.992832137743637,
+      "science": 326.44073422114064,
+      "study": 498.07508085197884
+    },
+    "sustained_improvement_established": false,
+    "limits": [
+      "The exact reviewed gateway graph and reported local CLI path contain zero jobs and zero remote operations; this is not a machine-wide network activity audit.",
+      "The launch attempt was consumed before the local time check rejected it. Its guard is retained, not reset or automatically replayed.",
+      "A separately versioned CPU continuation is being prepared for source, test, documentation and current-capacity review; it is not an admitted or launched experiment.",
+      "Both verified checkpoint copies and all earlier failure evidence remain intact. No new tail outcome, final contrast or recipe conclusion follows from the nonlaunch.",
+      "Fixed-schedule accuracy remains primary. Resource costs are descriptive, and no compute-to-quality experiment or quality-based stopping rule is proposed."
+    ]
   }
 }
