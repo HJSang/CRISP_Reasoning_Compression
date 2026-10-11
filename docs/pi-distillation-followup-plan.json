@@ -59879,5 +59879,85 @@
       "No unresolved call may be replayed automatically, and no tail or transfer-completion claim is made.",
       "The accepted-prefix costs retain their earlier accounting cutoff and are not a total for the later failed transfer."
     ]
+  },
+  "late_decay_fork_transfer_inspection": {
+    "version": "late-fork-transfer-inspection-public-status-v3",
+    "status": "transfer_failed_verified_physical_end_accounting_only",
+    "observation_cutoff_utc": "2026-10-11T14:56:20.747622+00:00",
+    "owned_transfer_processes_absent": true,
+    "process_scans_complete": true,
+    "idle_gpus_per_endpoint": 8,
+    "compute_processes_present": false,
+    "endpoint_count": 2,
+    "expected_chunk_bytes": 536870912,
+    "retained_partial_bytes": 159383552,
+    "retained_partial_MiB": 152,
+    "expected_chunk_MiB": 512,
+    "complete_chunk_receipt_present": false,
+    "metadata_and_bounded_windows_only": true,
+    "whole_source_rehash_performed": false,
+    "whole_partial_hash_certified": false,
+    "cause_known": false,
+    "raw_canonical_operation_rows_preserved": 57,
+    "raw_uncertain_endpoint_rows_preserved": 2,
+    "sidecar_complete_calls": 2,
+    "physical_end_is_transfer_success": false,
+    "retry_authorized": false,
+    "tail_launches": 0,
+    "accepted_prefix_results_unchanged": true,
+    "all_four_tail_reservations_retained": true,
+    "original_budgets_and_deadlines_unchanged": true,
+    "accounting": {
+      "actual_gpu_hours": {
+        "science": 323.5153239329657,
+        "study": 495.1496705638039,
+        "readiness": 86.68810977247026,
+        "overall": 581.8377803362741,
+        "readiness_stage": 25.992832137743637
+      },
+      "projected_gpu_hours": {
+        "science": 727.1297921441883,
+        "study": 898.7641387750264,
+        "readiness": 86.68810977247026,
+        "overall": 985.4522485474967,
+        "readiness_stage": 25.992832137743637
+      },
+      "pending_root_independent_replay": false,
+      "root_and_peer_replays_passed": true,
+      "physical_end_utc": "2026-10-11T14:56:20.747622+00:00",
+      "accounting_cutoff_utc": "2026-10-11T14:56:20.832206+00:00",
+      "last_consumer_read_end_after_physical_release_seconds": 0.0770721435546875
+    },
+    "source_walkthrough_new_rows": 769,
+    "source_walkthrough_previous_rows": 35181,
+    "source_walkthrough_expected_rows_after_integration": 35950,
+    "note_count": 29,
+    "implementation_documentation": {
+      "new_source_rows": 472,
+      "new_test_rows": 297,
+      "new_rows": 769,
+      "prior_rows_preserved": 35181,
+      "total_rows": 35950,
+      "display_redactions": 3,
+      "source_files": {
+        "inspect_transfer.py": "5f6ab1d690e2f3f95fc33c007b4fef2122ac7991953b6a084205df91f163b367",
+        "observe_transfer.py": "463a67b7d88a29408774a34867fb41b90ef68f3a22750a22e5a0a3c9ab881e65",
+        "test_observe_transfer.py": "d31a1415bbebbd295d4f4a40336752bae74ddfc5e762406a76b8a85c61925090",
+        "adjudicate_physical_end.py": "4e7fad924135124136500469ff54f0d36e6122e904530ba232641830dc2c8c75",
+        "test_adjudicate_physical_end.py": "7b0e89d735eed9bc096beafdd0aac51257323d580d19e2cad795458b19cbc000"
+      },
+      "independent_source_and_documentation_reviews_passed": true,
+      "cpu_cases": {
+        "read_only_inspection": 13,
+        "physical_end_accounting": 22
+      },
+      "real_remote_calls_by_tests": 0
+    },
+    "limits": [
+      "Physical process absence bounds assignment time; the copied chunk remains incomplete and the uncertain raw operation outcomes remain unchanged.",
+      "File metadata and bounded hash windows do not certify the entire partial file or rehash the entire retained source.",
+      "The underlying transport failure cause remains unknown; there is no successful transfer, automatic retry permission, tail launch, or new scientific gain claim.",
+      "All original remaining reservations and deadlines are retained; projected capacity alone does not authorize continuation."
+    ]
   }
 }
