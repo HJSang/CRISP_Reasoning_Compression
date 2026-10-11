@@ -60092,5 +60092,22 @@
       "Both verified checkpoint copies and all earlier failure evidence remain intact. No new tail outcome, final contrast or recipe conclusion follows from the nonlaunch.",
       "Fixed-schedule accuracy remains primary. Resource costs are descriptive, and no compute-to-quality experiment or quality-based stopping rule is proposed."
     ]
+  },
+  "late_decay_fork_continuation_unexecuted": {
+    "version": "public-late-fork-continuation-unexecuted-v1",
+    "status": "prepared_but_expired_before_execution",
+    "latest_initialization_utc": "2026-10-11T17:40:51.609629Z",
+    "freshness_expiry_utc": "2026-10-11T17:38:21.511753Z",
+    "initialized": false,
+    "launch_called": false,
+    "scientific_tail_jobs_launched": 0,
+    "remote_operations": 0,
+    "incremental_assigned_gpu_hours": 0.0,
+    "verified_midpoint_copies_retained": true,
+    "old_failed_attempt_unchanged": true,
+    "automatic_retry": false,
+    "joint_cpu_tests": 44,
+    "capability_not_execution": true,
+    "sustained_improvement_established": false
   }
 }
