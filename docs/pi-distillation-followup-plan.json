@@ -59298,5 +59298,125 @@
       "independently verified local runtime packet",
       "reviewed complete-matrix cost study"
     ]
+  },
+  "late_decay_fork_readiness_startup": {
+    "version": "public-late-fork-readiness-startup-v3",
+    "status": "readiness_probes_dispatched_scientific_runs_pending",
+    "observed_cutoff_utc": "2026-10-11T12:37:26.149589+00:00",
+    "summary_checked_utc": "2026-10-11T12:38:09.158867+00:00",
+    "review_status": "independent_startup_review_passed",
+    "readiness_dispatched": true,
+    "scientific_dispatched": false,
+    "complete_readiness_certified": false,
+    "probes": [
+      {
+        "model": "Qwen3-8B",
+        "owned_alive_at_observation": true,
+        "source_verified": true,
+        "synthetic_counter_start": 77,
+        "planned_global_update_labels": [
+          78,
+          88
+        ],
+        "planned_training_updates": 11,
+        "initial_student_and_teacher": "original checkpoint; synthetic counter offset",
+        "queue_at_observation": {
+          "done": 0,
+          "failed": 0,
+          "pending": 0,
+          "running": 1
+        },
+        "observed_utc": "2026-10-11T12:37:21.062596+00:00"
+      },
+      {
+        "model": "Qwen3-4B",
+        "owned_alive_at_observation": true,
+        "source_verified": true,
+        "synthetic_counter_start": 44,
+        "planned_global_update_labels": [
+          45,
+          55
+        ],
+        "planned_training_updates": 11,
+        "initial_student_and_teacher": "original checkpoint; synthetic counter offset",
+        "queue_at_observation": {
+          "done": 0,
+          "failed": 0,
+          "pending": 0,
+          "running": 0
+        },
+        "observed_utc": "2026-10-11T12:37:26.149589+00:00"
+      }
+    ],
+    "mechanical_probe_scope": {
+      "planned_total_training_updates": 22,
+      "planned_exports": 4,
+      "planned_generated_suites": 10,
+      "planned_responses": 384,
+      "draws_per_question": 8,
+      "validation_questions": 4,
+      "benchmark_questions": 6,
+      "training_response_cap": 4096,
+      "evaluation_response_cap": 1024,
+      "scientific_evaluation_response_cap": 16384,
+      "purpose": "Check global update offsets, late LR and phase transitions; this does not establish 16K scientific throughput or scientific gains."
+    },
+    "audited_evidence": {
+      "source_manifest_files": 2947,
+      "finite_training_updates": false,
+      "hosted_history": false,
+      "completed_evaluation_suites": 0,
+      "completed_controllers": 0,
+      "scientific_trajectories": 0
+    },
+    "operational_accounting": {
+      "summary_checked_unix": 1791722289.158867,
+      "complete_calls": 10,
+      "uncertain_calls": 0,
+      "actual_gpu_hours": {
+        "science": 300.8170721981262,
+        "study": 472.4514188289644,
+        "readiness": 83.40419250064426,
+        "overall": 555.8556113296087,
+        "readiness_stage": 22.708914865917635
+      },
+      "incremental_readiness_gpu_hours": 0.740125337176849,
+      "incremental_preparation_science_gpu_hours": 0.2761282353931165,
+      "remaining_reserved_gpu_hours": {
+        "readiness": 16.59320799615648,
+        "science": 625.0293394553469
+      },
+      "projected_gpu_hours": {
+        "science": 925.8464116534731,
+        "study": 1097.4807582843114,
+        "readiness": 99.99740049680074,
+        "overall": 1197.4781587811121,
+        "readiness_stage": 39.302122862074114
+      },
+      "original_deadline_utc": "2026-10-12T22:43:07.672134+00:00",
+      "checked_utc": "2026-10-11T12:38:09.158867+00:00",
+      "timing_note": "Accounting includes ongoing assignments through 12:38:09.158867 UTC, later than the process observations at 12:37:21.062596 and 12:37:26.149589 UTC."
+    },
+    "scientific_family_unchanged": {
+      "models": [
+        "Qwen3-4B",
+        "Qwen3-8B"
+      ],
+      "shared_prefix_updates": 44,
+      "tail_updates_each": 44,
+      "tail_contrast": "constant LR versus late linear decay",
+      "recipe": "PI9/OPD2, cycle-refresh teacher and phase-reset Adam",
+      "unique_updates": 264,
+      "generated_suites": 58,
+      "generated_responses": 57600,
+      "exports": 48,
+      "status": "readiness and later source-bound phase gates remain required before scientific dispatch"
+    },
+    "limits": [
+      "Operational startup is not proof of finite training, audited hosted metrics or completed evaluation.",
+      "Both offsets are synthetic; neither probe is a trained 44- or 77-update scientific midpoint.",
+      "No new scientific result or sustained-growth claim.",
+      "Earlier preparation and completed-study snapshots remain unchanged historical evidence."
+    ]
   }
 }
