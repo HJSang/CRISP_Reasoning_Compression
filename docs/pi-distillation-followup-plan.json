@@ -22458,7 +22458,29 @@
             "The original full-matrix admission, caps and 54-hour clock remain unchanged. No completion or new admission is issued."
           ]
         }
-      ]
+      ],
+      "allocation_interpretation": {
+        "evidence_cutoff_utc": "2026-10-11T00:31:45.212235Z",
+        "supported_observation": "7 PI + 4 OPD exceeds 3 PI + 8 OPD at all five audited equal-cycle comparisons across both model sizes.",
+        "latest_matched_difference_percentage_points": {
+          "8B_cycle_2": 8.984375,
+          "4B_cycle_3": 3.90625
+        },
+        "hypothesis": "Adequate PI exposure followed by shorter OPD may preserve or improve unhinted performance; this is not an established mechanism.",
+        "counterexample_to_uniform_opd_harm": {
+          "4B_3_8_cycle_3_pi_percent": 67.3828125,
+          "4B_3_8_cycle_3_opd_percent": 71.875
+        },
+        "identification_limit": "At eleven updates per cycle, PI and OPD exposure change together, along with phase reset timing and the quality of later refreshed teachers; separate effects are not identified.",
+        "planned_tests": [
+          "5 PI + 6 OPD is the intermediate allocation.",
+          "9 PI + 2 OPD tests a higher PI share against the fresh 7/4 control."
+        ],
+        "decision_rule": "Fixed cycle-eight validation remains primary; retain full trajectories and length diagnostics. No interim or benchmark-based selection.",
+        "mechanism_established": false,
+        "recipe_selected": false,
+        "execution_changed": false
+      }
     },
     "cycle_count_interpretation": {
       "scope": "completed PI7\u2192OPD4 teacher comparison; retrospective validation description",
