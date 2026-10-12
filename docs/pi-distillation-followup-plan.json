@@ -71113,5 +71113,66 @@
     "worker_contacts_by_monitor": 0,
     "active_state_or_runtime_edits_by_monitor": 0,
     "observation_sha256": "416cafd35ba7f36ad7a524db984a7dd744dd9826056961f741437211839a2c54"
+  },
+  "priority_gemma_aggregate_observation": {
+    "observed_utc": "2026-10-12T19:32:45.017620Z",
+    "status": "reported_gemma_aggregates_arithmetic_checked_source_provenance_unverified",
+    "reported_label": "Gemma 3 4B math PI9/OPD2",
+    "selected_reported_points": [
+      {
+        "step": 0,
+        "correct": 603,
+        "responses": 1024,
+        "reported_question_count": 128,
+        "reported_draws_per_question": 8,
+        "avg_at_8_percent": 58.88671875
+      },
+      {
+        "step": 44,
+        "correct": 432,
+        "responses": 1024,
+        "reported_question_count": 128,
+        "reported_draws_per_question": 8,
+        "avg_at_8_percent": 42.1875
+      },
+      {
+        "step": 88,
+        "correct": 297,
+        "responses": 1024,
+        "reported_question_count": 128,
+        "reported_draws_per_question": 8,
+        "avg_at_8_percent": 29.00390625
+      }
+    ],
+    "reported_steps": [
+      0,
+      9,
+      11,
+      20,
+      22,
+      31,
+      33,
+      42,
+      44,
+      53,
+      55,
+      64,
+      66,
+      75,
+      77,
+      86,
+      88
+    ],
+    "same_question_ids_and_eight_counted_draws_at_each_step": true,
+    "arithmetic_matches_local_length_and_marker_summaries": true,
+    "actual_response_draw_ids_and_source_bound_grades_verified": false,
+    "worker_lifecycle_and_cleanup_verified": false,
+    "current_all_in_cost_available": false,
+    "older_mechanism_summary_ends_at_step": 66,
+    "interpretation": "Local derived analysis files report these aggregate values. Arithmetic consistency is not source provenance, scientific lifecycle acceptance or a causal matched-control result. The reported step88 value is below the reported original value.",
+    "prior_qwen_40_grading_delivery_chains_unchanged": true,
+    "worker_contacts_by_monitor": 0,
+    "active_state_or_runtime_edits_by_monitor": 0,
+    "observation_sha256": "48dd6f186e7d27d92432955b63e7c9082969b370a08f41babeae3c126b455f82"
   }
 }
