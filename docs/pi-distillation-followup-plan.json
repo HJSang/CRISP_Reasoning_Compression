@@ -67757,6 +67757,45 @@
       "hosted_run_created": false,
       "scientific_runs_launched": 0,
       "additional_hosted_walkthrough_rows": 726
+    },
+    "four_node_priority_schedule": {
+      "as_of_utc": "2026-10-12T01:30:46.777589Z",
+      "scientific_runs_launched": 0,
+      "planned_coding_parallel_workers": {
+        "worker-a": "Qwen3-8B PI9/OPD2",
+        "worker-b": "Qwen3-4B PI9/OPD2",
+        "worker-c": "Qwen3-8B continuous PI88",
+        "worker-d": "Qwen3-4B continuous PI88"
+      },
+      "next_pair": "Llama-3.1-8B-Instruct math after verified access/readiness and freed nodes",
+      "old_adam_status": "deferred backlog; preserved sources, incomplete status and262.0532885525732GPUh reserve; no automatic launch",
+      "conservative_six_run_hours": 30.04525,
+      "first_free_variant_hours": 29.87233,
+      "optimistic_minimum_hours": 28.08544,
+      "remaining_original_clock_hours_at_review": 21.2058,
+      "gpu_hour_caps_fit": true,
+      "original_deadline_fit": false,
+      "deadline_extension": {
+        "status": "pending_user_reply",
+        "hours": 12,
+        "proposed_deadline_utc": "2026-10-13T10:43:07.672134Z",
+        "gpu_hour_caps_unchanged": true,
+        "original_start_unchanged": true
+      },
+      "short_readiness": {
+        "reserved_candidate_gpu_hours": 6.533333333333333,
+        "scope": "two Qwen model envelopes plus retained futureLlama envelope",
+        "admitted": false,
+        "launched": false,
+        "completion_within_bounds_measured": false
+      },
+      "lifecycle": {
+        "source_and_documentation_review_passed": true,
+        "cpu_cases": 36,
+        "exact_documented_lines": 798,
+        "actual_gpu_execution_passed": false
+      },
+      "scientific_admission": false
     }
   },
   "accepted_prefix_phase_analysis": {
