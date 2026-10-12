@@ -67662,7 +67662,7 @@
   },
   "current_transfer_priority": {
     "version": "domain-family-priority-v3",
-    "status": "approved_restart_blocked_by_released_workers",
+    "status": "priority_coding_r4_failed_physically_clean",
     "methods": [
       "PI9\u2192OPD2 repeated8;cycle_refresh;phase_reset_Adam",
       "continuousPI88;original_frozen_teacher;continuous_Adam"
@@ -67710,7 +67710,7 @@
     "gpu_readiness_passed": false,
     "admitted": false,
     "dispatch": false,
-    "readiness_status": "r3 startup failure and cleanup preserved; corrected r4 local package prepared and one new attempt approved; original placement is unavailable; no new readiness or scientific jobs",
+    "readiness_status": "r4 consumed and failed native tokenizer identity before original sampling; physical cleanup receipts recorded; no science launched",
     "ongoing_adam_prefixes": "Both shared prefixes are independently verified and cleaned up. Four new Adam tails remain held, preserving source snapshots and prior reservations.",
     "four_node_placement": [
       {
@@ -67863,7 +67863,7 @@
         "future_llama_reservation_preserved": true
       }
     },
-    "latest_readiness_status": "r4 approved but unadmitted and unused; workers a/b/c released before approval; recovery and replacement placement required"
+    "latest_readiness_status": "r4 failed and physically clean; fresh corrected contract and new bounded attempt required"
   },
   "accepted_prefix_phase_analysis": {
     "version": "accepted-prefix-phase-description-v1",
@@ -68816,5 +68816,38 @@
     "handover_requested": true,
     "history_note": "Earlier pending-approval and deadline-recheck sections are dated historical evidence. The frozen prepared runtime still binds the original stricter deadline; this approval does not rewrite those bytes.",
     "evidence_sha256": "b0cfae252949eb17c869863d0d43b45e3dfcc7c0fa3cc1921446c805a6dde1a4"
+  },
+  "priority_coding_r4_terminal_monitor": {
+    "checked_utc": "2026-10-12T15:59:15.288564Z",
+    "status": "priority_coding_r4_failed_physically_clean",
+    "attempt_consumed": true,
+    "readiness_runs_launched": 2,
+    "readiness_passed": false,
+    "scientific_runs_launched": 0,
+    "failure": "Both models rejected native tokenizer identity before original sampling.",
+    "reported_diagnosis": "The prepared vocabulary digest was derived with local transformers 5.19.0/tokenizers 0.23.3; worker transformers 5.12.1/tokenizers 0.22.2 produced a different digest. The failure record reports matching checkpoint/source and chat-template identities. This monitor did not independently repeat that diagnosis.",
+    "physical_cleanup_receipts_verified": true,
+    "release_observation_utc": {
+      "worker-a": "2026-10-12T15:46:38.269283+00:00",
+      "worker-b": "2026-10-12T15:53:07.789518+00:00"
+    },
+    "added_readiness_gpu_hours_recorded": 2.0838436073727076,
+    "actual_cost_gpu_hours_recorded": {
+      "overall": 651.3208925660455,
+      "readiness": 102.48779885450998,
+      "readiness_stage": 41.79252121978336,
+      "science": 377.19874708069705,
+      "study": 548.8330937115353
+    },
+    "current_study_deadline_utc": "2026-10-13T10:43:07.672134Z",
+    "readiness_caps_gpu_hours": {
+      "stage": 47,
+      "cumulative": 107
+    },
+    "new_attempt_authorized": false,
+    "worker_contacts_by_this_monitor": 0,
+    "next_action": "Prepare and validate the tokenizer contract in the actual worker environment, retain failed evidence, then obtain a fresh bounded attempt decision and whole-reservation admission. No automatic retry.",
+    "accounting_sha256": "7d5da17f8d2f8d93d7f16f7e2003c7836bb78373ffff9840e036c19f8e02ff92",
+    "verification_scope": "Local verification of saved release receipts and interval arithmetic; no fresh worker contact, independent diagnosis or complete restoration-cost audit."
   }
 }
