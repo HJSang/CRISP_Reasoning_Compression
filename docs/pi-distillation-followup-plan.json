@@ -67710,7 +67710,7 @@
     "gpu_readiness_passed": false,
     "admitted": false,
     "dispatch": false,
-    "readiness_status": "One bounded original-8B coding timing diagnostic collected all192 responses; sampler work passed but controller shutdown-check failed. Subsequent independent physical absence released assignment. Priority scientific runs remain unlaunched; owned lifecycle/mailbox and mechanics readiness are being prepared, and complete-matrix admission and Llama access remain open.",
+    "readiness_status": "Closed original-8B192 timing diagnostic only; short two-model mechanics, mailbox, hosted and owned-service source/documentation reviews passed. Actual composed packet replay and separate bounded operational admission remain pending. No active GPU jobs or new scientific launches.",
     "ongoing_adam_prefixes": "Both shared prefixes are independently verified and cleaned up. Four new Adam tails remain held, preserving source snapshots and prior reservations.",
     "four_node_placement": [
       {
@@ -67787,7 +67787,21 @@
         "scope": "two Qwen model envelopes plus retained futureLlama envelope",
         "admitted": false,
         "launched": false,
-        "completion_within_bounds_measured": false
+        "completion_within_bounds_measured": false,
+        "capability_review": {
+          "source_and_documentation_passed": true,
+          "actual_gpu_execution_passed": false,
+          "actual_composed_packet_replay_passed": false,
+          "new_canonical_walkthrough_rows": 3985,
+          "components": {
+            "mechanics_cpu_cases": 45,
+            "service_cpu_cases": 70,
+            "context_cpu_cases": 23,
+            "hosted_cpu_cases": 25,
+            "mailbox_cpu_cases": 18
+          },
+          "as_of_utc": "2026-10-12T02:23:30.570528+00:00"
+        }
       },
       "lifecycle": {
         "source_and_documentation_review_passed": true,
