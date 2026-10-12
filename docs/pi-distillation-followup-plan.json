@@ -67710,7 +67710,7 @@
     "gpu_readiness_passed": false,
     "admitted": false,
     "dispatch": false,
-    "readiness_status": "Reviewed CPU grading, isolated runtime integration, timing sampler/lifecycle and transport/accounting capability. Restricted timing tracking, concrete diagnostic execution, GPU mechanics and whole-remaining-package admission remain open; Llama authorized access is unresolved.",
+    "readiness_status": "One bounded original-8B coding timing diagnostic collected all192 responses; sampler work passed but controller shutdown-check failed. Subsequent independent physical absence released assignment. Priority scientific runs remain unlaunched; owned lifecycle/mailbox and mechanics readiness are being prepared, and complete-matrix admission and Llama access remain open.",
     "ongoing_adam_prefixes": "Both shared prefixes are independently verified and cleaned up. Four new Adam tails remain held, preserving source snapshots and prior reservations.",
     "four_node_placement": [
       {
@@ -67738,11 +67738,25 @@
       "responses": 192,
       "accuracy": false,
       "full_readiness": false,
-      "admitted": false,
-      "dispatched": false,
+      "admitted": true,
+      "dispatched": true,
       "reserved_gpu_hours": 2.2666666666666666,
       "source_and_documentation_capability_reviewed": true,
-      "new_exact_walkthrough_rows": 2278
+      "new_exact_walkthrough_rows": 2278,
+      "generation_complete": true,
+      "controller_exit_code": 1,
+      "controller_cleanup_contract_passed": false,
+      "subsequent_physical_release_verified": true,
+      "observed_responses": 192,
+      "generated_tokens": 31901,
+      "generation_seconds": 4.947230797959492,
+      "tokens_per_second": 6448.253841958964,
+      "cap_hits": 0,
+      "actual_gpu_hours": 0.37153231567806666,
+      "hosted_requirement": "unmet_deferred_by_explicit_diagnostic_only_decision",
+      "hosted_run_created": false,
+      "scientific_runs_launched": 0,
+      "additional_hosted_walkthrough_rows": 726
     }
   },
   "accepted_prefix_phase_analysis": {
