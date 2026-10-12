@@ -67710,7 +67710,7 @@
     "gpu_readiness_passed": false,
     "admitted": false,
     "dispatch": false,
-    "readiness_status": "Closed original-8B192 timing diagnostic only; short two-model mechanics, mailbox, hosted and owned-service source/documentation reviews passed. Actual composed packet replay and separate bounded operational admission remain pending. No active GPU jobs or new scientific launches.",
+    "readiness_status": "Two short GPU readiness controllers failed during Ray startup and were independently verified cleaned up. No training readiness or full scientific runs. Short socket-path and compact monitor fixes are being prepared; deadline-extension and Llama-access questions remain pending.",
     "ongoing_adam_prefixes": "Both shared prefixes are independently verified and cleaned up. Four new Adam tails remain held, preserving source snapshots and prior reservations.",
     "four_node_placement": [
       {
@@ -67784,14 +67784,14 @@
       },
       "short_readiness": {
         "reserved_candidate_gpu_hours": 6.533333333333333,
-        "scope": "two Qwen model envelopes plus retained futureLlama envelope",
+        "scope": "Whole three-model readiness package; the two Qwen attempts are recorded separately in latest_attempt, and the retained future Llama envelope has not launched.",
         "admitted": false,
         "launched": false,
         "completion_within_bounds_measured": false,
         "capability_review": {
           "source_and_documentation_passed": true,
           "actual_gpu_execution_passed": false,
-          "actual_composed_packet_replay_passed": false,
+          "actual_composed_packet_replay_passed": true,
           "new_canonical_walkthrough_rows": 3985,
           "components": {
             "mechanics_cpu_cases": 45,
@@ -67801,6 +67801,34 @@
             "mailbox_cpu_cases": 18
           },
           "as_of_utc": "2026-10-12T02:23:30.570528+00:00"
+        },
+        "passed": false,
+        "latest_attempt": {
+          "as_of_utc": "2026-10-12T02:52:57Z",
+          "admitted": true,
+          "launched": true,
+          "passed": false,
+          "controllers": 2,
+          "controller_exit_codes": [
+            1,
+            1
+          ],
+          "cleanup_verified": true,
+          "active_gpu_jobs": 0,
+          "scientific_runs_launched": 0,
+          "training_results_established": false,
+          "cause": "Ray Unix-domain socket paths exceeded 107 bytes in both startup services. A separate oversized monitor response delayed diagnosis.",
+          "monitor_recovery": "A separate reviewed compact read-only observer verified source bindings, absence of both owned process groups and zero memory/utilization on all 16 indexed GPUs. The old failed inspection status remains preserved.",
+          "readiness_gpu_hours": 2.840084617932637,
+          "actual_cost": {
+            "overall": 645.7041504372494,
+            "readiness": 96.87105672571393,
+            "readiness_stage": 36.17577909098732,
+            "science": 377.19874708069705,
+            "study": 548.8330937115353
+          },
+          "retry_authorized": false,
+          "original_clocks_and_caps_unchanged": true
         }
       },
       "lifecycle": {
