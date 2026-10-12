@@ -68941,5 +68941,56 @@
     "worker_contacts_by_monitor": 0,
     "active_state_or_runtime_edits_by_monitor": 0,
     "observation_sha256": "766d7c68823509e96889ccff23a6d57d34512641cd656604ecdd66a285426fa8"
+  },
+  "priority_science_training_bindings_observation": {
+    "observed_utc": "2026-10-12T17:06:35.168731Z",
+    "status": "all_baseline_grading_delivered_and_training_bindings_present",
+    "baseline_grading": {
+      "8b_validation": {
+        "grading_terminal_sha256": "224b245ad653c72e6b81c5ccad4568535dd4219b00d78aa4c42c115feabfb4f2",
+        "delivery_receipt_sha256": "9a177b1a407169a8bea120b5d154361d29d6683e5d72be1f6364085c34b3814b",
+        "grading_and_delivery_verified": true
+      },
+      "8b_benchmark": {
+        "grading_terminal_sha256": "b96338e537d327f4c8db15c40fa90cac3381ad0d30be689b5b8fffcdf1129a30",
+        "delivery_receipt_sha256": "15cf416b186dd82ad0ff086cc415ecf99fc5a1346d733636daef3de8222570c1",
+        "grading_and_delivery_verified": true
+      },
+      "4b_validation": {
+        "grading_terminal_sha256": "210bb555dca85659c97d16f78143bafd2b60963bbbe175a4d3837420a0d9a15a",
+        "delivery_receipt_sha256": "ffd19a742f36425ba9339b3630542761cec5d3e83b9a42f3e1a8f47e1ee81ebf",
+        "grading_and_delivery_verified": true
+      },
+      "4b_benchmark": {
+        "grading_terminal_sha256": "1face01bf56e0a56f198e867ca8bc8fcd1f266cbb36758b367c22beda9b9632f",
+        "delivery_receipt_sha256": "4304551126a2bf442d7148ad306575b63078124330e1761a297f3ae88e7f7ab4",
+        "grading_and_delivery_verified": true
+      }
+    },
+    "training_bindings": {
+      "worker-a": {
+        "plan_sha256": "f7d0a5443648523ee641c9b485a6d41249af6a12829039adc04d13d1e5da5d92",
+        "config_sha256": "6008b08354a4f8ae33e579ecbd52fe6d2e44a719e4c0f26489f43ad2a81b14cb",
+        "baseline_sha256": "d414cc33451149d86d3b02b111401c0ec43e084299f96b9874cabae5c92dc370",
+        "binding_hashes_verified": true,
+        "reserved_gpu_hours": 107.33333333333333
+      },
+      "worker-b": {
+        "plan_sha256": "a63f35b213d5ffa5bc519f9001c3867d5ed48c13a9b188e4fa319185cc30db8b",
+        "config_sha256": "c299ec0ba81eed0db04713a757cfa475945a62d2946278f3aee6ab76a5943c7a",
+        "baseline_sha256": "c5d1a6337be9bd36ac929fbdbcf6f5092124e4af156fe442e5348c5d607a3984",
+        "binding_hashes_verified": true,
+        "reserved_gpu_hours": 107.33333333333333
+      }
+    },
+    "training_start_proven_by_these_local_files": false,
+    "local_lifecycle_completion_or_cleanup_records_found": false,
+    "first_pi_to_opd_check_observed": false,
+    "current_all_in_cost_available": false,
+    "interpretation": "Local training plans and referenced baseline hashes do not prove launch, remote baseline lifecycle completion, physical cleanup or completed scientific trajectories. The executing agent retains all controls; do not launch a duplicate.",
+    "budget_limit": "Each training plan reserves 107.333333 GPU-hours. These are plan bounds, not observed cost or independent whole-reservation and schedule admission. R5 totals exclude subsequent activity.",
+    "worker_contacts_by_monitor": 0,
+    "active_state_or_runtime_edits_by_monitor": 0,
+    "observation_sha256": "18eaa80ea959fdd197b28932ce047e59a91ab206ed59696cef7f9d20b8a6c550"
   }
 }
