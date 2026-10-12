@@ -67710,8 +67710,40 @@
     "gpu_readiness_passed": false,
     "admitted": false,
     "dispatch": false,
-    "readiness_status": "CPU source audit and isolated launcher candidate prepared; MBPP grading integration, restricted tracking, authorized Llama weights, model readiness and whole-remaining-package admission remain open.",
-    "ongoing_adam_prefixes": "Both shared prefixes are independently verified and cleaned up. Four new Adam tails remain held, preserving source snapshots and prior reservations."
+    "readiness_status": "Reviewed CPU grading, isolated runtime integration, timing sampler/lifecycle and transport/accounting capability. Restricted timing tracking, concrete diagnostic execution, GPU mechanics and whole-remaining-package admission remain open; Llama authorized access is unresolved.",
+    "ongoing_adam_prefixes": "Both shared prefixes are independently verified and cleaned up. Four new Adam tails remain held, preserving source snapshots and prior reservations.",
+    "four_node_placement": [
+      {
+        "worker": "worker-a",
+        "cell": "Qwen3-8B/code",
+        "method": "PI9_OPD2"
+      },
+      {
+        "worker": "worker-b",
+        "cell": "Qwen3-4B/code",
+        "method": "PI9_OPD2"
+      },
+      {
+        "worker": "worker-c",
+        "cell": "Qwen3-8B/code",
+        "method": "continuous_PI88"
+      },
+      {
+        "worker": "worker-d",
+        "cell": "Qwen3-4B/code",
+        "method": "continuous_PI88"
+      }
+    ],
+    "timing_calibration": {
+      "responses": 192,
+      "accuracy": false,
+      "full_readiness": false,
+      "admitted": false,
+      "dispatched": false,
+      "reserved_gpu_hours": 2.2666666666666666,
+      "source_and_documentation_capability_reviewed": true,
+      "new_exact_walkthrough_rows": 2278
+    }
   },
   "accepted_prefix_phase_analysis": {
     "version": "accepted-prefix-phase-description-v1",
