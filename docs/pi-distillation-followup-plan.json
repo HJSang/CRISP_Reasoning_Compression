@@ -70538,5 +70538,453 @@
     "worker_contacts_by_monitor": 0,
     "active_state_or_runtime_edits_by_monitor": 0,
     "observation_sha256": "4dc6025f4707a0d8973ad185483008f0069e1266fd4d979821992547eb70bfda"
+  },
+  "priority_science_final_grade_deliveries_observation": {
+    "observed_utc": "2026-10-12T19:00:44.874958Z",
+    "status": "saved_final_evaluation_progress_verified_lifecycle_unverified",
+    "latest_validation_endpoints": {
+      "8B": {
+        "step": 88,
+        "correct": 403,
+        "responses": 712,
+        "questions": 89,
+        "draws_per_question": 8,
+        "avg_at_8_percent": 56.60112359550562,
+        "parse_failures": 53,
+        "grader_timeouts": 0
+      },
+      "4B": {
+        "step": 88,
+        "correct": 392,
+        "responses": 712,
+        "questions": 89,
+        "draws_per_question": 8,
+        "avg_at_8_percent": 55.056179775280896,
+        "parse_failures": 58,
+        "grader_timeouts": 0
+      }
+    },
+    "validation_metrics": {
+      "8B": [
+        {
+          "step": 0,
+          "correct": 439,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 61.657303370786515,
+          "parse_failures": 10,
+          "grader_timeouts": 2
+        },
+        {
+          "step": 9,
+          "correct": 422,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 59.26966292134831,
+          "parse_failures": 0,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 11,
+          "correct": 448,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 62.92134831460674,
+          "parse_failures": 9,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 20,
+          "correct": 387,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 54.353932584269664,
+          "parse_failures": 13,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 22,
+          "correct": 447,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 62.78089887640449,
+          "parse_failures": 2,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 31,
+          "correct": 404,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 56.741573033707866,
+          "parse_failures": 8,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 33,
+          "correct": 415,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 58.28651685393258,
+          "parse_failures": 8,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 42,
+          "correct": 413,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 58.00561797752809,
+          "parse_failures": 11,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 44,
+          "correct": 406,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 57.02247191011236,
+          "parse_failures": 17,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 53,
+          "correct": 395,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 55.47752808988764,
+          "parse_failures": 76,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 55,
+          "correct": 410,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 57.58426966292135,
+          "parse_failures": 27,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 64,
+          "correct": 417,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 58.56741573033708,
+          "parse_failures": 21,
+          "grader_timeouts": 2
+        },
+        {
+          "step": 66,
+          "correct": 418,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 58.70786516853933,
+          "parse_failures": 43,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 75,
+          "correct": 399,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 56.03932584269663,
+          "parse_failures": 61,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 77,
+          "correct": 403,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 56.60112359550562,
+          "parse_failures": 55,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 86,
+          "correct": 364,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 51.12359550561798,
+          "parse_failures": 147,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 88,
+          "correct": 403,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 56.60112359550562,
+          "parse_failures": 53,
+          "grader_timeouts": 0
+        }
+      ],
+      "4B": [
+        {
+          "step": 0,
+          "correct": 423,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 59.41011235955056,
+          "parse_failures": 18,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 9,
+          "correct": 368,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 51.68539325842696,
+          "parse_failures": 17,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 11,
+          "correct": 409,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 57.443820224719104,
+          "parse_failures": 17,
+          "grader_timeouts": 1
+        },
+        {
+          "step": 20,
+          "correct": 360,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 50.561797752808985,
+          "parse_failures": 38,
+          "grader_timeouts": 1
+        },
+        {
+          "step": 22,
+          "correct": 376,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 52.80898876404494,
+          "parse_failures": 49,
+          "grader_timeouts": 1
+        },
+        {
+          "step": 31,
+          "correct": 198,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 27.808988764044944,
+          "parse_failures": 335,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 33,
+          "correct": 381,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 53.51123595505618,
+          "parse_failures": 31,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 42,
+          "correct": 335,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 47.050561797752806,
+          "parse_failures": 60,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 44,
+          "correct": 349,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 49.01685393258427,
+          "parse_failures": 82,
+          "grader_timeouts": 2
+        },
+        {
+          "step": 53,
+          "correct": 385,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 54.07303370786517,
+          "parse_failures": 77,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 55,
+          "correct": 384,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 53.93258426966292,
+          "parse_failures": 99,
+          "grader_timeouts": 1
+        },
+        {
+          "step": 64,
+          "correct": 378,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 53.08988764044944,
+          "parse_failures": 83,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 66,
+          "correct": 373,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 52.3876404494382,
+          "parse_failures": 98,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 75,
+          "correct": 369,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 51.825842696629216,
+          "parse_failures": 74,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 77,
+          "correct": 376,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 52.80898876404494,
+          "parse_failures": 78,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 86,
+          "correct": 382,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 53.651685393258425,
+          "parse_failures": 73,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 88,
+          "correct": 392,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 55.056179775280896,
+          "parse_failures": 58,
+          "grader_timeouts": 0
+        }
+      ]
+    },
+    "benchmark_metrics": {
+      "8B": [
+        {
+          "step": 0,
+          "correct": 1062,
+          "responses": 1312,
+          "questions": 164,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 80.9451219512195,
+          "parse_failures": 1,
+          "grader_timeouts": 11
+        },
+        {
+          "step": 44,
+          "correct": 968,
+          "responses": 1312,
+          "questions": 164,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 73.78048780487805,
+          "parse_failures": 26,
+          "grader_timeouts": 9
+        }
+      ],
+      "4B": [
+        {
+          "step": 0,
+          "correct": 993,
+          "responses": 1312,
+          "questions": 164,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 75.6859756097561,
+          "parse_failures": 7,
+          "grader_timeouts": 13
+        },
+        {
+          "step": 44,
+          "correct": 898,
+          "responses": 1312,
+          "questions": 164,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 68.4451219512195,
+          "parse_failures": 111,
+          "grader_timeouts": 7
+        },
+        {
+          "step": 88,
+          "correct": 816,
+          "responses": 1312,
+          "questions": 164,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 62.19512195121951,
+          "parse_failures": 151,
+          "grader_timeouts": 7
+        }
+      ]
+    },
+    "benchmark_pending": [
+      {
+        "model": "8B",
+        "step": 88,
+        "local_request_present": true,
+        "local_grading_intent_present": true,
+        "local_delivery_present": false
+      }
+    ],
+    "metric_definition": {
+      "validation": "89 fixed MBPP questions, eight draws each, 712 responses",
+      "benchmark": "164 fixed HumanEval+ questions, eight draws each, 1312 responses"
+    },
+    "network_disabled_cpu_grading_and_reply_delivery_verified": true,
+    "interpretation": "Step88 is the planned final evaluation point. Its delivered grades establish evaluation outcomes, not completed worker lifecycle, source-bound hosted acceptance, a matched-control effect or research-goal achievement. Preserve different latest model steps explicitly.",
+    "worker_physical_cleanup_verified": false,
+    "current_all_in_cost_available": false,
+    "worker_contacts_by_monitor": 0,
+    "active_state_or_runtime_edits_by_monitor": 0,
+    "observation_sha256": "cc400077014c268d0c6d15b851c0faaddcd576c503a52283629051129dcd9082"
   }
 }
