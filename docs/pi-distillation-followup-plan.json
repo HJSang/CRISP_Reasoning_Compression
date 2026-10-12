@@ -68722,5 +68722,33 @@
     "candidate_manifest_sha256": "f9edd96d134da1ef2ecdc7f1c23e5ba66a89d0e51a661678b4b173a04bbc9a42",
     "source_review": "root review, not independent",
     "remaining": "Explicit new one-attempt approval; fresh exact worker/source/idle checks; actual full readiness; then separate measured scientific admission."
+  },
+  "priority_coding_deadline_recheck": {
+    "version": "coding-retained-forecast-deadline-recheck-v1",
+    "cutoff_utc": "2026-10-12T09:44:44+00:00",
+    "cutoff_unix": 1791798284.0,
+    "original_deadline_utc": "2026-10-12T22:43:07.672134+00:00",
+    "remaining_seconds": 46703.67213392258,
+    "coding_science_seconds": 46387.32321120857,
+    "prepared_readiness_seconds": 1020.0,
+    "combined_forecast_seconds": 47407.32321120857,
+    "latest_start_at_unchanged_forecast_utc": "2026-10-12T09:33:00.348923+00:00",
+    "forecast_finish_if_started_at_cutoff_utc": "2026-10-12T22:54:51.323211+00:00",
+    "forecast_shortfall_seconds": 703.651077285991,
+    "retained_forecast_fits": false,
+    "new_measured_runtime": false,
+    "admitted": false,
+    "dispatch": false,
+    "remote_calls": 0,
+    "existing_pending_approvals_unchanged": true,
+    "caps_unchanged": true,
+    "scope_unchanged": true,
+    "limitations": [
+      "Readiness wall duration is the prepared17-minute bound; prior coding forecast retains its declared floors/margins. Neither is newly observed runtime.",
+      "This comparison concerns four coding arms; the larger six-arm priority schedule already failed the deadline. Held Llama and Adam reservations remain intact.",
+      "No proof of physical impossibility. Any revised forecast must use newly verified comparable measurements and retain required work and margins.",
+      "Fresh readiness approval does not authorize a scientific run that fails measured deadline admission."
+    ],
+    "evidence_sha256": "9436e7723650a7310318951840b562b8d09b2bb6862421dce5674d6883ee59a2"
   }
 }
