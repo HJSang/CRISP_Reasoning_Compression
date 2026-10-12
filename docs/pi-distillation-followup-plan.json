@@ -69230,5 +69230,204 @@
     "worker_contacts_by_monitor": 0,
     "active_state_or_runtime_edits_by_monitor": 0,
     "observation_sha256": "7d8d789d797674e52c4c4ca57b102c165d72cee518e46016de2f25d286542f75"
+  },
+  "priority_science_four_cycle_observation": {
+    "observed_utc": "2026-10-12T17:52:29.757763Z",
+    "status": "both_qwen_runs_have_validation_delivered_through_step44",
+    "validation_metrics": {
+      "8B": [
+        {
+          "step": 0,
+          "correct": 439,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 61.657303370786515,
+          "parse_failures": 10,
+          "grader_timeouts": 2
+        },
+        {
+          "step": 9,
+          "correct": 422,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 59.26966292134831,
+          "parse_failures": 0,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 11,
+          "correct": 448,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 62.92134831460674,
+          "parse_failures": 9,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 20,
+          "correct": 387,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 54.353932584269664,
+          "parse_failures": 13,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 22,
+          "correct": 447,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 62.78089887640449,
+          "parse_failures": 2,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 31,
+          "correct": 404,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 56.741573033707866,
+          "parse_failures": 8,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 33,
+          "correct": 415,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 58.28651685393258,
+          "parse_failures": 8,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 42,
+          "correct": 413,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 58.00561797752809,
+          "parse_failures": 11,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 44,
+          "correct": 406,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 57.02247191011236,
+          "parse_failures": 17,
+          "grader_timeouts": 0
+        }
+      ],
+      "4B": [
+        {
+          "step": 0,
+          "correct": 423,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 59.41011235955056,
+          "parse_failures": 18,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 9,
+          "correct": 368,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 51.68539325842696,
+          "parse_failures": 17,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 11,
+          "correct": 409,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 57.443820224719104,
+          "parse_failures": 17,
+          "grader_timeouts": 1
+        },
+        {
+          "step": 20,
+          "correct": 360,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 50.561797752808985,
+          "parse_failures": 38,
+          "grader_timeouts": 1
+        },
+        {
+          "step": 22,
+          "correct": 376,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 52.80898876404494,
+          "parse_failures": 49,
+          "grader_timeouts": 1
+        },
+        {
+          "step": 31,
+          "correct": 198,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 27.808988764044944,
+          "parse_failures": 335,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 33,
+          "correct": 381,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 53.51123595505618,
+          "parse_failures": 31,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 42,
+          "correct": 335,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 47.050561797752806,
+          "parse_failures": 60,
+          "grader_timeouts": 0
+        },
+        {
+          "step": 44,
+          "correct": 349,
+          "responses": 712,
+          "questions": 89,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 49.01685393258427,
+          "parse_failures": 82,
+          "grader_timeouts": 2
+        }
+      ]
+    },
+    "metric_definition": "Average correctness over eight draws per question, with the same 89 fixed MBPP validation questions (712 responses per evaluation).",
+    "network_disabled_cpu_grading_and_reply_delivery_verified": true,
+    "same_fixed_panel_and_grading_source_pins_verified": true,
+    "interpretation": "Evaluation bindings through step 44 provide evidence of four-cycle training progress. The formal first-switch mechanics audit, complete 88-update trajectories and current liveness are not independently established. These early descriptive values do not establish sustained improvement or a matched-control effect.",
+    "cleanup_limit": "Verified sandbox cleanup receipts concern CPU graders, not GPU workers; r5 manual-cleanup evidence gap remains historical.",
+    "current_all_in_cost_available": false,
+    "worker_contacts_by_monitor": 0,
+    "active_state_or_runtime_edits_by_monitor": 0,
+    "observation_sha256": "193925c46282a54b4205592e386ec31de6eec4eef15dceb8ffb327a9f92b7fb0"
   }
 }
