@@ -68876,5 +68876,35 @@
     "next_action": "The executing agent must resolve the failed 8B grading path within the consumed operation rules, observe both controllers, establish physical release and reconcile full readiness/hosted evidence and all assigned intervals. Do not duplicate its controls or infer scientific admission.",
     "observation_sha256": "f4b2f32faff60a616978a9b6052464813a9d78dc1d96a2198caf6d05cdb4ce38",
     "scope_of_verification": "Snapshot of locally saved journal and mailbox records; not fresh worker liveness, whole-readiness acceptance, complete live-cost reconciliation or an independent authorization/scope audit."
+  },
+  "priority_coding_r5_terminal_observation": {
+    "checked_utc": "2026-10-12T16:31:35.086786Z",
+    "status": "r5_failed_manual_cleanup_reported",
+    "attempt_consumed": true,
+    "readiness_passed": false,
+    "scientific_runs_launched": 0,
+    "outcomes": {
+      "qwen3_8b": "Vocabulary check passed and original samples requested grading; local grading failed because driver environment lacked e2b. Its one-use grading attempt was consumed and worker reached the work deadline.",
+      "qwen3_4b": "Original-baseline sandbox grading and delivery completed. Owner accounting reports recipe3 mechanics with 3 PI1/OPD1 updates, phase switch, cycle-refresh teacher, Adam reset, export and warm reload; continuous2 was interrupted at the 660-second work deadline. This is partial mechanics evidence, not full readiness or the 88-update scientific recipe.",
+      "cleanup": "Both normal owned-cleanup paths failed with lost descendant identity. The owner accounting reports out-of-band cleanup, zero remaining owned processes and eight GPUs at zero memory per worker. Canonical release files are absent; this monitor has not independently verified the manual cleanup."
+    },
+    "recorded_additional_readiness_gpu_hours": 4.231801415019565,
+    "recorded_actual_cost_gpu_hours": {
+      "overall": 655.5526939810651,
+      "readiness": 106.71960026952954,
+      "readiness_stage": 46.02432263480293,
+      "science": 377.19874708069705,
+      "study": 548.8330937115353
+    },
+    "interval_arithmetic_verified_locally": true,
+    "canonical_release_files_present": false,
+    "manual_cleanup_independently_verified_by_monitor": false,
+    "reported_local_fix": "Owner accounting reports e2b made importable in the driver environment and a successful service smoke check; the failed one-use grading was not thereby revalidated.",
+    "full_readiness_acceptance": false,
+    "pending_gate": "Explicit disposition of incomplete readiness and any fresh bounded attempt/admission; do not promote partial mechanics to full readiness or infer science authorization. Avoid repeating an executing agent\u2019s pending user question.",
+    "worker_contacts_by_monitor": 0,
+    "active_runtime_or_state_edits_by_monitor": 0,
+    "accounting_sha256": "cc3deb4e73d1e69e5964de5cb82b85d5924d685aac1b5834fec3cc174dfe4f80",
+    "observation_sha256": "ce06b805372424b21c4f90dd0541e9db460bfac305cd7d1436f9de423d7a450f"
   }
 }
