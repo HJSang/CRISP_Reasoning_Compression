@@ -67662,7 +67662,7 @@
   },
   "current_transfer_priority": {
     "version": "domain-family-priority-v3",
-    "status": "prospective_not_admitted_not_launched",
+    "status": "approved_restart_blocked_by_released_workers",
     "methods": [
       "PI9\u2192OPD2 repeated8;cycle_refresh;phase_reset_Adam",
       "continuousPI88;original_frozen_teacher;continuous_Adam"
@@ -67710,7 +67710,7 @@
     "gpu_readiness_passed": false,
     "admitted": false,
     "dispatch": false,
-    "readiness_status": "Two short GPU readiness controllers failed during Ray startup and were independently verified cleaned up. No training readiness or full scientific runs. Short socket-path and compact monitor fixes are being prepared; deadline-extension and Llama-access questions remain pending.",
+    "readiness_status": "r3 startup failure and cleanup preserved; corrected r4 local package prepared and one new attempt approved; original placement is unavailable; no new readiness or scientific jobs",
     "ongoing_adam_prefixes": "Both shared prefixes are independently verified and cleaned up. Four new Adam tails remain held, preserving source snapshots and prior reservations.",
     "four_node_placement": [
       {
@@ -67863,7 +67863,7 @@
         "future_llama_reservation_preserved": true
       }
     },
-    "latest_readiness_status": "r3 failed and cleaned; corrected r4 package prepared, pending new one-attempt approval"
+    "latest_readiness_status": "r4 approved but unadmitted and unused; workers a/b/c released before approval; recovery and replacement placement required"
   },
   "accepted_prefix_phase_analysis": {
     "version": "accepted-prefix-phase-description-v1",
@@ -68750,5 +68750,71 @@
       "Fresh readiness approval does not authorize a scientific run that fails measured deadline admission."
     ],
     "evidence_sha256": "9436e7723650a7310318951840b562b8d09b2bb6862421dce5674d6883ee59a2"
+  },
+  "priority_coding_restart_handover": {
+    "as_of_utc": "2026-10-12T15:17:50.717589Z",
+    "status": "priority_coding_r4_approved_blocked_released_workers",
+    "user_instruction": "go extend ttl and launch new jobs",
+    "approval_context": "Acceptance of the pending 12-hour deadline extension and one fresh corrected readiness attempt per Qwen model at 47 stage / 107 cumulative readiness GPU-hours.",
+    "study_deadline_utc": "2026-10-13T10:43:07.672134Z",
+    "study_deadline_unix": 1791888187.672134,
+    "original_deadline_utc": "2026-10-12T22:43:07.672134Z",
+    "approved_caps_gpu_hours": {
+      "readiness_stage": 47,
+      "readiness_cumulative": 107,
+      "science": 1300,
+      "study": 1500,
+      "overall": 1604
+    },
+    "workers": {
+      "worker-a": {
+        "state": "released",
+        "reason": "automatic_ttl_expiry",
+        "expired_utc": "2026-10-12T14:50:41Z",
+        "released_utc": "2026-10-12T14:51:49Z"
+      },
+      "worker-b": {
+        "state": "released",
+        "reason": "automatic_ttl_expiry",
+        "expired_utc": "2026-10-12T14:50:41Z",
+        "released_utc": "2026-10-12T14:51:49Z"
+      },
+      "worker-c": {
+        "state": "released",
+        "reason": "automatic_ttl_expiry",
+        "expired_utc": "2026-10-12T13:56:53Z",
+        "released_utc": "2026-10-12T13:57:49Z"
+      },
+      "worker-d": {
+        "state": "running",
+        "extended_by_hours": 24,
+        "expires_utc": "2026-10-13T16:26:35.063167Z",
+        "gpu_count": 8
+      }
+    },
+    "storage_survival_verified": false,
+    "replacement_acquisitions": 0,
+    "worker_execution_contacts": 0,
+    "new_gpu_jobs_launched": 0,
+    "r4_attempts_consumed": 0,
+    "r4_production_authority_created": false,
+    "r4_guard_initialized": false,
+    "readiness_admitted": false,
+    "science_admitted": false,
+    "actual_cost_gpu_hours": {
+      "overall": 649.2370489586727,
+      "readiness": 100.40395524713726,
+      "readiness_stage": 39.70867761241065,
+      "science": 377.19874708069705,
+      "study": 548.8330937115353
+    },
+    "held_science_gpu_hours": 898.3222618978384,
+    "prepared_readiness_gpu_hours": 6.533333333333335,
+    "prepared_cumulative_readiness_headroom_gpu_hours": 0.06271141952940695,
+    "recovery_budget_status": "not_bounded_or_admitted; prepared budget assumes former placement and retained sources",
+    "next_action": "Bound recovery and replacement placement, preserve all held work and reserves, then refresh immutable source/placement/cost bindings before the one-use readiness attempt. Scientific launch requires successful readiness and a fresh measured forecast fitting the approved absolute deadline.",
+    "handover_requested": true,
+    "history_note": "Earlier pending-approval and deadline-recheck sections are dated historical evidence. The frozen prepared runtime still binds the original stricter deadline; this approval does not rewrite those bytes.",
+    "evidence_sha256": "b0cfae252949eb17c869863d0d43b45e3dfcc7c0fa3cc1921446c805a6dde1a4"
   }
 }
