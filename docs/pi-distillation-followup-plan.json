@@ -67862,7 +67862,8 @@
         "other_caps_unchanged": true,
         "future_llama_reservation_preserved": true
       }
-    }
+    },
+    "latest_readiness_status": "r3 failed before training; exact cleanup verified; no automatic retry"
   },
   "accepted_prefix_phase_analysis": {
     "version": "accepted-prefix-phase-description-v1",
@@ -68659,5 +68660,43 @@
     "projected_cumulative_readiness_gpu_hours": 103.40439005904726,
     "scientific_admission": false,
     "remaining": "Fresh bounded readiness execution and full scientific admission; deadline extension and Llama access still unresolved."
+  },
+  "priority_coding_r3_terminal": {
+    "checked_utc": "2026-10-12T04:34:35.287446+00:00",
+    "status": "approved_r3_attempt_failed_before_training_physically_clean",
+    "readiness_stage_cap": 46,
+    "cumulative_readiness_cap": 107,
+    "approved_attempts": 1,
+    "attempt_consumed": true,
+    "scientific_coding_runs_launched": 0,
+    "new_coding_training_updates": 0,
+    "new_coding_evaluation_results": 0,
+    "worker_cleanup": {
+      "worker-a": "owned processes absent; eight GPUs idle",
+      "worker-b": "owned processes absent; eight GPUs idle"
+    },
+    "actual_gpu_hours": {
+      "overall": 649.2370489586727,
+      "readiness": 100.40395524713726,
+      "readiness_stage": 39.70867761241065,
+      "science": 377.19874708069705,
+      "study": 548.8330937115353
+    },
+    "attempt_gpu_hours": 0.7800134780671861,
+    "diagnosis": "Exact Ray dashboard/agent descendants retained recorded process groups and sessions, but lifecycle markers were absent in /proc. The strict ownership check stopped both controllers; cleanup required exact-session reconciliation.",
+    "causal_hypothesis": "Confirmed by bounded Linux CPU A/B probe: Ray process-title change removes the initial /proc ownership marker without SPT_NOENV and preserves it with SPT_NOENV=1; Python os.environ retains the marker in both cases.",
+    "candidate": {
+      "patches": "SPT_NOENV=1 before child exec in both lifecycle environments; reject remote errors before reconstructing success-only records",
+      "local_tests_passed": 5,
+      "linux_proc_validated": true,
+      "deployed": false,
+      "admitted": false,
+      "complete_owned_lifecycle_validated": false
+    },
+    "holds": "No automatic retry. Llama and old Adam reservations preserved; access/deadline extension unresolved.",
+    "global_deadline_utc": "2026-10-12T22:43:07.672134Z",
+    "failed_accounting_sha256": "29407e313f35909afe65854fafbafac6d09388a23228f6fb8baf7a4022e61af1",
+    "postcleanup_cpu_probe_gpu_hours": 0.004706008699205187,
+    "latest_accounting_sha256": "59680bc2f3c82a57cf42e60c55aad48eecf04c65c1546521aa56c8e11d8838d3"
   }
 }
