@@ -68906,5 +68906,40 @@
     "active_runtime_or_state_edits_by_monitor": 0,
     "accounting_sha256": "cc3deb4e73d1e69e5964de5cb82b85d5924d685aac1b5834fec3cc174dfe4f80",
     "observation_sha256": "ce06b805372424b21c4f90dd0541e9db460bfac305cd7d1436f9de423d7a450f"
+  },
+  "priority_science_r1_progress_observation": {
+    "observed_utc": "2026-10-12T16:51:24.109679Z",
+    "status": "qwen_original_baselines_started_after_recorded_readiness_waiver",
+    "decision_sha256": "7de893cb103974ad71699f607e84768eb594495c0abf9fb2bc840a2fe3e5f67e",
+    "recorded_user_decision": {
+      "qwen": "Accept r5 evidence and waive formal readiness acceptance; original baselines then 88-update PI9-to-OPD2 trajectories for Qwen3-8B and Qwen3-4B, with an early in-run check at the first PI-to-OPD switch.",
+      "gemma": "Add approximately 40 GPU-hours for Gemma 3 4B math: smoke, original baseline and one 88-update trajectory.",
+      "deadline_utc": "2026-10-13T10:43:07.672134Z"
+    },
+    "baseline_starts_as_recorded_unix": {
+      "worker-a": 1791822700,
+      "worker-b": 1791822922
+    },
+    "qwen8b_validation": {
+      "cpu_grading_complete": true,
+      "reply_delivery_complete": true,
+      "grading_terminal_sha256": "224b245ad653c72e6b81c5ccad4568535dd4219b00d78aa4c42c115feabfb4f2",
+      "delivery_receipt_sha256": "9a177b1a407169a8bea120b5d154361d29d6683e5d72be1f6364085c34b3814b"
+    },
+    "qwen8b_benchmark_grading_and_delivery_verified": true,
+    "qwen4b_validation_grading_and_delivery_verified": true,
+    "qwen4b_benchmark_completion_observed": false,
+    "training_config_or_completed_scientific_trajectory_observed": false,
+    "gemma_execution_or_result_verified_by_monitor": false,
+    "baseline_local_binding_hashes_match": true,
+    "baseline_reservations_gpu_hours_per_worker": 14.0,
+    "whole_reservation_and_schedule_independently_audited": false,
+    "science_general_operation_journal_observed": false,
+    "accounting_status": "R5 totals are prior recorded costs; subsequent science staging, worker calls, grading waits and assigned intervals require reconciliation. No current all-in cost is asserted.",
+    "scope_limit": "The recorded decision authorizes the recipe trajectories and bounded Gemma work. It does not establish completion or silently cancel other held science or Adam work. Exact cap allocation remains for the owner to reconcile.",
+    "historical_readiness_status": "R5 remains consumed and failed. Its manual cleanup report still lacks canonical release receipts; the later waiver does not change those historical facts.",
+    "worker_contacts_by_monitor": 0,
+    "active_state_or_runtime_edits_by_monitor": 0,
+    "observation_sha256": "766d7c68823509e96889ccff23a6d57d34512641cd656604ecdd66a285426fa8"
   }
 }
