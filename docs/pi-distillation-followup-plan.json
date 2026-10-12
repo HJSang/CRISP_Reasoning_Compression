@@ -69429,5 +69429,78 @@
     "worker_contacts_by_monitor": 0,
     "active_state_or_runtime_edits_by_monitor": 0,
     "observation_sha256": "193925c46282a54b4205592e386ec31de6eec4eef15dceb8ffb327a9f92b7fb0"
+  },
+  "priority_science_midpoint_benchmark_observation": {
+    "observed_utc": "2026-10-12T18:07:04.951246Z",
+    "status": "saved_midpoint_benchmark_deliveries_verified",
+    "benchmark_metrics": {
+      "8B": [
+        {
+          "step": 0,
+          "correct": 1062,
+          "responses": 1312,
+          "questions": 164,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 80.9451219512195,
+          "parse_failures": 1,
+          "grader_timeouts": 11
+        },
+        {
+          "step": 44,
+          "correct": 968,
+          "responses": 1312,
+          "questions": 164,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 73.78048780487805,
+          "parse_failures": 26,
+          "grader_timeouts": 9
+        }
+      ],
+      "4B": [
+        {
+          "step": 0,
+          "correct": 993,
+          "responses": 1312,
+          "questions": 164,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 75.6859756097561,
+          "parse_failures": 7,
+          "grader_timeouts": 13
+        },
+        {
+          "step": 44,
+          "correct": 898,
+          "responses": 1312,
+          "questions": 164,
+          "draws_per_question": 8,
+          "avg_at_8_percent": 68.4451219512195,
+          "parse_failures": 111,
+          "grader_timeouts": 7
+        }
+      ]
+    },
+    "pending_models": [],
+    "metric_definition": "Average correctness over eight draws on the same 164 HumanEval+ questions (1312 responses per evaluation), distinct from 89-question MBPP validation.",
+    "network_disabled_cpu_grading_and_reply_delivery_verified": true,
+    "interpretation": "Step44 is an intermediate benchmark checkpoint, not the final 88-update outcome, and descriptive baseline changes do not establish a matched-control effect.",
+    "gemma_recorded_protocol": {
+      "deterministic_inference": false,
+      "qwen_unchanged": true,
+      "sampling": {
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20
+      },
+      "evaluation_schedule": "same Qwen 9/2 schedule code",
+      "budget_gpu_hours": 40,
+      "owner_reported_smoke_gpu_hours": 0.4,
+      "owner_reported_smoke_checks_passed": 6,
+      "smoke_evidence_independently_verified": false,
+      "decision_sha256": "25fdb954b81d562b4ff9df2e2666792224cfc5617ee0698a14ded2640b5f622c"
+    },
+    "current_all_in_cost_available": false,
+    "worker_contacts_by_monitor": 0,
+    "active_state_or_runtime_edits_by_monitor": 0,
+    "observation_sha256": "9430f04ed27c54d56be860c757b2ad07405c5742b5d64cc4155eb96066887026"
   }
 }
