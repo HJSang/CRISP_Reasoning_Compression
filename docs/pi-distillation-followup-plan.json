@@ -67863,7 +67863,7 @@
         "future_llama_reservation_preserved": true
       }
     },
-    "latest_readiness_status": "r3 failed before training; exact cleanup verified; no automatic retry"
+    "latest_readiness_status": "r3 failed and cleaned; corrected r4 package prepared, pending new one-attempt approval"
   },
   "accepted_prefix_phase_analysis": {
     "version": "accepted-prefix-phase-description-v1",
@@ -68698,5 +68698,29 @@
     "failed_accounting_sha256": "29407e313f35909afe65854fafbafac6d09388a23228f6fb8baf7a4022e61af1",
     "postcleanup_cpu_probe_gpu_hours": 0.004706008699205187,
     "latest_accounting_sha256": "59680bc2f3c82a57cf42e60c55aad48eecf04c65c1546521aa56c8e11d8838d3"
+  },
+  "priority_coding_r4_prepared": {
+    "checked_utc": "2026-10-12T04:44:29.965387+00:00",
+    "status": "prepared_pending_new_attempt_approval",
+    "current_readiness_stage_cap": 46,
+    "proposed_readiness_stage_cap": 47,
+    "cumulative_readiness_cap_unchanged": 107,
+    "projected_stage_gpu_hours": 46.242010945743985,
+    "projected_cumulative_readiness_gpu_hours": 106.9372885804706,
+    "held_llama_and_adam_reservations_preserved": true,
+    "local_regression_cases_passed": 46,
+    "full_local_model_stage_checks_passed": 2,
+    "composed_rehearsal_operations": 17,
+    "composed_rehearsal_services": "synthetic boundary observations; real local recorder/mailbox/validators",
+    "linux_environment_cause_reproduced": true,
+    "complete_gpu_lifecycle_verified": false,
+    "admitted": false,
+    "dispatched": false,
+    "scientific_admission": false,
+    "fresh_attempt_identity_required": true,
+    "original_deadline_utc": "2026-10-12T22:43:07.672134Z",
+    "candidate_manifest_sha256": "f9edd96d134da1ef2ecdc7f1c23e5ba66a89d0e51a661678b4b173a04bbc9a42",
+    "source_review": "root review, not independent",
+    "remaining": "Explicit new one-attempt approval; fresh exact worker/source/idle checks; actual full readiness; then separate measured scientific admission."
   }
 }
