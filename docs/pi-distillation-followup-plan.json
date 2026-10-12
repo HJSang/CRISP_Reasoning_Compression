@@ -68638,5 +68638,26 @@
     "causal_mechanism_identified": false,
     "sustained_improvement_established": false,
     "limits": "Two dependent four-cycle paths, one seed and exposed panel. Paired slots share configured seeds but are not counterfactual trajectories. Cap partitions are post-treatment diagnostics, not filtered accuracy or causal estimates. No p-values, confidence intervals, recipe selection or primary-gate changes."
+  },
+  "priority_corrected_readiness_retry": {
+    "checked_unix": 1791776126.0866601,
+    "phase": "corrected_readiness_retry_prepared_not_launched",
+    "approved_readiness_stage_cap": 43,
+    "cumulative_caps_unchanged": true,
+    "authorized_retries_per_model": 1,
+    "priority_scientific_runs_launched": 0,
+    "actual_gpu_contacts_this_preparation": 0,
+    "cpu_monitor_cases": 12,
+    "cpu_context_cases": 26,
+    "composed_operations": 17,
+    "composed_uncertain": 0,
+    "local_full_stage_checks": 2,
+    "source_refs": 2997,
+    "strict_source_data_seed_preserved": true,
+    "review": "Root integration review, with inherited independently reviewed components; not a new independent integration review.",
+    "projected_readiness_stage_gpu_hours": 42.70911242432065,
+    "projected_cumulative_readiness_gpu_hours": 103.40439005904726,
+    "scientific_admission": false,
+    "remaining": "Fresh bounded readiness execution and full scientific admission; deadline extension and Llama access still unresolved."
   }
 }
