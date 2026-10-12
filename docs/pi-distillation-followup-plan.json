@@ -67838,6 +67838,30 @@
         "actual_gpu_execution_passed": false
       },
       "scientific_admission": false
+    },
+    "startup_recovery_candidate": {
+      "status": "cpu_candidate_only_integration_pending",
+      "deployed": false,
+      "admitted": false,
+      "retry_authorized": false,
+      "new_gpu_contacts": 0,
+      "focused_cpu_cases": 32,
+      "linux_maximum_socket_bytes": 99,
+      "original_failed_socket_bytes": 174,
+      "linux_socket_limit_bytes": 107,
+      "coverage": "Real installed Ray path construction; inert Cluster boundary; no real service/GPU startup. Both lifecycle routes covered.",
+      "remaining": "Fresh authorized attempt identities, controller/worker/monitor/context integration and full-size response replay; unchanged budget/deadline gates.",
+      "budget_proposal": {
+        "status": "not_approved",
+        "current_stage_cap": 40,
+        "proposed_stage_cap": 43,
+        "additional_readiness_reserved_gpu_hours": 6.533333333333335,
+        "projected_stage_gpu_hours": 42.70911242432065,
+        "projected_cumulative_readiness_gpu_hours": 103.40439005904726,
+        "cumulative_readiness_cap_unchanged": 104,
+        "other_caps_unchanged": true,
+        "future_llama_reservation_preserved": true
+      }
     }
   },
   "accepted_prefix_phase_analysis": {
