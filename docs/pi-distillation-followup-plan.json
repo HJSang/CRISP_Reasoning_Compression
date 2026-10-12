@@ -68849,5 +68849,32 @@
     "next_action": "Prepare and validate the tokenizer contract in the actual worker environment, retain failed evidence, then obtain a fresh bounded attempt decision and whole-reservation admission. No automatic retry.",
     "accounting_sha256": "7d5da17f8d2f8d93d7f16f7e2003c7836bb78373ffff9840e036c19f8e02ff92",
     "verification_scope": "Local verification of saved release receipts and interval arithmetic; no fresh worker contact, independent diagnosis or complete restoration-cost audit."
+  },
+  "priority_coding_r5_progress_observation": {
+    "checked_utc": "2026-10-12T16:15:20.012596Z",
+    "status": "r5_readiness_started_acceptance_unconfirmed",
+    "readiness_starts_recorded": 2,
+    "baseline_grading": {
+      "qwen3_4b": "CPU grading completed and reply delivery recorded",
+      "qwen3_8b": "CPU grading terminal record complete=false; CalledProcessError"
+    },
+    "whole_readiness_accepted": false,
+    "scientific_launch_evidence_in_snapshot": false,
+    "active_cost_reconciliation": "pending; r4 terminal totals are the prior closed accounting only",
+    "source_review_reported_changes": [
+      "Worker-environment vocabulary digest replaces the local-environment digest.",
+      "Fresh r5 identities and dependency hashes.",
+      "Owner review reports removing held Llama readiness rows under a later recorded direction and adding a bounded pre-contact auth-rejection transport retry. This monitor has not independently audited that changed authorization/scope."
+    ],
+    "owner_review_reported_validation": {
+      "local_cases": 51,
+      "full_local_stages": 2,
+      "independent_review": false
+    },
+    "worker_contacts_by_monitor": 0,
+    "active_runtime_or_state_mutations_by_monitor": 0,
+    "next_action": "The executing agent must resolve the failed 8B grading path within the consumed operation rules, observe both controllers, establish physical release and reconcile full readiness/hosted evidence and all assigned intervals. Do not duplicate its controls or infer scientific admission.",
+    "observation_sha256": "f4b2f32faff60a616978a9b6052464813a9d78dc1d96a2198caf6d05cdb4ce38",
+    "scope_of_verification": "Snapshot of locally saved journal and mailbox records; not fresh worker liveness, whole-readiness acceptance, complete live-cost reconciliation or an independent authorization/scope audit."
   }
 }
