@@ -71174,5 +71174,33 @@
     "worker_contacts_by_monitor": 0,
     "active_state_or_runtime_edits_by_monitor": 0,
     "observation_sha256": "48dd6f186e7d27d92432955b63e7c9082969b370a08f41babeae3c126b455f82"
+  },
+  "priority_deadline_observation": {
+    "observed_utc": "2026-10-13T10:52:46.713393Z",
+    "approved_deadline_utc": "2026-10-13T10:43:07.672134Z",
+    "status": "deadline_elapsed_closure_unverified",
+    "verified_qwen_final_evaluations_unchanged": true,
+    "gemma_aggregate_source_provenance_verified": false,
+    "worker_liveness": "unknown",
+    "worker_lifecycle_and_gpu_cleanup_verified": false,
+    "current_all_in_cost_reconciled": false,
+    "complete_operation_inventory_available": false,
+    "retained_scope_and_matched_controls_reconciled": false,
+    "first_switch_and_post_terminal_hosted_acceptance_verified": false,
+    "historical_gemma_filter_direction": {
+      "user_requested_pass_rate_above": 0.2,
+      "user_allowed_screen_response_cap_tokens": 16384,
+      "owner_reported_screen_and_rerun_bound_gpu_hours": 16,
+      "owner_reported_existing_gemma_total_cap_gpu_hours": 40,
+      "owner_required_prior_exit_and_gpu_cleanup": true,
+      "training_rollout_cap_tokens_unchanged": 4096,
+      "execution_and_consumption_verified": false,
+      "full_imported_dispatch_available": false,
+      "interpretation": "Historical user direction and owner planning, not execution evidence or a deadline extension. Screening sampling was an owner choice; actual settings and any discarded screening costs require reconciliation."
+    },
+    "research_goal_achieved": false,
+    "worker_contacts_by_monitor": 0,
+    "active_state_or_runtime_edits_by_monitor": 0,
+    "observation_sha256": "3a9c5cd8054aa4d7a65cc6a330a8eaf27d8424cc9bb3126928eee267a6af86dd"
   }
 }
