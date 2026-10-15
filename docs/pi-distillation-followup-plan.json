@@ -71202,5 +71202,51 @@
     "worker_contacts_by_monitor": 0,
     "active_state_or_runtime_edits_by_monitor": 0,
     "observation_sha256": "3a9c5cd8054aa4d7a65cc6a330a8eaf27d8424cc9bb3126928eee267a6af86dd"
+  },
+  "priority_cycle_aggregate_observation": {
+    "observed_utc": "2026-10-15T21:26:10.607168Z",
+    "status": "reported_derived_cycle_aggregates_not_source_verified",
+    "accompanying_source_label": "Qwen3-4B math; result identity not independently bound",
+    "model_checkpoint_config_identity_verified": false,
+    "reported_steps": [
+      0,
+      9,
+      11,
+      20,
+      22,
+      31,
+      33
+    ],
+    "reported_avg_at_8": [
+      0.72266,
+      0.7334,
+      0.71484,
+      0.7373,
+      0.79883,
+      0.72852,
+      0.79395
+    ],
+    "reported_opd_kl_removal": {
+      "9->11": 0.5346,
+      "20->22": 0.3918,
+      "31->33": 0.2818
+    },
+    "reported_global_weight_revert_fractions": {
+      "1": 0.264152,
+      "2": 0.222777,
+      "3": 0.215805
+    },
+    "shared_markdown_rows_checked": 82,
+    "recorded_prior_source_references_unchanged": 420,
+    "consistency_checks": "Shared rendered rows, transition partitions and bucket sums, rounded endpoint/delta arithmetic, KL removal and global weight projection identities.",
+    "provenance_limit": "Three referenced inputs were not found in the inspected local study tree. Summary exports omit model/checkpoint/config bindings, question/draw identities, grading and lifecycle receipts. Upstream source is designed to retain configuration and checkpoint hashes; its actual outputs were not inspected.",
+    "interpretation_limit": "Descriptive aggregates and geometric associations do not establish causality, matched-control effects, scientific acceptance or research-goal completion. File modification time is not execution time.",
+    "current_owner_lifecycle_cleanup_costs_verified": false,
+    "prior_waiver_and_retained_scope_preserved": true,
+    "new_worker_authority": false,
+    "worker_contacts_by_monitor": 0,
+    "active_state_or_runtime_edits_by_monitor": 0,
+    "summary_json_sha256": "6e8a5ef3eb4abf3462be03a3a795ba382f377e2d6c9fcaa21d2372ea7ff78d72",
+    "observation_sha256": "79289aca90ad30b0a4ab70a66df0a3ac99e0b9a954e280a1a9c3e0530fca0478"
   }
 }
